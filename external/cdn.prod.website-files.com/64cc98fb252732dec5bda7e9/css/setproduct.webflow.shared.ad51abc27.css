@@ -2043,7 +2043,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945be8df4e241b604d3b_UncutSans-Semibold.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945be8df4e241b604d3b_UncutSans-Semibold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -2051,7 +2051,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945b0e904c62c52351e3_UncutSans-Regular.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945b0e904c62c52351e3_UncutSans-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2059,7 +2059,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945ae652d83dd84badd1_UncutSans-Medium.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945ae652d83dd84badd1_UncutSans-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -2067,7 +2067,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945a04a67b633722a093_UncutSans-Bold.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945a04a67b633722a093_UncutSans-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -2075,7 +2075,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945beb38ad2985b6c99d_UncutSans-Light.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945beb38ad2985b6c99d_UncutSans-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -2083,7 +2083,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Uncutsans;
-  src: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945bf255dded9f5ad27d_UncutSans-RegularItalic.otf") format("opentype");
+  src: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6501945bf255dded9f5ad27d_UncutSans-RegularItalic.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -4144,7 +4144,7 @@ figcaption {
 .fs-rangeslider_handle {
   z-index: 1;
   cursor: grab;
-  background-image: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/652fff2bd9e8dd6e6daedb95_Knob.svg");
+  background-image: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/652fff2bd9e8dd6e6daedb95_Knob.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: contain;
@@ -4181,7 +4181,7 @@ figcaption {
 
 .fs-rangeslider_handle-value {
   text-align: center;
-  background-image: url("https://cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6530036b8f3633f202b6eb28_tooltip.svg");
+  background-image: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6530036b8f3633f202b6eb28_tooltip.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: contain;
