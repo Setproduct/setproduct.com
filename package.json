@@ -1,0 +1,28 @@
+{
+  "name": "setproduct.com",
+  "version": "1.0.0",
+  "description": "Setproduct site migration to Next.js Pages Router",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anton-kuptsov/setproduct.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "bugs": {
+    "url": "https://github.com/anton-kuptsov/setproduct.com/issues"
+  },
+  "homepage": "https://github.com/anton-kuptsov/setproduct.com#readme"
+}
