@@ -1,6 +1,5 @@
 import type { GetServerSideProps } from "next";
 import LegacyPage from "../components/LegacyPage";
-import { getRootPageData } from "../lib/legacy-collections";
 import type { LegacyPageData } from "../types/legacy";
 
 type PageProps = {
@@ -17,6 +16,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, SlugParams> = asy
   }
 
   try {
+    const { getRootPageData } = await import("../lib/legacy-collections");
     return {
       props: {
         pageData: getRootPageData(params.slug),
