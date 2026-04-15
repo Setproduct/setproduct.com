@@ -1,4 +1,5 @@
 import Head from "next/head";
+import type { LegacyPageData } from "../types/legacy";
 
 export default function LegacyPage({
   title,
@@ -6,7 +7,7 @@ export default function LegacyPage({
   canonical,
   inlineStyles = [],
   bodyHtml,
-}) {
+}: LegacyPageData) {
   return (
     <>
       <Head>

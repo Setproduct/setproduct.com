@@ -1,12 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import type { LegacyPageData } from "../types/legacy";
 
-function extract(html, regex) {
+function extract(html: string, regex: RegExp): string {
   const match = html.match(regex);
   return match ? match[1] : "";
 }
 
-function rewriteLegacyLinks(markup) {
+function rewriteLegacyLinks(markup: string): string {
   return markup
     .replace(/href="\.\.\/index\.html"/g, 'href="/"')
     .replace(/href="index\.html"/g, 'href="/"')
@@ -19,15 +20,15 @@ function rewriteLegacyLinks(markup) {
     .replace(/href="\/legal\/refunds-policy\.html"/g, 'href="/legal/refunds-policy"');
 }
 
-function extractMatches(input, regex, groupIndex = 1) {
-  return [...input.matchAll(regex)].map((match) => match[groupIndex]);
+function extractMatches(input: string, regex: RegExp, groupIndex = 1): string[] {
+  return [...input.matchAll(regex)].map((match) => match[groupIndex] ?? "");
 }
 
-function stripScriptTags(markup) {
+function stripScriptTags(markup: string): string {
   return markup.replace(/<script[\s\S]*?<\/script>/gi, "");
 }
 
-function buildLegacyPageData(relativePath) {
+export function buildLegacyPageData(relativePath: string): LegacyPageData {
   const htmlPath = path.join(process.cwd(), "legacy-pages", relativePath);
   const html = fs.readFileSync(htmlPath, "utf8");
   const head = extract(html, /<head[^>]*>([\s\S]*?)<\/head>/i);
@@ -45,5 +46,3 @@ function buildLegacyPageData(relativePath) {
     bodyHtml: rewriteLegacyLinks(body),
   };
 }
-
-module.exports = { buildLegacyPageData };

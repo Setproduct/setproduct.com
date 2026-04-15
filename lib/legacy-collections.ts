@@ -1,13 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import type { LegacyPageData } from "../types/legacy";
+import { buildLegacyPageData } from "./legacy-page";
 
-const { buildLegacyPageData } = require("./legacy-page");
-
-function getCollectionDir(collection) {
+function getCollectionDir(collection: string): string {
   return path.join(process.cwd(), "legacy-pages", collection);
 }
 
-function getCollectionSlugs(collection) {
+export function getCollectionSlugs(collection: string): string[] {
   const dir = getCollectionDir(collection);
   return fs
     .readdirSync(dir)
@@ -15,11 +15,11 @@ function getCollectionSlugs(collection) {
     .map((entry) => entry.replace(/\.html$/i, ""));
 }
 
-function getCollectionPageData(collection, slug) {
+export function getCollectionPageData(collection: string, slug: string): LegacyPageData {
   return buildLegacyPageData(`${collection}/${slug}.html`);
 }
 
-function getRootPageSlugs() {
+export function getRootPageSlugs(): string[] {
   const dir = path.join(process.cwd(), "legacy-pages");
   const excluded = new Set(["index", "404"]);
 
@@ -30,8 +30,6 @@ function getRootPageSlugs() {
     .filter((slug) => !excluded.has(slug));
 }
 
-function getRootPageData(slug) {
+export function getRootPageData(slug: string): LegacyPageData {
   return buildLegacyPageData(`${slug}.html`);
 }
-
-module.exports = { getCollectionSlugs, getCollectionPageData, getRootPageSlugs, getRootPageData };
