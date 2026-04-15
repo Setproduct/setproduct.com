@@ -1,21 +1,16 @@
 import LegacyPage from "../../components/LegacyPage";
-import { getCollectionPageData, getCollectionSlugs } from "../../lib/legacy-collections";
+import { getCollectionPageData } from "../../lib/legacy-collections";
 
-export async function getStaticPaths() {
-  const slugs = getCollectionSlugs("templates");
-
-  return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  return {
-    props: {
-      pageData: getCollectionPageData("templates", params.slug),
-    },
-  };
+export async function getServerSideProps({ params }) {
+  try {
+    return {
+      props: {
+        pageData: getCollectionPageData("templates", params.slug),
+      },
+    };
+  } catch {
+    return { notFound: true };
+  }
 }
 
 export default function TemplateDetailPage({ pageData }) {

@@ -1,7 +1,7 @@
 import LegacyPage from "../components/LegacyPage";
 import { buildLegacyPageData } from "../lib/legacy-page";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     props: {
       pageData: buildLegacyPageData("index.html"),

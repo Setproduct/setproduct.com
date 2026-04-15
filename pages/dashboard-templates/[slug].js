@@ -5,7 +5,7 @@ export async function getServerSideProps({ params }) {
   try {
     return {
       props: {
-        pageData: getCollectionPageData("blog", params.slug),
+        pageData: getCollectionPageData("dashboard-templates", params.slug),
       },
     };
   } catch {
@@ -13,6 +13,6 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-export default function BlogArticlePage({ pageData }) {
+export default function DashboardTemplatePage({ pageData }) {
   return <LegacyPage {...pageData} />;
 }
