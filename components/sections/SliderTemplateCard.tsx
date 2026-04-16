@@ -14,7 +14,7 @@ export default function SliderTemplateCard({ product }: Props) {
         <Link className="w-inline-block" href={`/templates/${product.slug}`}>
           <p className="heading-style-h5 text-color-dark-primary text-style-1line">{product.title}</p>
         </Link>
-        <p className="text-size-regular text-style-2lines" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{product.description}</p>
+        <p className="text-size-regular text-style-2lines line-clamp-2">{product.description}</p>
       </div>
       <div className="template-list-btn-wr">
         <a className="button-small w-inline-block" href={product.buyHref} target="_blank" rel="noopener noreferrer">

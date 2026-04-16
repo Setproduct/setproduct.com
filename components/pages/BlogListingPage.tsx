@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import styles from "./BlogListingPage.module.css";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
@@ -35,24 +36,9 @@ export default function BlogListingPage() {
         <title>{meta.title}</title>
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
-        <style>{`
-          @media (min-width: 480px) {
-            .blog_list-item:nth-child(4n+1) {
-              grid-column-start: span 2;
-              grid-row-start: span 1;
-            }
-            .blog_list-item:nth-child(4n+4) {
-              grid-column-start: span 2;
-              grid-row-start: span 1;
-            }
-            .blog_list-item:nth-child(4n+1) .blog_list-item-img-wr { height: 457em; }
-            .blog_list-item:nth-child(4n+1) .heading-style-h5 { font-size: 32em; }
-            .blog_list-item:nth-child(4n+4) .blog_list-item-wr { flex-direction: row-reverse; }
-          }
-        `}</style>
       </Head>
       <SiteHeader />
-      <main>
+      <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">
           <div className="section-padding top-80 bottom-80">
             <div className="container">

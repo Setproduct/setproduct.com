@@ -6,10 +6,10 @@ type Props = { items: BreadcrumbItem[] };
 export default function Breadcrumbs({ items }: Props) {
   return (
     <div className="section">
-      <div className="container">
-        <div className="breadcrump-wr">
+      <div className="container pt-6.5">
+        <div className="inline-flex gap-2 items-center ">
           {items.map((item, i) => (
-            <span key={i}>
+            <div key={i} className="flex gap-2 items-center">
               {i > 0 && (
                 <img
                   alt=""
@@ -19,13 +19,13 @@ export default function Breadcrumbs({ items }: Props) {
                 />
               )}
               {item.href ? (
-                <Link className="link-block no-margins w-inline-block" href={item.href}>
-                  <div className="text-size-regular">{item.label}</div>
+                <Link className="text-size-regular" href={item.href}>
+                  {item.label}
                 </Link>
               ) : (
                 <p className="text-size-regular">{item.label}</p>
               )}
-            </span>
+            </div>
           ))}
         </div>
       </div>

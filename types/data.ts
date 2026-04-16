@@ -44,7 +44,10 @@ export type FreebieItem = {
   title: string;
   description: string;
   image: string;
-  figmaHref: string;
+  category: string;
+  previewHref: string;
+  duplicateHref: string;
+  isFree: boolean;
 };
 
 export type Testimonial = {
