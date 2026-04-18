@@ -5,7 +5,22 @@ import { PAGE_BREADCRUMBS } from "../data/breadcrumbs";
 import { PAGE_FAQ } from "../data/faq";
 
 const SLUG = "mobile";
-const PRODUCT_SLUGS = [ "nucleus-ui", "material-you", "rome", "material", "mobile-x", "appka-ios-ui-kit", "android-ui-kit", "xela-swift"];
+const PRODUCT_SLUGS = [
+  "nucleus-ui",
+  "material-you",
+  "rome",
+  "material",
+  "mobile-x",
+  "appka-ios-ui-kit",
+  "android-ui-kit",
+  "xela-swift",
+  "xela-android",
+  "xela-flutter",
+  "full-ios",
+  "ios-ui-kit",
+  "s8",
+  "most",
+];
 
 const productMap = new Map(PRODUCTS.map((p) => [p.slug, p]));
 const products = PRODUCT_SLUGS.map((s) => productMap.get(s)!);
