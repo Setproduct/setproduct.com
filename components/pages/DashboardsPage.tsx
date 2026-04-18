@@ -25,6 +25,11 @@ const PRODUCT_SLUGS = [
   "eclipse",
   "rome",
   "material",
+  "neolex-dashboard",
+  "material-desktop",
+  "xela",
+  "s8",
+  "oe-enterprise",
 ];
 
 const productMap = new Map(PRODUCTS.map((p) => [p.slug, p]));

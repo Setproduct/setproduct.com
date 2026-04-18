@@ -5,10 +5,7 @@ import { PAGE_BREADCRUMBS } from "../data/breadcrumbs";
 import { PAGE_FAQ } from "../data/faq";
 
 const SLUG = "all";
-const PRODUCT_SLUGS = ["orion", "nocra", "charts", "nucleus-ui", "material-x", "material-you", "react-ui-kit", "panda"];
-
-const productMap = new Map(PRODUCTS.map((p) => [p.slug, p]));
-const products = PRODUCT_SLUGS.map((s) => productMap.get(s)!);
+const products = PRODUCTS;
 
 export default function AllPage() {
   const meta = PAGE_META[SLUG];

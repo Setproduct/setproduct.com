@@ -4,6 +4,15 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <link
+          href="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65cc9f6b13cfc5104fa9b88c_fav-32.jpg"
+          rel="shortcut icon"
+          type="image/x-icon"
+        />
+        <link
+          href="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65cc9f74c3e01c04ab839b0b_fav-256.jpg"
+          rel="apple-touch-icon"
+        />
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/webflow.css" rel="stylesheet" />
         <link href="/css/setproduct.webflow.css" rel="stylesheet" />
