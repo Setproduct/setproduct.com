@@ -2,12 +2,16 @@ import Link from "next/link";
 import type { Product } from "../../types/data";
 import ArrowIcon from "./ArrowIcon";
 
-type Props = { product: Product };
+type Props = { product: Product; imgHeight?: "default" | "480" };
 
-export default function TemplateCard({ product }: Props) {
+export default function TemplateCard({ product, imgHeight = "480" }: Props) {
+  const imgClass =
+    imgHeight === "480"
+      ? "template-list-item-img-wr is-height-480 w-inline-block"
+      : "template-list-item-img-wr w-inline-block";
   return (
     <div className="template-list-item">
-      <Link className="template-list-item-img-wr is-height-480 w-inline-block" href={`/templates/${product.slug}`}>
+      <Link className={imgClass} href={`/templates/${product.slug}`}>
         <img alt="" className="image-cover" loading="lazy" src={product.image} />
       </Link>
       <div className="template-list-text-wr">

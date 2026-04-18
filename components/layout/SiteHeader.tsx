@@ -39,6 +39,12 @@ const INFORMATION_LINKS = [
 
 const BLOG_PREVIEWS = [
   {
+    href: "/blog/pay-for-claude-pro-with-usdt",
+    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/69e0bb5319a6fd901c20640f_buy-claude-with-solana-virtual-card-cover.webp",
+    title: "Pay for Claude Pro with USDT, USDC, or SOL",
+    description: "Step-by-step guide to purchasing Claude Pro subscriptions using USDT, USDC, or SOL. No KYC required.",
+  },
+  {
     href: "/blog/why-some-designers-dislike-ai-and-why-they-shouldnt",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/69c4169f4f3002866a23d841_designers-dislike-AI-cover10.webp",
     title: "Why some designers dislike AI, and why they should not",
@@ -67,12 +73,6 @@ const BLOG_PREVIEWS = [
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/69adae13e37367688e4c0980_cover-ai-insp-1.webp",
     title: "How to use AI UI inspiration to design faster",
     description: "A step-by-step process to choose references and iterate.",
-  },
-  {
-    href: "/blog/how-to-replace-onboarding-with-contextual-hints",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/699b093f75961f1e4b3466bb_onboarding-cover-03.webp",
-    title: "How to replace onboarding with contextual hints",
-    description: "Reduce friction and speed up first value moments.",
   },
 ];
 
