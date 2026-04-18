@@ -6,6 +6,20 @@ body {
   padding: 0;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 * {
   box-sizing: border-box;
+}
+
+/* Inline styles from legacy Webflow pages that are required for sections
+   rendered by React components (not through LegacyPage). */
+@media (min-width: 991px) {
+  .section.is-height-100vh {
+    height: calc(100dvh - 70em);
+  }
 }

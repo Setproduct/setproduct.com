@@ -1,30 +1,27 @@
-import { useRef, useState, useMemo, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { PRODUCTS } from "../../data/products";
-import { CATEGORY_TABS } from "../../data/categories";
-import { SLIDER_PRODUCTS } from "../../data/slider-products";
-import SliderTemplateCard from "./SliderTemplateCard";
+import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
+import FreebieTemplateCard from "./FreebieTemplateCard";
 import ArrowIcon from "./ArrowIcon";
 import SliderPagination from "./SliderPagination";
 
-const SLIDER_TABS = CATEGORY_TABS.filter((t) => t.slug !== "all");
 const ITEMS_PER_PAGE = 3;
 
-const productMap = new Map(PRODUCTS.map((p) => [p.slug, p]));
-const PRODUCTS_BY_TAB: Record<string, typeof PRODUCTS> = {};
-for (const [cat, slugs] of Object.entries(SLIDER_PRODUCTS)) {
-  PRODUCTS_BY_TAB[cat] = slugs.map((s) => productMap.get(s)).filter(Boolean) as typeof PRODUCTS;
-}
+type Props = {
+  excludeSlug?: string;
+};
 
-export default function TemplateShowcase() {
-  const [activeTab, setActiveTab] = useState("dashboards");
+export default function FreebiesShowcase({ excludeSlug }: Props) {
   const [activePage, setActivePage] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const isProgrammaticScrollRef = useRef(false);
   const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const filtered = useMemo(() => PRODUCTS_BY_TAB[activeTab] ?? [], [activeTab]);
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const items = useMemo(
+    () => FREEBIE_PRODUCTS.filter((item) => item.slug !== excludeSlug),
+    [excludeSlug],
+  );
+  const totalPages = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
 
   const scrollToPage = useCallback((page: number) => {
     const el = trackRef.current;
@@ -41,11 +38,6 @@ export default function TemplateShowcase() {
       }, 800);
     }
     setActivePage(page);
-  }, []);
-
-  const handleTab = useCallback((slug: string) => {
-    setActiveTab(slug);
-    setActivePage(0);
   }, []);
 
   useEffect(() => {
@@ -65,7 +57,7 @@ export default function TemplateShowcase() {
       const childWidth = (el.children[0] as HTMLElement)?.offsetWidth ?? 1;
       const gap = 24;
       const page = Math.round(scrollLeft / ((childWidth + gap) * ITEMS_PER_PAGE));
-      setActivePage(Math.min(page, totalPages - 1));
+      setActivePage(Math.min(Math.max(page, 0), totalPages - 1));
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -74,7 +66,7 @@ export default function TemplateShowcase() {
         clearTimeout(scrollEndTimerRef.current);
       }
     };
-  }, [activeTab, totalPages]);
+  }, [totalPages]);
 
   return (
     <div className="section">
@@ -83,51 +75,26 @@ export default function TemplateShowcase() {
           <div className="main_template-list-section">
             <div className="heading-left-wr">
               <div className="heading-left-text-wr max-width-700">
-                <h2 className="heading-style-h2">Figma Templates &amp; UI kits</h2>
-                <div className="heading-style-h5 mob-16">
-                  Save time and human resources by reusing hundreds of pre-made templates crafted by us. Based on top notch UX taken from the World&apos;s best apps.
-                </div>
+                <h2 className="heading-style-h2">More Figma freebies</h2>
               </div>
               <div className="heading-left-text-btn-wr">
-                <Link className="button secondary w-inline-block" href="/all">
+                <Link className="button secondary w-inline-block" href="/freebies">
                   <div className="text-size-large text-weight-bold">See All</div>
                   <div className="button-icon w-embed"><ArrowIcon /></div>
                 </Link>
               </div>
             </div>
             <div className="spacer-32" />
-            <div className="main_template-liist-tabs-menu" style={{ display: "flex", gap: "8px" }}>
-              {SLIDER_TABS.map((tab) => (
-                <div
-                  key={tab.slug}
-                  className={`button-x-small is-text w-inline-block${activeTab === tab.slug ? " w--current" : ""}`}
-                  onClick={() => handleTab(tab.slug)}
-                  role="button"
-                  tabIndex={0}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="text-size-small text-weight-bold">{tab.label}</div>
-                </div>
-              ))}
-            </div>
-            <div className="spacer-32" />
-            <style>{`
-              @keyframes sliderFadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-              }
-            `}</style>
             <div
-              key={activeTab}
               ref={trackRef}
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] animate-[sliderFadeIn_0.3s_ease-out]"
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none]"
             >
-              {filtered.map((product) => (
+              {items.map((item) => (
                 <div
-                  key={product.slug}
+                  key={item.slug}
                   style={{ flex: "0 0 calc(33.333% - 16px)", scrollSnapAlign: "start", minWidth: "340px" }}
                 >
-                  <SliderTemplateCard product={product} />
+                  <FreebieTemplateCard item={item} />
                 </div>
               ))}
             </div>
@@ -135,7 +102,7 @@ export default function TemplateShowcase() {
               activePage={activePage}
               totalPages={totalPages}
               onGoTo={scrollToPage}
-              keyPrefix={`templates-${activeTab}`}
+              keyPrefix="freebies"
             />
           </div>
         </div>
