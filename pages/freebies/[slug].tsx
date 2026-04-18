@@ -1,10 +1,10 @@
 import type { GetServerSideProps } from "next";
-import LegacyPage from "../../components/LegacyPage";
-import { getCollectionPageData } from "../../lib/legacy-collections";
-import type { LegacyPageData } from "../../types/legacy";
+import FreebieDetailPage from "../../components/pages/FreebieDetailPage";
+import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
+import type { FreebieItem } from "../../types/data";
 
 type PageProps = {
-  pageData: LegacyPageData;
+  item: FreebieItem;
 };
 
 type SlugParams = {
@@ -16,17 +16,17 @@ export const getServerSideProps: GetServerSideProps<PageProps, SlugParams> = asy
     return { notFound: true };
   }
 
-  try {
-    return {
-      props: {
-        pageData: getCollectionPageData("freebies", params.slug),
-      },
-    };
-  } catch {
+  const item = FREEBIE_PRODUCTS.find((product) => product.slug === params.slug);
+
+  if (!item) {
     return { notFound: true };
   }
+
+  return {
+    props: { item },
+  };
 };
 
-export default function FreebieDetailPage({ pageData }: PageProps) {
-  return <LegacyPage {...pageData} />;
+export default function FreebieDetailRoute({ item }: PageProps) {
+  return <FreebieDetailPage item={item} />;
 }
