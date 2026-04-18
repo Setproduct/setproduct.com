@@ -1,4 +1,4 @@
-import type { BlogFrontmatter } from "../types/blog";
+import type { BlogFrontmatter } from "../../types/blog";
 import { SITE_URL } from "./site-config";
 
 export function buildBlogPostingJsonLd(
