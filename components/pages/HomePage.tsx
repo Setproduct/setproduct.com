@@ -1,19 +1,35 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import TemplateGrid from "../sections/TemplateGrid";
+import BlogPostsHome from "../sections/BlogPostsHome";
 import FaqSection from "../sections/FaqSection";
 import ArrowIcon from "../sections/ArrowIcon";
 import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
+import { BLOG_POSTS } from "../../data/blog-listing";
 import { PAGE_FAQ } from "../../data/faq";
+
+const HOME_TEMPLATES_INITIAL = 15;
+const HOME_TEMPLATES_PAGE = 15;
+
+const HOME_BLOG_CATEGORIES = [
+  "Startups & SaaS",
+  "UI Design",
+  "Growth Hacking",
+  "Inspiration",
+  "Resources",
+  "Technology",
+  "Research",
+];
 
 export default function HomePage() {
   const meta = PAGE_META.index;
   const faq = PAGE_FAQ.index ?? [];
-  const featuredProducts = PRODUCTS.slice(0, 8);
+  const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
 
   return (
     <>
@@ -23,7 +39,7 @@ export default function HomePage() {
         <link href={meta.canonical} rel="canonical" />
       </Head>
       <SiteHeader />
-      <main>
+      <main className="mt-18">
         <div className="section">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
@@ -51,23 +67,27 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+
+              <div className="spacer-40" />
+
+              <BlogPostsHome posts={BLOG_POSTS} categories={HOME_BLOG_CATEGORIES} />
             </div>
           </div>
         </div>
 
         <div className="section">
-          <div className="container">
-            <div className="heading-center-wr">
-              <h2 className="heading-style-h2">Featured templates</h2>
-            </div>
-            <div className="spacer-32" />
-            <TemplateGrid products={featuredProducts} />
-            <div className="spacer-32" />
-            <div className="heading-center-wr">
-              <Link className="button secondary w-inline-block" href="/all">
-                <div className="text-size-large text-weight-bold">View all templates</div>
-                <div className="button-icon w-embed"><ArrowIcon /></div>
-              </Link>
+          <div className="section-padding top-80 bottom-64">
+            <div className="container">
+              <div className="heading-center-wr mob-align-left">
+                <h2 className="heading-style-h2">Browse our collection of Figma templates &amp; UI kits</h2>
+              </div>
+              <div className="spacer-32" />
+              <TemplateGrid
+                products={PRODUCTS}
+                variant="home"
+                visibleCount={templatesVisible}
+                onLoadMore={() => setTemplatesVisible((c) => c + HOME_TEMPLATES_PAGE)}
+              />
             </div>
           </div>
         </div>

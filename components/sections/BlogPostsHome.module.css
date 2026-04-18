@@ -1,0 +1,53 @@
+/* Masonry-style layout for homepage blog posts.
+   Matches the Webflow original index.html:
+   - Every 4n+1 item spans 1 col x 2 rows and uses a column layout with 50/50 img/info
+   - Every 4n+2 item spans 2 cols x 1 row
+   - Items 4n+3 and 4n+4 hide their image (text-only) */
+
+/* Override default centered filter tabs: stretch across full container width
+   to match the original setproduct.com layout. */
+.homeBlogSection :global(.main_blog-liist2-filters-wr) {
+  width: 100%;
+}
+
+.homeBlogSection :global(.main_blog-liist2-wr2) {
+  width: 100%;
+}
+
+.homeBlogSection :global(.main_blog-liist2-2) {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  place-content: stretch space-between;
+  max-width: 1290px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 480px) {
+  .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+1)) {
+    grid-column-start: span 1;
+    grid-row-start: span 2;
+  }
+  .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+2)) {
+    grid-column-start: span 2;
+    grid-row-start: span 1;
+  }
+  .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+1) .main_blog-liist2-item-wr) {
+    flex-direction: column;
+  }
+  .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+1) .main_blog-liist2-item-img-wr) {
+    height: 50%;
+  }
+  .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+1) .main_blog-liist2-item-info) {
+    height: 50%;
+  }
+}
+
+.homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+3) .main_blog-liist2-item-img-wr) {
+  display: none;
+}
+.homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+4) .main_blog-liist2-item-img-wr) {
+  display: none;
+}

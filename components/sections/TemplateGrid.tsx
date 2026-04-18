@@ -5,23 +5,26 @@ type Props = {
   products: Product[];
   visibleCount?: number;
   onLoadMore?: () => void;
+  variant?: "default" | "home";
 };
 
-export default function TemplateGrid({ products, visibleCount, onLoadMore }: Props) {
+export default function TemplateGrid({ products, visibleCount, onLoadMore, variant = "default" }: Props) {
   const displayProducts = visibleCount != null ? products.slice(0, visibleCount) : products;
   const hasMore = visibleCount != null && visibleCount < products.length;
+  const gridClass = variant === "home" ? "templates_cl is-home w-dyn-items" : "templates_cl w-dyn-items";
 
   return (
-    <div className="w-dyn-list">
-      <div className="templates_cl w-dyn-items" role="list">
+    <div className="templates_cl-wr w-dyn-list">
+      <div className={gridClass} role="list">
         {displayProducts.map((product) => (
           <div key={product.slug} className="w-dyn-item" role="listitem">
-            <TemplateCard product={product} />
+            <TemplateCard product={product} imgHeight={variant === "home" ? "default" : "480"} />
           </div>
         ))}
       </div>
       {hasMore && onLoadMore && (
-        <div className="mt-14">
+        <>
+          <div className="spacer-40" />
           <div className="main_blog-liist2-btn-wr">
             <a
               className="button-small outlined w-inline-block"
@@ -34,7 +37,7 @@ export default function TemplateGrid({ products, visibleCount, onLoadMore }: Pro
               <div className="text-size-medium text-weight-bold">Load More</div>
             </a>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
