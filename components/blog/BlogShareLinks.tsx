@@ -32,7 +32,7 @@ export default function BlogShareLinks({ url, title }: BlogShareLinksProps) {
         </div>
         <a href="#" className="blogpost_soc-link w-inline-block" onClick={handleCopy}>
           <img
-            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da3623c6b6445dda31b373_Share%20Button1.svg"
+            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da3623c6b6445dda31b373_Share_Button1.svg"
             loading="lazy"
             alt="Copy icon"
             className="image-cover"
@@ -45,7 +45,7 @@ export default function BlogShareLinks({ url, title }: BlogShareLinksProps) {
           className="blogpost_soc-link w-inline-block"
         >
           <img
-            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da362c08672efcb68f2fb8_008-linkedin%201.svg"
+            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da362c08672efcb68f2fb8_008-linkedin_1.svg"
             loading="lazy"
             alt="Linkedin icon"
             className="image-cover"
@@ -58,7 +58,7 @@ export default function BlogShareLinks({ url, title }: BlogShareLinksProps) {
           className="blogpost_soc-link w-inline-block"
         >
           <img
-            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da3622343169203760f4d4_Share%20Button2.svg"
+            src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/64da3622343169203760f4d4_Share_Button2.svg"
             loading="lazy"
             alt="Facebook icon"
             className="image-cover"
