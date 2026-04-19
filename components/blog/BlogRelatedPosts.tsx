@@ -68,12 +68,12 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
                     >
                       <div
                         className="main_blog-liist1-item-wr"
-                        style={index === 0 ? { flexDirection: "column" } : undefined}
+                        style={index === 0 ? { flexDirection: "column", alignItems: "stretch" } : undefined}
                       >
                         <Link
                           className="main_blog-liist1-item-img-wr w-inline-block"
                           href={href}
-                          style={index === 0 ? { minWidth: "unset", width: "100%", height: "290px", display: "block", position: "relative", overflow: "hidden" } : undefined}
+                          style={index === 0 ? { minWidth: "unset", width: "100%", flex: "1", display: "block", overflow: "hidden" } : undefined}
                         >
                           {post.frontmatter.coverImage && (
                             <img
