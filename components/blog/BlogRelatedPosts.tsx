@@ -55,14 +55,14 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
             </div>
           </div>
           <div className="blogpost_list1-wr">
-            <div className="main_blog-liist1-wr">
-              <div className="main_blog-liist1" role="list">
+            <div className="main_blog-liist1-wr w-dyn-list">
+              <div className="main_blog-liist1 w-dyn-items" role="list">
                 {posts.map((post) => {
                   const href = `/blog/${post.frontmatter.slug}`;
                   return (
                     <div
                       key={post.frontmatter.slug}
-                      className="main_blog-liist1-item"
+                      className="main_blog-liist1-item w-dyn-item"
                       role="listitem"
                     >
                       <div className="main_blog-liist1-item-wr">
