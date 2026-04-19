@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import type { BlogFrontmatter, BlogHeading, BlogPost, BlogPostMeta } from "../../types/blog";
 import { computeReadingTime } from "./reading-time";
 
@@ -17,11 +18,19 @@ function extractHeadings(content: string): BlogHeading[] {
     const h2 = !h3 && line.match(/^##\s+(.+)$/);
     if (h3) {
       const text = h3[1].trim();
-      const id = text.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
       headings.push({ id, text, level: 3 });
     } else if (h2) {
       const text = h2[1].trim();
-      const id = text.toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
       headings.push({ id, text, level: 2 });
     }
   }
@@ -48,7 +57,10 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const mdxSource = await serialize(content, {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
-        rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypePrettyCode, { theme: "github-dark" }],
+        ],
       },
     });
 
