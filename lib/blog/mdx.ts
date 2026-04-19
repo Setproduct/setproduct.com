@@ -40,6 +40,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       mdxSource,
       readingTimeText: text,
       readingTimeMinutes: minutes,
+      headings: [],
     };
   } catch {
     return null;
