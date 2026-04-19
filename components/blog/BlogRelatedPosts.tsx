@@ -57,16 +57,24 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
           <div className="blogpost_list1-wr">
             <div className="main_blog-liist1-wr w-dyn-list">
               <div className="main_blog-liist1 w-dyn-items" role="list">
-                {posts.map((post) => {
+                {posts.map((post, index) => {
                   const href = `/blog/${post.frontmatter.slug}`;
                   return (
                     <div
                       key={post.frontmatter.slug}
                       className="main_blog-liist1-item w-dyn-item"
                       role="listitem"
+                      style={index === 0 ? { gridRow: "1 / 3" } : undefined}
                     >
-                      <div className="main_blog-liist1-item-wr">
-                        <Link className="main_blog-liist1-item-img-wr w-inline-block" href={href}>
+                      <div
+                        className="main_blog-liist1-item-wr"
+                        style={index === 0 ? { flexDirection: "column" } : undefined}
+                      >
+                        <Link
+                          className="main_blog-liist1-item-img-wr w-inline-block"
+                          href={href}
+                          style={index === 0 ? { minWidth: "unset", width: "100%", height: "290px", display: "block", position: "relative", overflow: "hidden" } : undefined}
+                        >
                           {post.frontmatter.coverImage && (
                             <img
                               alt={post.frontmatter.coverImageAlt ?? post.frontmatter.title}
