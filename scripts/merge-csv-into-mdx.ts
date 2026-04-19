@@ -17,6 +17,7 @@ if (process.argv.includes("--help")) {
 const csvMap = JSON.parse(fs.readFileSync(MAP_PATH, "utf8")) as Record<string, {
   category?: string;
   subtitle?: string;
+  h1Title?: string;
   metaTitle?: string;
   cardDescription?: string;
   inlineCta?: { title: string; description: string; buttonText: string; buttonLink: string };
@@ -38,6 +39,7 @@ for (const file of files) {
     const newFm = { ...parsed.data };
 
     if (csvFields) {
+      if (csvFields.h1Title) newFm.title = csvFields.h1Title;
       if (csvFields.category) newFm.category = csvFields.category;
       if (csvFields.subtitle) newFm.subtitle = csvFields.subtitle;
       if (csvFields.metaTitle) newFm.metaTitle = csvFields.metaTitle;
@@ -63,6 +65,26 @@ for (const file of files) {
     errors++;
     console.error(`[ERROR] ${slug}:`, (e as Error).message);
   }
+}
+
+const newSlugs = ['pay-for-claude-pro-with-usdt', 'the-ux-decisions-that-make-or-break-small-business-websites', 'top-real-estate-app-development-companies-compared'];
+for (const slug of newSlugs) {
+  if (targetSlug && slug !== targetSlug) continue;
+  const legacyPath = path.join(process.cwd(), 'legacy-pages', 'blog', `${slug}.html`);
+  if (!fs.existsSync(legacyPath)) continue;
+  const html = fs.readFileSync(legacyPath, 'utf8');
+  const h1Match = html.match(/<h1[^>]*class="[^"]*heading-style-h2[^"]*"[^>]*>([^<]+)<\/h1>/);
+  if (!h1Match) continue;
+  const h1 = h1Match[1].trim();
+  const mdxPath = path.join(BLOG_DIR, `${slug}.mdx`);
+  if (!fs.existsSync(mdxPath)) continue;
+  const raw = fs.readFileSync(mdxPath, 'utf8');
+  const parsed = matter(raw);
+  parsed.data.title = h1;
+  const output = matter.stringify('\n' + parsed.content, parsed.data);
+  if (!isDryRun) fs.writeFileSync(mdxPath, output);
+  updated++;
+  console.log(`[LEGACY H1] ${slug}: ${h1}`);
 }
 
 skipped = files.length - updated - errors;

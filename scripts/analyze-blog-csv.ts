@@ -23,6 +23,7 @@ interface InlineCta {
 interface SlugFields {
   category?: string;
   subtitle?: string;
+  h1Title?: string;
   metaTitle?: string;
   cardDescription?: string;
   inlineCta?: InlineCta;
@@ -39,6 +40,7 @@ for (const row of records) {
 
   const category = (row["Category"] || "").trim().toLowerCase().replace(/\s+/g, "-").replace(/[&]/g, "and");
   const subtitle = (row["Blog post Subtitle"] || "").trim();
+  const h1Title = (row["Blog post Title - Heading H1"] || "").trim();
   const metaTitle = (row["Meta Title (SEO)"] || "").trim();
   const cardDescription = (row["Card Description"] || "").trim();
   const ctaTitle = (row["Section CTA Title"] || "").trim();
@@ -58,6 +60,7 @@ for (const row of records) {
   slugToFields[slug] = {
     category: category || undefined,
     subtitle: subtitle || undefined,
+    h1Title: h1Title || undefined,
     metaTitle: metaTitle || undefined,
     cardDescription: cardDescription || undefined,
     inlineCta,
