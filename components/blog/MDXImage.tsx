@@ -30,7 +30,7 @@ export default function MDXImage({
         unoptimized={isExternal}
       />
     ) : (
-      <div className="relative w-full aspect-[16/9] my-4">
+      <span className="relative block w-full aspect-[16/9] my-4">
         <Image
           src={src}
           alt={alt}
@@ -39,7 +39,7 @@ export default function MDXImage({
           className="object-cover rounded-md"
           unoptimized={isExternal}
         />
-      </div>
+      </span>
     );
 
   if (caption) {
