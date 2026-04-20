@@ -52,7 +52,7 @@ export default function CtaSubscribe() {
                 </div>
               </div>
             ) : (
-                <div className="heading-center-wr">
+                <div className="heading-center-wr py-12">
                   <h2 className="heading-style-h2">Congratulations!</h2>
                   <div className="heading-style-h5 mob-18">
                     You&apos;re in! Expect awesome updates in your inbox

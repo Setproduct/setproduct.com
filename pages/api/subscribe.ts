@@ -54,8 +54,8 @@ export default async function handler(
   try {
     await resend.emails.send({
       from: "Setproduct <contact@setproduct.com>",
-      to: "steambot33+sub@gmail.com",
-      subject: `New subscriber: ${email}`,
+      to: "hello@setproduct.com",
+      subject: `New subscriber to Setproduct newsletter`,
       react: SubscribeEmail({ email }),
     });
 
