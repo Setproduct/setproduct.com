@@ -27,11 +27,13 @@
     "next-mdx-remote": "^6.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-photo-album": "^3.6.0",
     "reading-time": "^1.5.0",
     "rehype-pretty-code": "^0.13.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.0",
-    "shiki": "^1.22.0"
+    "shiki": "^1.22.0",
+    "yet-another-react-lightbox": "^3.31.0"
   },
   "bugs": {
     "url": "https://github.com/anton-kuptsov/setproduct.com/issues"
