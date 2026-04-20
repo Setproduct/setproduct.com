@@ -1,32 +1,31 @@
-import type { GetServerSideProps } from "next";
-import LegacyPage from "../../components/LegacyPage";
-import { getCollectionPageData } from "../../lib/legacy-collections";
-import type { LegacyPageData } from "../../types/legacy";
+import type { GetStaticPaths, GetStaticProps } from "next";
+import TemplateDetailPage from "../../components/pages/TemplateDetailPage";
+import ChartsTemplatePage from "../../components/pages/templates/ChartsTemplatePage";
+import { TEMPLATE_PRODUCTS } from "../../data/templates-listing";
+import type { TemplateItem } from "../../types/data";
 
 type PageProps = {
-  pageData: LegacyPageData;
+  item: TemplateItem;
 };
 
-type SlugParams = {
-  slug: string;
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: TEMPLATE_PRODUCTS.map((p) => ({ params: { slug: p.slug } })),
+    fallback: false,
+  };
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps, SlugParams> = async ({ params }) => {
-  if (!params?.slug) {
-    return { notFound: true };
+export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
+  const item = TEMPLATE_PRODUCTS.find((p) => p.slug === params?.slug);
+
+  if (!item) return { notFound: true };
+
+  return { props: { item } };
+};
+
+export default function TemplateDetailRoute({ item }: PageProps) {
+  if (item.slug === "charts") {
+    return <ChartsTemplatePage item={item} />;
   }
-
-  try {
-    return {
-      props: {
-        pageData: getCollectionPageData("templates", params.slug),
-      },
-    };
-  } catch {
-    return { notFound: true };
-  }
-};
-
-export default function TemplateDetailPage({ pageData }: PageProps) {
-  return <LegacyPage {...pageData} />;
+  return <TemplateDetailPage item={item} />;
 }
