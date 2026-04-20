@@ -83,34 +83,23 @@ export default function TemplateGallery({ title, subtitle, previewLink, items }:
 
           <div className="template_img-gallery">
             {items.map((item, index) => (
-              <div
-                key={index}
-                className="template_img-gallery-item gallery-hover-item"
-                onClick={() => openLightbox(index)}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="lightbox-link-with-text w-inline-block">
+              <div key={index} className="template_img-gallery-item">
+                <a
+                  className="lightbox-link-with-text w-inline-block"
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); openLightbox(index); }}
+                >
                   <img alt={item.title || ""} loading="lazy" src={item.image} />
                   {item.title && (
-                    <div className="lightbox-text-bg gallery-overlay">
+                    <div className="lightbox-text-bg">
                       <p className="heading-style-h4">{item.title}</p>
                       <div className="lightbox-color-bg" />
                     </div>
                   )}
-                </div>
+                </a>
               </div>
             ))}
           </div>
-          <style>{`
-            .gallery-hover-item .gallery-overlay {
-              opacity: 0;
-              transition: opacity 0.3s ease;
-              pointer-events: none;
-            }
-            .gallery-hover-item:hover .gallery-overlay {
-              opacity: 1;
-            }
-          `}</style>
         </div>
       </div>
 
