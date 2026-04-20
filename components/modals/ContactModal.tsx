@@ -8,7 +8,9 @@ type ContactModalProps = {
 };
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,15 +19,41 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     } else {
       document.body.style.overflow = "";
       setIsSubmitted(false);
+      setErrorMessage(null);
     }
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("Email") as string;
+    const message = formData.get("Message") as string;
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, message }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -76,6 +104,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <p className="text-size-regular">Email</p>
                     <input
                       className="text-input w-input"
+                      disabled={isSubmitting}
                       maxLength={256}
                       name="Email"
                       placeholder="Whats your e-mail"
@@ -87,15 +116,29 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <p className="text-size-regular">Message</p>
                     <textarea
                       className="textarea-input w-input"
+                      disabled={isSubmitting}
                       maxLength={5000}
                       name="Message"
                       placeholder="Type your message..."
+                      required
                     />
                   </div>
+                  {errorMessage && (
+                    <div className="error-message" style={{ display: "block", marginBottom: "16px" }}>
+                      <div className="text-size-small">{errorMessage}</div>
+                    </div>
+                  )}
                   <div className="modal_button-wr">
                     <div className="button-form-wr">
-                      <button className="button w-inline-block" type="submit">
-                        <div className="text-size-large text-weight-bold">Send your Message</div>
+                      <button
+                        className="button w-inline-block"
+                        disabled={isSubmitting}
+                        style={{ opacity: isSubmitting ? 0.7 : 1 }}
+                        type="submit"
+                      >
+                        <div className="text-size-large text-weight-bold">
+                          {isSubmitting ? "Sending..." : "Send your Message"}
+                        </div>
                       </button>
                     </div>
                   </div>

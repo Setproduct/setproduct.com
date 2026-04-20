@@ -316,6 +316,12 @@
       "type": "file"
     },
     {
+      "path": "components/modals/ContactModal.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1776683823813,
+      "type": "file"
+    },
+    {
       "path": "components/layout/SiteFooter.tsx",
       "accessCount": 8,
       "lastAccessed": 1776666135966,
@@ -328,12 +334,6 @@
       "type": "directory"
     },
     {
-      "path": "components/modals/ContactModal.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1776665927879,
-      "type": "file"
-    },
-    {
       "path": "css",
       "accessCount": 3,
       "lastAccessed": 1776665802926,
@@ -343,6 +343,12 @@
       "path": "pages/_app.tsx",
       "accessCount": 2,
       "lastAccessed": 1776666041807,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 2,
+      "lastAccessed": 1776682660795,
       "type": "file"
     },
     {
@@ -373,6 +379,30 @@
       "path": "components/modals/ContactModalContext.tsx",
       "accessCount": 1,
       "lastAccessed": 1776666029732,
+      "type": "file"
+    },
+    {
+      "path": "next.config.js",
+      "accessCount": 1,
+      "lastAccessed": 1776682660742,
+      "type": "file"
+    },
+    {
+      "path": "emails/ContactEmail.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776683796958,
+      "type": "file"
+    },
+    {
+      "path": "pages/api/contact.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776683797117,
+      "type": "file"
+    },
+    {
+      "path": ".env.example",
+      "accessCount": 1,
+      "lastAccessed": 1776683832362,
       "type": "file"
     }
   ],
