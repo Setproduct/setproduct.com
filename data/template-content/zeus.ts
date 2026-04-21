@@ -7,124 +7,124 @@ export const zeusContent = {
       "previewLink": "https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=907%3A508807",
       "items": [
         {
-          "image": "/images/01_1.webp"
+          "image": "/images/zeus/01_1.webp"
         },
         {
-          "image": "/images/02.webp"
+          "image": "/images/zeus/02.webp"
         },
         {
-          "image": "/images/03.webp"
+          "image": "/images/zeus/03.webp"
         },
         {
-          "image": "/images/06.webp"
+          "image": "/images/zeus/06.webp"
         },
         {
-          "image": "/images/09.png"
+          "image": "/images/zeus/09.png"
         },
         {
-          "image": "/images/15.webp"
+          "image": "/images/zeus/15.webp"
         },
         {
-          "image": "/images/16.webp"
+          "image": "/images/zeus/16.webp"
         },
         {
-          "image": "/images/01-1.png"
+          "image": "/images/zeus/01-1.png"
         },
         {
-          "image": "/images/02-1.webp"
+          "image": "/images/zeus/02-1.webp"
         },
         {
-          "image": "/images/03-1.webp"
+          "image": "/images/zeus/03-1.webp"
         },
         {
-          "image": "/images/05.webp"
+          "image": "/images/zeus/05.webp"
         },
         {
-          "image": "/images/07.webp"
+          "image": "/images/zeus/07.webp"
         },
         {
-          "image": "/images/11.webp"
+          "image": "/images/zeus/11.webp"
         },
         {
-          "image": "/images/03-2.webp"
+          "image": "/images/zeus/03-2.webp"
         },
         {
-          "image": "/images/05-1.webp"
+          "image": "/images/zeus/05-1.webp"
         },
         {
-          "image": "/images/06-1.webp"
+          "image": "/images/zeus/06-1.webp"
         },
         {
-          "image": "/images/02-2.webp"
+          "image": "/images/zeus/02-2.webp"
         },
         {
-          "image": "/images/07-1.webp"
+          "image": "/images/zeus/07-1.webp"
         },
         {
-          "image": "/images/08.webp"
+          "image": "/images/zeus/08.webp"
         },
         {
-          "image": "/images/04.webp"
+          "image": "/images/zeus/04.webp"
         },
         {
-          "image": "/images/01-2.webp"
+          "image": "/images/zeus/01-2.webp"
         },
         {
-          "image": "/images/05-2.webp"
+          "image": "/images/zeus/05-2.webp"
         },
         {
-          "image": "/images/06-2.webp"
+          "image": "/images/zeus/06-2.webp"
         },
         {
-          "image": "/images/07-2.webp"
+          "image": "/images/zeus/07-2.webp"
         },
         {
-          "image": "/images/01-3.webp"
+          "image": "/images/zeus/01-3.webp"
         },
         {
-          "image": "/images/02-3.webp"
+          "image": "/images/zeus/02-3.webp"
         },
         {
-          "image": "/images/03-3.webp"
+          "image": "/images/zeus/03-3.webp"
         },
         {
-          "image": "/images/04-1.webp"
+          "image": "/images/zeus/04-1.webp"
         },
         {
-          "image": "/images/05-3.webp"
+          "image": "/images/zeus/05-3.webp"
         },
         {
-          "image": "/images/01-4.webp"
+          "image": "/images/zeus/01-4.webp"
         },
         {
-          "image": "/images/02-4.webp"
+          "image": "/images/zeus/02-4.webp"
         },
         {
-          "image": "/images/04-2.webp"
+          "image": "/images/zeus/04-2.webp"
         },
         {
-          "image": "/images/05-4.webp"
+          "image": "/images/zeus/05-4.webp"
         },
         {
-          "image": "/images/04-3.png"
+          "image": "/images/zeus/04-3.png"
         },
         {
-          "image": "/images/02-5.png"
+          "image": "/images/zeus/02-5.png"
         },
         {
-          "image": "/images/01-5.png"
+          "image": "/images/zeus/01-5.png"
         },
         {
-          "image": "/images/03-4.png"
+          "image": "/images/zeus/03-4.png"
         },
         {
-          "image": "/images/01-6.webp"
+          "image": "/images/zeus/01-6.webp"
         },
         {
-          "image": "/images/02-6.webp"
+          "image": "/images/zeus/02-6.webp"
         },
         {
-          "image": "/images/03-5.webp"
+          "image": "/images/zeus/03-5.webp"
         }
       ]
     }
@@ -136,7 +136,7 @@ export const zeusContent = {
       {
         "title": "Zeus web design UI kit",
         "description": "Create hassle-free landing pages in Figma. This kit is based on 10 landing page templates, powered by 1600+ variants for 630+ web blocks.",
-        "image": "/images/pricing-zeus-01.webp",
+        "image": "/images/zeus/pricing-zeus-01.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gumroad.com/a/279487603/stsma",
@@ -145,7 +145,7 @@ export const zeusContent = {
       {
         "title": "Try before buy",
         "description": "We've included a bunch of components and several templates in order to check out the product quality.",
-        "image": "/images/pricing-zeus-02.webp",
+        "image": "/images/zeus/pricing-zeus-02.webp",
         "buyLabel": "Duplicate for Free",
         "buyHref": "#"
       }

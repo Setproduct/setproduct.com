@@ -3,17 +3,17 @@ export const mobile_xContent = {
     {
       "title": "Mobile UI kit with 860+ components",
       "description": "16 sections of hi-end Figma components crafted within 860+ variants",
-      "image": "/images/feature-mobx-01.webp"
+      "image": "/images/mobile-x/feature-mobx-01.webp"
     },
     {
       "title": "br/>",
       "description": "Cards, Charts, Date, Time, Forms, Tables, Lists, Grids, Menus, Sheets and more",
-      "image": "/images/feature-mobx-02.webp"
+      "image": "/images/mobile-x/feature-mobx-02.webp"
     },
     {
       "title": "Fits for Android & iOS applications",
       "description": "Templates are based on iOS specs adopted for 8dp Android grid. Adjust easy!",
-      "image": "/images/feature-mobx-03.webp"
+      "image": "/images/mobile-x/feature-mobx-03.webp"
     }
   ],
   "pricing": {
@@ -23,7 +23,7 @@ export const mobile_xContent = {
       {
         "title": "Mobile X UI kit",
         "description": "Customizable & adjustable iOS / Android design system loaded with ready-made 157 app templates based on 860+ variants for 20 components.",
-        "image": "/images/mobx-cover-sm-min2.webp",
+        "image": "/images/mobile-x/mobx-cover-sm-min2.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://setproduct.gumroad.com/l/mobile-x",
@@ -32,7 +32,7 @@ export const mobile_xContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on stylish & trendy guidelines. Included: Figma Material X kit + Mobile X UI kit.",
-        "image": "/images/pricing-mobx-02.webp",
+        "image": "/images/mobile-x/pricing-mobx-02.webp",
         "buyLabel": "Buy now",
         "price": "$195",
         "buyHref": "https://setproduct.gumroad.com/l/figma-x"

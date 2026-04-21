@@ -11,64 +11,64 @@ export const levitateContent = {
       "subtitle": "Beautiful items around your pitch will catch an eye. Build 3D scenes without limits to visualize and impact your message, like here:",
       "items": [
         {
-          "image": "/images/1.Mobile_screen_3-min.webp"
+          "image": "/images/levitate/1.Mobile_screen_3-min.webp"
         },
         {
-          "image": "/images/2.Mobile_screen_1-min.webp"
+          "image": "/images/levitate/2.Mobile_screen_1-min.webp"
         },
         {
-          "image": "/images/3.Mobile_screen_2-min.webp"
+          "image": "/images/levitate/3.Mobile_screen_2-min.webp"
         },
         {
-          "image": "/images/4.Mobile_screen_4-min.webp"
+          "image": "/images/levitate/4.Mobile_screen_4-min.webp"
         },
         {
-          "image": "/images/5.Mobile_screen_5-min.webp"
+          "image": "/images/levitate/5.Mobile_screen_5-min.webp"
         },
         {
-          "image": "/images/6.Mobile_screen_6-min.webp"
+          "image": "/images/levitate/6.Mobile_screen_6-min.webp"
         },
         {
-          "image": "/images/7.Mobile_screen_7-min.webp"
+          "image": "/images/levitate/7.Mobile_screen_7-min.webp"
         },
         {
-          "image": "/images/8.Mobile_screen_8-min.webp"
+          "image": "/images/levitate/8.Mobile_screen_8-min.webp"
         },
         {
-          "image": "/images/9.Mobile_screen_9-min.webp"
+          "image": "/images/levitate/9.Mobile_screen_9-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_10-min.webp"
+          "image": "/images/levitate/Mobile_screen_10-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_11-min.webp"
+          "image": "/images/levitate/Mobile_screen_11-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_12-min.webp"
+          "image": "/images/levitate/Mobile_screen_12-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_13-min.webp"
+          "image": "/images/levitate/Mobile_screen_13-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_14-min.webp"
+          "image": "/images/levitate/Mobile_screen_14-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_15-min.webp"
+          "image": "/images/levitate/Mobile_screen_15-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_16-min.webp"
+          "image": "/images/levitate/Mobile_screen_16-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_17-min.webp"
+          "image": "/images/levitate/Mobile_screen_17-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_18-min.webp"
+          "image": "/images/levitate/Mobile_screen_18-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_19-min.webp"
+          "image": "/images/levitate/Mobile_screen_19-min.webp"
         },
         {
-          "image": "/images/Mobile_screen_20-min.webp"
+          "image": "/images/levitate/Mobile_screen_20-min.webp"
         }
       ]
     }
@@ -80,7 +80,7 @@ export const levitateContent = {
       {
         "title": "Levitate 3D kit for Figma",
         "description": "Components-driven 3D kit to design eye-catching Figma presentations. Helps to enhance your landing page, product or app, brand ident, etc.",
-        "image": "/images/levitate-pricing-01.webp",
+        "image": "/images/levitate/levitate-pricing-01.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gumroad.com/a/9958515/ReBMr",
@@ -89,7 +89,7 @@ export const levitateContent = {
       {
         "title": "Try before buy",
         "description": "Lite version contains some 3D items and image previews to represent capabilities of full version of Levitate kit.",
-        "image": "/images/pricing-levitate-02.webp",
+        "image": "/images/levitate/pricing-levitate-02.webp",
         "buyLabel": "Duplicate for Free",
         "buyHref": "https://www.figma.com/file/5kHWV1CbJpWejJjWZL2wZe/Levitate-(Community)/duplicate?type=design&amp;node-id=4-0&amp;mode=design"
       }

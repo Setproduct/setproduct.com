@@ -3,22 +3,22 @@ export const material_desktopContent = {
     {
       "title": "550+ material components",
       "description": "Build responsive web apps by reusing the same components & instances",
-      "image": "/images/material-desktop-fea.svg"
+      "image": "/images/material-desktop/material-desktop-fea.svg"
     },
     {
       "title": "48 full-width app templates",
       "description": "Shopping, CRM, Tasks, Kanban, Planner, Stats, News, Tables and more",
-      "image": "/images/material-desktop-fea-1.svg"
+      "image": "/images/material-desktop/material-desktop-fea-1.svg"
     },
     {
       "title": "2 fonts: Roboto & Quicksand",
       "description": "Styled with custom material design and two free Google fonts",
-      "image": "/images/material-desktop-fea-2.svg"
+      "image": "/images/material-desktop/material-desktop-fea-2.svg"
     },
     {
       "title": "Light and dark themes",
       "description": "Every template available in two variants. Our dark theme is inspiring",
-      "image": "/images/feature-md-04.svg"
+      "image": "/images/material-desktop/feature-md-04.svg"
     }
   ],
   "video": {
@@ -33,40 +33,40 @@ export const material_desktopContent = {
       "previewLink": "https://www.figma.com/file/XMHdAa4XqPFITEaEccgkhO/Material-Dashboard-UI-kit?node-id=0%3A6395",
       "items": [
         {
-          "image": "/images/s1_Appbars__Headers.webp"
+          "image": "/images/material-desktop/s1_Appbars__Headers.webp"
         },
         {
-          "image": "/images/s2_Buttons__Controls.webp"
+          "image": "/images/material-desktop/s2_Buttons__Controls.webp"
         },
         {
-          "image": "/images/s3_Text_Fields.webp"
+          "image": "/images/material-desktop/s3_Text_Fields.webp"
         },
         {
-          "image": "/images/s4_Tabs__Segmented.webp"
+          "image": "/images/material-desktop/s4_Tabs__Segmented.webp"
         },
         {
-          "image": "/images/s5_Calendar__Planner.webp"
+          "image": "/images/material-desktop/s5_Calendar__Planner.webp"
         },
         {
-          "image": "/images/s6_Chlogos.webp"
+          "image": "/images/material-desktop/s6_Chlogos.webp"
         },
         {
-          "image": "/images/s7_Cards__Imagery.webp"
+          "image": "/images/material-desktop/s7_Cards__Imagery.webp"
         },
         {
-          "image": "/images/s8_Lists.webp"
+          "image": "/images/material-desktop/s8_Lists.webp"
         },
         {
-          "image": "/images/s9_Tables.webp"
+          "image": "/images/material-desktop/s9_Tables.webp"
         },
         {
-          "image": "/images/s10_Modals__Popovers.webp"
+          "image": "/images/material-desktop/s10_Modals__Popovers.webp"
         },
         {
-          "image": "/images/s11_Charts__Graphs.webp"
+          "image": "/images/material-desktop/s11_Charts__Graphs.webp"
         },
         {
-          "image": "/images/s12_Navigation.webp"
+          "image": "/images/material-desktop/s12_Navigation.webp"
         }
       ]
     }
@@ -78,7 +78,7 @@ export const material_desktopContent = {
       {
         "title": "Material Dashboard UI kit",
         "description": "Dashboard templates based on reusable desktop app patterns handpicked from the most popular SaaS. Contains 48 desktop templates.",
-        "image": "/images/pricing-md.webp",
+        "image": "/images/material-desktop/pricing-md.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gum.co/desktopsystem",
@@ -87,7 +87,7 @@ export const material_desktopContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on Material Design patterns. Included: Material Dashboard + Material Design System.",
-        "image": "/images/pricing-md-bundle-mi.webp",
+        "image": "/images/material-desktop/pricing-md-bundle-mi.webp",
         "buyLabel": "Buy Bundle",
         "price": "$138",
         "buyHref": "https://gum.co/figmamaterial"

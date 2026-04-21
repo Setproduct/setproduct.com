@@ -7,7 +7,7 @@ export const romeContent = {
       {
         "title": "Rome UI kit for Figma",
         "description": "Customizable and well-organized team library. Contains 250+ components & 30 web app templates powered by stylish and trendy guidelines.",
-        "image": "/images/pricing-rome-01.webp",
+        "image": "/images/rome/pricing-rome-01.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gumroad.com/a/332600435/lvMPt",
@@ -16,7 +16,7 @@ export const romeContent = {
       {
         "title": "Try before buy",
         "description": "Lite version contains 20 components and 2 templates to represent capabilities of full version of Rome UI kit.",
-        "image": "/images/pricing-rome-02.webp",
+        "image": "/images/rome/pricing-rome-02.webp",
         "buyLabel": "Duplicate for Free",
         "buyHref": "https://www.figma.com/file/HIeyxrE4vWLb5WayReH6w4/Rome---Dashboard-UI-Kit-(Lite)/duplicate?type=design&amp;node-id=716-34331&amp;mode=design"
       }

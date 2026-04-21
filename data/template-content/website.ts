@@ -3,7 +3,7 @@ export const websiteContent = {
     {
       "title": "140+ blocks with popular patterns",
       "description": "Ready to use Figma web design library to design eye-catching pages",
-      "image": "/images/Feature1_2.svg"
+      "image": "/images/website/Feature1_2.svg"
     }
   ],
   "video": {
@@ -18,103 +18,103 @@ export const websiteContent = {
       "previewLink": "https://www.figma.com/file/nKFne7p6HWM9LJXJd7SlB8/Web-design-UI-kit?node-id=0%3A20524",
       "items": [
         {
-          "image": "/images/1_Features_1.webp"
+          "image": "/images/website/1_Features_1.webp"
         },
         {
-          "image": "/images/2_Testimonials_3.webp"
+          "image": "/images/website/2_Testimonials_3.webp"
         },
         {
-          "image": "/images/3_Plans_1.webp"
+          "image": "/images/website/3_Plans_1.webp"
         },
         {
-          "image": "/images/4_Plans_5.webp"
+          "image": "/images/website/4_Plans_5.webp"
         },
         {
-          "image": "/images/5_Plans_4.webp"
+          "image": "/images/website/5_Plans_4.webp"
         },
         {
-          "image": "/images/6_Cards_6.webp"
+          "image": "/images/website/6_Cards_6.webp"
         },
         {
-          "image": "/images/7_Table_6_Columns.webp"
+          "image": "/images/website/7_Table_6_Columns.webp"
         },
         {
-          "image": "/images/8_FAQ_4.webp"
+          "image": "/images/website/8_FAQ_4.webp"
         },
         {
-          "image": "/images/9_Cards_5.webp"
+          "image": "/images/website/9_Cards_5.webp"
         },
         {
-          "image": "/images/10_Code-1.webp"
+          "image": "/images/website/10_Code-1.webp"
         },
         {
-          "image": "/images/11_CTA_3.webp"
+          "image": "/images/website/11_CTA_3.webp"
         },
         {
-          "image": "/images/12_CTA_5.webp"
+          "image": "/images/website/12_CTA_5.webp"
         },
         {
-          "image": "/images/13_CTA_6.webp"
+          "image": "/images/website/13_CTA_6.webp"
         },
         {
-          "image": "/images/14_CTA_7.webp"
+          "image": "/images/website/14_CTA_7.webp"
         },
         {
-          "image": "/images/15_FAQ_5.webp"
+          "image": "/images/website/15_FAQ_5.webp"
         },
         {
-          "image": "/images/16_Features_7.webp"
+          "image": "/images/website/16_Features_7.webp"
         },
         {
-          "image": "/images/17_Forms_3.webp"
+          "image": "/images/website/17_Forms_3.webp"
         },
         {
-          "image": "/images/18_Forms_4.webp"
+          "image": "/images/website/18_Forms_4.webp"
         },
         {
-          "image": "/images/19_Forms_5.webp"
+          "image": "/images/website/19_Forms_5.webp"
         },
         {
-          "image": "/images/20_Forms_7.webp"
+          "image": "/images/website/20_Forms_7.webp"
         },
         {
-          "image": "/images/21_Grid_1.webp"
+          "image": "/images/website/21_Grid_1.webp"
         },
         {
-          "image": "/images/22_Grid_3.webp"
+          "image": "/images/website/22_Grid_3.webp"
         },
         {
-          "image": "/images/23_Hero_4.webp"
+          "image": "/images/website/23_Hero_4.webp"
         },
         {
-          "image": "/images/24_How_It_Works-1.webp"
+          "image": "/images/website/24_How_It_Works-1.webp"
         },
         {
-          "image": "/images/25_Plans_2.webp"
+          "image": "/images/website/25_Plans_2.webp"
         },
         {
-          "image": "/images/26_Roadmap-1.webp"
+          "image": "/images/website/26_Roadmap-1.webp"
         },
         {
-          "image": "/images/27_Rounds-1.webp"
+          "image": "/images/website/27_Rounds-1.webp"
         },
         {
-          "image": "/images/28_Table_3_Columns.webp"
+          "image": "/images/website/28_Table_3_Columns.webp"
         },
         {
-          "image": "/images/29_Table_5_Columns.webp"
+          "image": "/images/website/29_Table_5_Columns.webp"
         },
         {
-          "image": "/images/30_Cards_1.webp"
+          "image": "/images/website/30_Cards_1.webp"
         },
         {
-          "image": "/images/31_Table_4_Columns.webp"
+          "image": "/images/website/31_Table_4_Columns.webp"
         },
         {
-          "image": "/images/33_Features_4.webp"
+          "image": "/images/website/33_Features_4.webp"
         },
         {
-          "image": "/images/34_Calculator-1.webp"
+          "image": "/images/website/34_Calculator-1.webp"
         }
       ]
     }

@@ -3,22 +3,22 @@ export const nocraContent = {
     {
       "title": "1200+ components",
       "description": "Token-based, auto-layout components with variants, ready patterns for fast AI product UI.",
-      "image": "/images/cell-1.jpg"
+      "image": "/images/nocra/cell-1.jpg"
     },
     {
       "title": "22 pre-built animations",
       "description": "Loaders, thinking states, success and error motions, polished microinteractions for demos.",
-      "image": "/images/cell-2.jpg"
+      "image": "/images/nocra/cell-2.jpg"
     },
     {
       "title": "Light & dark themes",
       "description": "Instant theme toggle via tokens, consistent contrast, scalable styling across every screen.",
-      "image": "/images/cell-3.jpg"
+      "image": "/images/nocra/cell-3.jpg"
     },
     {
       "title": "44+ full-screen templates",
       "description": "Complete AI app screens: onboarding, chat, dashboards, library, settings, payments, flows.",
-      "image": "/images/cell-4.jpg"
+      "image": "/images/nocra/cell-4.jpg"
     }
   ],
   "carousels": [
@@ -27,34 +27,34 @@ export const nocraContent = {
       "subtitle": "1200+ components and 44+ full-screen templates to help you ship AI products faster today, from onboarding to chat dashboards and libraries",
       "items": [
         {
-          "image": "/images/AI-hero-section2-min.jpg"
+          "image": "/images/nocra/AI-hero-section2-min.jpg"
         },
         {
-          "image": "/images/AI-Dashboard-min.jpg"
+          "image": "/images/nocra/AI-Dashboard-min.jpg"
         },
         {
-          "image": "/images/Code-generation-min.jpg"
+          "image": "/images/nocra/Code-generation-min.jpg"
         },
         {
-          "image": "/images/Song-creating-min.jpg"
+          "image": "/images/nocra/Song-creating-min.jpg"
         },
         {
-          "image": "/images/Chat-min.jpg"
+          "image": "/images/nocra/Chat-min.jpg"
         },
         {
-          "image": "/images/AI-Dashboard-dark-theme-min.jpg"
+          "image": "/images/nocra/AI-Dashboard-dark-theme-min.jpg"
         },
         {
-          "image": "/images/VFX-generation-dashboard-dark-theme-min.jpg"
+          "image": "/images/nocra/AI-hero-section-dark-theme-min.jpg"
         },
         {
-          "image": "/images/Music-AI-Dashboard-new-layout-dark-mode-min.jpg"
+          "image": "/images/nocra/Music-AI-Dashboard-new-layout-dark-mode-min.jpg"
         },
         {
-          "image": "/images/Music-AI-Dashboard-new-layout-dark-theme-min.jpg"
+          "image": "/images/nocra/Music-AI-Dashboard-new-layout-dark-theme-min.jpg"
         },
         {
-          "image": "/images/VFX-generation-dashboard-dark-theme-min.jpg"
+          "image": "/images/nocra/AI-hero-section-dark-theme-min.jpg"
         }
       ]
     }
@@ -65,147 +65,147 @@ export const nocraContent = {
       "subtitle": "NOCRA empowers you to go from concept to clickable prototype in minutes, not days — so you can launch faster, innovate smarter, and outpace the competition.",
       "items": [
         {
-          "image": "/images/ai-style-selection-dark.png",
+          "image": "/images/nocra/ai-style-selection-dark.png",
           "title": "Style selection"
         },
         {
-          "image": "/images/action-menu.png",
+          "image": "/images/nocra/action-menu.png",
           "title": "Action menu"
         },
         {
-          "image": "/images/accordion-select-component.jpg",
+          "image": "/images/nocra/accordion-select-component.jpg",
           "title": "Accordion select component"
         },
         {
-          "image": "/images/ai-status-panel.jpg",
+          "image": "/images/nocra/ai-status-panel.jpg",
           "title": "AI status panel"
         },
         {
-          "image": "/images/cards-dark-3.png",
+          "image": "/images/nocra/cards-dark-3.png",
           "title": "Cards dark theme"
         },
         {
-          "image": "/images/cards-dark-1.jpg",
+          "image": "/images/nocra/cards-dark-1.jpg",
           "title": "Cards dark theme"
         },
         {
-          "image": "/images/alerts-light.jpg",
+          "image": "/images/nocra/alerts-light.jpg",
           "title": "Alert components"
         },
         {
-          "image": "/images/button-group-segmented-control.jpg",
+          "image": "/images/nocra/button-group-segmented-control.jpg",
           "title": "Button group or Segmented controls"
         },
         {
-          "image": "/images/cards-dark-2.png",
+          "image": "/images/nocra/cards-dark-2.png",
           "title": "Cards variations"
         },
         {
-          "image": "/images/Dropdown-menu.png",
+          "image": "/images/nocra/Dropdown-menu.png",
           "title": "Dropdown menu"
         },
         {
-          "image": "/images/cards-dark-6.png",
+          "image": "/images/nocra/cards-dark-6.png",
           "title": "Cards dark theme"
         },
         {
-          "image": "/images/Latest-AI-models-added-widget.png",
+          "image": "/images/nocra/Latest-AI-models-added-widget.png",
           "title": "List items widget"
         },
         {
-          "image": "/images/ai-badges-dark.jpg",
+          "image": "/images/nocra/ai-badges-dark.jpg",
           "title": "Badges dark theme"
         },
         {
-          "image": "/images/List-Item-dark.png",
+          "image": "/images/nocra/List-Item-dark.png",
           "title": "List item components"
         },
         {
-          "image": "/images/Global-Trending-Card.png",
+          "image": "/images/nocra/Global-Trending-Card.png",
           "title": "List items widget"
         },
         {
-          "image": "/images/cards-dark-5.png",
+          "image": "/images/nocra/cards-dark-5.png",
           "title": "Cards dark theme"
         },
         {
-          "image": "/images/highly-accessible-sliders.jpg",
+          "image": "/images/nocra/highly-accessible-sliders.jpg",
           "title": "Numeric sliders"
         },
         {
-          "image": "/images/cards-dark-4.png",
+          "image": "/images/nocra/cards-dark-4.png",
           "title": "Cards variations in dark theme"
         },
         {
-          "image": "/images/cards-dark-7.png",
+          "image": "/images/nocra/cards-dark-7.png",
           "title": "More dark cards"
         },
         {
-          "image": "/images/Prompt-History-with-active-state.png",
+          "image": "/images/nocra/Prompt-History-with-active-state.png",
           "title": "Prompt history widget"
         },
         {
-          "image": "/images/prompt-input-1.jpg",
+          "image": "/images/nocra/prompt-input-1.jpg",
           "title": "Prompts input widgets"
         },
         {
-          "image": "/images/Prompt-History.png",
+          "image": "/images/nocra/Prompt-History.png",
           "title": "Prompt history"
         },
         {
-          "image": "/images/Promo-card.png",
+          "image": "/images/nocra/Promo-card.png",
           "title": "Promo card sample"
         },
         {
-          "image": "/images/ai-badges-light.jpg",
+          "image": "/images/nocra/ai-badges-light.jpg",
           "title": "Badge components"
         },
         {
-          "image": "/images/prompt-widgets-1.png",
+          "image": "/images/nocra/prompt-widgets-1.png",
           "title": "Prompt widgets"
         },
         {
-          "image": "/images/prompt-input_1.jpg",
+          "image": "/images/nocra/prompt-input.jpg",
           "title": "Prompt inputs dark"
         },
         {
-          "image": "/images/popping-tooltips.jpg",
+          "image": "/images/nocra/popping-tooltips.jpg",
           "title": "Tooltip variations"
         },
         {
-          "image": "/images/prompt-input-2.jpg",
+          "image": "/images/nocra/prompt-input-2.jpg",
           "title": "Prompt inputs"
         },
         {
-          "image": "/images/side-navigation-drawer-menu.png",
+          "image": "/images/nocra/side-navigation-drawer-menu.png",
           "title": "Side navigation drawer with marketing asset"
         },
         {
-          "image": "/images/side-navigation-dark-theme.png",
+          "image": "/images/nocra/side-navigation-dark-theme.png",
           "title": "Side navigation dark theme"
         },
         {
-          "image": "/images/side-navigation-dark-theme-8.png",
+          "image": "/images/nocra/side-navigation-dark-theme-8.png",
           "title": "Side navigation dark theme widgets"
         },
         {
-          "image": "/images/prompt-widgets.png",
+          "image": "/images/nocra/prompt-widgets.png",
           "title": "Prompt widgets combinations"
         },
         {
-          "image": "/images/top-nav-toolbars.png",
+          "image": "/images/nocra/top-nav-toolbars.png",
           "title": "Top navigation toolbars"
         },
         {
-          "image": "/images/Song-info.png",
+          "image": "/images/nocra/Song-info.png",
           "title": "Navigation tab components"
         },
         {
-          "image": "/images/Song-list-widget-1.png",
+          "image": "/images/nocra/Song-list-widget-1.png",
           "title": "Widget with thumbnails list items"
         },
         {
-          "image": "/images/switch-light.png",
+          "image": "/images/nocra/switch-light.png",
           "title": "Toggle switches"
         }
       ]
@@ -218,7 +218,7 @@ export const nocraContent = {
       {
         "title": "Nocra UI kit for Figma",
         "description": "Save countless hours with ready-made components, intuitive screens, and stunning animations. NOCRA empowers you to go from concept to clickable prototype in minutes, not days — so you can launch faster, innovate smarter, and outpace the competition.",
-        "image": "/images/nocra-pricing.jpg",
+        "image": "/images/nocra/nocra-pricing.jpg",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gumroad.com/a/530945235/uocxtg",
@@ -227,7 +227,7 @@ export const nocraContent = {
       {
         "title": "Aurora Bundle ✦ Orion + Eclipse + Hyper ✦ Save 30%",
         "description": "Aurora Bundle combines Orion, Eclipse, and Hyper Charts for Figma dashboards: 50+ chart templates, 200+ widgets, 1000+ editable graphs, 74 screen templates, 30% savings for data-driven teams today.",
-        "image": "/images/nocra-pricing-bundle.jpg",
+        "image": "/images/nocra/nocra-pricing-bundle.jpg",
         "buyLabel": "Buy Bundle",
         "price": "$310",
         "buyHref": "https://gumroad.com/a/530945235/hwgsb"

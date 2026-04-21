@@ -12,40 +12,40 @@ export const s8Content = {
       "previewLink": "https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=12%3A109",
       "items": [
         {
-          "image": "/images/Frame_2_rh-3.webp"
+          "image": "/images/s8/Frame_2_rh-3.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-1.webp"
+          "image": "/images/s8/Frame_2_rh-3-1.webp"
         },
         {
-          "image": "/images/Frame_rh.webp"
+          "image": "/images/s8/Frame_rh.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-2.webp"
+          "image": "/images/s8/Frame_2_rh-3-2.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-3.webp"
+          "image": "/images/s8/Frame_2_rh-3-3.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-4.webp"
+          "image": "/images/s8/Frame_2_rh-3-4.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-5.webp"
+          "image": "/images/s8/Frame_2_rh-3-5.webp"
         },
         {
-          "image": "/images/Frame_2_rh-3-6.webp"
+          "image": "/images/s8/Frame_2_rh-3-6.webp"
         },
         {
-          "image": "/images/Frame_rh-1.webp"
+          "image": "/images/s8/Frame_rh-1.webp"
         },
         {
-          "image": "/images/Frame_rh-2.webp"
+          "image": "/images/s8/Frame_rh-2.webp"
         },
         {
-          "image": "/images/Frame_2_rh-5.webp"
+          "image": "/images/s8/Frame_2_rh-5.webp"
         },
         {
-          "image": "/images/Frame_rh-3.webp"
+          "image": "/images/s8/Frame_rh-3.webp"
         }
       ]
     }
@@ -57,7 +57,7 @@ export const s8Content = {
       {
         "title": "Figma S8 Design System",
         "description": "Figma design library for mobile and desktop apps made of high quality styled components. Full version includes 67 dashboard templates.",
-        "image": "/images/pricing-s8-01.webp",
+        "image": "/images/s8/pricing-s8-01.webp",
         "buyLabel": "Buy now",
         "price": "$86",
         "buyHref": "https://setproduct.gumroad.com/l/system8",
@@ -66,7 +66,7 @@ export const s8Content = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dark & light dashboards, web & mobile apps based on S8 Design System. Included: Default theme (light) + Dark theme.",
-        "image": "/images/pricing-s8-02.webp",
+        "image": "/images/s8/pricing-s8-02.webp",
         "buyLabel": "Buy Bundle",
         "price": "$116",
         "buyHref": "https://setproduct.gumroad.com/l/figmadashboard"

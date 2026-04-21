@@ -3,12 +3,12 @@ export const landingContent = {
     {
       "title": "106+ blocks with web design ideas",
       "description": "Figma web design kit to create colorful, trendy and inspiring pages",
-      "image": "/images/features-landing-01.webp"
+      "image": "/images/landing/features-landing-01.webp"
     },
     {
       "title": "p class=\"heading-style-h5 is-template-max-width\">Mobile and desktop layouts",
       "description": "Two variants available for every template to build responsive websites",
-      "image": "/images/features-landing-02.webp"
+      "image": "/images/landing/features-landing-02.webp"
     }
   ],
   "video": {
@@ -23,73 +23,73 @@ export const landingContent = {
       "previewLink": "https://www.figma.com/file/jxvS6sb7I0v84VqPGLsO0v/Figma-Landing-Pages-Library-2.0?node-id=162%3A5808",
       "items": [
         {
-          "image": "/images/1Hero_Cover_6.webp"
+          "image": "/images/landing/1Hero_Cover_6.webp"
         },
         {
-          "image": "/images/2Faq_Testim_Plans_Des.webp"
+          "image": "/images/landing/2Faq_Testim_Plans_Des.webp"
         },
         {
-          "image": "/images/3Features_Desktop_11.webp"
+          "image": "/images/landing/3Features_Desktop_11.webp"
         },
         {
-          "image": "/images/4Features_Desktop_10.webp"
+          "image": "/images/landing/4Features_Desktop_10.webp"
         },
         {
-          "image": "/images/5Hero_Cover_1.webp"
+          "image": "/images/landing/5Hero_Cover_1.webp"
         },
         {
-          "image": "/images/6Hero_Cover_4.webp"
+          "image": "/images/landing/6Hero_Cover_4.webp"
         },
         {
-          "image": "/images/7Hero_Cover_2.webp"
+          "image": "/images/landing/7Hero_Cover_2.webp"
         },
         {
-          "image": "/images/8Hero_Cover_4a.webp"
+          "image": "/images/landing/8Hero_Cover_4a.webp"
         },
         {
-          "image": "/images/9Hero_Cover_3.webp"
+          "image": "/images/landing/9Hero_Cover_3.webp"
         },
         {
-          "image": "/images/10Hero_Cover_5.webp"
+          "image": "/images/landing/10Hero_Cover_5.webp"
         },
         {
-          "image": "/images/11Hero_Cover_8.webp"
+          "image": "/images/landing/11Hero_Cover_8.webp"
         },
         {
-          "image": "/images/12Hero_Cover_9.webp"
+          "image": "/images/landing/12Hero_Cover_9.webp"
         },
         {
-          "image": "/images/13Hero_Cover_10.webp"
+          "image": "/images/landing/13Hero_Cover_10.webp"
         },
         {
-          "image": "/images/14Hero_Cover_11.webp"
+          "image": "/images/landing/14Hero_Cover_11.webp"
         },
         {
-          "image": "/images/15Hero_Cover_12.webp"
+          "image": "/images/landing/15Hero_Cover_12.webp"
         },
         {
-          "image": "/images/16Hero_Cover_13.webp"
+          "image": "/images/landing/16Hero_Cover_13.webp"
         },
         {
-          "image": "/images/17Hero_Cover_14.webp"
+          "image": "/images/landing/17Hero_Cover_14.webp"
         },
         {
-          "image": "/images/18Hero_Cover_15.webp"
+          "image": "/images/landing/18Hero_Cover_15.webp"
         },
         {
-          "image": "/images/19Hero_Cover_7.webp"
+          "image": "/images/landing/19Hero_Cover_7.webp"
         },
         {
-          "image": "/images/20Faq_Testim_Plans_Des.webp"
+          "image": "/images/landing/20Faq_Testim_Plans_Des.webp"
         },
         {
-          "image": "/images/21Faq_Testim_Plans_Des.webp"
+          "image": "/images/landing/21Faq_Testim_Plans_Des.webp"
         },
         {
-          "image": "/images/22Features_Desktop_13.webp"
+          "image": "/images/landing/22Features_Desktop_13.webp"
         },
         {
-          "image": "/images/23Features_Desktop_12.webp"
+          "image": "/images/landing/23Features_Desktop_12.webp"
         }
       ]
     }
@@ -101,7 +101,7 @@ export const landingContent = {
       {
         "title": "Figma Landing Pages UI kit",
         "description": "Landing pages templates library based on constrained & organized components aimed to speed-up the production of effective websites.",
-        "image": "/images/pricing-lp-01.webp",
+        "image": "/images/landing/pricing-lp-01.webp",
         "buyLabel": "Buy now",
         "price": "$86",
         "buyHref": "https://setproduct.gumroad.com/l/websystem",
@@ -110,7 +110,7 @@ export const landingContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing websites, landing pages and presentations based on HQ web design templates. Included: Landing Pages kit + Web Design kit.",
-        "image": "/images/bundle-lp.webp",
+        "image": "/images/landing/bundle-lp.webp",
         "buyLabel": "Buy now",
         "price": "$116",
         "buyHref": "https://setproduct.gumroad.com/l/figmaweb"

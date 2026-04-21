@@ -3,22 +3,22 @@ export const pandaContent = {
     {
       "title": "Meet Panda design system",
       "description": "Clean & modern web app dashboard UI kit with 1920w desktop templates",
-      "image": "/images/fea_01-min.webp"
+      "image": "/images/panda/fea_01-min.webp"
     },
     {
       "title": "Figma UI kit with components",
       "description": "Over 250+ auto-layout drag & drop components accurately crafted",
-      "image": "/images/fea_02-min.webp"
+      "image": "/images/panda/fea_02-min.webp"
     },
     {
       "title": "80+ Dashboard templates inside",
       "description": "All the popular categories for complex web apps included in advance",
-      "image": "/images/fea_03-min.webp"
+      "image": "/images/panda/fea_03-min.webp"
     },
     {
       "title": "Organized library to save your time",
       "description": "Powered by auto-layout, variants, color & text styles as a handy design system",
-      "image": "/images/fea_04-min.webp"
+      "image": "/images/panda/fea_04-min.webp"
     }
   ],
   "carousels": [
@@ -27,37 +27,37 @@ export const pandaContent = {
       "subtitle": "Over 250+ auto-layout drag & drop components accurately crafted with Variants support, including 250+ UI design widgets as ready-made blocks.",
       "items": [
         {
-          "image": "/images/1Analytics_Light_Vers.png"
+          "image": "/images/panda/1Analytics_Light_Vers.png"
         },
         {
-          "image": "/images/2Analytics_Light_Vers.webp"
+          "image": "/images/panda/2Analytics_Light_Vers.webp"
         },
         {
-          "image": "/images/3Kanban_Card_Light_Ve.webp"
+          "image": "/images/panda/3Kanban_Card_Light_Ve.webp"
         },
         {
-          "image": "/images/4Calendar_list_List_L.png"
+          "image": "/images/panda/4Calendar_list_List_L.png"
         },
         {
-          "image": "/images/5Analytics_Light_Vers.webp"
+          "image": "/images/panda/5Analytics_Light_Vers.webp"
         },
         {
-          "image": "/images/6Kanban_Card_Light_Ve.webp"
+          "image": "/images/panda/6Kanban_Card_Light_Ve.webp"
         },
         {
-          "image": "/images/7Calendar_Month_List_.png"
+          "image": "/images/panda/7Calendar_Month_List_.png"
         },
         {
-          "image": "/images/8Profile_Light_Versio.png"
+          "image": "/images/panda/8Profile_Light_Versio.png"
         },
         {
-          "image": "/images/10Invoice_List_Light_V.png"
+          "image": "/images/panda/10Invoice_List_Light_V.png"
         },
         {
-          "image": "/images/11Calendar_Week_List_L.webp"
+          "image": "/images/panda/11Calendar_Week_List_L.webp"
         },
         {
-          "image": "/images/12Profile_Light_Versio.webp"
+          "image": "/images/panda/12Profile_Light_Versio.webp"
         }
       ]
     }
@@ -69,50 +69,50 @@ export const pandaContent = {
       {
         "id": "tab-1",
         "label": "Analytics",
-        "beforeImage": "/images/1-Analytics_Light.webp",
-        "afterImage": "/images/1-Analytics_Dark.webp"
+        "beforeImage": "/images/panda/1-Analytics_Light.webp",
+        "afterImage": "/images/panda/1-Analytics_Dark.webp"
       },
       {
         "id": "tab-2",
         "label": "Inputs",
-        "beforeImage": "/images/2-Billing_Information_.webp",
-        "afterImage": "/images/2-Billing_Information_dark.webp"
+        "beforeImage": "/images/panda/2-Billing_Information_.webp",
+        "afterImage": "/images/panda/2-Billing_Information_dark.webp"
       },
       {
         "id": "tab-3",
         "label": "Invoice",
-        "beforeImage": "/images/3-Invoice_List_Light_V.webp",
-        "afterImage": "/images/3-Invoice_List_Dark_Ve.webp"
+        "beforeImage": "/images/panda/3-Invoice_List_Light_V.webp",
+        "afterImage": "/images/panda/3-Invoice_List_Dark_Ve.webp"
       },
       {
         "id": "tab-4",
         "label": "Calendar",
-        "beforeImage": "/images/4-Calendar_Month_List_.webp",
-        "afterImage": "/images/4-Calendar_Month_List_d.webp"
+        "beforeImage": "/images/panda/4-Calendar_Month_List_.webp",
+        "afterImage": "/images/panda/4-Calendar_Month_List_d.webp"
       },
       {
         "id": "tab-5",
         "label": "Kanban",
-        "beforeImage": "/images/5-Kanban_Card_Light_Ve.png",
-        "afterImage": "/images/5-Kanban_Card_Dark_Ver.webp"
+        "beforeImage": "/images/panda/5-Kanban_Card_Light_Ve.png",
+        "afterImage": "/images/panda/5-Kanban_Card_Dark_Ver.webp"
       },
       {
         "id": "tab-6",
         "label": "Profile",
-        "beforeImage": "/images/6-Profile_Light_Versio.webp",
-        "afterImage": "/images/6-Profile_Dark_Version.webp"
+        "beforeImage": "/images/panda/6-Profile_Light_Versio.webp",
+        "afterImage": "/images/panda/6-Profile_Dark_Version.webp"
       },
       {
         "id": "tab-7",
         "label": "Checkout",
-        "beforeImage": "/images/7-Checkout_Light_Versi.webp",
-        "afterImage": "/images/7-Checkout_Dark_Versio.webp"
+        "beforeImage": "/images/panda/7-Checkout_Light_Versi.webp",
+        "afterImage": "/images/panda/7-Checkout_Dark_Versio.webp"
       },
       {
         "id": "tab-8",
         "label": "Product",
-        "beforeImage": "/images/8-Product_Detail_Light.webp",
-        "afterImage": "/images/8-Product_Detail_Dark_.webp"
+        "beforeImage": "/images/panda/8-Product_Detail_Light.webp",
+        "afterImage": "/images/panda/8-Product_Detail_Dark_.webp"
       }
     ]
   },
@@ -123,7 +123,7 @@ export const pandaContent = {
       {
         "title": "Panda Design System",
         "description": "You'll get well-named, accurately organized, and customization-ready Figma design system loaded with responsive 1920w dark & light layouts.",
-        "image": "/images/gumroad-01-min.webp",
+        "image": "/images/panda/gumroad-01-min.webp",
         "buyLabel": "Buy now",
         "price": "$148",
         "buyHref": "https://gumroad.com/a/212878163/geuou",
@@ -132,7 +132,7 @@ export const pandaContent = {
       {
         "title": "Try before buy",
         "description": "We've included a bunch of components and several templates in order to check out the product quality.",
-        "image": "/images/gumroad-02-min.webp",
+        "image": "/images/panda/gumroad-02-min.webp",
         "buyLabel": "Duplicate for Free",
         "buyHref": "https://www.figma.com/file/aTfDaTCZMycugJPBGj24bD/Panda-Design-System-for-Community/duplicate?type=design&amp;mode=design"
       }

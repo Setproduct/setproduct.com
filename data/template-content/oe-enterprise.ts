@@ -7,55 +7,55 @@ export const oe_enterpriseContent = {
       "previewLink": "https://www.figma.com/file/sRPpErgDs6CKjqK8dU2owD/Ocean-Enterprise-DS-%F0%9F%92%A0-Token-Based?node-id=2383%3A53874&amp;t=frkKdFWMTB4m6RBK-1",
       "items": [
         {
-          "image": "/images/1-Gantt_chart-min.png"
+          "image": "/images/oe-enterprise/1-Gantt_chart-min.png"
         },
         {
-          "image": "/images/2-Dashboards-min.webp"
+          "image": "/images/oe-enterprise/2-Dashboards-min.webp"
         },
         {
-          "image": "/images/3-Calendar_-_Day_view-.webp"
+          "image": "/images/oe-enterprise/3-Calendar_-_Day_view-.webp"
         },
         {
-          "image": "/images/4-Calendar_-_Month_vie.webp"
+          "image": "/images/oe-enterprise/4-Calendar_-_Month_vie.webp"
         },
         {
-          "image": "/images/5-Dev_page-min.png"
+          "image": "/images/oe-enterprise/5-Dev_page-min.png"
         },
         {
-          "image": "/images/6-Messenger-min.webp"
+          "image": "/images/oe-enterprise/6-Messenger-min.webp"
         },
         {
-          "image": "/images/7-Multi_step_form-min.png"
+          "image": "/images/oe-enterprise/7-Multi_step_form-min.png"
         },
         {
-          "image": "/images/8-News-min.webp"
+          "image": "/images/oe-enterprise/8-News-min.webp"
         },
         {
-          "image": "/images/9-Profile_settings-min.webp"
+          "image": "/images/oe-enterprise/9-Profile_settings-min.webp"
         },
         {
-          "image": "/images/10-Table-min.png"
+          "image": "/images/oe-enterprise/10-Table-min.png"
         },
         {
-          "image": "/images/11-Reset_password-min.webp"
+          "image": "/images/oe-enterprise/11-Reset_password-min.webp"
         },
         {
-          "image": "/images/12-Log_in-min.webp"
+          "image": "/images/oe-enterprise/12-Log_in-min.webp"
         },
         {
-          "image": "/images/13-Create_account-min.webp"
+          "image": "/images/oe-enterprise/13-Create_account-min.webp"
         },
         {
-          "image": "/images/14-Create_account_-_err.webp"
+          "image": "/images/oe-enterprise/14-Create_account_-_err.webp"
         },
         {
-          "image": "/images/15-Shopping_-_steps-min.webp"
+          "image": "/images/oe-enterprise/15-Shopping_-_steps-min.webp"
         },
         {
-          "image": "/images/16-Pricing-min.png"
+          "image": "/images/oe-enterprise/16-Pricing-min.png"
         },
         {
-          "image": "/images/17-User_profile-min.webp"
+          "image": "/images/oe-enterprise/17-User_profile-min.webp"
         }
       ]
     },
@@ -64,58 +64,58 @@ export const oe_enterpriseContent = {
       "subtitle": "Powered by Figma Variants & Auto-layout make your work efficient",
       "items": [
         {
-          "image": "/images/1.Album-min.webp"
+          "image": "/images/oe-enterprise/1.Album-min.webp"
         },
         {
-          "image": "/images/2.Cart_2-min.webp"
+          "image": "/images/oe-enterprise/2.Cart_2-min.webp"
         },
         {
-          "image": "/images/3.Cart-min.webp"
+          "image": "/images/oe-enterprise/3.Cart-min.webp"
         },
         {
-          "image": "/images/4.Categories_2-min.webp"
+          "image": "/images/oe-enterprise/4.Categories_2-min.webp"
         },
         {
-          "image": "/images/5.Categories-min.webp"
+          "image": "/images/oe-enterprise/5.Categories-min.webp"
         },
         {
-          "image": "/images/6.Category-min.webp"
+          "image": "/images/oe-enterprise/6.Category-min.webp"
         },
         {
-          "image": "/images/7.Chat-min.webp"
+          "image": "/images/oe-enterprise/7.Chat-min.webp"
         },
         {
-          "image": "/images/8.Chats-min.webp"
+          "image": "/images/oe-enterprise/8.Chats-min.webp"
         },
         {
-          "image": "/images/9.Group_chat-min.webp"
+          "image": "/images/oe-enterprise/9.Group_chat-min.webp"
         },
         {
-          "image": "/images/10.Library-min.png"
+          "image": "/images/oe-enterprise/10.Library-min.png"
         },
         {
-          "image": "/images/11.News_page-min.webp"
+          "image": "/images/oe-enterprise/11.News_page-min.webp"
         },
         {
-          "image": "/images/12.Payment-min.webp"
+          "image": "/images/oe-enterprise/12.Payment-min.webp"
         },
         {
-          "image": "/images/13.Profile-min.webp"
+          "image": "/images/oe-enterprise/13.Profile-min.webp"
         },
         {
-          "image": "/images/14.Transfer-1-min.png"
+          "image": "/images/oe-enterprise/14.Transfer-1-min.png"
         },
         {
-          "image": "/images/15.Transfer-2-min.webp"
+          "image": "/images/oe-enterprise/15.Transfer-2-min.webp"
         },
         {
-          "image": "/images/16.Transfer-min.png"
+          "image": "/images/oe-enterprise/16.Transfer-min.png"
         },
         {
-          "image": "/images/17.Walkthrough_1-min.webp"
+          "image": "/images/oe-enterprise/17.Walkthrough_1-min.webp"
         },
         {
-          "image": "/images/18.Walkthrough_2-min.webp"
+          "image": "/images/oe-enterprise/18.Walkthrough_2-min.webp"
         }
       ]
     }
@@ -127,7 +127,7 @@ export const oe_enterpriseContent = {
       {
         "title": "OE Figma Design System",
         "description": "Customizable and well-organized Figma library. This design system aimed to build highly loaded interfaces, boost the speed and save more costs.",
-        "image": "/images/pricing-oe-01.webp",
+        "image": "/images/oe-enterprise/pricing-oe-01.webp",
         "buyLabel": "Buy now",
         "price": "$149",
         "buyHref": "https://gumroad.com/a/460223603/xfljT",
@@ -136,7 +136,7 @@ export const oe_enterpriseContent = {
       {
         "title": "Buy a Bundle. Save 50%",
         "description": "Recommended for designing everything: dashboards, web sites, mobile apps, charts & infographics. Included: 12 design kits by Setproduct.",
-        "image": "/images/pricing-bundle.webp",
+        "image": "/images/oe-enterprise/pricing-bundle.webp",
         "buyLabel": "Buy Bundle",
         "price": "$595",
         "buyHref": "https://setproduct.gumroad.com/l/setproductbundle"

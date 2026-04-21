@@ -3,22 +3,22 @@ export const appka_ios_ui_kitContent = {
     {
       "title": "br/>the perfect UI",
       "description": "4100+ variants for iOS mobile components served in two themes",
-      "image": "/images/feature-appka-01.webp"
+      "image": "/images/appka-ios-ui-kit/feature-appka-01.webp"
     },
     {
       "title": "Ready-made UI design widgets",
       "description": "580+ iOS compatible widgets based on Apple design specifications",
-      "image": "/images/feature-appka-02.webp"
+      "image": "/images/appka-ios-ui-kit/feature-appka-02.webp"
     },
     {
       "title": "UX-driven mobile app templates",
       "description": "280+ reusable app layouts for 14 popular categories. Apply as it is, or modify",
-      "image": "/images/feature-appka-03.webp"
+      "image": "/images/appka-ios-ui-kit/feature-appka-03.webp"
     },
     {
       "title": "Design system to boost a workflow",
       "description": "Organized iOS design system starter. Saves time allows to prototype faster",
-      "image": "/images/feature-appka-04.webp"
+      "image": "/images/appka-ios-ui-kit/feature-appka-04.webp"
     }
   ],
   "carousels": [
@@ -28,124 +28,124 @@ export const appka_ios_ui_kitContent = {
       "previewLink": "https://www.figma.com/file/7ov6FPrFUJZAv2jY2QeICB/Appka-iOS-(Preview)?node-id=7560%3A75825",
       "items": [
         {
-          "image": "/images/1light_1.webp"
+          "image": "/images/appka-ios-ui-kit/1light_1.webp"
         },
         {
-          "image": "/images/2dark.webp"
+          "image": "/images/appka-ios-ui-kit/2dark.webp"
         },
         {
-          "image": "/images/3light_2.webp"
+          "image": "/images/appka-ios-ui-kit/3light_2.webp"
         },
         {
-          "image": "/images/4dark_1.webp"
+          "image": "/images/appka-ios-ui-kit/4dark_1.webp"
         },
         {
-          "image": "/images/5light_3.webp"
+          "image": "/images/appka-ios-ui-kit/5light_3.webp"
         },
         {
-          "image": "/images/6dark_2.webp"
+          "image": "/images/appka-ios-ui-kit/6dark_2.webp"
         },
         {
-          "image": "/images/7light_4.webp"
+          "image": "/images/appka-ios-ui-kit/7light_4.webp"
         },
         {
-          "image": "/images/8dark_3.webp"
+          "image": "/images/appka-ios-ui-kit/8dark_3.webp"
         },
         {
-          "image": "/images/9light-min.webp"
+          "image": "/images/appka-ios-ui-kit/9light-min.webp"
         },
         {
-          "image": "/images/10dark-min.webp"
+          "image": "/images/appka-ios-ui-kit/10dark-min.webp"
         },
         {
-          "image": "/images/11light-2-min.webp"
+          "image": "/images/appka-ios-ui-kit/11light-2-min.webp"
         },
         {
-          "image": "/images/12dark-2-min.webp"
+          "image": "/images/appka-ios-ui-kit/12dark-2-min.webp"
         },
         {
-          "image": "/images/13light.webp"
+          "image": "/images/appka-ios-ui-kit/13light.webp"
         },
         {
-          "image": "/images/14dark.webp"
+          "image": "/images/appka-ios-ui-kit/14dark.webp"
         },
         {
-          "image": "/images/15light-2.webp"
+          "image": "/images/appka-ios-ui-kit/15light-2.webp"
         },
         {
-          "image": "/images/16dark-2.webp"
+          "image": "/images/appka-ios-ui-kit/16dark-2.webp"
         },
         {
-          "image": "/images/17light-3.webp"
+          "image": "/images/appka-ios-ui-kit/17light-3.webp"
         },
         {
-          "image": "/images/18dark-3.webp"
+          "image": "/images/appka-ios-ui-kit/18dark-3.webp"
         },
         {
-          "image": "/images/19light-3-min.webp"
+          "image": "/images/appka-ios-ui-kit/19light-3-min.webp"
         },
         {
-          "image": "/images/20dark-1-min.webp"
+          "image": "/images/appka-ios-ui-kit/20dark-1-min.webp"
         },
         {
-          "image": "/images/21light-2-min.webp"
+          "image": "/images/appka-ios-ui-kit/21light-2-min.webp"
         },
         {
-          "image": "/images/22dark-2-min.webp"
+          "image": "/images/appka-ios-ui-kit/22dark-2-min.webp"
         },
         {
-          "image": "/images/23light-1-min.png"
+          "image": "/images/appka-ios-ui-kit/23light-1-min.png"
         },
         {
-          "image": "/images/24dark-3-min.png"
+          "image": "/images/appka-ios-ui-kit/24dark-3-min.png"
         },
         {
-          "image": "/images/25light-4-min.webp"
+          "image": "/images/appka-ios-ui-kit/25light-4-min.webp"
         },
         {
-          "image": "/images/26dark-min.webp"
+          "image": "/images/appka-ios-ui-kit/26dark-min.webp"
         },
         {
-          "image": "/images/27light-min.webp"
+          "image": "/images/appka-ios-ui-kit/27light-min.webp"
         },
         {
-          "image": "/images/28light-1-min.webp"
+          "image": "/images/appka-ios-ui-kit/28light-1-min.webp"
         },
         {
-          "image": "/images/29light-2-min.webp"
+          "image": "/images/appka-ios-ui-kit/29light-2-min.webp"
         },
         {
-          "image": "/images/30light-3-min.webp"
+          "image": "/images/appka-ios-ui-kit/30light-3-min.webp"
         },
         {
-          "image": "/images/31light-1-min.webp"
+          "image": "/images/appka-ios-ui-kit/31light-1-min.webp"
         },
         {
-          "image": "/images/32dark-1-min.webp"
+          "image": "/images/appka-ios-ui-kit/32dark-1-min.webp"
         },
         {
-          "image": "/images/33light-3-min.png"
+          "image": "/images/appka-ios-ui-kit/33light-3-min.png"
         },
         {
-          "image": "/images/34dark-3-min.png"
+          "image": "/images/appka-ios-ui-kit/34dark-3-min.png"
         },
         {
-          "image": "/images/35light-4-min.webp"
+          "image": "/images/appka-ios-ui-kit/35light-4-min.webp"
         },
         {
-          "image": "/images/36dark-4-min.webp"
+          "image": "/images/appka-ios-ui-kit/36dark-4-min.webp"
         },
         {
-          "image": "/images/37light-min.png"
+          "image": "/images/appka-ios-ui-kit/37light-min.png"
         },
         {
-          "image": "/images/38dark-min.webp"
+          "image": "/images/appka-ios-ui-kit/38dark-min.webp"
         },
         {
-          "image": "/images/39light-min.png"
+          "image": "/images/appka-ios-ui-kit/39light-min.png"
         },
         {
-          "image": "/images/40dark-min.webp"
+          "image": "/images/appka-ios-ui-kit/40dark-min.webp"
         }
       ]
     }
@@ -157,7 +157,7 @@ export const appka_ios_ui_kitContent = {
       {
         "title": "Appka iOS UI kit",
         "description": "Customizable & adjustable iOS design system with 4100+ variants for 28 components and 280+ ready-to-use app layouts crafted for Figma.",
-        "image": "/images/pricing-appka-01.webp",
+        "image": "/images/appka-ios-ui-kit/pricing-appka-01.webp",
         "buyLabel": "Buy now",
         "price": "$168",
         "buyHref": "https://gumroad.com/a/897012851/ipTSy",
@@ -166,7 +166,7 @@ export const appka_ios_ui_kitContent = {
       {
         "title": "Try before buy",
         "description": "We've included a bunch of components and several templates in order to check out the product quality.",
-        "image": "/images/pricing-appka-02.webp",
+        "image": "/images/appka-ios-ui-kit/pricing-appka-02.webp",
         "buyLabel": "Duplicate for Free",
         "buyHref": "https://www.figma.com/file/MJb5f6UIoigfGueMCZIyXl/Appka.-iOS-Design-UI-Kit-(Free)/duplicate?type=design&amp;node-id=7221-2255&amp;mode=design"
       }

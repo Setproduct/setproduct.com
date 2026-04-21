@@ -12,73 +12,73 @@ export const ios_ui_kitContent = {
       "previewLink": "https://www.figma.com/file/dxGyRDU11DP0CKLDwKpj0R/Figma-iOS-UI-kit?node-id=38%3A16029",
       "items": [
         {
-          "image": "/images/1-Home_Screens.webp"
+          "image": "/images/ios-ui-kit/1-Home_Screens.webp"
         },
         {
-          "image": "/images/2-Cards.webp"
+          "image": "/images/ios-ui-kit/2-Cards.webp"
         },
         {
-          "image": "/images/3-Authentication.webp"
+          "image": "/images/ios-ui-kit/3-Authentication.webp"
         },
         {
-          "image": "/images/4-Navigation_side.webp"
+          "image": "/images/ios-ui-kit/4-Navigation_side.webp"
         },
         {
-          "image": "/images/5-Comments.webp"
+          "image": "/images/ios-ui-kit/5-Comments.webp"
         },
         {
-          "image": "/images/6-Date__Calendars.webp"
+          "image": "/images/ios-ui-kit/6-Date__Calendars.webp"
         },
         {
-          "image": "/images/7-Navigation_Popover.webp"
+          "image": "/images/ios-ui-kit/7-Navigation_Popover.webp"
         },
         {
-          "image": "/images/8-Grids.webp"
+          "image": "/images/ios-ui-kit/8-Grids.webp"
         },
         {
-          "image": "/images/9-Filters.webp"
+          "image": "/images/ios-ui-kit/9-Filters.webp"
         },
         {
-          "image": "/images/10-Empty_States.png"
+          "image": "/images/ios-ui-kit/10-Empty_States.png"
         },
         {
-          "image": "/images/11-Messages.png"
+          "image": "/images/ios-ui-kit/11-Messages.png"
         },
         {
-          "image": "/images/12-Inputs.webp"
+          "image": "/images/ios-ui-kit/12-Inputs.webp"
         },
         {
-          "image": "/images/13-Lists_1.webp"
+          "image": "/images/ios-ui-kit/13-Lists_1.webp"
         },
         {
-          "image": "/images/14-Maps.webp"
+          "image": "/images/ios-ui-kit/14-Maps.webp"
         },
         {
-          "image": "/images/15-PIN.png"
+          "image": "/images/ios-ui-kit/15-PIN.png"
         },
         {
-          "image": "/images/16-Plans.png"
+          "image": "/images/ios-ui-kit/16-Plans.png"
         },
         {
-          "image": "/images/17-profile.webp"
+          "image": "/images/ios-ui-kit/17-profile.webp"
         },
         {
-          "image": "/images/18-Search.webp"
+          "image": "/images/ios-ui-kit/18-Search.webp"
         },
         {
-          "image": "/images/19-Settings.png"
+          "image": "/images/ios-ui-kit/19-Settings.png"
         },
         {
-          "image": "/images/20-Sheets_bottom.png"
+          "image": "/images/ios-ui-kit/20-Sheets_bottom.png"
         },
         {
-          "image": "/images/21-Tables.webp"
+          "image": "/images/ios-ui-kit/21-Tables.webp"
         },
         {
-          "image": "/images/22-Launch_Screens.webp"
+          "image": "/images/ios-ui-kit/22-Launch_Screens.webp"
         },
         {
-          "image": "/images/23-Statistics.webp"
+          "image": "/images/ios-ui-kit/23-Statistics.webp"
         }
       ]
     }
@@ -90,7 +90,7 @@ export const ios_ui_kitContent = {
       {
         "title": "Figma iOS kit",
         "description": "Figma library of iOS patterns served as ready-made templates. This UI kit inspired by World's best apps. Based on Human Interface guidelines.",
-        "image": "/images/pricing-ios-old-min.webp",
+        "image": "/images/ios-ui-kit/pricing-ios-old-min.webp",
         "buyLabel": "Buy now",
         "price": "$68",
         "buyHref": "https://setproduct.gumroad.com/l/iostoolkit",
@@ -99,7 +99,7 @@ export const ios_ui_kitContent = {
       {
         "title": "Newest Full iOS kit",
         "description": "Figma mobile design system with 320 app layouts at the ready. Contains variety of screens based on Apple's design guidelines + custom themes.",
-        "image": "/images/pricing-full-ios.webp",
+        "image": "/images/ios-ui-kit/pricing-full-ios.webp",
         "buyLabel": "Buy now",
         "price": "$168",
         "buyHref": "https://despoth.gumroad.com/l/full-ios-ui-kit",

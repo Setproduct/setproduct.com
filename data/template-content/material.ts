@@ -3,7 +3,7 @@ export const materialContent = {
     {
       "title": "Material components",
       "description": "Scalable and adjustable components with resizing constraints set",
-      "image": "/images/feature-material-01.svg"
+      "image": "/images/material/feature-material-01.svg"
     }
   ],
   "video": {
@@ -18,7 +18,7 @@ export const materialContent = {
       {
         "title": "Material Design System",
         "description": "",
-        "image": "/images/cover-material-800.webp",
+        "image": "/images/material/cover-material-800.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://setproduct.gumroad.com/l/materialsystem",
@@ -27,7 +27,7 @@ export const materialContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on Material Design patterns. Included: Material Dashboard + Material Design System.",
-        "image": "/images/pricing-md-bundle-mi_2.webp",
+        "image": "/images/material/pricing-md-bundle-mi_2.webp",
         "buyLabel": "Buy now",
         "price": "$138",
         "buyHref": "https://gum.co/figmamaterial"

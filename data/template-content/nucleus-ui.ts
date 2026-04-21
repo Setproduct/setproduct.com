@@ -3,17 +3,17 @@ export const nucleus_uiContent = {
     {
       "title": "1k+ Components with variants",
       "description": "With Text properties, Nested instances and other latest features",
-      "image": "/images/fea-01.svg"
+      "image": "/images/nucleus-ui/fea-01.svg"
     },
     {
       "title": "br/>",
       "description": "Light and dark templates via variables are now fully supported",
-      "image": "/images/fea-02.svg"
+      "image": "/images/nucleus-ui/fea-02.svg"
     },
     {
       "title": "Thoughtful UI kit architecture",
       "description": "Meticulously crafted components, designed with accessibility in mind",
-      "image": "/images/fea-03.svg"
+      "image": "/images/nucleus-ui/fea-03.svg"
     }
   ],
   "faq": [

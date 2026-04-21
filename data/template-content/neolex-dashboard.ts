@@ -12,85 +12,85 @@ export const neolex_dashboardContent = {
       "previewLink": "https://www.figma.com/file/08XMKVchlw2A6sN51r51Mp/Neolex-design-system-(preview)?node-id=232%3A113",
       "items": [
         {
-          "image": "/images/1-Desktop_Sample_1_2.webp"
+          "image": "/images/neolex-dashboard/1-Desktop_Sample_1_2.webp"
         },
         {
-          "image": "/images/2-widgets.webp"
+          "image": "/images/neolex-dashboard/2-widgets.webp"
         },
         {
-          "image": "/images/3-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/3-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/4-widgets.webp"
+          "image": "/images/neolex-dashboard/4-widgets.webp"
         },
         {
-          "image": "/images/5-Blocks.webp"
+          "image": "/images/neolex-dashboard/5-Blocks.webp"
         },
         {
-          "image": "/images/6-Sample_Desktop_2.webp"
+          "image": "/images/neolex-dashboard/6-Sample_Desktop_2.webp"
         },
         {
-          "image": "/images/7-Sample_Desktop_1.webp"
+          "image": "/images/neolex-dashboard/7-Sample_Desktop_1.webp"
         },
         {
-          "image": "/images/8-Frame_1.webp"
+          "image": "/images/neolex-dashboard/8-Frame_1.webp"
         },
         {
-          "image": "/images/9-Frame_1-1.webp"
+          "image": "/images/neolex-dashboard/9-Frame_1-1.webp"
         },
         {
-          "image": "/images/10-Desktop_sample_1.webp"
+          "image": "/images/neolex-dashboard/10-Desktop_sample_1.webp"
         },
         {
-          "image": "/images/11-widgets.webp"
+          "image": "/images/neolex-dashboard/11-widgets.webp"
         },
         {
-          "image": "/images/12-Desktop_sample_2.webp"
+          "image": "/images/neolex-dashboard/12-Desktop_sample_2.webp"
         },
         {
-          "image": "/images/13-Desktop_Sample_1.webp"
+          "image": "/images/neolex-dashboard/13-Desktop_Sample_1.webp"
         },
         {
-          "image": "/images/14-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/14-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/15-Desktop_Sample_1.webp"
+          "image": "/images/neolex-dashboard/15-Desktop_Sample_1.webp"
         },
         {
-          "image": "/images/16-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/16-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/17-Desktop_sample_1.webp"
+          "image": "/images/neolex-dashboard/17-Desktop_sample_1.webp"
         },
         {
-          "image": "/images/18-Desktop_sample_2.webp"
+          "image": "/images/neolex-dashboard/18-Desktop_sample_2.webp"
         },
         {
-          "image": "/images/19-widgets.webp"
+          "image": "/images/neolex-dashboard/19-widgets.webp"
         },
         {
-          "image": "/images/20-Desktop_Sample_1.webp"
+          "image": "/images/neolex-dashboard/20-Desktop_Sample_1.webp"
         },
         {
-          "image": "/images/21-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/21-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/22-Navigacia.webp"
+          "image": "/images/neolex-dashboard/22-Navigacia.webp"
         },
         {
-          "image": "/images/23-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/23-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/24-Desktop_Sample_1.png"
+          "image": "/images/neolex-dashboard/24-Desktop_Sample_1.png"
         },
         {
-          "image": "/images/25-Desktop_Sample_3.webp"
+          "image": "/images/neolex-dashboard/25-Desktop_Sample_3.webp"
         },
         {
-          "image": "/images/26-Desktop_Sample_1.webp"
+          "image": "/images/neolex-dashboard/26-Desktop_Sample_1.webp"
         },
         {
-          "image": "/images/27-Desktop_Sample_2.webp"
+          "image": "/images/neolex-dashboard/27-Desktop_Sample_2.webp"
         }
       ]
     }
@@ -102,7 +102,7 @@ export const neolex_dashboardContent = {
       {
         "title": "Neolex Dashboard UI kit",
         "description": "Customizable & adjustable dashboard design system with 50+ ready-to-use app layouts, 1900+ variants for 30 components with auto-layout.",
-        "image": "/images/pricing-neolex-01.webp",
+        "image": "/images/neolex-dashboard/pricing-neolex-01.webp",
         "buyLabel": "Buy now",
         "price": "$98",
         "buyHref": "https://gumroad.com/a/582595699/VJynl",
@@ -111,7 +111,7 @@ export const neolex_dashboardContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on dark & light Neolex templates. Included: Neolex UI kit (light) + Dark themed version.",
-        "image": "/images/pricing-neolex-bundl.webp",
+        "image": "/images/neolex-dashboard/pricing-neolex-bundl.webp",
         "buyLabel": "Buy Bundle",
         "price": "$116",
         "buyHref": "https://gumroad.com/a/786330739"

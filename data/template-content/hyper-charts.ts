@@ -3,22 +3,22 @@ export const hyper_chartsContent = {
     {
       "title": "1000+ of editable graphs in blocks",
       "description": "Hyper Charts are easy to use and can be easily adjusted to fit your needs",
-      "image": "/images/C1.webp"
+      "image": "/images/hyper-charts/C1.webp"
     },
     {
       "title": "Scalable charts for any device",
       "description": "Apply for dashboards, plug into presentations, supercharge mobile apps",
-      "image": "/images/C2.webp"
+      "image": "/images/hyper-charts/C2.webp"
     },
     {
       "title": "Created with a focus on UI details",
       "description": "Meticulously crafted graphs, designed with a keen eye for UI details",
-      "image": "/images/C3.webp"
+      "image": "/images/hyper-charts/C3.webp"
     },
     {
       "title": "Dark theme is considered",
       "description": "All the chart cards styled in Dark mode for visual consistency",
-      "image": "/images/C4.webp"
+      "image": "/images/hyper-charts/C4.webp"
     }
   ],
   "tabsSection": {
@@ -28,32 +28,32 @@ export const hyper_chartsContent = {
       {
         "id": "tab-1",
         "label": "Line Chart",
-        "beforeImage": "/images/Line_chart_light-min.webp",
-        "afterImage": "/images/Line_chart_dark-min.webp"
+        "beforeImage": "/images/hyper-charts/Line_chart_light-min.webp",
+        "afterImage": "/images/hyper-charts/Line_chart_dark-min.webp"
       },
       {
         "id": "tab-2",
         "label": "Bar Chart",
-        "beforeImage": "/images/Bar_chart_light-min.webp",
-        "afterImage": "/images/Bar_chart_dark-min.webp"
+        "beforeImage": "/images/hyper-charts/Bar_chart_light-min.webp",
+        "afterImage": "/images/hyper-charts/Bar_chart_dark-min.webp"
       },
       {
         "id": "tab-5",
         "label": "3D Chart",
-        "beforeImage": "/images/3d_chart_light-min.webp",
-        "afterImage": "/images/3d_chart_dark-min.webp"
+        "beforeImage": "/images/hyper-charts/3d_chart_light-min.webp",
+        "afterImage": "/images/hyper-charts/3d_chart_dark-min.webp"
       },
       {
         "id": "tab-3",
         "label": "Funnel Chart",
-        "beforeImage": "/images/Funnel_chart_light-m.webp",
-        "afterImage": "/images/Funnel_chart_dark-mi.webp"
+        "beforeImage": "/images/hyper-charts/Funnel_chart_light-m.webp",
+        "afterImage": "/images/hyper-charts/Funnel_chart_dark-mi.webp"
       },
       {
         "id": "tab-4",
         "label": "Radar Chart",
-        "beforeImage": "/images/Radar_chart_light-mi.webp",
-        "afterImage": "/images/Radar_chart_dark-min.webp"
+        "beforeImage": "/images/hyper-charts/Radar_chart_light-mi.webp",
+        "afterImage": "/images/hyper-charts/Radar_chart_dark-min.webp"
       }
     ]
   },

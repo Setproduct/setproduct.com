@@ -3,12 +3,12 @@ export const material_xContent = {
     {
       "title": "Mobile & Desktop templates",
       "description": "34 sections of design items for every case",
-      "image": "/images/features-mx-01.svg"
+      "image": "/images/material-x/features-mx-01.svg"
     },
     {
       "title": "p class=\"heading-style-h5 is-template-max-width\">Ready-to-use app templates",
       "description": "40 ready layouts for desktop, tablet and mobile",
-      "image": "/images/features-mx-02.svg"
+      "image": "/images/material-x/features-mx-02.svg"
     }
   ],
   "video": {
@@ -23,34 +23,34 @@ export const material_xContent = {
       "previewLink": "https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=4021%3A31",
       "items": [
         {
-          "image": "/images/1Dashboard-3.webp"
+          "image": "/images/material-x/1Dashboard-3.webp"
         },
         {
-          "image": "/images/2inputs-3.webp"
+          "image": "/images/material-x/2inputs-3.webp"
         },
         {
-          "image": "/images/3Start-2.webp"
+          "image": "/images/material-x/3Start-2.webp"
         },
         {
-          "image": "/images/4Table-3.webp"
+          "image": "/images/material-x/4Table-3.webp"
         },
         {
-          "image": "/images/5crypto-01-min.webp"
+          "image": "/images/material-x/5crypto-01-min.webp"
         },
         {
-          "image": "/images/6crypto-02-min.webp"
+          "image": "/images/material-x/6crypto-02-min.webp"
         },
         {
-          "image": "/images/7settings-02-min.webp"
+          "image": "/images/material-x/7settings-02-min.webp"
         },
         {
-          "image": "/images/8Charts-4-min.webp"
+          "image": "/images/material-x/8Charts-4-min.webp"
         },
         {
-          "image": "/images/9Profile-2-min.webp"
+          "image": "/images/material-x/9Profile-2-min.webp"
         },
         {
-          "image": "/images/10Social-4-min.webp"
+          "image": "/images/material-x/10Social-4-min.webp"
         }
       ]
     }
@@ -62,7 +62,7 @@ export const material_xContent = {
       {
         "title": "Material X for Figma",
         "description": "1100+ components & 40 app templates beyond Material Design. Powered by top-notch shapes and Manrope font. Customizable & Adjustable UI kit.",
-        "image": "/images/pircing-mx-02.webp",
+        "image": "/images/material-x/pircing-mx-02.webp",
         "buyLabel": "Buy now",
         "price": "$148",
         "buyHref": "https://setproduct.gumroad.com/l/material-x-fig",
@@ -71,7 +71,7 @@ export const material_xContent = {
       {
         "title": "Material X for Angular",
         "description": "Devs library where design and features of Figma components are equal to Angular components, which helps your designers and developers to stay in sync.",
-        "image": "/images/material-x-pricing-m.webp",
+        "image": "/images/material-x/material-x-pricing-m.webp",
         "buyLabel": "Buy now",
         "price": "$258",
         "buyHref": "https://gumroad.com/a/648003795/tmdzg"

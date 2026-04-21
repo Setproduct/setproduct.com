@@ -7,76 +7,76 @@ export const android_ui_kitContent = {
       "previewLink": "https://www.figma.com/file/STjIyMcHUqHQOeCk9Cd8Sank/Figma-Android-UI-Kit?node-id=0%3A7686",
       "items": [
         {
-          "image": "/images/1_Sign_In.webp"
+          "image": "/images/android-ui-kit/1_Sign_In.webp"
         },
         {
-          "image": "/images/2_Profile.webp"
+          "image": "/images/android-ui-kit/2_Profile.webp"
         },
         {
-          "image": "/images/3_Checkout.webp"
+          "image": "/images/android-ui-kit/3_Checkout.webp"
         },
         {
-          "image": "/images/4_Filtering.webp"
+          "image": "/images/android-ui-kit/4_Filtering.webp"
         },
         {
-          "image": "/images/5_Discover_Home.webp"
+          "image": "/images/android-ui-kit/5_Discover_Home.webp"
         },
         {
-          "image": "/images/6_Details_Item_page.webp"
+          "image": "/images/android-ui-kit/6_Details_Item_page.webp"
         },
         {
-          "image": "/images/7_Social_Cards.webp"
+          "image": "/images/android-ui-kit/7_Social_Cards.webp"
         },
         {
-          "image": "/images/1_Social.webp"
+          "image": "/images/android-ui-kit/1_Social.webp"
         },
         {
-          "image": "/images/2_Calendar.webp"
+          "image": "/images/android-ui-kit/2_Calendar.webp"
         },
         {
-          "image": "/images/3_Home__Categories.webp"
+          "image": "/images/android-ui-kit/3_Home__Categories.webp"
         },
         {
-          "image": "/images/4_Navigation.webp"
+          "image": "/images/android-ui-kit/4_Navigation.webp"
         },
         {
-          "image": "/images/5_Profile.webp"
+          "image": "/images/android-ui-kit/5_Profile.webp"
         },
         {
-          "image": "/images/6_Maps.webp"
+          "image": "/images/android-ui-kit/6_Maps.webp"
         },
         {
-          "image": "/images/7_Product.webp"
+          "image": "/images/android-ui-kit/7_Product.webp"
         },
         {
-          "image": "/images/8_Activity.webp"
+          "image": "/images/android-ui-kit/8_Activity.webp"
         },
         {
-          "image": "/images/9_Search_Flow.webp"
+          "image": "/images/android-ui-kit/9_Search_Flow.webp"
         },
         {
-          "image": "/images/10_Filters.webp"
+          "image": "/images/android-ui-kit/10_Filters.webp"
         },
         {
-          "image": "/images/11_Discover.webp"
+          "image": "/images/android-ui-kit/11_Discover.webp"
         },
         {
-          "image": "/images/12_Cart.webp"
+          "image": "/images/android-ui-kit/12_Cart.webp"
         },
         {
-          "image": "/images/13_Content_Screens.webp"
+          "image": "/images/android-ui-kit/13_Content_Screens.webp"
         },
         {
-          "image": "/images/14_Wish_List.webp"
+          "image": "/images/android-ui-kit/14_Wish_List.webp"
         },
         {
-          "image": "/images/15_Checkout.webp"
+          "image": "/images/android-ui-kit/15_Checkout.webp"
         },
         {
-          "image": "/images/16_Sign_in__Register.webp"
+          "image": "/images/android-ui-kit/16_Sign_in__Register.webp"
         },
         {
-          "image": "/images/17_Deals__Promo.webp"
+          "image": "/images/android-ui-kit/17_Deals__Promo.webp"
         }
       ]
     }
@@ -88,7 +88,7 @@ export const android_ui_kitContent = {
       {
         "title": "Figma Android UI kit",
         "description": "Components-driven Android mobile UI library for Figma. Consists of 140 high quality application templates made of total 250+ UI components.",
-        "image": "/images/pricing-android-01.webp",
+        "image": "/images/android-ui-kit/pricing-android-01.webp",
         "buyLabel": "Buy now",
         "price": "$74",
         "buyHref": "https://setproduct.gumroad.com/l/mobilesystem",
@@ -97,7 +97,7 @@ export const android_ui_kitContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on Material Design patterns. Included: Material Dashboard + Material Design System.",
-        "image": "/images/pricing-md-bundle-mi_1.webp",
+        "image": "/images/android-ui-kit/pricing-md-bundle-mi_1.webp",
         "buyLabel": "Buy now",
         "price": "$195",
         "buyHref": "https://gum.co/figmamaterial"

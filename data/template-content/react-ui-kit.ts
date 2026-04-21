@@ -3,12 +3,12 @@ export const react_ui_kitContent = {
     {
       "title": "br/>",
       "description": "Best practices from the most successful apps included in this kit",
-      "image": "/images/feature-react-01.svg"
+      "image": "/images/react-ui-kit/feature-react-01.svg"
     },
     {
       "title": "p class=\"heading-style-h5 is-template-max-width\">60 dashboard templates",
       "description": "Start screen, Analytics, Data grid, Profile, Settings, Inputs and more to come",
-      "image": "/images/feature-react-03.svg"
+      "image": "/images/react-ui-kit/feature-react-03.svg"
     }
   ],
   "carousels": [
@@ -18,19 +18,19 @@ export const react_ui_kitContent = {
       "previewLink": "https://www.figma.com/file/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-(Preview)?node-id=8289%3A15011",
       "items": [
         {
-          "image": "/images/01-home-min.webp"
+          "image": "/images/react-ui-kit/01-home-min.webp"
         },
         {
-          "image": "/images/02-dashboard-min.webp"
+          "image": "/images/react-ui-kit/02-dashboard-min.webp"
         },
         {
-          "image": "/images/03-datagrid-min.webp"
+          "image": "/images/react-ui-kit/03-datagrid-min.webp"
         },
         {
-          "image": "/images/04-profile-min.webp"
+          "image": "/images/react-ui-kit/04-profile-min.webp"
         },
         {
-          "image": "/images/05-inputs-min.webp"
+          "image": "/images/react-ui-kit/05-inputs-min.webp"
         }
       ]
     }
@@ -42,7 +42,7 @@ export const react_ui_kitContent = {
       {
         "title": "Figma UI kit",
         "description": "31 components, 3700+ variants, 60 dashboard templates crafted for Figma and fully ready-to-use with, or without modifications.",
-        "image": "/images/pricing-react-01.webp",
+        "image": "/images/react-ui-kit/pricing-react-01.webp",
         "buyLabel": "Buy now",
         "price": "$88",
         "buyHref": "https://setproduct.gumroad.com/l/figma-no-react",
@@ -51,7 +51,7 @@ export const react_ui_kitContent = {
       {
         "title": "Figma & React UI kit",
         "description": "",
-        "image": "/images/pricing-react-02.webp",
+        "image": "/images/react-ui-kit/pricing-react-02.webp",
         "buyLabel": "Buy now",
         "price": "$198",
         "buyHref": "https://setproduct.gumroad.com/l/figma2react"

@@ -3,22 +3,22 @@ export const xela_flutterContent = {
     {
       "title": "1900+ variants of 30 components",
       "description": "Accordions, Alerts, Badges, Breadcrumbs, Buttons, Charts and more",
-      "image": "/images/1feature-xela-01.webp"
+      "image": "/images/xela/1feature-xela-01.webp"
     },
     {
       "title": "50 templates for mobile & desktop",
       "description": "Web app layouts made with care of usability and attention to details",
-      "image": "/images/2feature-xela-02.webp"
+      "image": "/images/xela/2feature-xela-02.webp"
     },
     {
       "title": "Toggle between dark & light",
       "description": "We crafted XELA with a purpose to swap between themes without a hassle",
-      "image": "/images/3feature-xela-03.webp"
+      "image": "/images/xela/3feature-xela-03.webp"
     },
     {
       "title": "Organized, based on auto-layout",
       "description": "App design quickstarterfor startups, indiehackers or busy designers",
-      "image": "/images/4feature-xela-04.webp"
+      "image": "/images/xela/4feature-xela-04.webp"
     }
   ],
   "pricing": {
@@ -28,7 +28,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela UI kit for Figma",
         "description": "Customizable & adjustable dashboard design system with 50+ ready-to-use app layouts, 1900+ variants for 30 components with auto-layout.",
-        "image": "/images/pricing-xela-01.webp",
+        "image": "/images/xela/pricing-xela-01.webp",
         "buyLabel": "Buy now",
         "price": "$128",
         "buyHref": "https://gumroad.com/a/471143539/tLrzi",
@@ -37,7 +37,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela Design & Code bundle",
         "description": "Grab this 5-in-1 design & code bundle with Figma, React, Flutter, SwiftUI & Jetpack Compose components included and 150+ pre-coded screens (all with sources).",
-        "image": "/images/pricing-xela-bundle.webp",
+        "image": "/images/xela/pricing-xela-bundle.webp",
         "buyLabel": "Buy now",
         "price": "$499",
         "buyHref": "https://gumroad.com/a/245604275/pZdwA"
@@ -45,7 +45,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela for React",
         "description": "10 ready-made web app screens with 39 blocks based on 30 fully coded React components. Source code for React included.",
-        "image": "/images/pricing-xela-react.webp",
+        "image": "/images/xela/pricing-xela-react.webp",
         "buyLabel": "Buy now",
         "price": "$258",
         "buyHref": "https://gumroad.com/a/235691955/ygwkm"
@@ -53,7 +53,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela for Flutter",
         "description": "36 ready-made app screens based on 66 widgets. Source code for Android Studio Project, Flutter.",
-        "image": "/images/pricing-xela-flutter.webp",
+        "image": "/images/xela/pricing-xela-flutter.webp",
         "buyLabel": "Buy now",
         "price": "$258",
         "buyHref": "https://gumroad.com/a/899915699/xotkv"
@@ -61,7 +61,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela for Android",
         "description": "36 ready-made app screens based on 66 widgets. Source code for Android Studio, Jetpack Compose, min SDK 26, target SDK 30.",
-        "image": "/images/pricing-xela-android.webp",
+        "image": "/images/xela/pricing-xela-android.webp",
         "buyLabel": "Buy now",
         "price": "$258",
         "buyHref": "https://gumroad.com/a/732143539/GLuLk"
@@ -69,7 +69,7 @@ export const xela_flutterContent = {
       {
         "title": "Xela for Swift",
         "description": "36 ready-made application screens based on 66 widgets. Source code for Swift 5+, SwiftUI, iOS 13+, Xcode.",
-        "image": "/images/pricing-xela-ios.webp",
+        "image": "/images/xela/pricing-xela-ios.webp",
         "buyLabel": "Buy now",
         "price": "$258",
         "buyHref": "https://gumroad.com/a/163615859/CzKEw"
