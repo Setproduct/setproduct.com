@@ -3,22 +3,22 @@ export const orionContent = {
     {
       "title": "500+ charts components",
       "description": "Build HQ dashboards and attractive presentations with confidence",
-      "image": "/images/feature-orion-01.webp"
+      "image": "/images/orion/feature-orion-01.webp"
     },
     {
       "title": "35+ full-screen templates",
       "description": "Quickstart your dataviz mission with stunning dark & light layouts",
-      "image": "/images/feature-orion-02.webp"
+      "image": "/images/orion/feature-orion-02.webp"
     },
     {
       "title": "Powered by Auto-layout",
       "description": "Edit, adjust, customize Orion UI kit faster to fit better for your project",
-      "image": "/images/feature-orion-03.webp"
+      "image": "/images/orion/feature-orion-03.webp"
     },
     {
       "title": "Dark & Light themes",
       "description": "Each theme is included as separated .FIG files. Use single or both of it",
-      "image": "/images/feature-orion-04.webp"
+      "image": "/images/orion/feature-orion-04.webp"
     }
   ],
   "carousels": [
@@ -220,7 +220,7 @@ export const orionContent = {
       {
         "title": "Orion UI kit for Figma",
         "description": "Customizable and well-organized Figma library. This design toolkit aimed for projects where the beautiful data visualization is required.",
-        "image": "/images/pricing-orion-01.webp",
+        "image": "/images/orion/pricing-orion-01.webp",
         "buyLabel": "Buy now",
         "price": "$148",
         "buyHref": "https://gumroad.com/a/530945235/kzbajr",
@@ -229,7 +229,7 @@ export const orionContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for complex web apps and dashboards, where is the data visualisation matters most. Included: Eclipse UI kit + Orion UI kit",
-        "image": "/images/pricing-orion-02.webp",
+        "image": "/images/orion/pricing-orion-02.webp",
         "buyLabel": "Buy Bundle",
         "price": "$218",
         "buyHref": "https://gumroad.com/a/530945235/vbcnzd"
