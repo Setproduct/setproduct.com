@@ -21,7 +21,7 @@ export function getCollectionPageData(collection: string, slug: string): LegacyP
 
 export function getRootPageSlugs(): string[] {
   const dir = path.join(process.cwd(), "legacy-pages");
-  const excluded = new Set(["index", "404"]);
+  const excluded = new Set(["index", "404", "search"]);
 
   return fs
     .readdirSync(dir)

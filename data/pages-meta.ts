@@ -113,4 +113,12 @@ export const PAGE_META: Record<string, PageMeta> = {
       "/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65a66f06e0e919d7d7e3e8d5_setproduct2.jpg",
     canonical: "https://www.setproduct.com/legal/terms-of-paid-posts",
   },
+  search: {
+    title: "Search Results",
+    description:
+      "Search Setproduct for Figma templates, UI kits, design systems, and design articles.",
+    ogImage:
+      "/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65a66f06e0e919d7d7e3e8d5_setproduct2.jpg",
+    canonical: "https://www.setproduct.com/search",
+  },
 };
