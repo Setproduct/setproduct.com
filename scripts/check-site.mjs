@@ -316,12 +316,18 @@ async function main() {
     allRefs.get(u).add(sourcePage);
   };
 
+  // When running against a non-canonical host (e.g. localhost), absolute URLs
+  // pointing at canonical hosts are effectively the same document served by the
+  // target host. Rewrite them so the report reflects real health of the build
+  // under test, not staleness of the canonical origin.
+  const rewriteRef = (u) => rewriteToTarget(u);
+
   for (const p of pageResults) {
     if (!p.ok) continue;
-    for (const u of p.links.anchors) addRef(u, p.url);
-    for (const u of p.links.images) addRef(u, p.url);
-    for (const u of p.links.assets) addRef(u, p.url);
-    for (const u of p.links.meta) addRef(u, p.url);
+    for (const u of p.links.anchors) addRef(rewriteRef(u), p.url);
+    for (const u of p.links.images) addRef(rewriteRef(u), p.url);
+    for (const u of p.links.assets) addRef(rewriteRef(u), p.url);
+    for (const u of p.links.meta) addRef(rewriteRef(u), p.url);
   }
 
   const allRefUrls = [...allRefs.keys()];

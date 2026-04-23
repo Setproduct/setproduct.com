@@ -1,125 +1,369 @@
-# Site Health Report — setproduct-com.vercel.app
+# Site Health Report
 
-**Date:** 2026-04-23
-**Target:** https://setproduct-com.vercel.app
-**Script:** `scripts/check-site.mjs`
-**Full data:** `scripts/report.json`
+- Target: http://localhost:3000
+- Sitemap URLs: 245
+- Pages OK: 245/245
+- Referenced URLs: 12376
+- **Broken total**: 354 (internal: 0, external: 354)
+- By kind: {"external":354}
 
-## TL;DR
+## Broken internal links: none ✅
 
-| Check | Result |
-|---|---|
-| Sitemap URLs reachable (200) | **242 / 242 ✅** |
-| Broken internal non-image refs | **3** (1 × 404 page + 1 × 404 asset + 1 × setproduct.com rewrite) |
-| Broken internal `/_next/image` requests | **1081** — all reduce to **2 root causes** (SVG-as-JPG + Vercel quota) |
-| Broken external links | **474** (mostly Figma 403/bot-block + dead domains) |
+## Broken external links (354)
 
-No page in the sitemap returns a non-200. All "broken" internal findings reduce to **3 real issues**.
-
----
-
-## Real issues to fix
-
-### 1. Broken internal link: `/legal/terms-and-conditions` (404) — ⚠️ FIX
-
-- **Where:** `components/sections/CtaSubscribe.tsx:49`
-  ```tsx
-  <a className="link-text-primary" href="/legal/terms-and-conditions">Terms and Conditions.</a>
-  ```
-- **Problem:** The page doesn't exist. Only these legal pages are present:
-  - `pages/legal/license.tsx`
-  - `pages/legal/refunds-policy.tsx`
-  - `pages/legal/terms-of-paid-posts.tsx`
-- **Impact:** Every page that renders `<CtaSubscribe />` has a dead "Terms and Conditions" link.
-- **Fix options:**
-  - Point to `/legal/terms-of-paid-posts` (most likely intent), or
-  - Create `pages/legal/terms-and-conditions.tsx`, or
-  - Remove/rewrite the link.
-
-### 2. Broken internal link: `/external/github.com/vercel/next.js` (404) — ⚠️ FIX
-
-- **Where:** `content/blog/material-nextjs-ui-kit.mdx`
-- **Problem:** MDX contains what looks like a mis-rewritten external URL. Should be:
-  `https://github.com/vercel/next.js`
-- **Fix:** Replace the path in that MDX file.
-
-### 3. 134 blog images are `*.jpg` but actually **SVG** — ⚠️ FIX
-
-- **Examples:**
-  - `public/blog/assets/button-ui-design/img-{2,3,5,6,9,13}.jpg` — SVG
-  - `public/blog/assets/notifications-ui-design/img-{18..21}.jpg` — SVG
-  - `public/blog/assets/chip-ui-design/img-*.jpg` — SVG
-  - …total **134 files** (affecting 1072 `/_next/image` request variants).
-- **Detection:**
-  ```bash
-  find public -name '*.jpg' -print0 | xargs -0 file | grep 'SVG' | wc -l
-  # → 134
-  ```
-- **Why it breaks:** Next.js Image Optimizer refuses to optimize SVG by default → `/_next/image?url=.../img-N.jpg` returns HTTP 400. The raw URL (`/blog/assets/.../img-N.jpg`) still serves with 200, so `<img>` tags display fine, but anything using `next/image` doesn't.
-- **Fix options:**
-  1. **Rename `.jpg` → `.svg`** and update references (correct long-term fix).
-  2. Set `images.dangerouslyAllowSVG = true` in `next.config.js` with a strict CSP (fastest).
-  3. Re-encode as real JPEG.
-
-### 4. Vercel Image Optimizer quota exceeded on preview — ℹ️ INFO (not a code bug)
-
-- **Symptom:** 9 `/_next/image` requests for `blog/pay-for-claude-pro-with-usdt/img-1.jpg` (the newest post) return **HTTP 402** with body:
-  ```
-  Payment required
-  OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED
-  ```
-- **Cause:** Hobby-plan monthly image-optimization limit hit on this preview.
-- **Impact on production:** None (different project). On vercel.app preview it will self-resolve next billing cycle.
-- **If preview must stay green:** upgrade the plan or set `images: { unoptimized: true }` for preview builds only.
-
-### 5. 145 absolute refs to `https://setproduct.com/blog/covers/*.jpg` → 404 — ⚠️ CHECK
-
-- **Finding:** Blog post covers are referenced as **absolute URLs to the old production host** (`https://setproduct.com/...`), which now redirects to `www.setproduct.com/...` where the files return **404**.
-- **New site has the files:** all 145 covers are present in `public/blog/covers/` and serve fine via `https://setproduct-com.vercel.app/blog/covers/<slug>.jpg` (200).
-- **Impact:** Any external consumer (OG image in socials, RSS reader, search-engine cache) hitting the old absolute URL gets a 404.
-- **Fix:** Render cover URLs as relative paths (`/blog/covers/<slug>.jpg`) or build absolute URLs dynamically from the current origin instead of hard-coding `https://setproduct.com/...`.
-
----
-
-## Broken external links (474)
-
-Status distribution:
-
-| Status | Count | Note |
+| Status | URL | Sample source |
 |---|---|---|
-| 404 (Not Found) | 328 | Target pages removed on 3rd-party sites |
-| 403 (Forbidden) | 117 | Mostly `www.figma.com` blocking the bot UA |
-| 0 (network / DNS error) | 18 | Domains gone or blocking our UA |
-| 504 / 429 / 401 / 406 / 999 | 11 | Transient or auth-gated |
-
-Top hosts:
-
-| Host | Count | Reality check |
-|---|---|---|
-| `www.figma.com` | 282 | 403/404 for the bot; URLs likely work in a browser. **Mostly false-positive.** |
-| `setproduct.com` | 146 | Issue #5 above — fix by making cover URLs relative. |
-| `codepen.io`, `docs.thorswap.finance`, `makers.so`, `materialx.crionic.net`, `www.statista.com`, `www.uxcrush.com` | 2 each | Real 403/404. |
-| 44+ small/personal domains | 1 each | Many are dead personal blogs from old posts. |
-
-**Recommendations:**
-- Before treating Figma links as broken, re-run with a browser-like User-Agent or Playwright (Figma returns 403 to simple `HEAD`/`GET`).
-- Manually triage the 18 DNS-dead domains — rewrite or mark as archive.
-- Full list: `scripts/report.json` → `broken[]` filtered by `internal === false`.
-
----
-
-## How to reproduce
-
-```bash
-node scripts/check-site.mjs https://setproduct-com.vercel.app
-# → writes scripts/report.json + scripts/report.md
-# tune via env: PAGE_CONCURRENCY, ASSET_CONCURRENCY, TIMEOUT
-```
-
-Exit code is non-zero if any sitemap page fails or any internal link is broken.
-
-## What was checked
-
-- Sitemap: `/sitemap.xml` (242 URLs, `www.setproduct.com` hosts rewritten to the Vercel preview)
-- Each page's HTML: `<a href>`, `<img src>`, `<img srcset>` / `<source srcset>`, `<link>` (icons, stylesheets, preload, manifest), `<script src>`, `<meta property="og:image"|"twitter:image">`
-- HEAD probes (with GET fallback on 403/405/501) for every unique referenced URL — 13 497 total, 13 356 asset/link HEADs, 242 page GETs
+| ERR fetch failed | `https://ai.setproduct.com/` | `http://localhost:3000/blog/navigating-the-job-market-storm` |
+| 403 | `https://app.ahrefs.com/` | `http://localhost:3000/blog/guest-posting-opportunities` |
+| 403 | `https://app.thorswap.finance/swap?ref=0xgm` | `http://localhost:3000/blog/bitcoin-adoption-today-speculative-reality` |
+| ERR fetch failed | `https://aspect.app/` | `http://localhost:3000/blog/useful-design-resources-fall-2020` |
+| ERR fetch failed | `https://atlasicons.vectopus.com/` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| 404 | `https://blog.developer.adobe.com/the-next-iteration-of-adobe-plugin-distribution-47ba732dc20a` | `http://localhost:3000/blog/top-design-releases-2020` |
+| 403 | `https://build.diligent.com/building-complex-figma-variants-e1005832c531` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 404 | `https://chakra-ui.com/docs/styled-system/theme#gray` | `http://localhost:3000/blog/checkbox-react-component` |
+| 403 | `https://chatgpt.com/c/9e3e59dc-c712-48af-adb4-84598070ff86#` | `http://localhost:3000/blog/benefits-of-dashboards` |
+| 403 | `https://codepen.io/andyNroses/pen/KaENLb` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://codepen.io/azazy/pen/EgdXxG` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/bramus/pen/JjvEExW` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/catalinred/pen/AwvOmv` | `http://localhost:3000/blog/button-group-guide` |
+| 403 | `https://codepen.io/codingyaar/pen/eYbdJgQ` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://codepen.io/cornflourblue/pen/KVeaQL` | `http://localhost:3000/blog/pagination-ui-design` |
+| 403 | `https://codepen.io/danzawadzki/pen/mOoeNM` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://codepen.io/fadzrinmadu/pen/xxqYoxm` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://codepen.io/gatoledo1/pen/mdXLReX` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://codepen.io/havardob/pen/xxPqXdO` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/j-v-w/pen/ZEbGzyv` | `http://localhost:3000/blog/how-to-3d-animate-scroll` |
+| 403 | `https://codepen.io/jasondavis/pen/xRerWB` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/joeydesignsstuff/pen/gBezzr` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://codepen.io/jstn/pen/GWjawa)Cool` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://codepen.io/medrupaloscil/pen/OJNrLLX` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://codepen.io/nopr/pen/DWrOBm` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://codepen.io/prvnbist/pen/ZyMvYd` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://codepen.io/Tampon/pen/qBZJvRX` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/TurkAysenur/pen/RwWKYMO` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://codepen.io/wa23/pen/pObyrq` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://codepen.io/Wujek_Greg/pen/GOpZbW` | `http://localhost:3000/blog/button-group-guide` |
+| 403 | `https://codepen.io/ykosinets/pen/eYYEMpR` | `http://localhost:3000/blog/notifications-ui-design` |
+| ERR fetch failed | `https://confluence.vc/investors/` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| ERR fetch failed | `https://creator.nolipix.com/guest` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| 403 | `https://docs.thorswap.finance/thorswap/thor/about` | `http://localhost:3000/blog/how-to-swap-btc-to-eth-with-thorswap` |
+| 403 | `https://docs.thorswap.finance/thorswap/thorswap/streaming-swaps` | `http://localhost:3000/blog/how-to-swap-btc-to-eth-with-thorswap` |
+| ERR fetch failed | `https://gtrendz.online/` | `http://localhost:3000/blog/case-study-gtrendz` |
+| ERR fetch failed | `https://gumaffiliates.best/` | `http://localhost:3000/blog/top-design-resources-jan-2021` |
+| 404 | `https://gumroad.com/a/212878163/geuou` | `http://localhost:3000/` |
+| 403 | `https://gusto.com/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://iconduck.com/` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 403 | `https://iconscout.com/plugins/iconscout-for-canva` | `http://localhost:3000/blog/top-design-tools` |
+| 403 | `https://kamushken.medium.com/` | `http://localhost:3000/` |
+| ERR fetch failed | `https://makers.so/templates` | `http://localhost:3000/blog/top-design-tools` |
+| ERR fetch failed | `https://makers.so/tutorials` | `http://localhost:3000/blog/top-design-tools` |
+| ERR fetch failed | `https://materialx.crionic.net/components/input#base` | `http://localhost:3000/blog/input-ui-design` |
+| ERR fetch failed | `https://materialx.crionic.net/components/tag` | `http://localhost:3000/blog/chip-ui-design` |
+| 403 | `https://medium.com/@diamond_io/productivity-lost-time-and-the-power-of-ai-to-make-search-easier-a59d4cd85a26#:~:text=In_a_more_recent_IDC,the_best_at_finding_them.` | `http://localhost:3000/blog/remote-productivity` |
+| 403 | `https://medium.com/@luke_ob` | `http://localhost:3000/blog/case-study-journeyapp` |
+| 403 | `https://medium.com/@nitishkmrk/responsive-grid-design-ultimate-guide-7aa41ca7892` | `http://localhost:3000/blog/useful-design-resources-fall-2020` |
+| 403 | `https://moz.com/` | `http://localhost:3000/blog/seo-tools-compared` |
+| ERR fetch failed | `https://my.chicohq.com/blocks-wireframing-kit-for-sketch?ref=producthunt` | `http://localhost:3000/blog/8-designers-developers-success` |
+| ERR fetch failed | `https://nomoremondays.fm/` | `http://localhost:3000/blog/8-designers-developers-success` |
+| 403 | `https://setapp.com/how-to/set-up-icloud-mail-on-your-mac` | `http://localhost:3000/blog/how-to-enhance-email-security` |
+| ERR fetch failed | `https://superthemes.co/` | `http://localhost:3000/blog/8-designers-developers-success` |
+| ERR fetch failed | `https://tolta.co/` | `http://localhost:3000/blog/8-designers-developers-success` |
+| 429 | `https://uppbeat.io/` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 403 | `https://uxdesign.cc/data-table-for-enterprise-ux-cb48fb9fdf1e` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 404 | `https://webflow.com/made-in-webflow/website/Meet-Mac-a-free-retro-themed-template?rfsn=907313.fd59a6` | `http://localhost:3000/blog/8-designers-developers-success` |
+| ERR fetch failed | `https://workplacetrends.co/how-much-time-do-you-lose-to-distractions/#:~:text=Research_suggests_that%3A,a_disruption_is_25_minutes` | `http://localhost:3000/blog/remote-productivity` |
+| 404 | `https://www.achievers.com/blog/top-5-benefits-of-hiring-remote-employees/#:~:text=Reduces_cost%2Dsavings,if_they_offered_remote_working.` | `http://localhost:3000/blog/remote-productivity` |
+| 404 | `https://www.bynapkin.com/tools/starting-a-business-with-no-money/` | `http://localhost:3000/blog/start-a-saas-business-with-no-money` |
+| 403 | `https://www.figma.com/@templates` | `http://localhost:3000/blog/badge-ui-design` |
+| 403 | `https://www.figma.com/c/file/809152234949654615/Spacings` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/c/plugin/731176732337510831/Themer/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/c/plugin/731310036968334777/Focus-Orderer/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/c/plugin/731627216655469013/Content-Reel/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/c/plugin/735072959812183643/Find-and-Replace/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/c/plugin/740097744539225981/Paste-to-Fill/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/c/plugin/740127005583346577/Button-Resizer/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 403 | `https://www.figma.com/community/file/1098325138756147704` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://www.figma.com/community/file/1099687037905230218` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://www.figma.com/community/file/1107025038803950231` | `http://localhost:3000/blog/top-20-recent-design-resources` |
+| 403 | `https://www.figma.com/community/file/1108679668074690379` | `http://localhost:3000/blog/top-20-recent-design-resources` |
+| 403 | `https://www.figma.com/community/file/1182200220782535444` | `http://localhost:3000/blog/pagination-ui-design` |
+| 403 | `https://www.figma.com/community/file/1203724645713134219` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://www.figma.com/community/file/1204844586695899918` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1217391747927247785` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://www.figma.com/community/file/1229658236153063252` | `http://localhost:3000/blog/carousel-ui-design` |
+| 403 | `https://www.figma.com/community/file/1238171480690819699` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://www.figma.com/community/file/1238519824747732147` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1256292792334325112` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://www.figma.com/community/file/1260486669539481340` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1299593245090255285` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://www.figma.com/community/file/1324173071151702815` | `http://localhost:3000/blog/pagination-ui-design` |
+| 403 | `https://www.figma.com/community/file/1326509714105137689` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1337453743113407154` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1341412785258318471` | `http://localhost:3000/blog/pricing-ui-design` |
+| 403 | `https://www.figma.com/community/file/1343423894492217481` | `http://localhost:3000/blog/user-profile-templates` |
+| 403 | `https://www.figma.com/community/file/1404856652359938563` | `http://localhost:3000/blog/liftkit-open-source-design-system-for-figma-react` |
+| 403 | `https://www.figma.com/community/file/1410730772304672142` | `http://localhost:3000/blog/pagination-ui-design` |
+| 403 | `https://www.figma.com/community/file/766822741396935685` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/767058488354708493` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 403 | `https://www.figma.com/community/file/767107487237195799` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/767122733527420957` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/768200999698270273` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/768673354734944365` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 403 | `https://www.figma.com/community/file/768726574016795759` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/769801235736984714` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/770424587644116118` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/781156790581391771` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/784773846783975923` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/800815864899415771` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/809152234949654615` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/file/809845546262698150` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 403 | `https://www.figma.com/community/file/810284256749592805` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/811693274772198671` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/812358656900783385` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/812397098918918427` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/814733364803625297` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 403 | `https://www.figma.com/community/file/817436609226882468` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/817531077036545462` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/817711949356767687` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/818590953427600893` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/819284135208258080` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/file/819944587060250168` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/822141660209426062` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/829741575478342595` | `http://localhost:3000/blog/figma-20-newest-templates` |
+| 403 | `https://www.figma.com/community/file/831997833675385869` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/852038744760148547/push-notification-ui-kit-ios-android-chrome-firefox-windows` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://www.figma.com/community/file/855530921435605688` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/859195262232492832` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/862805330899066752` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/863488139273720724` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/865151903316043704` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/866420896007969754` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/866532393298219995` | `http://localhost:3000/blog/figma-summer-top-15` |
+| 403 | `https://www.figma.com/community/file/898096768838677942` | `http://localhost:3000/blog/top-design-resources-jan-2021` |
+| 403 | `https://www.figma.com/community/file/908391866828928884` | `http://localhost:3000/blog/useful-design-resources-fall-2020` |
+| 403 | `https://www.figma.com/community/file/937774188065101204` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 403 | `https://www.figma.com/community/plugin/1044419856113171023/drawkit-3d-builder` | `http://localhost:3000/blog/top-design-tools` |
+| 403 | `https://www.figma.com/community/plugin/1159123024924461424/html.to.design` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| 403 | `https://www.figma.com/community/plugin/1160642826057169962/Figma-Autoname` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| 403 | `https://www.figma.com/community/plugin/1182746451598399442/Atlas-Icons` | `http://localhost:3000/blog/latest-18-resources-boost-efficiency` |
+| 403 | `https://www.figma.com/community/plugin/738264841927149297/Coda-for-Figma` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/764471577604277919/Wire-Box` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/776923340646658146/BeatFlyer-Lite` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/777954172157933782/Vector-Maps` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/784879032180068427/SwiftUI-Inspector` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/789009980664807964/TinyImage-Compressor` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/792025380269016893/Filter` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/792025380269016893/filter-effects` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/795397421598343178/LilGrid` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/795474715778185230/Dot-Grid` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/797471678566755597/Movie-Posters` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/797696673804519719/Color-Kit` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/799767414861565467/Material-palette` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/801195587640428208/Design-Lint` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/802147585857776440/Webgradients` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/802579985985331070/Design-System-Organizer` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/803633147991628761/GiffyCanvas` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/806266638862897503/Find-and-Replace-Colors` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/809099681305129697/Spacing-Manager` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/809860933081065308/LottieFiles` | `http://localhost:3000/blog/figma-plugins-review-2020` |
+| 403 | `https://www.figma.com/community/plugin/811977401825396882/Focus-CSS` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/815605811994993448/Tracking` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/816627069580757929/Style-Organizer` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/817474150404549708/AutoGrid` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/818097713452519609/Halftones` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/818203235789864127/Batch-Styler` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/818613147082270958/Sitemap` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/823077195186711433/Flipbook` | `http://localhost:3000/blog/figma-plugins-productivity-boost` |
+| 403 | `https://www.figma.com/community/plugin/906950256777348534/Morph` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 403 | `https://www.figma.com/community/plugin/927255248672920500/StyleList-%E2%80%93-text-and-color-styles` | `http://localhost:3000/blog/design-resources-feb-2021` |
+| 404 | `https://www.figma.com/design/hTidvDES1gORcwhmfyCDWc/Unwanted-profile-redesign?node-id=0-1&t=Mf8tP0ajQAjQo3Nh-1` | `http://localhost:3000/blog/user-profile-templates` |
+| 404 | `https://www.figma.com/design/mkZz9gSTS3Tyld6tBfyDt3/Strikethrough-text-in-UI-design/duplicate` | `http://localhost:3000/blog/strikethrough-text-deserves-more-love-in-ui` |
+| 404 | `https://www.figma.com/design/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-(Preview)?node-id=8522-0&t=HHWIwHcnbjFvzcrs-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-(Preview)?node-id=8668-200657&t=NhA0g01pnF7p8fxU-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/QmvEcnuMWn5Ye9q4ZTndkJ/AI-kit?node-id=476-1272&amp;t=7lk1pipYfYRhEMBx-1` | `http://localhost:3000/templates/nocra` |
+| 404 | `https://www.figma.com/design/QmvEcnuMWn5Ye9q4ZTndkJ/AI-kit?node-id=476-1272&t=7lk1pipYfYRhEMBx-1` | `http://localhost:3000/templates/nocra` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=1503-15313&t=eyRbxI2J0jvzZDCv-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=1503-15381&t=eyRbxI2J0jvzZDCv-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=1503-15564&t=eyRbxI2J0jvzZDCv-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=1503-9186&t=aNmnRpUN0vnbeKwN-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=1503-9468&t=aNmnRpUN0vnbeKwN-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Rs8ucOcIrpmPS3Pya5nkMV/Nocra-AI-kit-preview?node-id=476-1272&t=aNmnRpUN0vnbeKwN-1` | `http://localhost:3000/blog/nocra-ui-kit-the-ai-design-system-with-templates` |
+| 404 | `https://www.figma.com/design/Tp6rUcouQbl31zSoBEFG2P/Figma-Material-Design-System-v3_1-preview?node-id=0-657&t=yjdhFVv6R9JfP360-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/tQ8etHCaJYFiMTlaQsUv4J/iOS-13-Design-System?node-id=2096-431096&t=MwQwAcg6HSqMcOLe-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1082-1277&t=AxCH0VEV4CBVUvFy-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1676-107973&t=rXbiuTtMdt5HW14K-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=687-125&t=7UXXMet5Fz1OdKuO-1` | `http://localhost:3000/blog/tabs-ui-design` |
+| 404 | `https://www.figma.com/design/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?node-id=427-18264&t=FQ01xMw71QdK2rtI-1` | `http://localhost:3000/blog/campaign-marketing-dashboards-guide` |
+| 404 | `https://www.figma.com/design/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?node-id=601-512&t=o0Q1AX5cS6rforvC-1` | `http://localhost:3000/blog/campaign-marketing-dashboards-guide` |
+| 404 | `https://www.figma.com/design/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?node-id=7143-34044&t=o0Q1AX5cS6rforvC-1` | `http://localhost:3000/blog/campaign-marketing-dashboards-guide` |
+| 404 | `https://www.figma.com/design/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?node-id=7198-116482&t=ZeVe4ku4UXZ7KMhG-1` | `http://localhost:3000/blog/campaign-marketing-dashboards-guide` |
+| 404 | `https://www.figma.com/design/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?node-id=7198-132145&t=sJbQxN7tlify2gs3-1` | `http://localhost:3000/blog/campaign-marketing-dashboards-guide` |
+| 404 | `https://www.figma.com/file/08XMKVchlw2A6sN51r51Mp/Neolex-design-system-(preview)` | `http://localhost:3000/templates/neolex-dashboard` |
+| 404 | `https://www.figma.com/file/0bXou4jpPZbcjUXjb0NhV9/Eclipse-UI-kit---design-system-starter/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/1lILyv4s9TXvmJzGX2GKHf/Mobile-X-design-system-lite/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/1rtds7BSrlFryO1D9r2F3k/Segment---Free-UI-Kit/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/25hBY4vuqRwPRH3uMaGm14/Levitate-(preview)?type=design&amp;mode=design` | `http://localhost:3000/templates/levitate` |
+| 404 | `https://www.figma.com/file/25hBY4vuqRwPRH3uMaGm14/Levitate-(preview)?type=design&node-id=1-2517&mode=design` | `http://localhost:3000/templates/levitate` |
+| 404 | `https://www.figma.com/file/2VwYyliScRSEsD3O0h1mgB/XELA---Community-2/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/4FgwyPERZehFWdfy6HVpYL/Figma-design-system-template-setproduct.com/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/4OQBqLHei1o0kgVAlR012G/Figma-UI-kit-%E2%9C%A6-Orion-dashboard-templates/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/5kHWV1CbJpWejJjWZL2wZe/Levitate-(Community)/duplicate?type=design&amp;node-id=4-0&amp;mode=design` | `http://localhost:3000/templates/levitate` |
+| 404 | `https://www.figma.com/file/652eskZ40cSr0XXjrSn0dA/Search-Inputs/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/7JEsgG701agVb4BCd2wQsq/iOS-design-system-%E2%80%94-Figma-UI-kit/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/7ov6FPrFUJZAv2jY2QeICB/Appka-iOS-(Preview)?type=design&amp;node-id=7221-2255&amp;mode=design` | `http://localhost:3000/templates/appka-ios-ui-kit` |
+| 404 | `https://www.figma.com/file/7ov6FPrFUJZAv2jY2QeICB/Appka-iOS-(Preview)?type=design&node-id=7221-2255&mode=design` | `http://localhost:3000/templates/appka-ios-ui-kit` |
+| 404 | `https://www.figma.com/file/7ov6FPrFUJZAv2jY2QeICB/Appka-iOS-(Preview)?type=design&node-id=7524%3A91955&mode=design&t=LW5RNfQ2avFGYkD1-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/9BX4lIGjkx1YcTvcjz5jwH/Panda-Design-System-(preview)` | `http://localhost:3000/templates/panda` |
+| 404 | `https://www.figma.com/file/9BX4lIGjkx1YcTvcjz5jwH/Panda-Design-System-(preview)?type=design&amp;node-id=701-226599&amp;mode=design` | `http://localhost:3000/templates/panda` |
+| 404 | `https://www.figma.com/file/9BX4lIGjkx1YcTvcjz5jwH/Panda-Design-System-(preview)?type=design&node-id=549%3A115270&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/9LP39ZeqrUdIGVGH7JJg4q/Figma-Charts-%26-Infographics-UI-kit-(Community)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/9LP39ZeqrUdIGVGH7JJg4q/Figma-Charts-%26-Infographics-UI-kit-(Community)/duplicate?type=design&node-id=1253-275193&mode=design` | `http://localhost:3000/templates/charts` |
+| 404 | `https://www.figma.com/file/9SVBCR2rbaJyYOIxwmbwGV/Figma-Android-UI-kit---Kanban-Project-management/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/aNN74suNWBb0uFGW3lxV7Q/Material-Me-(preview)?node-id=10273%3A257931` | `http://localhost:3000/blog/badge-ui-design` |
+| 404 | `https://www.figma.com/file/aNN74suNWBb0uFGW3lxV7Q/Material-Me-(preview)?type=design&node-id=10348%3A349171&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/aNN74suNWBb0uFGW3lxV7Q/Material-Me-(preview)?type=design&node-id=10404%3A286525&mode=design&t=ok1KriwbvAcC4T62-1` | `http://localhost:3000/blog/chip-ui-design` |
+| 404 | `https://www.figma.com/file/aNN74suNWBb0uFGW3lxV7Q/Material-Me-(preview)?type=design&node-id=10773%3A287524&mode=design&t=FltDaMcyuAw5SWhH-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/ARYvgo05kkUhHF5PltU7l1/iOS-tables` | `http://localhost:3000/blog/figma-tables-data-grid-design` |
+| 404 | `https://www.figma.com/file/ARYvgo05kkUhHF5PltU7l1/iOS-tables/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/aTfDaTCZMycugJPBGj24bD/Panda-Design-System-for-Community/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/aTfDaTCZMycugJPBGj24bD/Panda-Design-System-for-Community/duplicate?type=design&amp;mode=design` | `http://localhost:3000/templates/panda` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1081%3A4` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1088%3A0` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1088%3A1` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1089%3A52740` | `http://localhost:3000/blog/accordion-ui-design` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1098%3A0` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1108%3A557` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=1651%3A105168` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bBEef35QRWh4sWrbKlME40/Material-X-Preview-v5?node-id=2130%3A8218` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 404 | `https://www.figma.com/file/bJZWqDNVaFzCcBNhfqVuzy/Material-You-Design-System-%26-UI-Kit-%E2%80%A2-PREVIEW?type=design&amp;node-id=7221%3A2255&amp;mode=design&amp;t=7KHE08cTUnDNuPZ8-1` | `http://localhost:3000/templates/material-you` |
+| 404 | `https://www.figma.com/file/bJZWqDNVaFzCcBNhfqVuzy/Material-You-Design-System-%26-UI-Kit-%E2%80%A2-PREVIEW?type=design&node-id=7221%3A2255&mode=design&t=7KHE08cTUnDNuPZ8-1` | `http://localhost:3000/templates/material-you` |
+| 404 | `https://www.figma.com/file/bLu7fYlt0X36ynSbblFiiE/XELA---Design-System-(Preview)` | `http://localhost:3000/templates/xela` |
+| 404 | `https://www.figma.com/file/bLu7fYlt0X36ynSbblFiiE/XELA---Design-System-(Preview)?type=design&node-id=747%3A41610&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/brrB3vjxYf1mkh6zcbklpB/Material-Design-UI-kit---Components-library/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/c4iGv9XKGaMyLWWB80D8sT/Mobile-X-design-system-preview` | `http://localhost:3000/templates/mobile-x` |
+| 404 | `https://www.figma.com/file/c4iGv9XKGaMyLWWB80D8sT/Mobile-X-design-system-preview?node-id=507%3A59048&t=VNmkZVZ3gqMUMjxL-1` | `http://localhost:3000/blog/button-ui-design` |
+| 404 | `https://www.figma.com/file/c4iGv9XKGaMyLWWB80D8sT/Mobile-X-design-system-preview?node-id=509%3A58758` | `http://localhost:3000/blog/appbar-ui-design` |
+| 404 | `https://www.figma.com/file/cFANne9CCCOMACP3TEso8p/Accordion-UI-design-guidelines/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/CjynFrHuBv0fOZgc6NOil2/Navigation-UI-design-components/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/Cv7VEQMi7aLumtOVc3hSSk/Material-Me-Lite/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/DAxpyw1NCok6hrgRjkRzBBjr/Invoice/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/DQaMAFsipldH7YfAwYnhpS/Orion-Charts-UI-kit/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/dxGyRDU11DP0CKLDwKpj0R/Figma-iOS-UI-kit` | `http://localhost:3000/templates/ios-ui-kit` |
+| 404 | `https://www.figma.com/file/dxGyRDU11DP0CKLDwKpj0R/Figma-iOS-UI-kit?node-id=7%3A0` | `http://localhost:3000/templates/ios-ui-kit` |
+| 404 | `https://www.figma.com/file/dxGyRDU11DP0CKLDwKpj0R/Figma-iOS-UI-kit?type=design&node-id=49%3A3193&mode=design&t=FltDaMcyuAw5SWhH-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/ecLY1U31UYyVIahR6JYJXr/Hyper--%E2%9C%A6---Charts-templates?type=design&mode=design` | `http://localhost:3000/templates/hyper-charts` |
+| 404 | `https://www.figma.com/file/FGjzyMrtehR5q1tMAgSPxn/Material-Me-v2?node-id=10433%3A288744&t=9HBiTwgdQd7A03x1-1` | `http://localhost:3000/blog/material-nextjs-ui-kit` |
+| 404 | `https://www.figma.com/file/FGjzyMrtehR5q1tMAgSPxn/Material-Me-v2?node-id=10671%3A292326&t=9HBiTwgdQd7A03x1-1` | `http://localhost:3000/blog/material-nextjs-ui-kit` |
+| 404 | `https://www.figma.com/file/FGjzyMrtehR5q1tMAgSPxn/Material-Me-v2?node-id=10775%3A281652&t=9HBiTwgdQd7A03x1-1` | `http://localhost:3000/blog/material-nextjs-ui-kit` |
+| 404 | `https://www.figma.com/file/FGjzyMrtehR5q1tMAgSPxn/Material-Me-v2?node-id=11101%3A90929&t=9HBiTwgdQd7A03x1-1` | `http://localhost:3000/blog/material-nextjs-ui-kit` |
+| 404 | `https://www.figma.com/file/FGjzyMrtehR5q1tMAgSPxn/Material-Me-v2?node-id=11258%3A102588&t=9HBiTwgdQd7A03x1-1` | `http://localhost:3000/blog/material-nextjs-ui-kit` |
+| 404 | `https://www.figma.com/file/g1owQrbQ9zyB1GJ51Pk7Ly/Ecommerce-Desktop-Template/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/gNPVChja64KSH48H4zDfV3/Figma-React-UI-kit-(Free)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/HIeyxrE4vWLb5WayReH6w4/Rome---Dashboard-UI-Kit-(Lite)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/HIeyxrE4vWLb5WayReH6w4/Rome---Dashboard-UI-Kit-(Lite)/duplicate?type=design&amp;node-id=716-34331&amp;mode=design` | `http://localhost:3000/templates/rome` |
+| 404 | `https://www.figma.com/file/HOw6dxTvps3V6EfDG151jH/Figma-Card-Templates/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/HqFaicUnfCG0swdUtkOnF8/Zeus-UI-(community)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/IKRcCwe1k4TR5m7VkYAfYG/XELA-React---Design-System-(Preview)` | `http://localhost:3000/templates/xela-react` |
+| 404 | `https://www.figma.com/file/ioDD9ZAx4FvNronTsFQZN4/Rome---Dashboard-UI-Kit-(Preview)?type=design&node-id=679%3A29220&mode=design&t=FltDaMcyuAw5SWhH-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/ioDD9ZAx4FvNronTsFQZN4/Rome-Dashboard-UI-Kit-Preview` | `http://localhost:3000/templates/rome` |
+| 404 | `https://www.figma.com/file/iofH3CMGRWgqpjtlmhhXTA/Messenger-UI-design-template/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)` | `http://localhost:3000/templates/zeus` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=690%3A95073` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=695%3A113453` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=699%3A318244` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=701%3A392330` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=716%3A306044` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=741%3A447058` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=907%3A508433` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=907%3A545726` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=911%3A556353` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=911%3A561734` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/ISADlj01Jn2p3uWiY473Wx/Zeus-UI-(preview)?node-id=968%3A542990` | `http://localhost:3000/blog/how-to-design-landing` |
+| 404 | `https://www.figma.com/file/Jww9nTpXrIea4XH3jjvX29/Avatars-UI-design/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/jxvS6sb7I0v84VqPGLsO0v/Figma-Landing-Pages-Library-2.0` | `http://localhost:3000/templates/landing` |
+| 404 | `https://www.figma.com/file/k3aJE7v3JJLhuQYpqv1CNZ/Landing-page-template-based-on-Zeus-Web-UI-kit/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/KfknKQuugP0N8b4Huupc7K/Mobile-UI-kit-for-Figma/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/MJb5f6UIoigfGueMCZIyXl/Appka.-iOS-Design-UI-Kit-(Free)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/MJb5f6UIoigfGueMCZIyXl/Appka.-iOS-Design-UI-Kit-(Free)/duplicate?type=design&amp;node-id=7221-2255&amp;mode=design` | `http://localhost:3000/templates/appka-ios-ui-kit` |
+| 404 | `https://www.figma.com/file/mjj01Uk7fwfQN35jrFDoYY/Calendar-UI-design-templates/duplicate` | `http://localhost:3000/blog/calendar-ui-design` |
+| 404 | `https://www.figma.com/file/MNn6EcPKJXqKETXuyiGAzY/Appka.-iOS-Design-UI-Kit-%28Preview%29?node-id=7329%3A26667` | `http://localhost:3000/blog/badge-ui-design` |
+| 404 | `https://www.figma.com/file/nKFne7p6HWM9LJXJd7SlB8/Web-design-UI-kit` | `http://localhost:3000/templates/website` |
+| 404 | `https://www.figma.com/file/nKFne7p6HWM9LJXJd7SlB8/Web-design-UI-kit?node-id=0%3A20524` | `http://localhost:3000/templates/website` |
+| 404 | `https://www.figma.com/file/NZGoq5K6esdjlDSxcF4R0t/Material-X-UI-kit/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/ObeIovIUaqRsaSE4K6YW3e/Bootstrap-v4-uikit` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 404 | `https://www.figma.com/file/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-(Preview)?node-id=3737%3A54` | `http://localhost:3000/blog/tables-design-system` |
+| 404 | `https://www.figma.com/file/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-(Preview)?type=design&node-id=8379%3A2506&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-Preview` | `http://localhost:3000/templates/react-ui-kit` |
+| 404 | `https://www.figma.com/file/OWgr3F3ct3wPE85JV6HVM5/Eclipse-UI-kit-(preview)` | `http://localhost:3000/templates/eclipse` |
+| 404 | `https://www.figma.com/file/Pj6KsldvwBKJNaisDitcSc/Charts-design-widgets-%F0%9F%93%88/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/PqSfLOUh5DvGCKDQYR9IEi/Creative-Website-Template-for-Figma/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/PTLM9g778K5IvQhI3Znza1/XELA---Community/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/qDGAvlYUmgigmxU1VTfibw/XELA---Design-System-(SwiftUI)?type=design&node-id=1121%3A144633&mode=design&t=ok1KriwbvAcC4T62-1` | `http://localhost:3000/blog/chip-ui-design` |
+| 404 | `https://www.figma.com/file/qDGAvlYUmgigmxU1VTfibw/XELA-Design-System-SwiftUI` | `http://localhost:3000/templates/xela-android` |
+| 404 | `https://www.figma.com/file/R7D7rDPWSrEc7yaTLwRP6D/Figma-Charts-UI-kit---Radar-template/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/RSeZihBDJ8HGUfEvbuUqmv/Figma-Charts-UI-kit-(Preview)?node-id=1617%3A3786` | `http://localhost:3000/templates/charts` |
+| 404 | `https://www.figma.com/file/RSeZihBDJ8HGUfEvbuUqmv/Figma-Charts-UI-kit-(Preview)?type=design&node-id=1253-275193&mode=design` | `http://localhost:3000/templates/charts` |
+| 404 | `https://www.figma.com/file/sRPpErgDs6CKjqK8dU2owD/Ocean-Enterprise-DS-%F0%9F%92%A0-Token-Based?node-id=3317%3A52921&t=frkKdFWMTB4m6RBK-1` | `http://localhost:3000/templates/oe-enterprise` |
+| 404 | `https://www.figma.com/file/STjIyMcHUqHQOeCk9Cd8Sank/Figma-Android-UI-Kit` | `http://localhost:3000/templates/android-ui-kit` |
+| 404 | `https://www.figma.com/file/STjIyMcHUqHQOeCk9Cd8Sank/Figma-Android-UI-Kit?node-id=0%3A7686` | `http://localhost:3000/templates/android-ui-kit` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-(Preview)?type=design` | `http://localhost:3000/blog/choosing-right-ios-kit` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-(Preview)?type=design&amp;mode=design` | `http://localhost:3000/templates/full-ios` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-(Preview)?type=design&mode=design` | `http://localhost:3000/templates/full-ios` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-(Preview)?type=design&node-id=29872%3A1427&mode=design&t=ok1KriwbvAcC4T62-1` | `http://localhost:3000/blog/chip-ui-design` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-Preview` | `http://localhost:3000/templates/ios-ui-kit` |
+| 404 | `https://www.figma.com/file/Stjs7NQdPPiCa4Rv5xrU2P/iOS-design-system-Preview?node-id=29876%3A0` | `http://localhost:3000/blog/appbar-ui-design` |
+| 404 | `https://www.figma.com/file/Tp6rUcouQbl31zSoBEFG2P/Figma-Material-Design-System-v3_1-preview` | `http://localhost:3000/templates/material` |
+| 404 | `https://www.figma.com/file/Tp6rUcouQbl31zSoBEFG2P/Figma-Material-Design-System-v3_1-preview?type=design&node-id=0%3A199&mode=design&t=LW5RNfQ2avFGYkD1-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/tQ8etHCaJYFiMTlaQsUv4J/iOS-13-Design-System` | `http://localhost:3000/templates/most` |
+| 404 | `https://www.figma.com/file/tQ8etHCaJYFiMTlaQsUv4J/iOS-13-Design-System?type=design&node-id=2867%3A208700&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/u3JWKLFvxr6cOsVswKuopU/Material-Moodboard?node-id=115%3A0` | `http://localhost:3000/blog/how-to-sell-design-system` |
+| 404 | `https://www.figma.com/file/UxUylqu9GKJIMKsyKOzGCT/Setproduct-Email-Templates/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A18348` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A18500` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A18625` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A19276` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A19605` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A20016` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=0%3A20471` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=12%3A109` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=133%3A72416` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=47%3A67013` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v3p1SAXaniDOGo2s1HL2H9/S8-design-system-(preview)?node-id=89%3A69317` | `http://localhost:3000/blog/design-system-for-business` |
+| 404 | `https://www.figma.com/file/v6qXVivwjwDHQh2Tp2pnqb/iOS-datepicker/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/vEyW2W0vQgeE8AXbPeonBX/Hyper-Charts-%E2%9C%A6-FREE/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/VSAzjbWZ04yeSxKrDhH1f6MH/Dark-Chart-Templates/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7` | `http://localhost:3000/templates/material-x` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1088%3A0` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1088%3A352` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1108%3A557` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=1676%3A107973` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=2163%3A0` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=2954%3A0` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=4021%3A31` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=4093%3A980` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?node-id=760%3A363` | `http://localhost:3000/blog/material-design-redesigned` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?type=design&node-id=1082%3A540&mode=design&t=DcJsOb6SZcoiFpTD-1` | `http://localhost:3000/blog/checkbox-ui-design` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?type=design&node-id=1098%3A0&mode=design&t=eXzfHE2WHUrb62yi-1` | `http://localhost:3000/blog/settings-ui-design` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?type=design&node-id=2009-190486&mode=design&t=1AVPcQaqRVQuZa41-0` | `http://localhost:3000/blog/settings-ui-design` |
+| 404 | `https://www.figma.com/file/w6E8nDfjxYpQHq4x5GtYJx/Material-X-v7?type=design&node-id=4093%3A980&mode=design&t=94mBbGsDFA7qbKht-1` | `http://localhost:3000/blog/input-ui-design` |
+| 404 | `https://www.figma.com/file/wg137YA5IznyciTyh5prJR/Full-iOS-design-system-(Free)/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/wg137YA5IznyciTyh5prJR/Full-iOS-design-system-(Free)/duplicate?type=design&amp;node-id=2381-672&amp;mode=design` | `http://localhost:3000/templates/full-ios` |
+| 404 | `https://www.figma.com/file/wpoGA2o6slPKnHJiVyXBJX/Figma-grid-layout/duplicate` | `http://localhost:3000/freebies/invoice` |
+| 404 | `https://www.figma.com/file/wzpBLnFVlrMdsJtA9nZqJg/Figma-Fonts-Playground-System/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/X25RJI0WIGBRPc49kMvpf7/App-Bar-UI-design-guidelines/duplicate` | `http://localhost:3000/freebies` |
+| 404 | `https://www.figma.com/file/XMHdAa4XqPFITEaEccgkhO/Material-Dashboard-UI-kit` | `http://localhost:3000/templates/material-desktop` |
+| 404 | `https://www.figma.com/file/yCECl956c0oOr3K8GdXdNe/%5BPREVIEW%5D-Nucleus-Plus---2023-Update-2.5-(For-Mobile-App-%26-Web)?type=design&node-id=770-5839&mode=design` | `http://localhost:3000/templates/nucleus-ui` |
+| 404 | `https://www.figma.com/file/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)` | `http://localhost:3000/templates/orion` |
+| 404 | `https://www.figma.com/file/zbKbDJmTleKgwP47ApVJf2/Orion-UI-kit-(preview)?type=design&node-id=7198%3A121595&mode=design&t=3zN0ZBO1Tlczs5Rt-1` | `http://localhost:3000/blog/notifications-ui-design` |
+| 403 | `https://www.forbes.com/advisor/business/software/best-antivirus-software/` | `http://localhost:3000/blog/how-to-enhance-email-security` |
+| 999 | `https://www.linkedin.com/in/narenkram` | `http://localhost:3000/blog/case-study-gtrendz` |
+| 401 | `https://www.reuters.com/article/l-oreal-google-idINKBN27M0AM/` | `http://localhost:3000/blog/top-design-releases-2020` |
+| 403 | `https://www.statista.com/statistics/1047962/how-online-shoppers-worldwide-research-unfamiliar-retailers/` | `http://localhost:3000/blog/how-to-design-landing` |
+| 403 | `https://www.statista.com/statistics/422595/print-book-sales-usa/` | `http://localhost:3000/blog/side-income-for-designers-and-developers` |
+| 406 | `https://www.uber.com/` | `http://localhost:3000/blog/figma-10-tech-companies` |
+| 404 | `https://www.uxcrush.com/data-table-figma-design-system/` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 404 | `https://www.uxcrush.com/pulse-heartbeat-atomic-figma/` | `http://localhost:3000/blog/figma-resources-review-1` |
+| 403 | `https://www.vectary.com/` | `http://localhost:3000/blog/top-design-releases-2020` |
+| ERR fetch failed | `https://www.vektors.pro/` | `http://localhost:3000/blog/top-design-resources-jan-2021` |
+| 403 | `https://www.vidyard.com/state-of-video-report/` | `http://localhost:3000/blog/how-to-design-landing` |
