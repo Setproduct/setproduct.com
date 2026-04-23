@@ -32,7 +32,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl }: BlogPost
   return (
     <>
       <Head>
-        <title>{frontmatter.metaTitle ?? frontmatter.title} | Setproduct Blog</title>
+        <title>{`${frontmatter.metaTitle ?? frontmatter.title} | Setproduct Blog`}</title>
         <meta name="description" content={frontmatter.description} />
         <link rel="canonical" href={canonical} />
         <meta property="og:type" content="article" />

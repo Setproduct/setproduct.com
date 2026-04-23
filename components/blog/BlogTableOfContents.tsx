@@ -8,9 +8,10 @@ type BlogTableOfContentsProps = {
 
 export default function BlogTableOfContents({ headings }: BlogTableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
+  const visibleHeadings = headings.filter((h) => h.level === 2);
 
   useEffect(() => {
-    if (headings.length === 0) return;
+    if (visibleHeadings.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -27,15 +28,15 @@ export default function BlogTableOfContents({ headings }: BlogTableOfContentsPro
       }
     );
 
-    headings.forEach(({ id }) => {
+    visibleHeadings.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
     return () => observer.disconnect();
-  }, [headings]);
+  }, [visibleHeadings]);
 
-  if (headings.length === 0) return null;
+  if (visibleHeadings.length === 0) return null;
 
   return (
     <>
@@ -44,12 +45,11 @@ export default function BlogTableOfContents({ headings }: BlogTableOfContentsPro
       </div>
       <div className="spacer-16 hide-on-mobile" />
       <div className="blogpost_navigation-wr">
-        {headings.map((h) => (
+        {visibleHeadings.map((h) => (
           <div key={h.id} className="blogpost_navigation-link-wr">
             <a
               href={`#${h.id}`}
               className={`blogpost_navigation-link w-inline-block${activeId === h.id ? " fs-cmsfilter_active" : ""}`}
-              style={h.level === 3 ? { paddingLeft: "12px" } : undefined}
             >
               <p>{h.text}</p>
             </a>
