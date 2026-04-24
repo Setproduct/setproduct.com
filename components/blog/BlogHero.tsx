@@ -59,7 +59,8 @@ export default function BlogHero({
                   alt={coverImageAlt ?? title}
                   fill
                   priority
-                  sizes="(max-width: 768px) 100vw, 900px"
+                  quality={90}
+                  sizes="(max-width: 991px) 100vw, (max-width: 1440px) 92vw, 1312px"
                   className="image-cover"
                   unoptimized={coverImage.startsWith("http")}
                 />

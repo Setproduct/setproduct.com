@@ -18,4 +18,22 @@ export const blogMdxComponents: MDXRemoteProps["components"] = {
       }
     />
   ),
+  a: ({ href, children, ...props }) => {
+    const isGumroad = href?.includes("gumroad.com");
+    if (isGumroad) {
+      return <a href={href} {...props}>{children}</a>;
+    }
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+        {children}
+      </a>
+    );
+  },
+  ul: (props) => <ul className="mb-2" {...props} />,
+  li: (props) => (
+    <li
+      className="relative pl-[0.6em] before:absolute before:left-0 before:content-['•']"
+      {...props}
+    />
+  ),
 };

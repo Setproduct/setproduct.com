@@ -26,20 +26,22 @@ export default function MDXImage({
         alt={alt}
         width={width}
         height={height}
+        // sizes="(max-width: 768px) 100vw, 900px"
         className="rounded-md"
+        style={{ width: "100%", height: "auto", maxWidth: "100%" }}
         unoptimized={isExternal}
       />
     ) : (
-      <span className="relative block w-full aspect-[16/9] my-4">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 900px"
-          className="object-cover rounded-md"
-          unoptimized={isExternal}
-        />
-      </span>
+      <Image
+        src={src}
+        alt={alt}
+        width={1600}
+        height={900}
+        // sizes="(max-width: 768px) 100vw, 900px"
+        className="rounded-md"
+        style={{ width: "100%", height: "auto", maxWidth: "100%" }}
+        unoptimized={isExternal}
+      />
     );
 
   if (caption) {
