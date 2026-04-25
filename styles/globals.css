@@ -184,6 +184,27 @@ h1[id], h2[id], h3[id], h4[id] {
   -webkit-box-orient: vertical;
 }
 
+/*
+ * Template gallery hover overlay (lightbox-text-bg).
+ * Originally driven by Webflow IX2 ("lightbox-with-text_hover-on/out", a-20/a-21).
+ * Reproduces the fade-in mask on hover with the kit title centred over the image.
+ */
+.template_img-gallery .lightbox-link-with-text .lightbox-text-bg {
+  opacity: 0;
+  transition: opacity 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  pointer-events: none;
+}
+
+.template_img-gallery .lightbox-link-with-text:hover .lightbox-text-bg {
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  .template_img-gallery .lightbox-link-with-text .lightbox-text-bg {
+    display: none;
+  }
+}
+
 /* Navbar dropdown reveal: animate max-height clip (slide-down, no fade).
    Inset is required on the closed state too — panel is always mounted and
    would otherwise render at its natural absolute position. */
