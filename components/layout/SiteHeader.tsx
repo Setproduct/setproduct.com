@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { BLOG_POSTS } from "../../data/blog-listing";
 import { useContactModal } from "../modals/ContactModalContext";
 
@@ -20,6 +21,8 @@ const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "Growth Hacking", category: "Growth Hacking" },
   { label: "Inspiration", category: "Inspiration" },
   { label: "Resources", category: "Resources" },
+  { label: "Technology", category: "Technology" },
+  { label: "Research", category: "Research" },
 ];
 
 const DESIGN_KITS = [
@@ -48,7 +51,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $148",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/6581822fb4f818e3674d3801_pricing-orion-01.webp",
     title: "Orion UI kit",
-    description: "Figma library with 440+ full-width charts templates served in light and dark themes.",
+    description: "Figma library with 40+ full-width charts templates served in light & dark themes. Contains 200+ of dataviz widgets that look perfect on desktop & mobile screens.",
   },
   {
     href: "/templates/nocra",
@@ -56,7 +59,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $98",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/686262d49adba480c8298ccc_nocra-cover-min.jpg",
     title: "Nocra UI kit",
-    description: "Nocra is a design system for AI products. Built for startups harnessing AI generation.",
+    description: "Nocra is a design system for AI products. Built specifically for startups harnessing AI generation: images, video, audio, music, prompts, and beyond.",
   },
   {
     href: "/templates/charts",
@@ -64,7 +67,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $168",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/658c09d54cd3f40b33840524_pricing-charts-01.avif",
     title: "Figma Charts UI kit",
-    description: "Components-driven graphs design kit for dashboards, presentations and infographics.",
+    description: "Components-driven graphs design kit for dashboards, presentations, infographics & data visualisation. Includes 25+ charts types for all the viewports.",
   },
   {
     href: "/templates/nucleus-ui",
@@ -72,7 +75,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $89",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8cb274438ae24e0e9b32_65858952fbfba6f0b7c1727b_nucleus-cover-1920-m_(1).avif",
     title: "Nucleus UI",
-    description: "1000+ components and variants with 500+ mobile screens and 9 themes.",
+    description: "Nucleus UI contains 1000 components and variants with 500+ mobile screens designed for Figma (including 9 themes from Event, E-commerce, Finance, NFT, etc.).",
   },
   {
     href: "/templates/material-x",
@@ -80,7 +83,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $148",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8b3de9d92cd2717a31a9_6582e572f92ec39e162a49a8_pircing-mx-02_(1).avif",
     title: "Material X for Figma",
-    description: "Figma library with 1100+ components and 40 app templates beyond Material Design.",
+    description: "Figma library with 1100+ components & 40 app templates beyond Material Design. Powered by top-notch shapes and Manrope font. Customizable & Adjustable UI kit now available for Angular & Figma",
   },
   {
     href: "/templates/material-you",
@@ -88,14 +91,28 @@ const KIT_PREVIEWS: KitPreview[] = [
     buyLabel: "Buy $124",
     image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8bd8e10b051b70a441f2_658189130000cb93c2db5936_pricing-materialme_(1).avif",
     title: "Material You UI kit",
-    description: "Figma + React library with 2600+ variants of 32 components and 220+ dashboards.",
+    description: "Figma & React library with 2600+ variants of 32 components compatible with Material Design 3. Plus 220+ dashboard templates for all the viewports. Now available for NextJS & TailwindCSS.",
   },
 ];
 
 export default function SiteHeader() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const navbarRef = useRef<HTMLDivElement | null>(null);
   const { openContactModal } = useContactModal();
+  const router = useRouter();
+  const currentPath = router.pathname;
+
+  const isPathActive = (href: string) =>
+    href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
+
+  const isTutorialsActive = currentPath === "/blog" || currentPath.startsWith("/blog/");
+  const isDesignKitsActive = DESIGN_KITS.some((k) => isPathActive(k.href)) ||
+    currentPath.startsWith("/templates/");
+  const isInformationActive = INFORMATION_LINKS.some(
+    (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
+  );
 
   const isMenuOpen = (menuName: string) => openMenu === menuName;
 
@@ -103,13 +120,75 @@ export default function SiteHeader() {
     setOpenMenu((current) => (current === menuName ? null : menuName));
   };
 
+  const openOnHover = (menuName: string) => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setOpenMenu(menuName);
+    }
+  };
+
+  const closeOnHoverLeave = () => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setOpenMenu(null);
+    }
+  };
+
+  const closeMobileNav = () => {
+    setIsMobileNavOpen(false);
+    setOpenMenu(null);
+  };
+
+  // Lock body scroll while the drawer is open, expose the live navbar height
+  // as a CSS var so the drawer can pin itself to the actual bottom of the
+  // header (Webflow's vw-based em sizing makes the height fluid), and
+  // auto-close on resize to desktop.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const navbarEl = navbarRef.current;
+    const previousOverflow = document.body.style.overflow;
+
+    const syncNavbarHeight = () => {
+      if (!navbarEl) return;
+      const height = navbarEl.getBoundingClientRect().height;
+      navbarEl.style.setProperty("--mobile-navbar-height", `${height}px`);
+    };
+
+    syncNavbarHeight();
+
+    if (isMobileNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = previousOverflow || "";
+    }
+
+    const handleResize = () => {
+      syncNavbarHeight();
+      if (window.innerWidth > 991 && isMobileNavOpen) {
+        setIsMobileNavOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      document.body.style.overflow = previousOverflow || "";
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobileNavOpen]);
+
   const filteredBlogPreviews = (activeBlogCategory
     ? BLOG_POSTS.filter((p) => p.category === activeBlogCategory)
     : BLOG_POSTS
   ).slice(0, NAV_BLOG_PREVIEW_COUNT);
 
   return (
-    <div className="navbar w-nav" role="banner">
+    <div
+      ref={navbarRef}
+      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}`}
+      data-collapse="medium"
+      role="banner"
+    >
       <div className="container">
         <div className="nav-wrapper div-block">
           <div className="brand">
@@ -117,17 +196,20 @@ export default function SiteHeader() {
             <a className="brand-link w-inline-block" href="/" />
           </div>
 
-          <nav className="nav-menu w-nav-menu" role="navigation">
+          <nav
+            className={`nav-menu w-nav-menu${isMobileNavOpen ? " is-mobile-open" : ""}`}
+            role="navigation"
+          >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
                 <a className="nav-link-block w-inline-block" href="https://app.setproduct.com/" rel="noreferrer" target="_blank">
                   <div className="text-size-regular">Inspiration</div>
                 </a>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("tutorials")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("tutorials")}
                     >
                       <div className="text-size-regular">Tutorials</div>
@@ -147,18 +229,22 @@ export default function SiteHeader() {
                                   <div className="text-size-regular">Categories</div>
                                 </div>
                                 <div className="nav-links is-1-column">
-                                   {NAV_BLOG_CATEGORIES.map((item) => (
-                                     <button
-                                       className={`nav_radio w-inline-block${activeBlogCategory === item.category ? " w--current" : ""}`}
-                                       key={item.label}
-                                       type="button"
-                                       onClick={() => setActiveBlogCategory(item.category)}
-                                       style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", width: "100%" }}
-                                     >
-                                       <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
-                                     </button>
-                                   ))}
-                                 </div>
+                                  {NAV_BLOG_CATEGORIES.map((item) => {
+                                    const href = item.category
+                                      ? `/blog?category=${encodeURIComponent(item.category)}`
+                                      : "/blog";
+                                    return (
+                                      <a
+                                        className={`nav_radio w-inline-block${activeBlogCategory === item.category ? " w--current" : ""}`}
+                                        key={item.label}
+                                        href={href}
+                                        onMouseEnter={() => setActiveBlogCategory(item.category)}
+                                      >
+                                        <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
+                                      </a>
+                                    );
+                                  })}
+                                </div>
                               </div>
                               <div className="nav_dropdown-list-wr">
                                 <div className="nav_tabs-list-wr w-dyn-list">
@@ -194,10 +280,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("designKits")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("designKits")}
                     >
                       <div className="text-size-regular">Design Kits</div>
@@ -261,10 +347,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("information")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("information") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("information")}
                     >
                       <div className="text-size-regular">Information</div>
@@ -299,7 +385,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <a className="nav-link-block w-inline-block" href="/freebies">
+                <a
+                  className={`nav-link-block w-inline-block${isPathActive("/freebies") ? " w--current" : ""}`}
+                  href="/freebies"
+                >
                   <div className="text-size-regular">Freebies</div>
                 </a>
               </div>
@@ -312,12 +401,18 @@ export default function SiteHeader() {
             </div>
           </nav>
 
-          <div className="menu-button icon-2 w-nav-button">
+          <button
+            type="button"
+            aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileNavOpen}
+            className={`menu-button icon-2 w-nav-button${isMobileNavOpen ? " w--open" : ""}`}
+            onClick={() => setIsMobileNavOpen((open) => !open)}
+          >
             <div className="menu-button-img-wr">
               <img alt="" className="menu-button-img is-burger" loading="lazy" src="/images/menu.svg" />
               <img alt="" className="menu-button-img is-close" loading="lazy" src="/images/close.svg" />
             </div>
-          </div>
+          </button>
 
           <div className="nav-button-wr">
             <form action="/search" className="search w-form">

@@ -69,6 +69,12 @@ export default function TemplateGallery({ title, subtitle, previewLink, items }:
               >
                 <div className="lightbox-link-with-text w-inline-block">
                   <img alt={item.title || ""} loading="lazy" src={item.image} />
+                  {item.title && (
+                    <div className="lightbox-text-bg">
+                      <p className="heading-style-h4">{item.title}</p>
+                      <div className="lightbox-color-bg" />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

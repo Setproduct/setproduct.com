@@ -19,7 +19,7 @@ export default function CtaSubscribe() {
                 <div className="actions">
                   <div className="form-block w-form">
                     <form className="form-cta" onSubmit={handleSubscribe}>
-                      <input name="website" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                      <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
                       <input
                         className="text-input w-input"
                         disabled={isSubmitting}
@@ -31,14 +31,21 @@ export default function CtaSubscribe() {
                       />
                       <div className="button-form-wr">
                         <button
-                          className="button w-inline-block"
+                          className="button w-inline-block disabled:opacity-70"
                           disabled={isSubmitting}
-                          style={{ opacity: isSubmitting ? 0.7 : 1 }}
                           type="submit"
                         >
-                          <div className="text-size-large text-weight-bold">
-                            {isSubmitting ? "..." : "Subscribe"}
-                          </div>
+                          {isSubmitting ? (
+                            <svg
+                              width="20" height="20" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                              className="animate-spin block"
+                            >
+                              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                            </svg>
+                          ) : (
+                            <div className="text-size-large text-weight-bold">Subscribe</div>
+                          )}
                         </button>
                       </div>
                     </form>

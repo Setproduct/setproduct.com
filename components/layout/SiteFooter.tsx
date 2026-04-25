@@ -9,6 +9,7 @@ import {
 } from "./FooterSocialIcons";
 import { useContactModal } from "../modals/ContactModalContext";
 import { useSubscribe } from "../../hooks/useSubscribe";
+import { cn } from "../../lib/cn";
 
 type FooterLink = { href: string; label: string; external?: boolean; modal?: boolean };
 type FooterColumn = { title: string; titleHref?: string; links: FooterLink[] };
@@ -134,10 +135,7 @@ export default function SiteFooter() {
                   <a className="brand-link w-inline-block" href="/" />
                 </div>
                 <div className="footer_cta-wr">
-                  <div
-                    className="footer_cta-active"
-                    style={{ display: isSubscribed ? "none" : undefined }}
-                  >
+                  <div className={`footer_cta-active${isSubscribed ? " hidden" : ""}`}>
                     <p className="heading-style-h4">Subscribe to Setproduct</p>
                     <div className="spacer-12" />
                     <p className="text-size-small">Join our newsletter to stay up to date on features and releases.</p>
@@ -148,7 +146,17 @@ export default function SiteFooter() {
                         <input className="text-input w-input" disabled={isSubmitting} maxLength={256} name="Email" placeholder="Enter your email" required type="email" />
                         <div className="button-form-wr">
                           <button className="button w-inline-block" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }} type="submit">
-                            <div className="text-size-large text-weight-bold">{isSubmitting ? "..." : "Subscribe"}</div>
+                            {isSubmitting ? (
+                              <svg
+                                width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                                style={{ animation: "spin 0.8s linear infinite", display: "block" }}
+                              >
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                              </svg>
+                            ) : (
+                              <div className="text-size-large text-weight-bold">Subscribe</div>
+                            )}
                           </button>
                         </div>
                       </form>
@@ -156,11 +164,11 @@ export default function SiteFooter() {
                   </div>
                   <div
                     className="footer_cta-success"
-                    style={{ display: isSubscribed ? undefined : "none" }}
+                    style={{ display: isSubscribed ? "flex" : "none" }}
                   >
                     <p className="heading-style-h4">Congratulations!</p>
                     <div className="spacer-12" />
-                    <p className="text-size-small">You are in! Expect awesome updates in your inbox</p>
+                    <p className="text-size-small">You&apos;re in! Expect awesome updates in your inbox</p>
                     <div className="footer_cta-trigger" />
                   </div>
                 </div>
