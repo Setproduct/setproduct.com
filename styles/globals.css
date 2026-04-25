@@ -9,6 +9,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -221,5 +222,107 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav_dropdown_list.w-dropdown-list.w--open {
     max-height: 90vh;
     pointer-events: auto;
+  }
+}
+
+/*
+ * Active nav state — colour the current page's link / open dropdown toggle
+ * with the primary brand colour. Webflow stylesheet only covers
+ * .nav-link-block.w--current; toggles don't have a built-in active style.
+ */
+.navbar .nav_dropdown_toggle.w--current,
+.navbar .nav_dropdown_toggle.w--current .text-size-regular,
+.navbar .nav_dropdown_toggle.w--current .icon {
+  color: var(--primary);
+}
+
+/*
+ * Mobile nav drawer.
+ * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
+ * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
+ * via the `is-mobile-open` class toggled by SiteHeader.
+ */
+@media (max-width: 991px) {
+  /*
+   * Drawer must escape the (content-sized) fixed navbar, otherwise its
+   * absolute box gets stuck at the navbar's static-flow offset and clips early.
+   * Pin to the viewport from below the navbar to the bottom edge, and animate
+   * the open/close transition via opacity + translate (avoid `display:none`,
+   * which kills the transition).
+   */
+  .navbar .nav-menu.w-nav-menu {
+    display: block;
+    position: fixed;
+    inset: var(--mobile-navbar-height, 64px) 0 0 0;
+    height: auto;
+    width: 100%;
+    overflow-y: auto;
+    z-index: 90;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 220ms;
+  }
+
+  .navbar.is-mobile-open .nav-menu.w-nav-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0s;
+  }
+
+  /*
+   * Mobile dropdown sub-panels (Tutorials/Design Kits/Information) — slide-down
+   * animation via max-height. Margins stay constant across open/close so child
+   * items don't jump horizontally during the collapse animation.
+   */
+  .navbar .nav-menu .nav_dropdown_list.w-dropdown-list {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    transition: max-height 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav-menu .nav_dropdown_list.w-dropdown-list.w--open {
+    max-height: 1200em;
+  }
+
+  /*
+   * Webflow source CSS uses negative margin-bottom on dropdown columns
+   * (-16em) to compensate for desktop spacing — on mobile this collapses the
+   * dropdown's measured height and clips the last item. Reset it.
+   */
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column,
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list,
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.information,
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.earm-money {
+    margin-bottom: 0;
+  }
+
+  .navbar .menu-button.w-nav-button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 10em;
+    position: relative;
+    z-index: 110;
+  }
+
+  .navbar .menu-button.w-nav-button.w--open .menu-button-img.is-burger {
+    opacity: 0;
+  }
+
+  .navbar .menu-button.w-nav-button.w--open .menu-button-img.is-close {
+    opacity: 1;
   }
 }

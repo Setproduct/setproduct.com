@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { BLOG_POSTS } from "../../data/blog-listing";
 import { useContactModal } from "../modals/ContactModalContext";
 
@@ -97,7 +98,21 @@ const KIT_PREVIEWS: KitPreview[] = [
 export default function SiteHeader() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const navbarRef = useRef<HTMLDivElement | null>(null);
   const { openContactModal } = useContactModal();
+  const router = useRouter();
+  const currentPath = router.pathname;
+
+  const isPathActive = (href: string) =>
+    href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
+
+  const isTutorialsActive = currentPath === "/blog" || currentPath.startsWith("/blog/");
+  const isDesignKitsActive = DESIGN_KITS.some((k) => isPathActive(k.href)) ||
+    currentPath.startsWith("/templates/");
+  const isInformationActive = INFORMATION_LINKS.some(
+    (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
+  );
 
   const isMenuOpen = (menuName: string) => openMenu === menuName;
 
@@ -105,13 +120,75 @@ export default function SiteHeader() {
     setOpenMenu((current) => (current === menuName ? null : menuName));
   };
 
+  const openOnHover = (menuName: string) => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setOpenMenu(menuName);
+    }
+  };
+
+  const closeOnHoverLeave = () => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setOpenMenu(null);
+    }
+  };
+
+  const closeMobileNav = () => {
+    setIsMobileNavOpen(false);
+    setOpenMenu(null);
+  };
+
+  // Lock body scroll while the drawer is open, expose the live navbar height
+  // as a CSS var so the drawer can pin itself to the actual bottom of the
+  // header (Webflow's vw-based em sizing makes the height fluid), and
+  // auto-close on resize to desktop.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const navbarEl = navbarRef.current;
+    const previousOverflow = document.body.style.overflow;
+
+    const syncNavbarHeight = () => {
+      if (!navbarEl) return;
+      const height = navbarEl.getBoundingClientRect().height;
+      navbarEl.style.setProperty("--mobile-navbar-height", `${height}px`);
+    };
+
+    syncNavbarHeight();
+
+    if (isMobileNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = previousOverflow || "";
+    }
+
+    const handleResize = () => {
+      syncNavbarHeight();
+      if (window.innerWidth > 991 && isMobileNavOpen) {
+        setIsMobileNavOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      document.body.style.overflow = previousOverflow || "";
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobileNavOpen]);
+
   const filteredBlogPreviews = (activeBlogCategory
     ? BLOG_POSTS.filter((p) => p.category === activeBlogCategory)
     : BLOG_POSTS
   ).slice(0, NAV_BLOG_PREVIEW_COUNT);
 
   return (
-    <div className="navbar w-nav" role="banner">
+    <div
+      ref={navbarRef}
+      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}`}
+      data-collapse="medium"
+      role="banner"
+    >
       <div className="container">
         <div className="nav-wrapper div-block">
           <div className="brand">
@@ -119,17 +196,20 @@ export default function SiteHeader() {
             <a className="brand-link w-inline-block" href="/" />
           </div>
 
-          <nav className="nav-menu w-nav-menu" role="navigation">
+          <nav
+            className={`nav-menu w-nav-menu${isMobileNavOpen ? " is-mobile-open" : ""}`}
+            role="navigation"
+          >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
                 <a className="nav-link-block w-inline-block" href="https://app.setproduct.com/" rel="noreferrer" target="_blank">
                   <div className="text-size-regular">Inspiration</div>
                 </a>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("tutorials")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("tutorials")}
                     >
                       <div className="text-size-regular">Tutorials</div>
@@ -196,10 +276,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("designKits")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("designKits")}
                     >
                       <div className="text-size-regular">Design Kits</div>
@@ -263,10 +343,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => setOpenMenu("information")} onMouseLeave={() => setOpenMenu(null)}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("information") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}`}
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("information")}
                     >
                       <div className="text-size-regular">Information</div>
@@ -301,7 +381,10 @@ export default function SiteHeader() {
                   </div>
                 </div>
 
-                <a className="nav-link-block w-inline-block" href="/freebies">
+                <a
+                  className={`nav-link-block w-inline-block${isPathActive("/freebies") ? " w--current" : ""}`}
+                  href="/freebies"
+                >
                   <div className="text-size-regular">Freebies</div>
                 </a>
               </div>
@@ -314,12 +397,18 @@ export default function SiteHeader() {
             </div>
           </nav>
 
-          <div className="menu-button icon-2 w-nav-button">
+          <button
+            type="button"
+            aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileNavOpen}
+            className={`menu-button icon-2 w-nav-button${isMobileNavOpen ? " w--open" : ""}`}
+            onClick={() => setIsMobileNavOpen((open) => !open)}
+          >
             <div className="menu-button-img-wr">
               <img alt="" className="menu-button-img is-burger" loading="lazy" src="/images/menu.svg" />
               <img alt="" className="menu-button-img is-close" loading="lazy" src="/images/close.svg" />
             </div>
-          </div>
+          </button>
 
           <div className="nav-button-wr">
             <form action="/search" className="search w-form">

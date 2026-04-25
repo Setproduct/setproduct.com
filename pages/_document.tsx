@@ -15,9 +15,10 @@ export default function Document() {
         />
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/webflow.css" rel="stylesheet" />
-        <link href="/css/setproduct.webflow.css" rel="stylesheet" />
+        {/* <link href="/css/setproduct.webflow.css" rel="stylesheet" /> */}
         <link href="/css/setproduct.webflow.shared.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.2.2/dist/css/splide-core.min.css" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <body>
         <Main />
