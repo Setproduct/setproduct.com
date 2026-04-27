@@ -1,7 +1,6 @@
-import { useRef, useEffect, useState, type RefObject } from "react";
+import { useRef, useEffect, useState, type RefObject, type CSSProperties } from "react";
 import type { BlogHeading } from "../../types/blog";
 import { useSubscribe } from "../../hooks/useSubscribe";
-import { useStickyInContainer } from "../../hooks/useStickyInContainer";
 import BlogTableOfContents from "./BlogTableOfContents";
 import BlogShareLinks from "./BlogShareLinks";
 
@@ -14,27 +13,81 @@ type BlogSidebarProps = {
 
 export default function BlogSidebar({ headings, postUrl, postTitle, containerRef }: BlogSidebarProps) {
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
-  const sidebarRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(true);
+  const [stickyStyle, setStickyStyle] = useState<CSSProperties>({});
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 991);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 991;
+      setIsMobile(mobile);
+      if (mobile) {
+        setStickyStyle({});
+      }
+    };
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const { style, stickyState } = useStickyInContainer(sidebarRef, containerRef, {
-    topOffset: 80,
-    enabled: !isMobile,
-  });
+  useEffect(() => {
+    if (isMobile) {
+      setStickyStyle({});
+      return;
+    }
+
+    const inner = innerRef.current;
+    const container = containerRef.current;
+    const wrapper = inner?.parentElement;
+    if (!inner || !container || !wrapper) return;
+
+    const topOffset = 80;
+
+    const calculate = () => {
+      if (!inner || !container || !wrapper) return;
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const innerHeight = inner.scrollHeight;
+      const containerTop = containerRect.top;
+      const containerBottom = containerRect.bottom;
+      const stickyBottom = topOffset + innerHeight;
+
+      if (containerTop >= topOffset) {
+        setStickyStyle({});
+      } else if (containerBottom <= stickyBottom) {
+        setStickyStyle({
+          position: "fixed",
+          top: containerBottom - innerHeight,
+          left: wrapperRect.left,
+          width: wrapperRect.width,
+        });
+      } else {
+        setStickyStyle({
+          position: "fixed",
+          top: topOffset,
+          left: wrapperRect.left,
+          width: wrapperRect.width,
+        });
+      }
+    };
+
+    const handleScroll = () => requestAnimationFrame(calculate);
+    const handleResize = () => calculate();
+
+    calculate();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobile, containerRef]);
 
   return (
     <div id="w-node-sidebar" className="blogpost_content-column1">
-      <div
-        ref={sidebarRef}
-        style={stickyState !== "static" ? style : undefined}
-      >
+      <div ref={innerRef} style={{ ...stickyStyle, transition: "none" }}>
         <BlogTableOfContents headings={headings} />
         <div className="hide-on-mobile">
           <div className="blogpost_content-line-divider" />

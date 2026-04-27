@@ -1,6 +1,6 @@
 import { useEffect, useState, type RefObject, type CSSProperties } from "react";
 
-type StickyState = "static" | "fixed" | "absolute";
+type StickyState = "static" | "fixed" | "stuck";
 
 type UseStickyInContainerOptions = {
   topOffset?: number;
@@ -15,6 +15,7 @@ export function useStickyInContainer(
   const { topOffset = 80, enabled = true } = options;
   const [stickyState, setStickyState] = useState<StickyState>("static");
   const [dimensions, setDimensions] = useState<{ width: number; left: number } | null>(null);
+  const [stuckTop, setStuckTop] = useState<number>(0);
 
   useEffect(() => {
     if (!enabled) return;
@@ -42,7 +43,9 @@ export function useStickyInContainer(
       if (containerTop >= topOffset) {
         setStickyState("static");
       } else if (containerBottom <= stickyBottom) {
-        setStickyState("absolute");
+        const finalTop = containerRect.height - sidebarHeight;
+        setStuckTop(finalTop);
+        setStickyState("stuck");
       } else {
         setStickyState("fixed");
       }
@@ -78,10 +81,10 @@ export function useStickyInContainer(
           left: dimensions.left,
           width: dimensions.width,
         };
-      case "absolute":
+      case "stuck":
         return {
           position: "absolute",
-          bottom: 0,
+          top: stuckTop,
           left: 0,
           width: dimensions.width,
         };
