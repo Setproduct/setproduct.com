@@ -74,7 +74,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/nucleus-ui",
     buyHref: "https://gumroad.com/a/169902547/snlaf",
     buyLabel: "Buy $89",
-    image: "/images/nucleus-cover-1920-m_(1).avif",
+    image: "/images/nucleus-cover-1920-m.webp",
     title: "Nucleus UI",
     description: "Nucleus UI contains 1000 components and variants with 500+ mobile screens designed for Figma (including 9 themes from Event, E-commerce, Finance, NFT, etc.).",
   },
