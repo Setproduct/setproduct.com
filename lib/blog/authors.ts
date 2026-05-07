@@ -28,7 +28,7 @@ export const AUTHORS: Record<string, Author> = {
   "jeff-flipper": {
     slug: "jeff-flipper",
     name: "Jeff Flipper",
-    avatar: "/blog/authors/jeff-flipper.png",
+    avatar: "/blog/authors/jeff-flipper.webp",
   },
   "connor-patterson": {
     slug: "connor-patterson",
@@ -43,7 +43,7 @@ export const AUTHORS: Record<string, Author> = {
   "jamichael-mitchell": {
     slug: "jamichael-mitchell",
     name: "JaMichael Mitchell",
-    avatar: "/blog/authors/jamichael-mitchell.jpg",
+    avatar: "/blog/authors/jamichael-mitchell.webp",
   },
   "stan-suboticki": {
     slug: "stan-suboticki",
@@ -53,7 +53,7 @@ export const AUTHORS: Record<string, Author> = {
   "william-james": {
     slug: "william-james",
     name: "William James",
-    avatar: "/blog/authors/william-james.jpg",
+    avatar: "/blog/authors/william-james.webp",
   },
 };
 

@@ -54,7 +54,7 @@ export const nucleus_uiContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/1Account_Setup-min.png",
+          "image": "/images/1Account_Setup-min.webp",
           "title": "Account Setup"
         },
         {
@@ -78,7 +78,7 @@ export const nucleus_uiContent = {
           "title": "Augmented Reality"
         },
         {
-          "image": "/images/7Calendar-min.png",
+          "image": "/images/7Calendar-min.webp",
           "title": "Calendar"
         },
         {
@@ -110,15 +110,15 @@ export const nucleus_uiContent = {
           "title": "Feature Info"
         },
         {
-          "image": "/images/15Feedback-min.png",
+          "image": "/images/15Feedback-min.webp",
           "title": "Feedback"
         },
         {
-          "image": "/images/16Filter-min.png",
+          "image": "/images/16Filter-min.webp",
           "title": "Filter"
         },
         {
-          "image": "/images/17Flag__Report-min.png",
+          "image": "/images/17Flag__Report-min.webp",
           "title": "Flag & Report"
         },
         {
@@ -130,7 +130,7 @@ export const nucleus_uiContent = {
           "title": "News Feed"
         },
         {
-          "image": "/images/20Note-min.png",
+          "image": "/images/20Note-min.webp",
           "title": "Note"
         },
         {
@@ -150,7 +150,7 @@ export const nucleus_uiContent = {
           "title": "Search"
         },
         {
-          "image": "/images/25Settings__Preference.png",
+          "image": "/images/25Settings__Preference.webp",
           "title": "Settings & Preferences"
         },
         {
@@ -174,7 +174,7 @@ export const nucleus_uiContent = {
           "title": "Subscription"
         },
         {
-          "image": "/images/31Verification-min.png",
+          "image": "/images/31Verification-min.webp",
           "title": "Verification"
         },
         {

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getAuthor } from "../../lib/blog/authors";
 
 type BlogAuthorProps = {
@@ -10,13 +9,14 @@ export default function BlogAuthor({ authorSlug }: BlogAuthorProps) {
   return (
     <a href="#" className="blogpost_author-wr w-inline-block">
       <div className="blogpost_author-img">
-        <Image
+        <img
           src={author.avatar}
           alt={author.name}
           width={40}
           height={40}
           className="image-cover"
-          unoptimized={author.avatar.startsWith("http")}
+          loading="lazy"
+          style={{ color: "transparent" }}
         />
       </div>
       <p className="text-size-regular text-weight-semibold">{author.name}</p>

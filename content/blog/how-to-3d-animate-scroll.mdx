@@ -7,7 +7,7 @@ description: >-
 slug: how-to-3d-animate-scroll
 date: '2022-09-07'
 author: Jamshed Kasimov
-coverImage: /blog/covers/how-to-3d-animate-scroll.jpg
+coverImage: /blog/covers/how-to-3d-animate-scroll.webp
 coverImageAlt: How to make 3D animation effect on page scroll HTML & JS
 tags: []
 canonical: 'https://www.setproduct.com/blog/how-to-3d-animate-scroll'
@@ -50,7 +50,7 @@ Apple implemented this effect by using a smart trick. Everything is done with a 
 
 What they did is they pre-downloaded hundreds of images and when you scroll them - these images will load one frame at a time.
 
-![](/blog/assets/how-to-3d-animate-scroll/img-1.jpg)
+![](/blog/assets/how-to-3d-animate-scroll/img-1.webp)
 
 As a result, the behavior of the page is as follows:  
 
@@ -84,7 +84,7 @@ _JavaScript code_
 
 Now, we'll create a function for our current frame that returns the file path and file number of the desired image file. Assuming that the file names are numbered sequentially in ascending order within the same directory (i.e. 0001.jpg, 0002.jpg, etc.), we want to change those numbers dynamically using JavaScript.Since the image number is an integer, we need to convert it to a string and prepend zeros to the front of our index until it reaches four digits to match our file names. This may be done by using _padStart(4, '0')_.
 
-_JavaScript code_ [_#_](/external/www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/0001.jpg)
+_JavaScript code_ [_#_](/external/www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/0001.webp)
 
 Thanks to this code, the static file will be updated in accordance with the user's scroll position.Next, we need to create a variable for the still images that we are going to have, as well as the code that will generate the images on the canvas.
 
@@ -122,7 +122,7 @@ _JavaScript code_
 
 And voila, we're done. That's how you create scroll-triggered animations for your website. The final result will look like this:
 
-![](/blog/assets/how-to-3d-animate-scroll/img-2.jpg)
+![](/blog/assets/how-to-3d-animate-scroll/img-2.webp)
 
 ## Images or video?
 

@@ -38,10 +38,10 @@ export const ios_ui_kitContent = {
           "image": "/images/ios-ui-kit/9-Filters.webp"
         },
         {
-          "image": "/images/ios-ui-kit/10-Empty_States.png"
+          "image": "/images/ios-ui-kit/10-Empty_States.webp"
         },
         {
-          "image": "/images/ios-ui-kit/11-Messages.png"
+          "image": "/images/ios-ui-kit/11-Messages.webp"
         },
         {
           "image": "/images/ios-ui-kit/12-Inputs.webp"
@@ -53,10 +53,10 @@ export const ios_ui_kitContent = {
           "image": "/images/ios-ui-kit/14-Maps.webp"
         },
         {
-          "image": "/images/ios-ui-kit/15-PIN.png"
+          "image": "/images/ios-ui-kit/15-PIN.webp"
         },
         {
-          "image": "/images/ios-ui-kit/16-Plans.png"
+          "image": "/images/ios-ui-kit/16-Plans.webp"
         },
         {
           "image": "/images/ios-ui-kit/17-profile.webp"
@@ -65,10 +65,10 @@ export const ios_ui_kitContent = {
           "image": "/images/ios-ui-kit/18-Search.webp"
         },
         {
-          "image": "/images/ios-ui-kit/19-Settings.png"
+          "image": "/images/ios-ui-kit/19-Settings.webp"
         },
         {
-          "image": "/images/ios-ui-kit/20-Sheets_bottom.png"
+          "image": "/images/ios-ui-kit/20-Sheets_bottom.webp"
         },
         {
           "image": "/images/ios-ui-kit/21-Tables.webp"

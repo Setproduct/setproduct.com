@@ -18,7 +18,7 @@ export const zeusContent = {
           "image": "/images/zeus/06.webp"
         },
         {
-          "image": "/images/zeus/09.png"
+          "image": "/images/zeus/09.webp"
         },
         {
           "image": "/images/zeus/15.webp"
@@ -27,7 +27,7 @@ export const zeusContent = {
           "image": "/images/zeus/16.webp"
         },
         {
-          "image": "/images/zeus/01-1.png"
+          "image": "/images/zeus/01-1.webp"
         },
         {
           "image": "/images/zeus/02-1.webp"
@@ -105,16 +105,16 @@ export const zeusContent = {
           "image": "/images/zeus/05-4.webp"
         },
         {
-          "image": "/images/zeus/04-3.png"
+          "image": "/images/zeus/04-3.webp"
         },
         {
-          "image": "/images/zeus/02-5.png"
+          "image": "/images/zeus/02-5.webp"
         },
         {
-          "image": "/images/zeus/01-5.png"
+          "image": "/images/zeus/01-5.webp"
         },
         {
-          "image": "/images/zeus/03-4.png"
+          "image": "/images/zeus/03-4.webp"
         },
         {
           "image": "/images/zeus/01-6.webp"

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 type BlogHeroProps = {
@@ -54,15 +53,11 @@ export default function BlogHero({
             </div>
             {coverImage && (
               <div className="blogpost_hero-img-wr" style={{ position: "relative", overflow: "hidden" }}>
-                <Image
+                <img
                   src={coverImage}
                   alt={coverImageAlt ?? title}
-                  fill
-                  priority
-                  quality={90}
-                  sizes="(max-width: 991px) 100vw, (max-width: 1440px) 92vw, 1312px"
                   className="image-cover"
-                  unoptimized={coverImage.startsWith("http")}
+                  style={{ position: "absolute", height: "100%", width: "100%", left: 0, top: 0, right: 0, bottom: 0, color: "transparent" }}
                 />
               </div>
             )}

@@ -28,8 +28,8 @@ export const material_youContent = {
       {
         "id": "tab-1",
         "label": "Analytics",
-        "beforeImage": "/images/material-you/analytics-min.png",
-        "afterImage": "/images/material-you/analytics_dark-min.png"
+        "beforeImage": "/images/material-you/analytics-min.webp",
+        "afterImage": "/images/material-you/analytics_dark-min.webp"
       },
       {
         "id": "tab-2",
@@ -40,14 +40,14 @@ export const material_youContent = {
       {
         "id": "tab-3",
         "label": "DeFi",
-        "beforeImage": "/images/material-you/3defi-min.png",
-        "afterImage": "/images/material-you/3defi-dark-min.png"
+        "beforeImage": "/images/material-you/3defi-min.webp",
+        "afterImage": "/images/material-you/3defi-dark-min.webp"
       },
       {
         "id": "tab-4",
         "label": "Financial",
-        "beforeImage": "/images/material-you/4financial-min.png",
-        "afterImage": "/images/material-you/4financial-dark-min.png"
+        "beforeImage": "/images/material-you/4financial-min.webp",
+        "afterImage": "/images/material-you/4financial-dark-min.webp"
       },
       {
         "id": "tab-5",
@@ -164,11 +164,11 @@ export const material_youContent = {
           "title": "Charts"
         },
         {
-          "image": "/images/8Chips-min.png",
+          "image": "/images/8Chips-min.webp",
           "title": "Chips"
         },
         {
-          "image": "/images/10Date_Picker-min.png",
+          "image": "/images/10Date_Picker-min.webp",
           "title": "Date Pickers"
         },
         {
@@ -208,7 +208,7 @@ export const material_youContent = {
           "title": "Selection"
         },
         {
-          "image": "/images/21Snackbars-min.png",
+          "image": "/images/21Snackbars-min.webp",
           "title": "Snackbars"
         },
         {
@@ -224,7 +224,7 @@ export const material_youContent = {
           "title": "Navigation Bar"
         },
         {
-          "image": "/images/23Tabs-min.png",
+          "image": "/images/23Tabs-min.webp",
           "title": "Tabs"
         },
         {
@@ -246,23 +246,23 @@ export const material_youContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/1-analytics-min-1.png",
+          "image": "/images/1-analytics-min-1.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/2-analytics2-min.png",
+          "image": "/images/2-analytics2-min.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/3-analytics3-min.png",
+          "image": "/images/3-analytics3-min.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/4-cal1-min.png",
+          "image": "/images/4-cal1-min.webp",
           "title": "Calendar"
         },
         {
-          "image": "/images/5-cal2-min.png",
+          "image": "/images/5-cal2-min.webp",
           "title": "Calendar Navigation"
         },
         {
@@ -270,7 +270,7 @@ export const material_youContent = {
           "title": "DeFi"
         },
         {
-          "image": "/images/7-defi2-min.png",
+          "image": "/images/7-defi2-min.webp",
           "title": "DeFi"
         },
         {
@@ -298,7 +298,7 @@ export const material_youContent = {
           "title": "Dropdowns"
         },
         {
-          "image": "/images/14-inputs4-min.png",
+          "image": "/images/14-inputs4-min.webp",
           "title": "Inputs & Sidebar"
         },
         {
@@ -334,7 +334,7 @@ export const material_youContent = {
           "title": "Social"
         },
         {
-          "image": "/images/23-swap1-min.png",
+          "image": "/images/23-swap1-min.webp",
           "title": "Swap Tokens"
         },
         {

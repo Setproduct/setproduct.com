@@ -14,7 +14,7 @@ export const PRODUCTS: Product[] = [
     slug: "nocra",
     title: "Nocra UI kit",
     description: "Nocra is a design system for AI products. Built specifically for startups harnessing AI generation: images, video, audio, music, prompts, and beyond.",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/696d15b35dd993880cb17213_nocra-list-image.jpg",
+    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/696d15b35dd993880cb17213_nocra-list-image.webp",
     buyHref: "https://gumroad.com/a/530945235/uocxtg",
     price: "98",
     categories: ["dashboards", "mobile", "code", "dataviz", "websites"],

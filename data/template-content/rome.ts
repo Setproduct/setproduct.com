@@ -68,11 +68,11 @@ export const romeContent = {
           "title": "Buttons"
         },
         {
-          "image": "/images/3-List_Elements-min.png",
+          "image": "/images/3-List_Elements-min.webp",
           "title": "Lists"
         },
         {
-          "image": "/images/4-Calendar-min.png",
+          "image": "/images/4-Calendar-min.webp",
           "title": "Calendar"
         },
         {
@@ -100,7 +100,7 @@ export const romeContent = {
           "title": "Shopping cards"
         },
         {
-          "image": "/images/11-Inputs-min.png",
+          "image": "/images/11-Inputs-min.webp",
           "title": "Inputs"
         },
         {
@@ -112,11 +112,11 @@ export const romeContent = {
           "title": "Misc. components"
         },
         {
-          "image": "/images/14-Mobile_Headers__Tab_.png",
+          "image": "/images/14-Mobile_Headers__Tab_.webp",
           "title": "Mobile app bars"
         },
         {
-          "image": "/images/15-Segmented_Controls_T.png",
+          "image": "/images/15-Segmented_Controls_T.webp",
           "title": "Tabs, Segments"
         },
         {
@@ -124,7 +124,7 @@ export const romeContent = {
           "title": "Sliders"
         },
         {
-          "image": "/images/17-Tables-min.png",
+          "image": "/images/17-Tables-min.webp",
           "title": "Tables"
         }
       ]
@@ -230,7 +230,7 @@ export const romeContent = {
           "title": "Finance"
         },
         {
-          "image": "/images/25Mobile_x1-min-1.png",
+          "image": "/images/25Mobile_x1-min-1.webp",
           "title": "Trading"
         },
         {
@@ -238,7 +238,7 @@ export const romeContent = {
           "title": "Trading"
         },
         {
-          "image": "/images/27Mobile_x1-1-min-1-2.png",
+          "image": "/images/27Mobile_x1-1-min-1-2.webp",
           "title": "Search results"
         },
         {

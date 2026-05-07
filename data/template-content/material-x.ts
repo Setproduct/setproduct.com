@@ -129,7 +129,7 @@ export const material_xContent = {
           "title": "Rectangle Buttons"
         },
         {
-          "image": "/images/5_Stepper.png",
+          "image": "/images/5_Stepper.webp",
           "title": "Steppers"
         },
         {
@@ -265,7 +265,7 @@ export const material_xContent = {
           "image": "/images/14-Charts-2-min.webp"
         },
         {
-          "image": "/images/15-Charts-min.png"
+          "image": "/images/15-Charts-min.webp"
         },
         {
           "image": "/images/16-Profile-1-min.webp"

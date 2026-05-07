@@ -53,7 +53,7 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     slug: "fonts-playground",
     title: "Fonts Playground",
     description: "Best web fonts precisely handpicked and optimised for better web legibility and ready to implement into your Figma project.",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/65ce30306d2dd438a61841d9_659ffd28176cd07c61f4123d_freebie-fonts.png",
+    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/65ce30306d2dd438a61841d9_659ffd28176cd07c61f4123d_freebie-fonts.webp",
     category: "Global Styles",
     previewHref: "/freebies/fonts-playground",
     duplicateHref: "https://www.figma.com/file/wzpBLnFVlrMdsJtA9nZqJg/Figma-Fonts-Playground-System/duplicate",

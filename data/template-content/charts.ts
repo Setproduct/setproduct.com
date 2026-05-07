@@ -71,7 +71,7 @@ export const chartsContent = {
     title: "<strong>For desktop, tablet and mobile. <br/>All the viewports!</strong>",
     subtitle:
       "We carefully scaled each chart component to fit perfect on Desktop 1440px, Tablet 1024 and mobile 360 width. No headache — charts are ready to use.",
-    image: "/images/charts/hexbin.png",
+    image: "/images/charts/hexbin.webp",
   },
 
   pricing: {

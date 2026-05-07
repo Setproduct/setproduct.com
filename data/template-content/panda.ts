@@ -27,7 +27,7 @@ export const pandaContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/panda/1Analytics_Light_Vers.png"
+          "image": "/images/panda/1Analytics_Light_Vers.webp"
         },
         {
           "image": "/images/panda/2Analytics_Light_Vers.webp"
@@ -36,7 +36,7 @@ export const pandaContent = {
           "image": "/images/panda/3Kanban_Card_Light_Ve.webp"
         },
         {
-          "image": "/images/panda/4Calendar_list_List_L.png"
+          "image": "/images/panda/4Calendar_list_List_L.webp"
         },
         {
           "image": "/images/panda/5Analytics_Light_Vers.webp"
@@ -45,13 +45,13 @@ export const pandaContent = {
           "image": "/images/panda/6Kanban_Card_Light_Ve.webp"
         },
         {
-          "image": "/images/panda/7Calendar_Month_List_.png"
+          "image": "/images/panda/7Calendar_Month_List_.webp"
         },
         {
-          "image": "/images/panda/8Profile_Light_Versio.png"
+          "image": "/images/panda/8Profile_Light_Versio.webp"
         },
         {
-          "image": "/images/panda/10Invoice_List_Light_V.png"
+          "image": "/images/panda/10Invoice_List_Light_V.webp"
         },
         {
           "image": "/images/panda/11Calendar_Week_List_L.webp"
@@ -93,7 +93,7 @@ export const pandaContent = {
       {
         "id": "tab-5",
         "label": "Kanban",
-        "beforeImage": "/images/panda/5-Kanban_Card_Light_Ve.png",
+        "beforeImage": "/images/panda/5-Kanban_Card_Light_Ve.webp",
         "afterImage": "/images/panda/5-Kanban_Card_Dark_Ver.webp"
       },
       {
@@ -182,7 +182,7 @@ export const pandaContent = {
           "title": "Text"
         },
         {
-          "image": "/images/3-Chart_Dark_Version-m.png",
+          "image": "/images/3-Chart_Dark_Version-m.webp",
           "title": "Dark Charts"
         },
         {
@@ -218,7 +218,7 @@ export const pandaContent = {
           "title": "Icon Buttons"
         },
         {
-          "image": "/images/12-Select_Controls_Ligh.png",
+          "image": "/images/12-Select_Controls_Ligh.webp",
           "title": "Selection Controls"
         },
         {
@@ -234,15 +234,15 @@ export const pandaContent = {
           "title": "Data Tables"
         },
         {
-          "image": "/images/16-TimeLine_Vertical_Sm.png",
+          "image": "/images/16-TimeLine_Vertical_Sm.webp",
           "title": "Timeline Dark"
         },
         {
-          "image": "/images/17-TimeLine_Vertical_Sm.png",
+          "image": "/images/17-TimeLine_Vertical_Sm.webp",
           "title": "Timeline Widgets"
         },
         {
-          "image": "/images/18-Title_Light_Version-.png",
+          "image": "/images/18-Title_Light_Version-.webp",
           "title": "Title Headers"
         },
         {
