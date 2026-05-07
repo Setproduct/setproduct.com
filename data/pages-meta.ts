@@ -70,7 +70,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     description:
       "Actionable UI/UX design tutorials, resources, career strategies, and startup growth hacking techniques from industry practitioners.",
     ogImage:
-      "/images/67bd71cb3dd87772bfb3281b_image1_(15).webp",
+      "/images/image1_(15).webp",
     canonical: "https://www.setproduct.com/blog",
   },
   freebies: {
