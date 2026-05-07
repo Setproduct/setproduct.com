@@ -110,7 +110,7 @@ export default function DashboardsPage() {
                       alt=""
                       className="image-contain"
                       loading="lazy"
-                      src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65d35cdfa7c936199fbf023f_02-min_(1).webp"
+                      src="/images/65d35cdfa7c936199fbf023f_02-min_(1).webp"
                     />
                   </div>
                 </div>

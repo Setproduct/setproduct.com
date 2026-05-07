@@ -4144,7 +4144,7 @@ figcaption {
 .fs-rangeslider_handle {
   z-index: 1;
   cursor: grab;
-  background-image: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/652fff2bd9e8dd6e6daedb95_Knob.svg");
+  background-image: url("/images/652fff2bd9e8dd6e6daedb95_Knob.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: contain;
@@ -4181,7 +4181,7 @@ figcaption {
 
 .fs-rangeslider_handle-value {
   text-align: center;
-  background-image: url("/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/6530036b8f3633f202b6eb28_tooltip.svg");
+  background-image: url("/images/6530036b8f3633f202b6eb28_tooltip.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: contain;

@@ -24,7 +24,7 @@ export type DashboardTemplatePageData = {
   faq: FaqItem[];
 };
 
-const OG_IMAGE = "/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65a66f06e0e919d7d7e3e8d5_setproduct2.webp";
+const OG_IMAGE = "/images/65a66f06e0e919d7d7e3e8d5_setproduct2.webp";
 
 const BREADCRUMBS: BreadcrumbItem[] = [
   { label: "Home", href: "/" },
