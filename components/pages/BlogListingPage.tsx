@@ -111,7 +111,7 @@ export default function BlogListingPage() {
 
                   <div className="w-dyn-list">
                     <div className="blog_list w-dyn-items" role="list">
-                      {visiblePosts.map((post) => (
+                      {visiblePosts.map((post, index) => (
                         <div key={post.slug} className="blog_list-item w-dyn-item" role="listitem">
                           <div className="blog_list-item-wr">
                             <Link
@@ -122,6 +122,7 @@ export default function BlogListingPage() {
                                 alt=""
                                 src={post.image}
                                 fill
+                                priority={index === 0}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="image-cover"
                               />

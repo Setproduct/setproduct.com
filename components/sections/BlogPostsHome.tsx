@@ -59,7 +59,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
 
         <div className="main_blog-liist2-wr w-dyn-list">
           <div className="main_blog-liist2 w-dyn-items" role="list">
-            {filteredPosts.map((post) => (
+            {filteredPosts.map((post, index) => (
               <div key={post.slug} className="main_blog-liist2-item w-dyn-item" role="listitem">
                 <div className="main_blog-liist2-item-wr">
                   <div className="main_blog-liist2-item-info">
@@ -85,6 +85,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                       alt=""
                       src={post.image}
                       fill
+                      priority={index === 0}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="image-cover"
                     />

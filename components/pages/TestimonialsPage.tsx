@@ -117,6 +117,7 @@ export default function TestimonialsPage() {
                             width={photo.width}
                             height={photo.height}
                             alt=""
+                            priority={index < 3}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="image-cover block w-full h-auto"
                           />

@@ -79,7 +79,7 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
                             <img
                               alt={post.frontmatter.coverImageAlt ?? post.frontmatter.title}
                               className="image-cover"
-                              loading="lazy"
+                              loading={index === 0 ? "eager" : "lazy"}
                               sizes="100vw"
                               src={post.frontmatter.coverImage}
                             />
