@@ -160,7 +160,7 @@ export const material_youContent = {
           "title": "Cards"
         },
         {
-          "image": "/images/material-you/7-Global_Statistic_dar.webp",
+          "image": "/images/orion/7-Global_Statistic_dar.webp",
           "title": "Charts"
         },
         {

@@ -32,7 +32,7 @@ export const mobile_xContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on stylish & trendy guidelines. Included: Figma Material X kit + Mobile X UI kit.",
-        "image": "/images/mobile-x/pricing-mobx-02.webp",
+        "image": "/images/5-Setproduct_X_Bundle_.webp",
         "buyLabel": "Buy now",
         "price": "$195",
         "buyHref": "https://setproduct.gumroad.com/l/figma-x"

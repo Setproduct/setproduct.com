@@ -320,7 +320,7 @@ export const xelaContent = {
           "title": "Social"
         },
         {
-          "image": "/images/22-Social_Mobile-min.webp",
+          "image": "/images/x9Chips-min.webp",
           "title": "Social"
         },
         {

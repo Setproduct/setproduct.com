@@ -126,7 +126,7 @@ export const eclipseContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for complex web apps and dashboards, where is the data visualisation matters most. Included: Eclipse UI kit + Orion UI kit",
-        "image": "/images/eclipse/pricing-orion-02_1.webp",
+        "image": "/images/orion/pricing-orion-02.webp",
         "buyLabel": "Buy now",
         "price": "$218",
         "buyHref": "https://gumroad.com/a/530945235/vbcnzd"

@@ -97,7 +97,7 @@ export const android_ui_kitContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on Material Design patterns. Included: Material Dashboard + Material Design System.",
-        "image": "/images/android-ui-kit/pricing-md-bundle-mi_1.webp",
+        "image": "/images/material/pricing-md-bundle-mi_2.webp",
         "buyLabel": "Buy now",
         "price": "$195",
         "buyHref": "https://gum.co/figmamaterial"

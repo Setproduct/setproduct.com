@@ -69,8 +69,8 @@ export const pandaContent = {
       {
         "id": "tab-1",
         "label": "Analytics",
-        "beforeImage": "/images/panda/1-Analytics_Light.webp",
-        "afterImage": "/images/panda/1-Analytics_Dark.webp"
+        "beforeImage": "/images/Analytics_Light.webp",
+        "afterImage": "/images/Analytics_Dark.webp"
       },
       {
         "id": "tab-2",

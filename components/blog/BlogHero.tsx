@@ -86,7 +86,7 @@ export default function BlogHero({
                 <div className="text-size-regular">Blog</div>
               </Link>
               <img
-                src="/images/65cdfb7d6149e6e6dd43d92e_Icon.svg"
+                src="/images/Icon.svg"
                 loading="lazy"
                 alt=""
                 className="breadcrump-icon"

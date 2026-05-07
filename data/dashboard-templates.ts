@@ -24,7 +24,7 @@ export type DashboardTemplatePageData = {
   faq: FaqItem[];
 };
 
-const OG_IMAGE = "/images/65a66f06e0e919d7d7e3e8d5_setproduct2.webp";
+const OG_IMAGE = "/images/setproduct2.webp";
 
 const BREADCRUMBS: BreadcrumbItem[] = [
   { label: "Home", href: "/" },
@@ -54,8 +54,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Advantages of Using Admin Dashboard Templates",
         bodyHtml: "<p>Experience the many advantages of our admin dashboard templates:</p>\n<ul role=\"list\">\n<li>Save Time with an Organized Library: Using auto-layout, variants, color and text styles, our web dashboard templates make available a very convenient design theme system that will greatly lessen your development time.</li>\n<li>Flexible to Suite Your Different Needs: Our admin templates come packed full on detail desktop and mobile templates in the light design style, which are easy for quick customization.</li>\n<li>Dark and Light Versions Included: Our clean and modern Ui kit of web app dashboard UI kits includes high-quality full-width desktop templates that cater to different tastes in design.</li>\n<li>Preview Variants of Components &amp; UI Widgets: Use auto-layout to let drag'n'drop components easily crafted with Variants support for ready-made blocks in your projects.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -114,8 +114,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Benefits of Using Analytics Dashboard Templates",
         bodyHtml: "<p>Our <strong>analytics dashboard templates</strong> offer several benefits in using them:</p>\n<ul role=\"list\">\n<li>Powered by the intelligent auto layout, variants and styles, our templates are part of a comprehensive design system.</li>\n<li>Preview Variants of Components &amp; UI Widgets makes dragging and dropping easy as can be.</li>\n<li>Scalable Layouts whatever Viewport: Our kits are made to be used with ease in any viewport.</li>\n</ul>\n<p>Dark and Light Versions are both included: Our clean and modern <a href=\"https://www.setproduct.com/dashboards\">dashboard UI kits</a> include high-quality full-width desktop templates that cater to different tastes in design.</p>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -174,8 +174,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Benefits of Using Android Dashboard Templates",
         bodyHtml: "<p>Our Android dashboards offer several key advantages that make them an invaluable resource for developers.</p>\n<ul role=\"list\">\n<li>Organized library saves you time: Powered by auto-layout, variants, colors and text styles, our templates supply an all-bells-and-whistles design system for convenience.</li>\n<li>review Variants of Components &amp; UI Widgets: Auto-layout drag and drop components accurately crafted with Variants support, including UI design widgets as ready-made blocks.</li>\n<li>Easy to Customize: Contains components, auto-layout, hot style guides and detailed Android templates for quick startup.</li>\n<li>Scalable Layouts for Any Viewport: Designed to be easily adaptable for any device or screen size.</li>\n<li>Dark and Light Dashboard Templates: Clean modern web app dashboard UI kits with high-quality full-width desktop templates.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -222,8 +222,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Benefits of Using Angular Dashboard Templates",
         bodyHtml: "<p>Using <strong>Angular dashboard templates</strong> provides an array of advantages that can excessively improve the progress and outcomes of your projects:</p>\n<ul role=\"list\">\n<li>Introduce Library Structure to Save You Time: Templates of our own can form a comprehensive framework for design because they are designed layouts with structure, variation, and also style.</li>\n<li>Preview Variants of UI Components &amp; UI Widgets: All you need is to drag and drop these components which are carefully made with variants for blocks you can use instantly.</li>\n<li>Fast to Customize: It provides the components, autolayout, fashionable style guides, and complete Angular templates.</li>\n<li>Scalable Layouts for All Viewport Sizes: Easily adaptive for all devices and screen sizes.</li>\n<li>Dark and Light Dashboard Templates: The world's use a totally brand-new layout with clean lines that can be customized one time with just some graphic design knowledge.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -278,8 +278,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "How Can Financial Dashboards Help Make Business Decisions?",
         bodyHtml: "<p>By utilizing <strong>financial dashboards</strong>, you can easily access key metrics like revenue, costs, profit, and other important indicators. Here are some ways in which they can help your company:</p>\n<ul role=\"list\">\n<li>Data That's Always Up-to-Date: Financial dashboards provide real-time access to financial data, eliminating the need for manual data collection and repetitive work. With current information, trends can be spotted just as soon as they arise so decisions impacting your bottom line are made easier and more accurately than ever before.</li>\n<li>Track Performance in Real-Time: With a financial dashboard, companies can trace various performance metrics at any time they like. Everything from revenue and costs to profits and cash flow is laid bare before the decision maker's eyes so that many different aspects of the organization's financial performance come under scrutiny - and by doing all in one place, if so required.</li>\n</ul>\n<ul role=\"list\">\n<li>Trend Identification: Financial dashboards allow you to track the trends and patterns of your financial data. By analyzing historical financial information, then giving its history some thought, occasionally you will spot certain things that are unforeseen and could help predict future trends in the market or avoid potential challenges.</li>\n<li>Goal Tracking: Financial dashboards enable organizations to set specific goals and monitor progress. Activities can be quantified in detail, so that for every target you devise with an eye on your budget, you will know how much was done and what remains to be carried out.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -333,8 +333,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Benefits from utilizing IOS Dashboard Templates",
         bodyHtml: "<p>Our<a href=\"https://www.setproduct.com/dashboards\"> dashboards</a> offer a lot of advantages, which cannot be beaten in the development community.</p>\n<ul role=\"list\">\n<li>Organized Library to Save Time: Using auto-layout, variants, colors and text styles of design elements as a handy design system.</li>\n<li>Preview Variants for Components &amp; UI Widgets: Auto-layout drag-and-drop components, built accurately with Variants support for example, including UI design widgets as ready-made block.</li>\n<li>Easy to Customize: Contains components, auto-layout, trendy styles guide and detailed IOS templates for a straightforward start.</li>\n<li>Scalable Layouts That Work in Any Browser: Designed to adapt as easy as pie for all devices and screen sizes.</li>\n<li>Dark and Light Dashboard Templates: High quality modern dark and light web app dashboard UI kits with clean full-width desktop templates.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },
@@ -381,8 +381,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
       {
         heading: "Mobile Dashboard Benefits",
         bodyHtml: "<p>Our mobile dashboard templates provide numerous advantages for companies and developers. Here are the primary benefits:</p>\n<ul role=\"list\">\n<li>The organized library saves valuable time through auto-layout, variants, and integrated color and text styles within a comprehensive design framework. Pre-packaged components, a thoughtful default style guide, and a modular structure allow rapid prototyping of engaging user interface design.</li>\n<li>Preview variants of components and UI elements with a single click. Auto-layout drag and drop blocks are carefully crafted to support multiple design options, including ready-made interactive widgets. Global styles and localization are baked in.</li>\n<li>Easy customization is possible. The templates include auto-layout, trendsetting style guides, and fully-featured mobile blueprints for an expedited start. Internationalization is considered from the outset.</li>\n<li>Scalable layouts accommodate any screen, from pocket-sized to expansive monitors. Adaptive and responsive dashboard design ensures usability and aesthetics are maintained across form factors.</li>\n<li>Clean and modern web app dashboards are available in light and dark themes with high-definition full-width desktop layouts. Consistency and flexibility for diverse use cases are both addressed.</li>\n</ul>",
-        image: "/images/04-min_1.webp",
-        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/04-min_1.webp 1136w",
+        image: "/images/feature-react-04.webp",
+        imageSrcSet: "/images/04-min_1-p-500.webp 500w, /images/04-min_1-p-800.webp 800w, /images/feature-react-04.webp 1136w",
         imageAlt: "",
         reverse: true,
       },

@@ -16,7 +16,7 @@ export default function Breadcrumbs({ items }: Props) {
                   alt=""
                   className="breadcrump-icon"
                   loading="lazy"
-                  src="/images/65cdfb7d6149e6e6dd43d92e_Icon.svg"
+                  src="/images/Icon.svg"
                 />
               )}
               {item.href ? (
