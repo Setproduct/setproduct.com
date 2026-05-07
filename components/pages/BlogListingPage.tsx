@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import styles from "./BlogListingPage.module.css";
 import SiteHeader from "../layout/SiteHeader";
@@ -113,8 +114,17 @@ export default function BlogListingPage() {
                       {visiblePosts.map((post) => (
                         <div key={post.slug} className="blog_list-item w-dyn-item" role="listitem">
                           <div className="blog_list-item-wr">
-                            <Link className="blog_list-item-img-wr w-inline-block" href={`/blog/${post.slug}`}>
-                              <img alt="" className="image-cover" loading="lazy" src={post.image} />
+                            <Link
+                              className="blog_list-item-img-wr w-inline-block relative"
+                              href={`/blog/${post.slug}`}
+                            >
+                              <Image
+                                alt=""
+                                src={post.image}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="image-cover"
+                              />
                             </Link>
                             <div className="blog_list-item-info">
                               <div className="main_blog-liist1-item-info-row">

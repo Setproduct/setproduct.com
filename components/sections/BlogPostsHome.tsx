@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { BlogPostPreview } from "../../types/data";
 import ArrowIcon from "./ArrowIcon";
 import styles from "./BlogPostsHome.module.css";
@@ -76,8 +77,17 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                       </Link>
                     </div>
                   </div>
-                  <Link className="main_blog-liist2-item-img-wr w-inline-block" href={`/blog/${post.slug}`}>
-                    <img alt="" loading="lazy" src={post.image} className="image-cover" />
+                  <Link
+                    className="main_blog-liist2-item-img-wr w-inline-block relative"
+                    href={`/blog/${post.slug}`}
+                  >
+                    <Image
+                      alt=""
+                      src={post.image}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="image-cover"
+                    />
                   </Link>
                 </div>
               </div>

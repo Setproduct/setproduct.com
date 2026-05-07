@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { FreebieItem } from "../../types/data";
 
 type Props = {
@@ -9,7 +10,13 @@ export default function FreebieTemplateCard({ item }: Props) {
   return (
     <div className="template-list-item">
       <Link className="template-list-item-img-wr w-inline-block" href={item.previewHref}>
-        <img alt="" className="image-cover is-fit-top-left" loading="lazy" src={item.image} />
+        <Image
+          alt=""
+          src={item.image}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="image-cover is-fit-top-left"
+        />
         <div className="freebies-template-category-wr">
           <p className="text-size-small">{item.category}</p>
         </div>

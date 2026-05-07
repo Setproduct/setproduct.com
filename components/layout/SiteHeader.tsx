@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { BLOG_POSTS } from "../../data/blog-listing";
 import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
@@ -66,7 +67,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/charts",
     buyHref: "https://setproduct.gumroad.com/l/graphz_pro",
     buyLabel: "Buy $168",
-    image: "/images/pricing-charts-01.avif",
+    image: "/images/pricing-charts-01.webp",
     title: "Figma Charts UI kit",
     description: "Components-driven graphs design kit for dashboards, presentations, infographics & data visualisation. Includes 25+ charts types for all the viewports.",
   },
@@ -82,7 +83,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/material-x",
     buyHref: "https://setproduct.gumroad.com/l/material-x-fig",
     buyLabel: "Buy $148",
-    image: "/images/pircing-mx-02_(1).avif",
+    image: "/images/pircing-mx-02_(1).webp",
     title: "Material X for Figma",
     description: "Figma library with 1100+ components & 40 app templates beyond Material Design. Powered by top-notch shapes and Manrope font. Customizable & Adjustable UI kit now available for Angular & Figma",
   },
@@ -90,7 +91,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/material-you",
     buyHref: "https://gumroad.com/a/135691379/upxbb",
     buyLabel: "Buy $124",
-    image: "/images/pricing-materialme_(1).avif",
+    image: "/images/pricing-materialme_(1).webp",
     title: "Material You UI kit",
     description: "Figma & React library with 2600+ variants of 32 components compatible with Material Design 3. Plus 220+ dashboard templates for all the viewports. Now available for NextJS & TailwindCSS.",
   },
@@ -253,9 +254,18 @@ export default function SiteHeader() {
                                     {filteredBlogPreviews.map((item) => (
                                        <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
                                          <div className="nav_tabs-list-item-wr">
-                                           <a className="nav_tabs-list-item-img-wr w-inline-block" href={`/blog/${item.slug}`}>
-                                             <img alt="" className="image-cover" loading="lazy" src={item.image} />
-                                           </a>
+                                            <a
+                                              className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                              href={`/blog/${item.slug}`}
+                                            >
+                                              <Image
+                                                alt=""
+                                                src={item.image}
+                                                fill
+                                                sizes="158px"
+                                                className="image-cover"
+                                              />
+                                            </a>
                                            <div className="nav_tabs-list-item-info-wr">
                                              <a className="w-inline-block" href={`/blog/${item.slug}`}>
                                                <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
@@ -317,9 +327,18 @@ export default function SiteHeader() {
                                     {KIT_PREVIEWS.map((item) => (
                                       <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.href} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
-                                          <a className="nav_tabs-list-item-img-wr w-inline-block" href={item.href}>
-                                            <img alt="" className="image-cover" loading="lazy" src={item.image} />
-                                          </a>
+                                           <a
+                                             className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                             href={item.href}
+                                           >
+                                             <Image
+                                               alt=""
+                                               src={item.image}
+                                               fill
+                                               sizes="158px"
+                                               className="image-cover"
+                                             />
+                                           </a>
                                           <div className="nav_tabs-list-item-info-wr">
                                             <a className="w-inline-block" href={item.href}>
                                               <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>

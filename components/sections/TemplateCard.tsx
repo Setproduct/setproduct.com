@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "../../types/data";
 import ArrowIcon from "./ArrowIcon";
 
@@ -12,7 +13,13 @@ export default function TemplateCard({ product, imgHeight = "480" }: Props) {
   return (
     <div className="template-list-item">
       <Link className={imgClass} href={`/templates/${product.slug}`}>
-        <img alt="" className="image-cover" loading="lazy" src={product.image} />
+        <Image
+          alt=""
+          src={product.image}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="image-cover"
+        />
       </Link>
       <div className="template-list-text-wr">
         <Link className="w-inline-block" href={`/templates/${product.slug}`}>

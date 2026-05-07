@@ -8,6 +8,8 @@ const nextConfig = {
   trailingSlash: false,
   images: {
     unoptimized: isVercelPreview,
+    // Сначала пробуем WebP (универсальная поддержка), AVIF — для современных браузеров.
+    formats: ["image/webp", "image/avif"],
   },
   async redirects() {
     return [
