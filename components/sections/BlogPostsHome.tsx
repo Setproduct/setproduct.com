@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import type { BlogPostPreview } from "../../types/data";
 import ArrowIcon from "./ArrowIcon";
 import styles from "./BlogPostsHome.module.css";
@@ -18,7 +17,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
     const list = activeCategory ? posts.filter((p) => p.category === activeCategory) : posts;
     return list.slice(0, limit);
   }, [activeCategory, posts, limit]);
-
+console.log("filteredPosts",filteredPosts)
   return (
     <div className={`main_blog-liist2-section ${styles.homeBlogSection}`}>
       <div className="heading-center-wr mob-align-left">
@@ -81,12 +80,11 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                     className="main_blog-liist2-item-img-wr w-inline-block relative"
                     href={`/blog/${post.slug}`}
                   >
-                    <Image
-                      alt=""
-                      src={post.image}
-                      fill
-                      priority={index === 0}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    <img
+                      alt={`/blog/${post.slug}`}
+                      src={post.image.replace("/blog/covers/", "/blog/covers/thumbs/")}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
                       className="image-cover"
                     />
                   </Link>
