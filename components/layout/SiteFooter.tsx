@@ -9,7 +9,7 @@ import {
 } from "./FooterSocialIcons";
 import { useContactModal } from "../modals/ContactModalContext";
 import { useSubscribe } from "../../hooks/useSubscribe";
-import { cn } from "../../lib/cn";
+
 
 type FooterLink = { href: string; label: string; external?: boolean; modal?: boolean };
 type FooterColumn = { title: string; titleHref?: string; links: FooterLink[] };

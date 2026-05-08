@@ -8,7 +8,11 @@ const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 
 type FrontmatterWithDate = BlogFrontmatter & { date?: string };
 
-export function getBlogPostPreviews(): BlogPostPreview[] {
+type GetBlogPostPreviewsOptions = {
+  maxPerCategory?: number;
+};
+
+export function getBlogPostPreviews(options: GetBlogPostPreviewsOptions = {}): BlogPostPreview[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
 
   const posts: Array<BlogPostPreview & { __date: string }> = [];
@@ -45,7 +49,24 @@ export function getBlogPostPreviews(): BlogPostPreview[] {
     }
   }
 
-  return posts
+  const sortedPosts = posts
     .sort((a, b) => b.__date.localeCompare(a.__date))
     .map(({ __date: _date, ...post }) => post);
+
+  const maxPerCategory = options.maxPerCategory;
+  if (!maxPerCategory || maxPerCategory < 1) {
+    return sortedPosts;
+  }
+
+  const categoryCounts = new Map<string, number>();
+  const limitedPosts: BlogPostPreview[] = [];
+
+  for (const post of sortedPosts) {
+    const currentCount = categoryCounts.get(post.category) ?? 0;
+    if (currentCount >= maxPerCategory) continue;
+    categoryCounts.set(post.category, currentCount + 1);
+    limitedPosts.push(post);
+  }
+
+  return limitedPosts;
 }

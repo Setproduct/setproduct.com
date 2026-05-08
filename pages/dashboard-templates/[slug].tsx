@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<PageProps, SlugParams> = async ({ pa
   if (!data) return { notFound: true };
 
   const products = PRODUCTS.filter((p) => p.categories.includes("dashboards"));
-  const blogPosts = getBlogPostPreviews();
+  const blogPosts = getBlogPostPreviews({ maxPerCategory: 6 });
 
   return { props: { data, products, blogPosts } };
 };

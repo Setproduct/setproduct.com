@@ -35,7 +35,7 @@ type Props = {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      blogPosts: getBlogPostPreviews(),
+      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
     },
   };
 };

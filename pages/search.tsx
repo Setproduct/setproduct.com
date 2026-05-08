@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       items: buildSearchIndex(),
-      blogPosts: getBlogPostPreviews(),
+      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
     },
   };
 };

@@ -28,13 +28,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   // Charts uses dedicated component with its own content import
   if (slug === "charts") {
-    return { props: { item, content: null, blogPosts: getBlogPostPreviews() } };
+    return { props: { item, content: null, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
   }
 
   // Load content for other templates
   const content = await getTemplateContent(slug);
 
-  return { props: { item, content: content || null, blogPosts: getBlogPostPreviews() } };
+  return { props: { item, content: content || null, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
 };
 
 export default function TemplateDetailRoute({ item, content, blogPosts }: PageProps) {

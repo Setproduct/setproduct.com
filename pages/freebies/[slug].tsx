@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   if (!item) return { notFound: true };
 
-  return { props: { item, blogPosts: getBlogPostPreviews() } };
+  return { props: { item, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
 };
 
 export default function FreebieDetailRoute({ item, blogPosts }: PageProps) {

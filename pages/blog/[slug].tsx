@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   const relatedPosts = getRelatedPosts(slug, post.frontmatter.category, 3, post.frontmatter.relatedSlugs);
   const postUrl = `${SITE_URL}/blog/${slug}`;
-  const blogPosts = getBlogPostPreviews();
+  const blogPosts = getBlogPostPreviews({ maxPerCategory: 6 });
 
   return { props: { post, relatedPosts, postUrl, blogPosts } };
 };
