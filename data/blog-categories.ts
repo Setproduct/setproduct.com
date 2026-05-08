@@ -14,3 +14,13 @@ export const BLOG_CATEGORIES = [
   "Presentation",
   "Career",
 ];
+
+export const HOME_BLOG_CATEGORIES = [
+  "Startups & SaaS",
+  "UI Design",
+  "Growth Hacking",
+  "Inspiration",
+  "Resources",
+  "Technology",
+  "Research",
+];

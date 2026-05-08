@@ -17,7 +17,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
     const list = activeCategory ? posts.filter((p) => p.category === activeCategory) : posts;
     return list.slice(0, limit);
   }, [activeCategory, posts, limit]);
-console.log("filteredPosts",filteredPosts)
+
   return (
     <div className={`main_blog-liist2-section ${styles.homeBlogSection}`}>
       <div className="heading-center-wr mob-align-left">
@@ -82,7 +82,7 @@ console.log("filteredPosts",filteredPosts)
                   >
                     <img
                       alt={`/blog/${post.slug}`}
-                      src={post.image.replace("/blog/covers/", "/blog/covers/thumbs/")}
+                      src={post.image}
                       loading={index === 0 ? "eager" : "lazy"}
                       decoding="async"
                       className="image-cover"

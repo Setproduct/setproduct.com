@@ -12,19 +12,11 @@ import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
 import { BLOG_POSTS } from "../../data/blog-listing";
 import { PAGE_FAQ } from "../../data/faq";
+import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
 
 const HOME_TEMPLATES_INITIAL = 15;
 const HOME_TEMPLATES_PAGE = 15;
 
-const HOME_BLOG_CATEGORIES = [
-  "Startups & SaaS",
-  "UI Design",
-  "Growth Hacking",
-  "Inspiration",
-  "Resources",
-  "Technology",
-  "Research",
-];
 
 export default function HomePage() {
   const meta = PAGE_META.index;
