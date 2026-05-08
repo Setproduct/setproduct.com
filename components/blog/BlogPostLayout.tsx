@@ -15,14 +15,16 @@ import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd } from "../../lib/blog/schema";
 import { SITE_URL } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
+import type { BlogPostPreview } from "../../types/data";
 
 type BlogPostLayoutProps = {
   post: BlogPost;
   relatedPosts: BlogPostMeta[];
   postUrl: string;
+  blogPosts: BlogPostPreview[];
 };
 
-export default function BlogPostLayout({ post, relatedPosts, postUrl }: BlogPostLayoutProps) {
+export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts }: BlogPostLayoutProps) {
   const { frontmatter, mdxSource, readingTimeText, readingTimeMinutes, headings } = post;
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const canonical = frontmatter.canonical ?? `${SITE_URL}/blog/${frontmatter.slug}`;
@@ -53,7 +55,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl }: BlogPost
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         <BlogHero
           title={frontmatter.title}

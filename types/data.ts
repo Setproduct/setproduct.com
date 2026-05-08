@@ -36,6 +36,7 @@ export type BlogPostPreview = {
   title: string;
   description: string;
   image: string;
+  thumbImage: string;
   category: string;
 };
 

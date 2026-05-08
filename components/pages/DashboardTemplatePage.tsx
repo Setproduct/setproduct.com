@@ -9,7 +9,7 @@ import TemplateGrid from "../sections/TemplateGrid";
 import FaqSection from "../sections/FaqSection";
 import { useContactModal } from "../modals/ContactModalContext";
 import { CATEGORY_TABS } from "../../data/categories";
-import type { Product } from "../../types/data";
+import type { BlogPostPreview, Product } from "../../types/data";
 import type {
   DashboardTemplatePageData,
   DashboardFeatureBlock,
@@ -20,6 +20,7 @@ const PAGE_SIZE = 8;
 type Props = {
   data: DashboardTemplatePageData;
   products: Product[];
+  blogPosts?: BlogPostPreview[];
 };
 
 function FeatureTextColumn({ block }: { block: DashboardFeatureBlock }) {
@@ -88,7 +89,7 @@ function CtaBlock({ titleHtml, bodyHtml }: { titleHtml: string; bodyHtml: string
   );
 }
 
-export default function DashboardTemplatePage({ data, products }: Props) {
+export default function DashboardTemplatePage({ data, products, blogPosts = [] }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   return (
@@ -106,7 +107,7 @@ export default function DashboardTemplatePage({ data, products }: Props) {
         <meta content="summary_large_image" name="twitter:card" />
         <link href={data.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="mt-22.5">
         <Breadcrumbs items={data.breadcrumbs} />
 

@@ -13,6 +13,7 @@ import TemplateShowcase from "../sections/TemplateShowcase";
 import { useContactModal } from "../modals/ContactModalContext";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
+import type { BlogPostPreview } from "../../types/data";
 
 type Photo = { src: string; width: number; height: number };
 
@@ -61,7 +62,11 @@ const TESTIMONIAL_PAGES: Photo[][] = [
   ],
 ];
 
-export default function TestimonialsPage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function TestimonialsPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.testimonials;
   const breadcrumbs = PAGE_BREADCRUMBS.testimonials ?? [];
   const [visiblePages, setVisiblePages] = useState(1);
@@ -80,7 +85,7 @@ export default function TestimonialsPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

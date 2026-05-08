@@ -82,7 +82,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                   >
                     <img
                       alt={`/blog/${post.slug}`}
-                      src={post.image}
+                      src={post.thumbImage}
                       loading={index === 0 ? "eager" : "lazy"}
                       decoding="async"
                       className="image-cover"

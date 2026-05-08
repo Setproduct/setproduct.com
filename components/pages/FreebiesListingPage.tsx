@@ -11,11 +11,16 @@ import FreebieTemplateCard from "../sections/FreebieTemplateCard";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import { FREEBIE_PRODUCTS, FREEBIES_CATEGORIES } from "../../data/freebies-listing";
+import type { BlogPostPreview } from "../../types/data";
 
 const PAGE_SIZE = 9;
 const ALL_TOPICS = "All topics";
 
-export default function FreebiesListingPage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function FreebiesListingPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.freebies;
   const breadcrumbs = PAGE_BREADCRUMBS.freebies ?? [];
   const [activeCategory, setActiveCategory] = useState(ALL_TOPICS);
@@ -78,7 +83,7 @@ export default function FreebiesListingPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

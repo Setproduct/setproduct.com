@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { BLOG_POSTS } from "../../data/blog-listing";
 import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
+import type { BlogPostPreview } from "../../types/data";
 
 type KitPreview = {
   href: string;
@@ -97,7 +97,11 @@ const KIT_PREVIEWS: KitPreview[] = [
   },
 ];
 
-export default function SiteHeader() {
+type SiteHeaderProps = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -180,8 +184,8 @@ export default function SiteHeader() {
   }, [isMobileNavOpen]);
 
   const filteredBlogPreviews = (activeBlogCategory
-    ? BLOG_POSTS.filter((p) => p.category === activeBlogCategory)
-    : BLOG_POSTS
+    ? blogPosts.filter((p) => p.category === activeBlogCategory)
+    : blogPosts
   ).slice(0, NAV_BLOG_PREVIEW_COUNT);
 
   return (
@@ -258,10 +262,9 @@ export default function SiteHeader() {
                                               className="nav_tabs-list-item-img-wr w-inline-block relative"
                                               href={`/blog/${item.slug}`}
                                             >
-                                              <Image
-                                                alt=""
-                                                src={item.image}
-                                                fill
+                                              <img
+                                                alt={item.slug}
+                                                src={item.thumbImage}
                                                 sizes="158px"
                                                 className="image-cover"
                                               />

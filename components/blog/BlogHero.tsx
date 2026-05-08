@@ -21,11 +21,7 @@ function formatDate(isoDate: string): string {
 }
 
 function categoryLabel(cat: string): string {
-  return cat
-    .split("-")
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-    .replace("And", "&");
+  return cat;
 }
 
 export default function BlogHero({
@@ -68,7 +64,7 @@ export default function BlogHero({
             <div className="blogpost_hero-info-wr">
               {category && (
                 <Link
-                  href={`/blog?category=${category}`}
+                  href={`/blog?category=${encodeURIComponent(category)}`}
                   className="button-x-small is-text-no-pointer"
                 >
                   <div className="text-size-regular text-weight-bold">

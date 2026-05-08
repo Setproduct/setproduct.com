@@ -5,26 +5,9 @@ type BlogRelatedPostsProps = {
   posts: BlogPostMeta[];
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  tutorials: "UI Design",
-  technology: "Technology",
-  "startups-saas": "Startups & SaaS",
-  "growth-hacking": "Growth Hacking",
-  inspiration: "Inspiration",
-  resources: "Resources",
-  research: "Research",
-  career: "Career",
-  "case-studies": "Case Studies",
-  "design-code": "Design & Code",
-  "design-trends": "Design Trends",
-  optimisation: "Optimisation",
-  presentation: "Presentation",
-  typography: "Typography",
-};
-
 function categoryLabel(cat?: string): string {
   if (!cat) return "Blog";
-  return CATEGORY_LABELS[cat] ?? cat;
+  return cat;
 }
 
 export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {

@@ -10,15 +10,19 @@ import FaqSection from "../sections/FaqSection";
 import ArrowIcon from "../sections/ArrowIcon";
 import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
-import { BLOG_POSTS } from "../../data/blog-listing";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
+import type { BlogPostPreview } from "../../types/data";
 
 const HOME_TEMPLATES_INITIAL = 15;
 const HOME_TEMPLATES_PAGE = 15;
 
 
-export default function HomePage() {
+type Props = {
+  blogPosts: BlogPostPreview[];
+};
+
+export default function HomePage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.index;
   const faq = PAGE_FAQ.index ?? [];
   const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
@@ -30,7 +34,7 @@ export default function HomePage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="mt-18">
         <div className="section">
           <div className="section-padding top-80 bottom-64">
@@ -62,7 +66,7 @@ export default function HomePage() {
 
               <div className="spacer-40" />
 
-              <BlogPostsHome posts={BLOG_POSTS} categories={HOME_BLOG_CATEGORIES} />
+              <BlogPostsHome posts={blogPosts} categories={HOME_BLOG_CATEGORIES} />
             </div>
           </div>
         </div>

@@ -1,8 +1,11 @@
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import CategoryPage from "../components/pages/CategoryPage";
 import { PRODUCTS } from "../data/products";
 import { PAGE_META } from "../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../data/breadcrumbs";
 import { PAGE_FAQ } from "../data/faq";
+import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
+import type { BlogPostPreview } from "../types/data";
 
 const SLUG = "mobile";
 const PRODUCT_SLUGS = [
@@ -25,7 +28,19 @@ const PRODUCT_SLUGS = [
 const productMap = new Map(PRODUCTS.map((p) => [p.slug, p]));
 const products = PRODUCT_SLUGS.map((s) => productMap.get(s)!);
 
-export default function MobilePage() {
+type Props = {
+  blogPosts: BlogPostPreview[];
+};
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      blogPosts: getBlogPostPreviews(),
+    },
+  };
+};
+
+export default function MobilePage({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const meta = PAGE_META[SLUG];
   return (
     <CategoryPage
@@ -38,6 +53,7 @@ export default function MobilePage() {
       breadcrumbs={PAGE_BREADCRUMBS[SLUG] ?? []}
       products={products}
       faq={PAGE_FAQ[SLUG] ?? []}
+      blogPosts={blogPosts}
     />
   );
 }

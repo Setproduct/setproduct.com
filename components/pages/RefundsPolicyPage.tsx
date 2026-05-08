@@ -8,8 +8,13 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import { useContactModal } from "../modals/ContactModalContext";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
+import type { BlogPostPreview } from "../../types/data";
 
-export default function RefundsPolicyPage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function RefundsPolicyPage({ blogPosts = [] }: Props) {
   const { openContactModal } = useContactModal();
   const meta = PAGE_META["refunds-policy"];
   const breadcrumbs = PAGE_BREADCRUMBS["refunds-policy"] ?? [];
@@ -21,7 +26,7 @@ export default function RefundsPolicyPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

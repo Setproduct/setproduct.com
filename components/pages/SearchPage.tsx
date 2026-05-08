@@ -19,12 +19,14 @@ import {
   type SearchableItem,
   type SearchableType,
 } from "../../lib/search/types";
+import type { BlogPostPreview } from "../../types/data";
 
 const SLUG = "search";
 const MAX_RESULTS_PER_GROUP = 8;
 
 type Props = {
   items: SearchableItem[];
+  blogPosts?: BlogPostPreview[];
 };
 
 function groupResults(results: SearchableItem[]): Record<SearchableType, SearchableItem[]> {
@@ -43,7 +45,7 @@ function groupResults(results: SearchableItem[]): Record<SearchableType, Searcha
   return grouped;
 }
 
-export default function SearchPage({ items }: Props) {
+export default function SearchPage({ items, blogPosts = [] }: Props) {
   const meta = PAGE_META[SLUG];
   const breadcrumbs = PAGE_BREADCRUMBS[SLUG] ?? [];
   const router = useRouter();
@@ -122,7 +124,7 @@ export default function SearchPage({ items }: Props) {
         <meta content={meta.title} property="twitter:title" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

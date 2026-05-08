@@ -1,4 +1,4 @@
-import { BLOG_POSTS } from "../../data/blog-listing";
+import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
 import { PRODUCTS } from "../../data/products";
 import { TEMPLATE_PRODUCTS } from "../../data/templates-listing";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
@@ -20,8 +20,9 @@ function stripHtml(html: string): string {
 
 export function buildSearchIndex(): SearchableItem[] {
   const items: SearchableItem[] = [];
+  const blogPosts = getBlogPostPreviews();
 
-  for (const post of BLOG_POSTS) {
+  for (const post of blogPosts) {
     items.push({
       type: "blog",
       slug: post.slug,

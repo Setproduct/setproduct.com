@@ -6,13 +6,14 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import FaqSection from "../sections/FaqSection";
-import type { TemplateItem } from "../../types/data";
+import type { BlogPostPreview, TemplateItem } from "../../types/data";
 
 type Props = {
   item: TemplateItem;
+  blogPosts?: BlogPostPreview[];
 };
 
-export default function TemplateDetailPage({ item }: Props) {
+export default function TemplateDetailPage({ item, blogPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/all" },
@@ -33,7 +34,7 @@ export default function TemplateDetailPage({ item }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.ogImage} />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="pt-[70em]">
         {/* Hero Section */}
         <div className="section is-height-100vh">

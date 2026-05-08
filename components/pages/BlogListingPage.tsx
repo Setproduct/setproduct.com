@@ -11,12 +11,16 @@ import ArrowIcon from "../sections/ArrowIcon";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import { PAGE_META } from "../../data/pages-meta";
-import { BLOG_POSTS } from "../../data/blog-listing";
 import { BLOG_CATEGORIES } from "../../data/blog-categories";
+import type { BlogPostPreview } from "../../types/data";
 
 const PAGE_SIZE = 8;
 
-export default function BlogListingPage() {
+type Props = {
+  blogPosts: BlogPostPreview[];
+};
+
+export default function BlogListingPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.blog;
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -24,15 +28,15 @@ export default function BlogListingPage() {
 
   useEffect(() => {
     if (!router.isReady) return;
-    const raw = router.query.category;
+    const raw = router.query.category ?? router.query["blog-categories"];
     const next = Array.isArray(raw) ? raw[0] : raw;
     setActiveCategory(next ? String(next) : null);
     setVisibleCount(PAGE_SIZE);
-  }, [router.isReady, router.query.category]);
+  }, [router.isReady, router.query.category, router.query["blog-categories"]]);
 
   const filteredPosts = activeCategory
-    ? BLOG_POSTS.filter((p) => p.category === activeCategory)
-    : BLOG_POSTS;
+    ? blogPosts.filter((p) => p.category === activeCategory)
+    : blogPosts;
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPosts.length;
 
@@ -42,8 +46,10 @@ export default function BlogListingPage() {
     const nextQuery = { ...router.query };
     if (cat) {
       nextQuery.category = cat;
+      delete nextQuery["blog-categories"];
     } else {
       delete nextQuery.category;
+      delete nextQuery["blog-categories"];
     }
     router.replace({ pathname: router.pathname, query: nextQuery }, undefined, { shallow: true, scroll: false });
   };
@@ -55,7 +61,7 @@ export default function BlogListingPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">
           <div className="section-padding top-80 bottom-80">
