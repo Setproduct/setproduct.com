@@ -10,6 +10,10 @@ const nextConfig = {
     unoptimized: isVercelPreview,
     // Сначала пробуем WebP (универсальная поддержка), AVIF — для современных браузеров.
     formats: ["image/webp", "image/avif"],
+    // Сокращённый набор брекпоинтов: мобайл / таблет / десктоп / ретина-десктоп
+    deviceSizes: [640, 1080, 1920],
+    // Размеры для явно заданных width/height (иконки, аватары, thumbnails)
+    imageSizes: [64, 256, 384],
   },
   async redirects() {
     return [
