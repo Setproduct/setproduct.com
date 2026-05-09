@@ -61,7 +61,7 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
           </div>
           <div className="section-bg-image-wr">
             <img
-              alt=""
+              alt={title}
               className="image-cover"
               loading="eager"
               sizes="100vw"

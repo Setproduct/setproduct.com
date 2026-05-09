@@ -18,8 +18,14 @@ const path = require("path");
 const sharp = require("sharp");
 
 const ROOT = path.resolve(__dirname, "..");
-const SRC_DIR = path.join(ROOT, "public", "blog", "covers");
-const OUT_DIR = path.join(SRC_DIR, "thumbs");
+
+// Allow passing source and out dir relative to ROOT via CLI args
+// Default to blog covers if no args provided
+const srcArg = process.argv[2] || "public/blog/covers";
+const outArg = process.argv[3] || path.join(srcArg, "thumbs");
+
+const SRC_DIR = path.resolve(ROOT, srcArg);
+const OUT_DIR = path.resolve(ROOT, outArg);
 
 const TARGET_WIDTH = 800;
 const QUALITY = 80;
@@ -80,7 +86,7 @@ async function main() {
     .filter((name) => SUPPORTED.has(path.extname(name).toLowerCase()));
 
   console.log(
-    `Found ${entries.length} source images in /public/blog/covers (target ${TARGET_WIDTH}px wide, webp q${QUALITY})`,
+    `Found ${entries.length} source images in ${srcArg} (target ${TARGET_WIDTH}px wide, webp q${QUALITY})`,
   );
 
   let ok = 0;

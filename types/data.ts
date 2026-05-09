@@ -45,6 +45,7 @@ export type FreebieItem = {
   title: string;
   description: string;
   image: string;
+  thumb: string;
   category: string;
   previewHref: string;
   duplicateHref: string;
