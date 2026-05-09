@@ -182,7 +182,7 @@ export const landingContent = {
           "image": "/images/10-Hero_Cover_Mob_8.webp"
         },
         {
-          "image": "/images/landing/12-Features_Mob_1.webp"
+          "image": "/images/25-Features_Mob_1.webp"
         },
         {
           "image": "/images/13-Hero_Cover_Mob_9.webp"
@@ -224,7 +224,7 @@ export const landingContent = {
           "image": "/images/24-Faq_Testim_Plans_Mob.webp"
         },
         {
-          "image": "/images/landing/12-Features_Mob_1.webp"
+          "image": "/images/25-Features_Mob_1.webp"
         }
       ]
     }

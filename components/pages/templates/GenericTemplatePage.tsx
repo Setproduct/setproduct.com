@@ -11,7 +11,7 @@ import TemplateCtaHire from "../../sections/TemplateCtaHire";
 import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
-import type { TemplateItem } from "../../../types/data";
+import type { BlogPostPreview, TemplateItem } from "../../../types/data";
 
 type TemplateContent = {
   features?: Array<{
@@ -71,9 +71,10 @@ type TemplateContent = {
 type Props = {
   item: TemplateItem;
   content: TemplateContent;
+  blogPosts?: BlogPostPreview[];
 };
 
-export default function GenericTemplatePage({ item, content }: Props) {
+export default function GenericTemplatePage({ item, content, blogPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/all" },
@@ -94,7 +95,7 @@ export default function GenericTemplatePage({ item, content }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.ogImage} />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="pt-[70em]">
         {/* Hero Section */}
         <div className="section is-height-100vh">

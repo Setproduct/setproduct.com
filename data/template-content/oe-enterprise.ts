@@ -6,7 +6,7 @@ export const oe_enterpriseContent = {
       "subtitle": "Account, Authentication, Calendar, Dashboard, Development process, Gantt chart (Roadmap), Messenger, Multi-step form, News, Pricing, Password reset, Shopping, Table (Data grid), User profile and others",
       "items": [
         {
-          "image": "/images/oe-enterprise/1-Gantt_chart-min.png"
+          "image": "/images/oe-enterprise/1-Gantt_chart-min.webp"
         },
         {
           "image": "/images/oe-enterprise/2-Dashboards-min.webp"
@@ -18,13 +18,13 @@ export const oe_enterpriseContent = {
           "image": "/images/oe-enterprise/4-Calendar_-_Month_vie.webp"
         },
         {
-          "image": "/images/oe-enterprise/5-Dev_page-min.png"
+          "image": "/images/oe-enterprise/5-Dev_page-min.webp"
         },
         {
           "image": "/images/oe-enterprise/6-Messenger-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/7-Multi_step_form-min.png"
+          "image": "/images/oe-enterprise/7-Multi_step_form-min.webp"
         },
         {
           "image": "/images/oe-enterprise/8-News-min.webp"
@@ -33,7 +33,7 @@ export const oe_enterpriseContent = {
           "image": "/images/oe-enterprise/9-Profile_settings-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/10-Table-min.png"
+          "image": "/images/oe-enterprise/10-Table-min.webp"
         },
         {
           "image": "/images/oe-enterprise/11-Reset_password-min.webp"
@@ -51,7 +51,7 @@ export const oe_enterpriseContent = {
           "image": "/images/oe-enterprise/15-Shopping_-_steps-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/16-Pricing-min.png"
+          "image": "/images/oe-enterprise/16-Pricing-min.webp"
         },
         {
           "image": "/images/oe-enterprise/17-User_profile-min.webp"
@@ -90,7 +90,7 @@ export const oe_enterpriseContent = {
           "image": "/images/oe-enterprise/9.Group_chat-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/10.Library-min.png"
+          "image": "/images/oe-enterprise/10.Library-min.webp"
         },
         {
           "image": "/images/oe-enterprise/11.News_page-min.webp"
@@ -102,13 +102,13 @@ export const oe_enterpriseContent = {
           "image": "/images/oe-enterprise/13.Profile-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/14.Transfer-1-min.png"
+          "image": "/images/oe-enterprise/14.Transfer-1-min.webp"
         },
         {
           "image": "/images/oe-enterprise/15.Transfer-2-min.webp"
         },
         {
-          "image": "/images/oe-enterprise/16.Transfer-min.png"
+          "image": "/images/oe-enterprise/16.Transfer-min.webp"
         },
         {
           "image": "/images/oe-enterprise/17.Walkthrough_1-min.webp"

@@ -9,10 +9,10 @@ export const mostContent = {
           "image": "/images/most/1-Entert_07-min.webp"
         },
         {
-          "image": "/images/most/2-Chips_07-min.png"
+          "image": "/images/most/2-Chips_07-min.webp"
         },
         {
-          "image": "/images/most/3-Lists_01-min.png"
+          "image": "/images/most/3-Lists_01-min.webp"
         },
         {
           "image": "/images/most/4-2.webp"
@@ -21,7 +21,7 @@ export const mostContent = {
           "image": "/images/most/5-Finance_06-min.webp"
         },
         {
-          "image": "/images/most/6-Chips_05-min.png"
+          "image": "/images/most/6-Chips_05-min.webp"
         },
         {
           "image": "/images/most/7-Entert_04-min.webp"
@@ -30,13 +30,13 @@ export const mostContent = {
           "image": "/images/most/8-Chips_06.webp"
         },
         {
-          "image": "/images/most/9-Chips_01-min.png"
+          "image": "/images/most/9-Chips_01-min.webp"
         },
         {
-          "image": "/images/most/10-Chips_02-min.png"
+          "image": "/images/most/10-Chips_02-min.webp"
         },
         {
-          "image": "/images/most/11-Chips_03-min.png"
+          "image": "/images/most/11-Chips_03-min.webp"
         },
         {
           "image": "/images/most/12-Chips_04-min.webp"
@@ -54,7 +54,7 @@ export const mostContent = {
           "image": "/images/most/16-Entert_06-min.webp"
         },
         {
-          "image": "/images/most/17-Finance_01-min.png"
+          "image": "/images/most/17-Finance_01-min.webp"
         },
         {
           "image": "/images/most/18-Finance_02-min.webp"
@@ -63,7 +63,7 @@ export const mostContent = {
           "image": "/images/most/19-Finance_03-min.webp"
         },
         {
-          "image": "/images/most/20-Finance_04-min.png"
+          "image": "/images/most/20-Finance_04-min.webp"
         },
         {
           "image": "/images/most/21-Finance_05-min.webp"
@@ -72,7 +72,7 @@ export const mostContent = {
           "image": "/images/most/22-Finance_07-min.webp"
         },
         {
-          "image": "/images/most/23-Finance_08-min.png"
+          "image": "/images/most/23-Finance_08-min.webp"
         },
         {
           "image": "/images/most/24-Finance_09-min.webp"
@@ -84,49 +84,49 @@ export const mostContent = {
           "image": "/images/most/26-Finance_11-min.webp"
         },
         {
-          "image": "/images/most/27-Inputs_01-min.png"
+          "image": "/images/most/27-Inputs_01-min.webp"
         },
         {
-          "image": "/images/most/28-Inputs_02-min.png"
+          "image": "/images/most/28-Inputs_02-min.webp"
         },
         {
           "image": "/images/most/29-Inputs_03-min.webp"
         },
         {
-          "image": "/images/most/30-Inputs_04-min.png"
+          "image": "/images/most/30-Inputs_04-min.webp"
         },
         {
-          "image": "/images/most/31-Inputs_05-min.png"
+          "image": "/images/most/31-Inputs_05-min.webp"
         },
         {
           "image": "/images/most/32-Inputs_06-min.webp"
         },
         {
-          "image": "/images/most/33-Inputs_07-min.png"
+          "image": "/images/most/33-Inputs_07-min.webp"
         },
         {
-          "image": "/images/most/34-Lists_03-min.png"
+          "image": "/images/most/34-Lists_03-min.webp"
         },
         {
           "image": "/images/most/35-Lists_04-min.webp"
         },
         {
-          "image": "/images/most/36-Lists_05-min.png"
+          "image": "/images/most/36-Lists_05-min.webp"
         },
         {
-          "image": "/images/most/37-Lists_06-min.png"
+          "image": "/images/most/37-Lists_06-min.webp"
         },
         {
-          "image": "/images/most/38-Lists_07-min.png"
+          "image": "/images/most/38-Lists_07-min.webp"
         },
         {
-          "image": "/images/most/39-Lists_08-min.png"
+          "image": "/images/most/39-Lists_08-min.webp"
         },
         {
           "image": "/images/most/40-Lists_09-min.webp"
         },
         {
-          "image": "/images/most/41-Lists_02-min.png"
+          "image": "/images/most/41-Lists_02-min.webp"
         }
       ]
     }

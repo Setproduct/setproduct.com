@@ -86,7 +86,7 @@ export const material_desktopContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on Material Design patterns. Included: Material Dashboard + Material Design System.",
-        "image": "/images/material-desktop/pricing-md-bundle-mi.webp",
+        "image": "/images/material/pricing-md-bundle-mi_2.webp",
         "buyLabel": "Buy Bundle",
         "price": "$138",
         "buyHref": "https://gum.co/figmamaterial"
@@ -173,7 +173,7 @@ export const material_desktopContent = {
           "title": "Shopping & Ecommerce"
         },
         {
-          "image": "/images/12_Data_Table-1.webp",
+          "image": "/images/BA1_Data_Table.webp",
           "title": "Application Database"
         },
         {

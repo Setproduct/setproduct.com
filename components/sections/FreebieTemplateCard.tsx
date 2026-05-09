@@ -9,7 +9,11 @@ export default function FreebieTemplateCard({ item }: Props) {
   return (
     <div className="template-list-item">
       <Link className="template-list-item-img-wr w-inline-block" href={item.previewHref}>
-        <img alt="" className="image-cover is-fit-top-left" loading="lazy" src={item.image} />
+        <img
+          alt={item.title}
+          src={item.thumb}
+          className="image-cover is-fit-top-left"
+        />
         <div className="freebies-template-category-wr">
           <p className="text-size-small">{item.category}</p>
         </div>

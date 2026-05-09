@@ -126,7 +126,7 @@ export const eclipseContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for complex web apps and dashboards, where is the data visualisation matters most. Included: Eclipse UI kit + Orion UI kit",
-        "image": "/images/eclipse/pricing-orion-02_1.webp",
+        "image": "/images/orion/pricing-orion-02.webp",
         "buyLabel": "Buy now",
         "price": "$218",
         "buyHref": "https://gumroad.com/a/530945235/vbcnzd"
@@ -169,13 +169,13 @@ export const eclipseContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/1Typography_1600-min.png"
+          "image": "/images/1Typography_1600-min.webp"
         },
         {
           "image": "/images/2Colors_1600-min.webp"
         },
         {
-          "image": "/images/3Alert_banner_1600-mi.png"
+          "image": "/images/3Alert_banner_1600-mi.webp"
         },
         {
           "image": "/images/4Avatar_1600-min.webp"
@@ -184,7 +184,7 @@ export const eclipseContent = {
           "image": "/images/10Side_menu_1600-min.webp"
         },
         {
-          "image": "/images/5Badge_1600-min.png"
+          "image": "/images/5Badge_1600-min.webp"
         },
         {
           "image": "/images/6Dropdown_1600-min.webp"
@@ -193,7 +193,7 @@ export const eclipseContent = {
           "image": "/images/7Mobile_menu_1600-min.webp"
         },
         {
-          "image": "/images/8Radio_buttons_1600-m.png"
+          "image": "/images/8Radio_buttons_1600-m.webp"
         },
         {
           "image": "/images/9Search_1600-min.webp"
@@ -202,13 +202,13 @@ export const eclipseContent = {
           "image": "/images/11Widget_1600-min.webp"
         },
         {
-          "image": "/images/18Top_menu_1600-min.png"
+          "image": "/images/18Top_menu_1600-min.webp"
         },
         {
           "image": "/images/12Switch_1600-min.webp"
         },
         {
-          "image": "/images/13Tabs_1600-min.png"
+          "image": "/images/13Tabs_1600-min.webp"
         },
         {
           "image": "/images/14Tag_1600-min.webp"

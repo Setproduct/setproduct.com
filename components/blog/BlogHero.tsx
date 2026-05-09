@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 type BlogHeroProps = {
   title: string;
@@ -21,11 +21,7 @@ function formatDate(isoDate: string): string {
 }
 
 function categoryLabel(cat: string): string {
-  return cat
-    .split("-")
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ")
-    .replace("And", "&");
+  return cat;
 }
 
 export default function BlogHero({
@@ -53,16 +49,14 @@ export default function BlogHero({
               )}
             </div>
             {coverImage && (
-              <div className="blogpost_hero-img-wr" style={{ position: "relative", overflow: "hidden" }}>
+              <div className="blogpost_hero-img-wr relative overflow-hidden">
                 <Image
                   src={coverImage}
                   alt={coverImageAlt ?? title}
                   fill
                   priority
-                  quality={90}
-                  sizes="(max-width: 991px) 100vw, (max-width: 1440px) 92vw, 1312px"
+                  sizes="(max-width: 991px) 100vw, 960px"
                   className="image-cover"
-                  unoptimized={coverImage.startsWith("http")}
                 />
               </div>
             )}
@@ -70,7 +64,7 @@ export default function BlogHero({
             <div className="blogpost_hero-info-wr">
               {category && (
                 <Link
-                  href={`/blog?category=${category}`}
+                  href={`/blog?category=${encodeURIComponent(category)}`}
                   className="button-x-small is-text-no-pointer"
                 >
                   <div className="text-size-regular text-weight-bold">
@@ -91,7 +85,7 @@ export default function BlogHero({
                 <div className="text-size-regular">Blog</div>
               </Link>
               <img
-                src="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65cdfb7d6149e6e6dd43d92e_Icon.svg"
+                src="/images/Icon.svg"
                 loading="lazy"
                 alt=""
                 className="breadcrump-icon"

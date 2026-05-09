@@ -9,7 +9,7 @@ import TemplateGrid from "../sections/TemplateGrid";
 import FaqSection from "../sections/FaqSection";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { CATEGORY_TABS } from "../../data/categories";
-import type { Product } from "../../types/data";
+import type { BlogPostPreview, Product } from "../../types/data";
 import type { FaqItem } from "../../types/data";
 import type { BreadcrumbItem } from "../../types/data";
 
@@ -25,6 +25,7 @@ type Props = {
   breadcrumbs: BreadcrumbItem[];
   products: Product[];
   faq: FaqItem[];
+  blogPosts?: BlogPostPreview[];
 };
 
 export default function CategoryPage({
@@ -37,6 +38,7 @@ export default function CategoryPage({
   breadcrumbs,
   products,
   faq,
+  blogPosts = [],
 }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -47,7 +49,7 @@ export default function CategoryPage({
         <meta content={metaDescription} name="description" />
         <link href={canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

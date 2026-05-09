@@ -6,13 +6,14 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
-import type { FreebieItem } from "../../types/data";
+import type { BlogPostPreview, FreebieItem } from "../../types/data";
 
 type Props = {
   item: FreebieItem;
+  blogPosts?: BlogPostPreview[];
 };
 
-export default function FreebieDetailPage({ item }: Props) {
+export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Freebies", href: "/freebies" },
@@ -33,7 +34,7 @@ export default function FreebieDetailPage({ item }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.image} />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className="pt-[70em]">
         <div className="section is-height-100vh">
           <div className="section-padding top-80 bottom-64">
@@ -60,7 +61,7 @@ export default function FreebieDetailPage({ item }: Props) {
           </div>
           <div className="section-bg-image-wr">
             <img
-              alt=""
+              alt={title}
               className="image-cover"
               loading="eager"
               sizes="100vw"

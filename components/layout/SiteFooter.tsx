@@ -9,7 +9,7 @@ import {
 } from "./FooterSocialIcons";
 import { useContactModal } from "../modals/ContactModalContext";
 import { useSubscribe } from "../../hooks/useSubscribe";
-import { cn } from "../../lib/cn";
+
 
 type FooterLink = { href: string; label: string; external?: boolean; modal?: boolean };
 type FooterColumn = { title: string; titleHref?: string; links: FooterLink[] };
@@ -20,13 +20,13 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Tutorials",
     titleHref: "/blog",
     links: [
-      { href: "/blog?blog-categories=Startups+%26+Saas", label: "Startups & SaaS" },
-      { href: "/blog?blog-categories=Tutorials", label: "UI Design" },
-      { href: "/blog?blog-categories=Growth+Hacking", label: "Growth Hacking" },
-      { href: "/blog?blog-categories=Inspiration", label: "Inspiration" },
-      { href: "/blog?blog-categories=Resources", label: "Resources" },
-      { href: "/blog?blog-categories=Technology", label: "Technology" },
-      { href: "/blog?blog-categories=Research", label: "Research" },
+      { href: "/blog?category=Startups%20%26%20SaaS", label: "Startups & SaaS" },
+      { href: "/blog?category=UI%20Design", label: "UI Design" },
+      { href: "/blog?category=Growth%20Hacking", label: "Growth Hacking" },
+      { href: "/blog?category=Inspiration", label: "Inspiration" },
+      { href: "/blog?category=Resources", label: "Resources" },
+      { href: "/blog?category=Technology", label: "Technology" },
+      { href: "/blog?category=Research", label: "Research" },
     ],
   },
   {

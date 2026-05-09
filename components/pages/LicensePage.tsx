@@ -7,6 +7,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
+import type { BlogPostPreview } from "../../types/data";
 
 const TOC_ITEMS = [
   { id: "end-product", label: "An end product is one of the following" },
@@ -17,7 +18,11 @@ const TOC_ITEMS = [
   { id: "business-license", label: "Business (Unlimited)" },
 ];
 
-export default function LicensePage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function LicensePage({ blogPosts = [] }: Props) {
   const meta = PAGE_META["license"];
   const breadcrumbs = PAGE_BREADCRUMBS["license"] ?? [];
   const [activeId, setActiveId] = useState<string>(TOC_ITEMS[0].id);
@@ -51,7 +56,7 @@ export default function LicensePage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

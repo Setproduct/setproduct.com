@@ -7,15 +7,7 @@ export type InlineCta = {
   buttonLink: string;
 };
 
-export type BlogCategory =
-  | "tutorials"
-  | "technology"
-  | "startups-saas"
-  | "growth-hacking"
-  | "inspiration"
-  | "resources"
-  | "research"
-  | string;
+export type BlogCategory = string;
 
 export type BlogFrontmatter = {
   title: string;
@@ -24,6 +16,7 @@ export type BlogFrontmatter = {
   date: string;
   author: string;
   coverImage: string;
+  thumbImage?: string;
   coverImageAlt?: string;
   tags?: string[];
   canonical?: string;

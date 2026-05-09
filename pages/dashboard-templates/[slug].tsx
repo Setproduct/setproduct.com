@@ -1,16 +1,18 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import DashboardTemplatePage from "../../components/pages/DashboardTemplatePage";
+import { getBlogPostPreviews } from "../../lib/blog/get-blog-post-previews";
 import {
   DASHBOARD_TEMPLATES,
   getDashboardTemplateBySlug,
 } from "../../data/dashboard-templates";
 import type { DashboardTemplatePageData } from "../../data/dashboard-templates";
 import { PRODUCTS } from "../../data/products";
-import type { Product } from "../../types/data";
+import type { BlogPostPreview, Product } from "../../types/data";
 
 type PageProps = {
   data: DashboardTemplatePageData;
   products: Product[];
+  blogPosts: BlogPostPreview[];
 };
 
 type SlugParams = {
@@ -30,10 +32,11 @@ export const getStaticProps: GetStaticProps<PageProps, SlugParams> = async ({ pa
   if (!data) return { notFound: true };
 
   const products = PRODUCTS.filter((p) => p.categories.includes("dashboards"));
+  const blogPosts = getBlogPostPreviews({ maxPerCategory: 6 });
 
-  return { props: { data, products } };
+  return { props: { data, products, blogPosts } };
 };
 
-export default function DashboardTemplateRoute({ data, products }: PageProps) {
-  return <DashboardTemplatePage data={data} products={products} />;
+export default function DashboardTemplateRoute({ data, products, blogPosts }: PageProps) {
+  return <DashboardTemplatePage data={data} products={products} blogPosts={blogPosts} />;
 }

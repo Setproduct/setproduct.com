@@ -5,12 +5,12 @@ export default function Document() {
     <Html lang="en" data-scroll-behavior="smooth">
       <Head>
         <link
-          href="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65cc9f6b13cfc5104fa9b88c_fav-32.jpg"
+          href="/images/fav-32.webp"
           rel="shortcut icon"
           type="image/x-icon"
         />
         <link
-          href="/external/cdn.prod.website-files.com/64cc98fb252732dec5bda7e9/65cc9f74c3e01c04ab839b0b_fav-256.jpg"
+          href="/images/fav-256.webp"
           rel="apple-touch-icon"
         />
         <link href="/css/normalize.css" rel="stylesheet" />

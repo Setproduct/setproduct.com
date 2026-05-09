@@ -6,8 +6,13 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
+import type { BlogPostPreview } from "../../types/data";
 
-export default function TermsOfPaidPostsPage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function TermsOfPaidPostsPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META["terms-of-paid-posts"];
   const breadcrumbs = PAGE_BREADCRUMBS["terms-of-paid-posts"] ?? [];
 
@@ -18,7 +23,7 @@ export default function TermsOfPaidPostsPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

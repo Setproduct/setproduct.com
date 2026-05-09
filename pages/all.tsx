@@ -1,13 +1,28 @@
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import CategoryPage from "../components/pages/CategoryPage";
 import { PRODUCTS } from "../data/products";
 import { PAGE_META } from "../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../data/breadcrumbs";
 import { PAGE_FAQ } from "../data/faq";
+import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
+import type { BlogPostPreview } from "../types/data";
 
 const SLUG = "all";
 const products = PRODUCTS;
 
-export default function AllPage() {
+type Props = {
+  blogPosts: BlogPostPreview[];
+};
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  return {
+    props: {
+      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+    },
+  };
+};
+
+export default function AllPage({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const meta = PAGE_META[SLUG];
   return (
     <CategoryPage
@@ -20,6 +35,7 @@ export default function AllPage() {
       breadcrumbs={PAGE_BREADCRUMBS[SLUG] ?? []}
       products={products}
       faq={PAGE_FAQ[SLUG] ?? []}
+      blogPosts={blogPosts}
     />
   );
 }

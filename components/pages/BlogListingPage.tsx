@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import styles from "./BlogListingPage.module.css";
 import SiteHeader from "../layout/SiteHeader";
@@ -10,12 +11,16 @@ import ArrowIcon from "../sections/ArrowIcon";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import TemplateShowcase from "../sections/TemplateShowcase";
 import { PAGE_META } from "../../data/pages-meta";
-import { BLOG_POSTS } from "../../data/blog-listing";
 import { BLOG_CATEGORIES } from "../../data/blog-categories";
+import type { BlogPostPreview } from "../../types/data";
 
 const PAGE_SIZE = 8;
 
-export default function BlogListingPage() {
+type Props = {
+  blogPosts: BlogPostPreview[];
+};
+
+export default function BlogListingPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.blog;
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -23,15 +28,15 @@ export default function BlogListingPage() {
 
   useEffect(() => {
     if (!router.isReady) return;
-    const raw = router.query.category;
+    const raw = router.query.category ?? router.query["blog-categories"];
     const next = Array.isArray(raw) ? raw[0] : raw;
     setActiveCategory(next ? String(next) : null);
     setVisibleCount(PAGE_SIZE);
-  }, [router.isReady, router.query.category]);
+  }, [router.isReady, router.query.category, router.query["blog-categories"]]);
 
   const filteredPosts = activeCategory
-    ? BLOG_POSTS.filter((p) => p.category === activeCategory)
-    : BLOG_POSTS;
+    ? blogPosts.filter((p) => p.category === activeCategory)
+    : blogPosts;
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPosts.length;
 
@@ -41,8 +46,10 @@ export default function BlogListingPage() {
     const nextQuery = { ...router.query };
     if (cat) {
       nextQuery.category = cat;
+      delete nextQuery["blog-categories"];
     } else {
       delete nextQuery.category;
+      delete nextQuery["blog-categories"];
     }
     router.replace({ pathname: router.pathname, query: nextQuery }, undefined, { shallow: true, scroll: false });
   };
@@ -54,7 +61,7 @@ export default function BlogListingPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">
           <div className="section-padding top-80 bottom-80">
@@ -110,11 +117,21 @@ export default function BlogListingPage() {
 
                   <div className="w-dyn-list">
                     <div className="blog_list w-dyn-items" role="list">
-                      {visiblePosts.map((post) => (
+                      {visiblePosts.map((post, index) => (
                         <div key={post.slug} className="blog_list-item w-dyn-item" role="listitem">
                           <div className="blog_list-item-wr">
-                            <Link className="blog_list-item-img-wr w-inline-block" href={`/blog/${post.slug}`}>
-                              <img alt="" className="image-cover" loading="lazy" src={post.image} />
+                            <Link
+                              className="blog_list-item-img-wr w-inline-block relative"
+                              href={`/blog/${post.slug}`}
+                            >
+                              <Image
+                                alt=""
+                                src={post.image}
+                                fill
+                                priority={index === 0}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="image-cover"
+                              />
                             </Link>
                             <div className="blog_list-item-info">
                               <div className="main_blog-liist1-item-info-row">

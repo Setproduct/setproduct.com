@@ -93,10 +93,10 @@ export const appka_ios_ui_kitContent = {
           "image": "/images/appka-ios-ui-kit/22dark-2-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/23light-1-min.png"
+          "image": "/images/appka-ios-ui-kit/23light-1-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/24dark-3-min.png"
+          "image": "/images/appka-ios-ui-kit/24dark-3-min.webp"
         },
         {
           "image": "/images/appka-ios-ui-kit/25light-4-min.webp"
@@ -123,10 +123,10 @@ export const appka_ios_ui_kitContent = {
           "image": "/images/appka-ios-ui-kit/32dark-1-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/33light-3-min.png"
+          "image": "/images/appka-ios-ui-kit/33light-3-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/34dark-3-min.png"
+          "image": "/images/appka-ios-ui-kit/34dark-3-min.webp"
         },
         {
           "image": "/images/appka-ios-ui-kit/35light-4-min.webp"
@@ -135,13 +135,13 @@ export const appka_ios_ui_kitContent = {
           "image": "/images/appka-ios-ui-kit/36dark-4-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/37light-min.png"
+          "image": "/images/appka-ios-ui-kit/37light-min.webp"
         },
         {
           "image": "/images/appka-ios-ui-kit/38dark-min.webp"
         },
         {
-          "image": "/images/appka-ios-ui-kit/39light-min.png"
+          "image": "/images/appka-ios-ui-kit/39light-min.webp"
         },
         {
           "image": "/images/appka-ios-ui-kit/40dark-min.webp"
@@ -219,7 +219,7 @@ export const appka_ios_ui_kitContent = {
           "title": "Bank Cards"
         },
         {
-          "image": "/images/4-Bars-min.png",
+          "image": "/images/4-Bars-min.webp",
           "title": "App Bars"
         },
         {
@@ -227,7 +227,7 @@ export const appka_ios_ui_kitContent = {
           "title": "Calendars"
         },
         {
-          "image": "/images/6-Buttons-min.png",
+          "image": "/images/6-Buttons-min.webp",
           "title": "Buttons"
         },
         {
@@ -235,19 +235,19 @@ export const appka_ios_ui_kitContent = {
           "title": "Cards"
         },
         {
-          "image": "/images/8-Charts-min.png",
+          "image": "/images/8-Charts-min.webp",
           "title": "Charts"
         },
         {
-          "image": "/images/9-Chips-min.png",
+          "image": "/images/9-Chips-min.webp",
           "title": "Chips"
         },
         {
-          "image": "/images/10-Date_and_time_picker.png",
+          "image": "/images/10-Date_and_time_picker.webp",
           "title": "Date & Time"
         },
         {
-          "image": "/images/11-Divider-min.png",
+          "image": "/images/11-Divider-min.webp",
           "title": "Dividers"
         },
         {
@@ -259,7 +259,7 @@ export const appka_ios_ui_kitContent = {
           "title": "Image Placeholders"
         },
         {
-          "image": "/images/14-Lists-min.png",
+          "image": "/images/14-Lists-min.webp",
           "title": "Lists"
         },
         {
@@ -267,7 +267,7 @@ export const appka_ios_ui_kitContent = {
           "title": "Messenger"
         },
         {
-          "image": "/images/16-Selection-min.png",
+          "image": "/images/16-Selection-min.webp",
           "title": "Selection"
         },
         {
@@ -275,19 +275,19 @@ export const appka_ios_ui_kitContent = {
           "title": "Sliders"
         },
         {
-          "image": "/images/18-Snackbars-min.png",
+          "image": "/images/18-Snackbars-min.webp",
           "title": "Snackbars"
         },
         {
-          "image": "/images/19-Steps-min.png",
+          "image": "/images/19-Steps-min.webp",
           "title": "Steppers"
         },
         {
-          "image": "/images/20-Tab__Segmented_Contr.png",
+          "image": "/images/20-Tab__Segmented_Contr.webp",
           "title": "Tabs & Segmented Controls"
         },
         {
-          "image": "/images/21-Text_elements-min.png",
+          "image": "/images/21-Text_elements-min.webp",
           "title": "Text Styles"
         },
         {

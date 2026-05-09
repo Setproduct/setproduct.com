@@ -32,7 +32,7 @@ export const mobile_xContent = {
       {
         "title": "Buy a Bundle. Save 30%",
         "description": "Recommended for designing dashboards, web & mobile apps based on stylish & trendy guidelines. Included: Figma Material X kit + Mobile X UI kit.",
-        "image": "/images/mobile-x/pricing-mobx-02.webp",
+        "image": "/images/5-Setproduct_X_Bundle_.webp",
         "buyLabel": "Buy now",
         "price": "$195",
         "buyHref": "https://setproduct.gumroad.com/l/figma-x"
@@ -113,7 +113,7 @@ export const mobile_xContent = {
           "title": "Timepickers"
         },
         {
-          "image": "/images/9-Datagrid-min.png",
+          "image": "/images/9-Datagrid-min.webp",
           "title": "Tables mobile"
         },
         {
@@ -133,15 +133,15 @@ export const mobile_xContent = {
           "title": "Bottom sheets"
         },
         {
-          "image": "/images/13-List-min.png",
+          "image": "/images/13-List-min.webp",
           "title": "Lists"
         },
         {
-          "image": "/images/14-Rating-min.png",
+          "image": "/images/14-Rating-min.webp",
           "title": "Rating"
         },
         {
-          "image": "/images/15-Segment-min.png",
+          "image": "/images/15-Segment-min.webp",
           "title": "Segmented controls"
         },
         {
@@ -153,7 +153,7 @@ export const mobile_xContent = {
           "title": "Snackbars"
         },
         {
-          "image": "/images/20-Tab-min.png",
+          "image": "/images/20-Tab-min.webp",
           "title": "Tab items"
         }
       ]

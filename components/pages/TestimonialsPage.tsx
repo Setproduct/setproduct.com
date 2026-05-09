@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
+import Image from "next/image";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/styles.css";
@@ -12,6 +13,7 @@ import TemplateShowcase from "../sections/TemplateShowcase";
 import { useContactModal } from "../modals/ContactModalContext";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
+import type { BlogPostPreview } from "../../types/data";
 
 type Photo = { src: string; width: number; height: number };
 
@@ -19,48 +21,52 @@ const CDN_PREFIX = "/testimonials/";
 
 const TESTIMONIAL_PAGES: Photo[][] = [
   [
-    { src: "654cf0ae0fab332b65ef6723_Tim_Rupper_-_Jul_2_2.avif", width: 755, height: 195 },
-    { src: "654cf0a6a5238a68cf491070_testimonial_Massimo.avif", width: 875, height: 703 },
-    { src: "654cf094524505aedbfc24ad_testimonial_Leo.avif", width: 928, height: 372 },
-    { src: "654cf086eef31db8d000efd6_testimonial_Alex_Mer.avif", width: 972, height: 1606 },
-    { src: "654cf07df60c6aba42f6bc65_Terence_Tam_2021-09-.avif", width: 992, height: 761 },
-    { src: "654cf06b83cd0d767a8ed60f_Robert_A_-_Nov_24_20.avif", width: 1012, height: 282 },
-    { src: "654cf05fec4269cad82d5b5d_rob_malkovich.avif", width: 901, height: 394 },
-    { src: "654cf051de54ce9c00a94493_Richard_Glesson_2021.avif", width: 676, height: 352 },
-    { src: "654cf022502f3f75e87637eb_Rich_2021-04-05.avif", width: 771, height: 285 },
-    { src: "654cf01853c07be25f02e2e2_reddit2.avif", width: 1242, height: 203 },
-    { src: "654ceff6649dc5f89d8557ed_reddit.avif", width: 500, height: 284 },
-    { src: "654cefe2b2b57c902be79ac6_Nov_23.avif", width: 500, height: 371 },
-    { src: "654cefce5217a84f6619c85a_Mar_26.avif", width: 500, height: 577 },
-    { src: "654cefbeb2bdbdd4559875e8_Mar_24.avif", width: 500, height: 333 },
+    { src: "Tim_Rupper_-_Jul_2_2.webp", width: 755, height: 195 },
+    { src: "testimonial_Massimo.webp", width: 875, height: 703 },
+    { src: "testimonial_Leo.webp", width: 928, height: 372 },
+    { src: "testimonial_Alex_Mer.webp", width: 972, height: 1606 },
+    { src: "Terence_Tam_2021-09-.webp", width: 992, height: 761 },
+    { src: "Robert_A_-_Nov_24_20.webp", width: 1012, height: 282 },
+    { src: "rob_malkovich.webp", width: 901, height: 394 },
+    { src: "Richard_Glesson_2021.webp", width: 676, height: 352 },
+    { src: "Rich_2021-04-05.webp", width: 771, height: 285 },
+    { src: "reddit2.webp", width: 1242, height: 203 },
+    { src: "reddit.webp", width: 500, height: 284 },
+    { src: "Nov_23.webp", width: 500, height: 371 },
+    { src: "Mar_26.webp", width: 500, height: 577 },
+    { src: "Mar_24.webp", width: 500, height: 333 },
   ],
   [
-    { src: "654cefb31bafa9308ad93429_Luke_Obrien_2020-08-.avif", width: 1206, height: 617 },
-    { src: "654cefa8c881c8c725fd9984_Luke_oBrien.avif", width: 943, height: 444 },
-    { src: "654cef63c42a1748dac2c0e9_Kevin_Walter_2021-04.avif", width: 672, height: 378 },
-    { src: "654cef513a0148c227d84cb9_Junaid_2020-10-30_Li.avif", width: 1152, height: 1005 },
-    { src: "654cef3f8c9bad8727d5e755_Jun_3.avif", width: 500, height: 371 },
-    { src: "654cef376f1c868fc4e43f42_Joe_Bezdek_2020-06-2.avif", width: 871, height: 948 },
-    { src: "654cef290fab332b65ee40b7_Jase_Orion_Kit.avif", width: 1371, height: 526 },
-    { src: "654cef19a88615b8ffafa114_Jan_Irwin_levelup.avif", width: 1007, height: 268 },
-    { src: "654cef030fab332b65ee2c07_Jake_L_testimonial_1.avif", width: 902, height: 590 },
-    { src: "654ce84347b3c0f693500802_Igor_2022-02-03.avif", width: 672, height: 208 },
-    { src: "654ce82620363b98515ac7b7_driver202_2022-02-03.avif", width: 657, height: 150 },
-    { src: "654ce81726e093a7971eda67_dec_28.avif", width: 500, height: 774 },
-    { src: "654ce8072fb21427fb61c564_Dec_5.avif", width: 500, height: 769 },
-    { src: "654ce7fe46abe2bc9b0a7f89_datamagican_24may.avif", width: 895, height: 207 },
+    { src: "Luke_Obrien_2020-08-.webp", width: 1206, height: 617 },
+    { src: "Luke_oBrien.webp", width: 943, height: 444 },
+    { src: "Kevin_Walter_2021-04.webp", width: 672, height: 378 },
+    { src: "Junaid_2020-10-30_Li.webp", width: 1152, height: 1005 },
+    { src: "Jun_3.webp", width: 500, height: 371 },
+    { src: "Joe_Bezdek_2020-06-2.webp", width: 871, height: 948 },
+    { src: "Jase_Orion_Kit.webp", width: 1371, height: 526 },
+    { src: "Jan_Irwin_levelup.webp", width: 1007, height: 268 },
+    { src: "Jake_L_testimonial_1.webp", width: 902, height: 590 },
+    { src: "Igor_2022-02-03.webp", width: 672, height: 208 },
+    { src: "driver202_2022-02-03.webp", width: 657, height: 150 },
+    { src: "dec_28.webp", width: 500, height: 774 },
+    { src: "Dec_5.webp", width: 500, height: 769 },
+    { src: "datamagican_24may.webp", width: 895, height: 207 },
   ],
   [
-    { src: "654ce7edafad7f95897a9370_DanJasnowski_testimo.avif", width: 887, height: 831 },
-    { src: "654ce7dd29303a3832d8831e_Craig_Revi_-_Feb_27_.avif", width: 717, height: 357 },
-    { src: "654ce7c64c53ed2ebfd26575_Berc_Topcu_-_Mar_15_.avif", width: 588, height: 273 },
-    { src: "654ce7b96be8fabc4f9ce662_Ash_-_Jun_2_2021.avif", width: 956, height: 422 },
-    { src: "654ce7a933cff09f4d9ee160_Anqi_L_18-10-22-min.avif", width: 950, height: 546 },
-    { src: "654ce78df8de29b8f399f74c_Andrzej_-_Mar_3_2021.avif", width: 767, height: 171 },
+    { src: "DanJasnowski_testimo.webp", width: 887, height: 831 },
+    { src: "Craig_Revi_-_Feb_27_.webp", width: 717, height: 357 },
+    { src: "Berc_Topcu_-_Mar_15_.webp", width: 588, height: 273 },
+    { src: "Ash_-_Jun_2_2021.webp", width: 956, height: 422 },
+    { src: "Anqi_L_18-10-22-min.webp", width: 950, height: 546 },
+    { src: "Andrzej_-_Mar_3_2021.webp", width: 767, height: 171 },
   ],
 ];
 
-export default function TestimonialsPage() {
+type Props = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function TestimonialsPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.testimonials;
   const breadcrumbs = PAGE_BREADCRUMBS.testimonials ?? [];
   const [visiblePages, setVisiblePages] = useState(1);
@@ -79,7 +85,7 @@ export default function TestimonialsPage() {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader />
+      <SiteHeader blogPosts={blogPosts} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">
@@ -111,14 +117,14 @@ export default function TestimonialsPage() {
                           className="lightbox-link-with-zoom w-inline-block"
                           style={{ cursor: "zoom-in" }}
                         >
-                          <img
+                          <Image
                             src={photo.src}
                             width={photo.width}
                             height={photo.height}
                             alt=""
-                            loading="lazy"
-                            className="image-cover"
-                            style={{ width: "100%", height: "auto", display: "block" }}
+                            priority={index < 3}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="image-cover block w-full h-auto"
                           />
                         </a>
                       </div>

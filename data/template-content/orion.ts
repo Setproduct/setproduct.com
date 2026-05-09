@@ -39,7 +39,7 @@ export const orionContent = {
           "image": "/images/orion/04-min.webp"
         },
         {
-          "image": "/images/orion/05-min.png"
+          "image": "/images/orion/05-min.webp"
         },
         {
           "image": "/images/orion/06-min.webp"
@@ -97,7 +97,7 @@ export const orionContent = {
           "title": "Global Statistics"
         },
         {
-          "image": "/images/orion/9-Heat_map_dark-min.png",
+          "image": "/images/orion/9-Heat_map_dark-min.webp",
           "title": "Heat Map (dark)"
         },
         {

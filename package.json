@@ -7,7 +7,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit",
+    "thumbs:blog": "node scripts/generate-blog-thumbs.js"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "postcss": "^8.5.10",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.2"
   }

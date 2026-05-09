@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 type Props = {
   title: string;
   description: string;
@@ -47,14 +45,11 @@ export default function TemplateHero({
         </div>
       </div>
       <div className="section-bg-image-wr">
-        <Image
+        <img
           alt={title}
           className="image-cover"
-          fill
-          priority
-          sizes="100vw"
           src={heroImage}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", position: "absolute", height: "100%", width: "100%", left: 0, top: 0, right: 0, bottom: 0, color: "transparent" }}
         />
         <div className="section-bg-gradient" />
       </div>

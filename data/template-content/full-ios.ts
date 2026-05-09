@@ -3,7 +3,7 @@ export const full_iosContent = {
     {
       "title": "br/>the native UI",
       "description": "3300+ variants for 100 perfect iOS components based on auto-layout",
-      "image": "/images/full-ios/features-fullios-01.png"
+      "image": "/images/full-ios/features-fullios-01.webp"
     },
     {
       "title": "Detailed mobile app templates",
@@ -27,10 +27,10 @@ export const full_iosContent = {
       "subtitle": "Based on components these detailed templates aimed to design iOS apps faster. Crafted into the 8 most popular categories. Light & Dark themed",
       "items": [
         {
-          "image": "/images/full-ios/1-Login_04___Dark-min.png"
+          "image": "/images/full-ios/1-Login_04___Dark-min.webp"
         },
         {
-          "image": "/images/full-ios/2-Login_04___Light-min.png"
+          "image": "/images/full-ios/2-Login_04___Light-min.webp"
         },
         {
           "image": "/images/full-ios/3-Launch_02___Dark-min.webp"
@@ -39,28 +39,28 @@ export const full_iosContent = {
           "image": "/images/full-ios/4-Launch_02___Light-mi.webp"
         },
         {
-          "image": "/images/full-ios/5-Launch_04___Dark-min.png"
+          "image": "/images/full-ios/5-Launch_04___Dark-min.webp"
         },
         {
-          "image": "/images/full-ios/6-Launch_04___Light-mi.png"
+          "image": "/images/full-ios/6-Launch_04___Light-mi.webp"
         },
         {
-          "image": "/images/full-ios/7-Login_03___Dark-min.png"
+          "image": "/images/full-ios/7-Login_03___Dark-min.webp"
         },
         {
-          "image": "/images/full-ios/8-Login_03___Light-min.png"
+          "image": "/images/full-ios/8-Login_03___Light-min.webp"
         },
         {
-          "image": "/images/full-ios/9-Register_01___Dark_-.png"
+          "image": "/images/full-ios/9-Register_01___Dark_-.webp"
         },
         {
-          "image": "/images/full-ios/10-Register_01___Light_.png"
+          "image": "/images/full-ios/10-Register_01___Light_.webp"
         },
         {
-          "image": "/images/full-ios/11-Register_05___Dark-m.png"
+          "image": "/images/full-ios/11-Register_05___Dark-m.webp"
         },
         {
-          "image": "/images/full-ios/12-Register_05___Light-.png"
+          "image": "/images/full-ios/12-Register_05___Light-.webp"
         },
         {
           "image": "/images/full-ios/13-Walkthrough_01___Dar.webp"
@@ -69,10 +69,10 @@ export const full_iosContent = {
           "image": "/images/full-ios/14-Walkthrough_01___Lig.webp"
         },
         {
-          "image": "/images/full-ios/15-Walkthrough_04___Dar.png"
+          "image": "/images/full-ios/15-Walkthrough_04___Dar.webp"
         },
         {
-          "image": "/images/full-ios/16-Walkthrough_04___Lig.png"
+          "image": "/images/full-ios/16-Walkthrough_04___Lig.webp"
         },
         {
           "image": "/images/full-ios/17-Profile_01___Dark_-m.webp"
@@ -241,31 +241,31 @@ export const full_iosContent = {
           "title": "Action Sheets"
         },
         {
-          "image": "/images/2Alerts-min.png",
+          "image": "/images/2Alerts-min.webp",
           "title": "Alerts"
         },
         {
-          "image": "/images/3Browser_Bars-min.png",
+          "image": "/images/3Browser_Bars-min.webp",
           "title": "Browser Bars"
         },
         {
-          "image": "/images/4Buttons-min.png",
+          "image": "/images/4Buttons-min.webp",
           "title": "Buttons"
         },
         {
-          "image": "/images/5Calendars-min.png",
+          "image": "/images/5Calendars-min.webp",
           "title": "Calendars"
         },
         {
-          "image": "/images/6Chips-min.png",
+          "image": "/images/6Chips-min.webp",
           "title": "Chips"
         },
         {
-          "image": "/images/7Edit_Menus-min.png",
+          "image": "/images/7Edit_Menus-min.webp",
           "title": "Edit Menus"
         },
         {
-          "image": "/images/8Finance__Money-min.png",
+          "image": "/images/8Finance__Money-min.webp",
           "title": "Finance and Money"
         },
         {
@@ -273,27 +273,27 @@ export const full_iosContent = {
           "title": "Footers and Tab Bars"
         },
         {
-          "image": "/images/10Inputs-min.png",
+          "image": "/images/10Inputs-min.webp",
           "title": "Inputs"
         },
         {
-          "image": "/images/11Navbars-min.png",
+          "image": "/images/11Navbars-min.webp",
           "title": "Navbars"
         },
         {
-          "image": "/images/12Segmented_Controls-m.png",
+          "image": "/images/12Segmented_Controls-m.webp",
           "title": "Segmented Controls"
         },
         {
-          "image": "/images/13Keyboard_Overbars-mi.png",
+          "image": "/images/13Keyboard_Overbars-mi.webp",
           "title": "Keyboards and Overbars"
         },
         {
-          "image": "/images/14Keys-min.png",
+          "image": "/images/14Keys-min.webp",
           "title": "Keys"
         },
         {
-          "image": "/images/15Modal_View_Headers-m.png",
+          "image": "/images/15Modal_View_Headers-m.webp",
           "title": "Modal View Headers"
         },
         {
@@ -309,7 +309,7 @@ export const full_iosContent = {
           "title": "Pull Down Menus"
         },
         {
-          "image": "/images/19Selection_Controls-m.png",
+          "image": "/images/19Selection_Controls-m.webp",
           "title": "Selection Controls"
         },
         {
@@ -317,7 +317,7 @@ export const full_iosContent = {
           "title": "Social"
         },
         {
-          "image": "/images/21Status_Bars-min.png",
+          "image": "/images/21Status_Bars-min.webp",
           "title": "Status Bars"
         }
       ]

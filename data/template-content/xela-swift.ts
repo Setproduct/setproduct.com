@@ -134,7 +134,7 @@ export const xela_swiftContent = {
           "title": "Breadcrumbs"
         },
         {
-          "image": "/images/x6Button-min.png",
+          "image": "/images/x6Button-min.webp",
           "title": "Buttons"
         },
         {
@@ -166,7 +166,7 @@ export const xela_swiftContent = {
           "title": "Datepickers"
         },
         {
-          "image": "/images/x13Number_input-min.png",
+          "image": "/images/x13Number_input-min.webp",
           "title": "Numeric Inputs"
         },
         {
@@ -182,11 +182,11 @@ export const xela_swiftContent = {
           "title": "Sliders Range"
         },
         {
-          "image": "/images/x17Rating-min.png",
+          "image": "/images/x17Rating-min.webp",
           "title": "Rating"
         },
         {
-          "image": "/images/x18Segmented_Controls-m.png",
+          "image": "/images/x18Segmented_Controls-m.webp",
           "title": "Segmented Controls"
         },
         {
@@ -222,11 +222,11 @@ export const xela_swiftContent = {
           "title": "Toasts"
         },
         {
-          "image": "/images/x28Tooltips-min.png",
+          "image": "/images/x28Tooltips-min.webp",
           "title": "Tooltips"
         },
         {
-          "image": "/images/x29Typography-min.png",
+          "image": "/images/x29Typography-min.webp",
           "title": "Typography"
         }
       ]
@@ -236,23 +236,23 @@ export const xela_swiftContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/1-Analytics_Mobile-1-m.png",
+          "image": "/images/1-Analytics_Mobile-1-m.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/2-Analytics_Mobile-min.png",
+          "image": "/images/2-Analytics_Mobile-min.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/3-Analytics-min.png",
+          "image": "/images/3-Analytics-min.webp",
           "title": "Analytics"
         },
         {
-          "image": "/images/4-Checkout_Mobile-1-mi.png",
+          "image": "/images/4-Checkout_Mobile-1-mi.webp",
           "title": "Checkout"
         },
         {
-          "image": "/images/5-Checkout_Mobile-min.png",
+          "image": "/images/5-Checkout_Mobile-min.webp",
           "title": "Checkout"
         },
         {
@@ -260,7 +260,7 @@ export const xela_swiftContent = {
           "title": "Checkout"
         },
         {
-          "image": "/images/7-Data_Table_Mobile-mi.png",
+          "image": "/images/7-Data_Table_Mobile-mi.webp",
           "title": "Data Table"
         },
         {
@@ -280,7 +280,7 @@ export const xela_swiftContent = {
           "title": "Ecommerce"
         },
         {
-          "image": "/images/12-Job_Search_Mobile-1-.png",
+          "image": "/images/12-Job_Search_Mobile-1-.webp",
           "title": "Search Results"
         },
         {
@@ -288,23 +288,23 @@ export const xela_swiftContent = {
           "title": "Search Results"
         },
         {
-          "image": "/images/14-Job_Search-min.png",
+          "image": "/images/14-Job_Search-min.webp",
           "title": "Search Results"
         },
         {
-          "image": "/images/15-Mailbox_Mobile-1-min.png",
+          "image": "/images/15-Mailbox_Mobile-1-min.webp",
           "title": "Mailbox"
         },
         {
-          "image": "/images/16-Mailbox_Mobile-min.png",
+          "image": "/images/16-Mailbox_Mobile-min.webp",
           "title": "Mailbox"
         },
         {
-          "image": "/images/17-Mailbox-min.png",
+          "image": "/images/17-Mailbox-min.webp",
           "title": "Mailbox"
         },
         {
-          "image": "/images/18-Music_Service_Mobile.png",
+          "image": "/images/18-Music_Service_Mobile.webp",
           "title": "Media"
         },
         {
@@ -320,7 +320,7 @@ export const xela_swiftContent = {
           "title": "Social"
         },
         {
-          "image": "/images/22-Social_Mobile-min.webp",
+          "image": "/images/x9Chips-min.webp",
           "title": "Social"
         },
         {
@@ -328,7 +328,7 @@ export const xela_swiftContent = {
           "title": "Social"
         },
         {
-          "image": "/images/24-Task_Manager_Mobile-.png",
+          "image": "/images/24-Task_Manager_Mobile-.webp",
           "title": "Task Manager"
         },
         {
@@ -336,7 +336,7 @@ export const xela_swiftContent = {
           "title": "Task Manager"
         },
         {
-          "image": "/images/26-Task_Manager-min.png",
+          "image": "/images/26-Task_Manager-min.webp",
           "title": "Task Manager"
         },
         {

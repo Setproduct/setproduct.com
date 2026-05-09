@@ -58,7 +58,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
 
         <div className="main_blog-liist2-wr w-dyn-list">
           <div className="main_blog-liist2 w-dyn-items" role="list">
-            {filteredPosts.map((post) => (
+            {filteredPosts.map((post, index) => (
               <div key={post.slug} className="main_blog-liist2-item w-dyn-item" role="listitem">
                 <div className="main_blog-liist2-item-wr">
                   <div className="main_blog-liist2-item-info">
@@ -76,8 +76,17 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                       </Link>
                     </div>
                   </div>
-                  <Link className="main_blog-liist2-item-img-wr w-inline-block" href={`/blog/${post.slug}`}>
-                    <img alt="" loading="lazy" src={post.image} className="image-cover" />
+                  <Link
+                    className="main_blog-liist2-item-img-wr w-inline-block relative"
+                    href={`/blog/${post.slug}`}
+                  >
+                    <img
+                      alt={`/blog/${post.slug}`}
+                      src={post.thumbImage}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                      className="image-cover"
+                    />
                   </Link>
                 </div>
               </div>

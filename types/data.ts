@@ -36,6 +36,7 @@ export type BlogPostPreview = {
   title: string;
   description: string;
   image: string;
+  thumbImage: string;
   category: string;
 };
 
@@ -44,6 +45,7 @@ export type FreebieItem = {
   title: string;
   description: string;
   image: string;
+  thumb: string;
   category: string;
   previewHref: string;
   duplicateHref: string;

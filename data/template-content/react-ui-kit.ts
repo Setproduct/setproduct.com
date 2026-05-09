@@ -97,7 +97,7 @@ export const react_ui_kitContent = {
           "title": "Badges"
         },
         {
-          "image": "/images/2Breadcrumbs-min.png",
+          "image": "/images/2Breadcrumbs-min.webp",
           "title": "Breadcrumbs"
         },
         {
@@ -117,7 +117,7 @@ export const react_ui_kitContent = {
           "title": "Default Buttons"
         },
         {
-          "image": "/images/7Callout-min.png",
+          "image": "/images/7Callout-min.webp",
           "title": "Callouts"
         },
         {
@@ -125,7 +125,7 @@ export const react_ui_kitContent = {
           "title": "Cards"
         },
         {
-          "image": "/images/9Checkbox-min.png",
+          "image": "/images/9Checkbox-min.webp",
           "title": "Text"
         },
         {
@@ -145,7 +145,7 @@ export const react_ui_kitContent = {
           "title": "Detepickers"
         },
         {
-          "image": "/images/14Datepicker_Years-min.png",
+          "image": "/images/14Datepicker_Years-min.webp",
           "title": "Yearpickers"
         },
         {
@@ -153,7 +153,7 @@ export const react_ui_kitContent = {
           "title": "Dialogs"
         },
         {
-          "image": "/images/16Divider-min.png",
+          "image": "/images/16Divider-min.webp",
           "title": "Dividers"
         },
         {
@@ -177,11 +177,11 @@ export const react_ui_kitContent = {
           "title": "Default Inputs"
         },
         {
-          "image": "/images/22List-min.png",
+          "image": "/images/22List-min.webp",
           "title": "Lists"
         },
         {
-          "image": "/images/23Menu-min.png",
+          "image": "/images/23Menu-min.webp",
           "title": "Menus"
         },
         {
@@ -209,15 +209,15 @@ export const react_ui_kitContent = {
           "title": "Switches"
         },
         {
-          "image": "/images/30Tab_Default-min.png",
+          "image": "/images/30Tab_Default-min.webp",
           "title": "Text"
         },
         {
-          "image": "/images/31Tables-min.png",
+          "image": "/images/31Tables-min.webp",
           "title": "Tables"
         },
         {
-          "image": "/images/32Tabs_Default-min.png",
+          "image": "/images/32Tabs_Default-min.webp",
           "title": "Default Tabs"
         },
         {
@@ -225,11 +225,11 @@ export const react_ui_kitContent = {
           "title": "Segmented Tabs"
         },
         {
-          "image": "/images/34Timepicker-min.png",
+          "image": "/images/34Timepicker-min.webp",
           "title": "Timepickers"
         },
         {
-          "image": "/images/35Toast-min.png",
+          "image": "/images/35Toast-min.webp",
           "title": "Toasts"
         },
         {
@@ -237,11 +237,11 @@ export const react_ui_kitContent = {
           "title": "Tooltips"
         },
         {
-          "image": "/images/37Tree-min.png",
+          "image": "/images/37Tree-min.webp",
           "title": "Trees"
         },
         {
-          "image": "/images/38Typography-min.png",
+          "image": "/images/38Typography-min.webp",
           "title": "Typography Tokens"
         }
       ]

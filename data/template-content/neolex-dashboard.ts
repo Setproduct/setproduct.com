@@ -80,7 +80,7 @@ export const neolex_dashboardContent = {
           "image": "/images/neolex-dashboard/23-Desktop_Sample_2.webp"
         },
         {
-          "image": "/images/neolex-dashboard/24-Desktop_Sample_1.png"
+          "image": "/images/neolex-dashboard/24-Desktop_Sample_1.webp"
         },
         {
           "image": "/images/neolex-dashboard/25-Desktop_Sample_3.webp"
@@ -153,25 +153,25 @@ export const neolex_dashboardContent = {
       "subtitle": "",
       "items": [
         {
-          "image": "/images/1Accordeon_Panels.png"
+          "image": "/images/1Accordeon_Panels.webp"
         },
         {
           "image": "/images/2Buttons.webp"
         },
         {
-          "image": "/images/3Fonts_Encode.png"
+          "image": "/images/3Fonts_Encode.webp"
         },
         {
           "image": "/images/5Inputs.webp"
         },
         {
-          "image": "/images/4Fonts_Montserrat.png"
+          "image": "/images/4Fonts_Montserrat.webp"
         },
         {
           "image": "/images/6Lists.webp"
         },
         {
-          "image": "/images/7Selection.png"
+          "image": "/images/7Selection.webp"
         },
         {
           "image": "/images/8Sliders.webp"
@@ -180,13 +180,13 @@ export const neolex_dashboardContent = {
           "image": "/images/9Tables.webp"
         },
         {
-          "image": "/images/10Tabs.png"
+          "image": "/images/10Tabs.webp"
         },
         {
-          "image": "/images/11Icons_Pack_1.png"
+          "image": "/images/11Icons_Pack_1.webp"
         },
         {
-          "image": "/images/12Icons2.png"
+          "image": "/images/12Icons2.webp"
         }
       ]
     }

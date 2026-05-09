@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { BLOG_POSTS } from "../../data/blog-listing";
+import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
+import type { BlogPostPreview } from "../../types/data";
 
 type KitPreview = {
   href: string;
@@ -50,7 +51,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/orion",
     buyHref: "https://gumroad.com/a/530945235/kzbajr",
     buyLabel: "Buy $148",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/6581822fb4f818e3674d3801_pricing-orion-01.webp",
+    image: "/images/pricing-orion-01.webp",
     title: "Orion UI kit",
     description: "Figma library with 40+ full-width charts templates served in light & dark themes. Contains 200+ of dataviz widgets that look perfect on desktop & mobile screens.",
   },
@@ -58,7 +59,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/nocra",
     buyHref: "https://gumroad.com/a/530945235/uocxtg",
     buyLabel: "Buy $98",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/686262d49adba480c8298ccc_nocra-cover-min.jpg",
+    image: "/images/nocra-list-image.webp",
     title: "Nocra UI kit",
     description: "Nocra is a design system for AI products. Built specifically for startups harnessing AI generation: images, video, audio, music, prompts, and beyond.",
   },
@@ -66,7 +67,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/charts",
     buyHref: "https://setproduct.gumroad.com/l/graphz_pro",
     buyLabel: "Buy $168",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/658c09d54cd3f40b33840524_pricing-charts-01.avif",
+    image: "/images/pricing-charts-01.webp",
     title: "Figma Charts UI kit",
     description: "Components-driven graphs design kit for dashboards, presentations, infographics & data visualisation. Includes 25+ charts types for all the viewports.",
   },
@@ -74,7 +75,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/nucleus-ui",
     buyHref: "https://gumroad.com/a/169902547/snlaf",
     buyLabel: "Buy $89",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8cb274438ae24e0e9b32_65858952fbfba6f0b7c1727b_nucleus-cover-1920-m_(1).avif",
+    image: "/images/nucleus-cover-1920-m.webp",
     title: "Nucleus UI",
     description: "Nucleus UI contains 1000 components and variants with 500+ mobile screens designed for Figma (including 9 themes from Event, E-commerce, Finance, NFT, etc.).",
   },
@@ -82,7 +83,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/material-x",
     buyHref: "https://setproduct.gumroad.com/l/material-x-fig",
     buyLabel: "Buy $148",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8b3de9d92cd2717a31a9_6582e572f92ec39e162a49a8_pircing-mx-02_(1).avif",
+    image: "/images/pircing-mx-02_(1).webp",
     title: "Material X for Figma",
     description: "Figma library with 1100+ components & 40 app templates beyond Material Design. Powered by top-notch shapes and Manrope font. Customizable & Adjustable UI kit now available for Angular & Figma",
   },
@@ -90,13 +91,17 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/material-you",
     buyHref: "https://gumroad.com/a/135691379/upxbb",
     buyLabel: "Buy $124",
-    image: "/external/cdn.prod.website-files.com/64d1f4894b9a964bb3b26df9/660e8bd8e10b051b70a441f2_658189130000cb93c2db5936_pricing-materialme_(1).avif",
+    image: "/images/pricing-materialme_(1).webp",
     title: "Material You UI kit",
     description: "Figma & React library with 2600+ variants of 32 components compatible with Material Design 3. Plus 220+ dashboard templates for all the viewports. Now available for NextJS & TailwindCSS.",
   },
 ];
 
-export default function SiteHeader() {
+type SiteHeaderProps = {
+  blogPosts?: BlogPostPreview[];
+};
+
+export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -179,8 +184,8 @@ export default function SiteHeader() {
   }, [isMobileNavOpen]);
 
   const filteredBlogPreviews = (activeBlogCategory
-    ? BLOG_POSTS.filter((p) => p.category === activeBlogCategory)
-    : BLOG_POSTS
+    ? blogPosts.filter((p) => p.category === activeBlogCategory)
+    : blogPosts
   ).slice(0, NAV_BLOG_PREVIEW_COUNT);
 
   return (
@@ -253,9 +258,17 @@ export default function SiteHeader() {
                                     {filteredBlogPreviews.map((item) => (
                                        <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
                                          <div className="nav_tabs-list-item-wr">
-                                           <a className="nav_tabs-list-item-img-wr w-inline-block" href={`/blog/${item.slug}`}>
-                                             <img alt="" className="image-cover" loading="lazy" src={item.image} />
-                                           </a>
+                                            <a
+                                              className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                              href={`/blog/${item.slug}`}
+                                            >
+                                              <img
+                                                alt={item.slug}
+                                                src={item.thumbImage}
+                                                sizes="158px"
+                                                className="image-cover"
+                                              />
+                                            </a>
                                            <div className="nav_tabs-list-item-info-wr">
                                              <a className="w-inline-block" href={`/blog/${item.slug}`}>
                                                <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
@@ -317,9 +330,18 @@ export default function SiteHeader() {
                                     {KIT_PREVIEWS.map((item) => (
                                       <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.href} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
-                                          <a className="nav_tabs-list-item-img-wr w-inline-block" href={item.href}>
-                                            <img alt="" className="image-cover" loading="lazy" src={item.image} />
-                                          </a>
+                                           <a
+                                             className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                             href={item.href}
+                                           >
+                                             <Image
+                                               alt=""
+                                               src={item.image}
+                                               fill
+                                               sizes="158px"
+                                               className="image-cover"
+                                             />
+                                           </a>
                                           <div className="nav_tabs-list-item-info-wr">
                                             <a className="w-inline-block" href={item.href}>
                                               <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>

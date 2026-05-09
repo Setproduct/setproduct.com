@@ -27,7 +27,7 @@ export function buildBlogPostingJsonLd(
       name: "Setproduct",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
+        url: `${SITE_URL}/images/Vectors-Wrapper_1.svg`,
       },
     },
     mainEntityOfPage: {
