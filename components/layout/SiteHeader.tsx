@@ -59,7 +59,7 @@ const KIT_PREVIEWS: KitPreview[] = [
     href: "/templates/nocra",
     buyHref: "https://gumroad.com/a/530945235/uocxtg",
     buyLabel: "Buy $98",
-    image: "/images/nocra-cover-min.webp",
+    image: "/images/nocra-list-image.webp",
     title: "Nocra UI kit",
     description: "Nocra is a design system for AI products. Built specifically for startups harnessing AI generation: images, video, audio, music, prompts, and beyond.",
   },
