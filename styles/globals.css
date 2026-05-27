@@ -511,3 +511,72 @@ h1[id], h2[id], h3[id], h4[id] {
 .footer .footer_credits-text .text-size-small {
   color: var(--grey);
 }
+
+/* --- Nav search: wider field, smaller font, cross-fading placeholder ---- */
+
+/* The Webflow base sets `.text-input { font-size: 18em }` (where body
+   font-size is ~0.07vw), which makes long placeholders like
+   "Search AI UI examples…" overflow the original 11.1em-wide nav-search
+   input. Shrink the font in the nav-search only, widen the field by 50%,
+   and compensate min-height and paddings so the outer height stays the
+   same as before. */
+.text-input.is-nav-search {
+  width: 16.6667em;          /* was 11.1111em — +50% wider */
+  font-size: 14em;
+  min-height: 3.214em;       /* preserves outer height: 2.5em * 18 / 14 */
+  padding-top: 0.771em;      /* preserves vertical padding: 0.6 * 18 / 14 */
+  padding-bottom: 0.771em;
+  padding-left: 3.143em;     /* preserves icon clearance: 2.44444 * 18 / 14 */
+}
+
+/* Rotating placeholder rendered as absolutely-positioned spans on top of
+   the input. The native placeholder attribute is left empty, so this
+   overlay is the only visible hint. Two overlapping spans are rendered
+   during a transition (one with .is-leaving, one with .is-entering) to
+   produce a cross-fade. */
+.nav-search-placeholder {
+  position: absolute;
+  left: 3.143em;             /* matches input's padding-left */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #1a191c99;          /* same color as native placeholder */
+  font-size: 14em;           /* matches the shrunken input font-size */
+  white-space: nowrap;
+  will-change: opacity;
+}
+
+.nav-search-placeholder.is-entering {
+  animation: nav-search-placeholder-in 320ms ease-out both;
+}
+
+.nav-search-placeholder.is-leaving {
+  animation: nav-search-placeholder-out 280ms ease-out both;
+}
+
+/* Hide the overlay as soon as the field is focused or has user-typed
+   text — at that point the real input value should take over visually. */
+.search:focus-within .nav-search-placeholder {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes nav-search-placeholder-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes nav-search-placeholder-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-search-placeholder.is-entering,
+  .nav-search-placeholder.is-leaving {
+    animation: none;
+  }
+  .nav-search-placeholder.is-leaving {
+    display: none;
+  }
+}
