@@ -29,6 +29,81 @@
 - После добавления картинок предупреди о необходимости 
   запустить check_images.js
 
+### Типографика заголовков и текста: только sentence case
+Категорическое правило: НИКОГДА не использовать Title Case (где 
+каждое значимое слово начинается с заглавной буквы). 
+Использовать ТОЛЬКО sentence case.
+
+Это применяется ко всем местам без исключения:
+- title и metaTitle в frontmatter MDX
+- description, cardDescription, subtitle во frontmatter
+- inlineCta.title, inlineCta.buttonText, FAQ questions
+- H1, H2, H3, H4, H5, H6 внутри тела MDX
+- alt-тексты изображений
+- coverImageAlt
+- Названия секций и подразделов
+- Тексты кнопок и ссылок в React-компонентах
+- Метаданные в data/pages-meta.ts (title, description)
+- Хлебные крошки в data/breadcrumbs.ts
+- Сообщения коммитов (тоже sentence case, английский язык)
+
+ПРИМЕРЫ — что правильно, что нет:
+
+❌ НЕЛЬЗЯ (Title Case):
+- "Tab UI Design Done Right: Anatomy, States, and Use Cases"
+- "How to Design Tabs in 2026"
+- "Best Practices for Notifications UI"
+- "Frequently Asked Questions"
+- "Get Started With Dropdowns"
+
+✅ ПРАВИЛЬНО (sentence case):
+- "Tab UI design done right: Anatomy, states, and use cases"
+- "How to design tabs in 2026"  
+- "Best practices for notifications UI"
+- "Frequently asked questions"
+- "Get started with dropdowns"
+
+ИСКЛЮЧЕНИЯ — что ВСЕГДА сохраняет заглавные буквы:
+
+1. Аббревиатуры:
+   UI, UX, AI, ML, CSS, HTML, JS, TS, API, ARIA, SEO, CTA, FAQ, 
+   MDX, JSON, XML, YAML, SaaS, KYC, GDPR, OS, iOS, IDE, CLI, 
+   CRUD, REST, HTTP, URL, DOM, SVG, PDF, PNG, WebP, AVIF.
+   Пример: "iOS design patterns", "CSS variables for theming"
+
+2. Имена брендов, продуктов, компаний, технологий:
+   Setproduct, Figma, Material Design, Material X, Material You, 
+   Tailwind, Tailwind CSS, Next.js, React, Vue, Angular, Webflow, 
+   Vercel, Resend, Google, Apple, Microsoft, Adobe, Notion, Slack, 
+   Linear, Stripe, GitHub, Dribbble.
+   Пример: "Building with Next.js and Tailwind CSS"
+
+3. Имена людей:
+   "Roman Kamushken", "Don Norman"
+
+4. Первое слово предложения / заголовка: ВСЕГДА заглавная.
+
+5. Первое слово после двоеточия в заголовке: заглавная.
+   Пример: "Tab UI design: Anatomy and states" 
+   (после ":" слово "Anatomy" с большой)
+
+6. Слова после запятой, тире, точки с запятой: строчные 
+   (если только это не имя собственное).
+   Пример: "Tab UI design: Anatomy, states, and use cases"
+   (после "," — "states" и "use cases" со строчной)
+
+7. Слова после дефиса внутри составного слова: строчные.
+   Пример: "Up-to-date checklist" (не "Up-To-Date")
+
+ПРИ ЛЮБЫХ СОМНЕНИЯХ: если слово не входит в список исключений 
+1-3 выше и не является первым словом — оно пишется со 
+СТРОЧНОЙ буквы.
+
+ДЛЯ КАЖДОГО предлагаемого заголовка перед записью в файл 
+ПРОВЕРЯЙ это правило сам построчно. Если делаешь правку 
+существующего поста — приведи в порядок и старые H2/H3, 
+которые попали в зону твоего изменения, даже если они 
+не были частью задачи.
 
 # Анализ конфигурации проекта setproduct.com
 
