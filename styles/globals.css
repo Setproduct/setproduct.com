@@ -167,6 +167,45 @@ h1[id], h2[id], h3[id], h4[id] {
   font-size: 0.9em;
 }
 
+/*
+ * GFM tables inside MDX blog posts.
+ * Webflow's base reset only collapses borders and zeroes td padding,
+ * so tables shrink to fit-content with no spacing if we do not style them.
+ * Wrap in horizontal scroll on narrow viewports so wide tables stay usable
+ * without breaking the layout.
+ */
+.rich-text-18 table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5em 0;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.rich-text-18 table thead {
+  background-color: #f7f7f7;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.rich-text-18 table th,
+.rich-text-18 table td {
+  padding: 0.6em 0.9em;
+  border: 1px solid #e5e5e5;
+  text-align: left;
+  vertical-align: top;
+}
+
+.rich-text-18 table th {
+  font-weight: 600;
+}
+
+.rich-text-18 table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
 @media (min-width: 991px) {
   .section.is-height-100vh {
     height: calc(100dvh - 70em);
