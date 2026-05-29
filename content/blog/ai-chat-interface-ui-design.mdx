@@ -74,7 +74,7 @@ The left rail or drawer that holds prior threads. Each item shows a title (auto-
 
 ### ❷ Header
 
-Holds the model selector, conversation title (editable in place), share button, and any per-conversation settings (system prompt, temperature, web search toggle). Keep it slim. The header should never compete with the message area.
+Holds the model selector, conversation title (editable in place), share button, and any per-conversation settings (system prompt, temperature, web search toggle). The [model selector](https://www.setproduct.com/blog/tabs-ui-design) acts like a tab pattern — same logic of mutually exclusive choices, one active at a time. Keep it slim. The header should never compete with the message area.
 
 ### ❸ Message stream
 
@@ -118,7 +118,7 @@ The user hit submit. The request is in flight but the model has not started retu
 
 ### Thinking / reasoning
 
-Some models (Claude.ai with extended thinking, ChatGPT o-series, Cursor with agent mode) expose a separate reasoning phase before the visible reply. Treat it as a collapsible section above the answer. Default collapsed. Label it honestly — `Thinking`, `Reasoning`, or `Searching the web` — not vague terms like `Working on it`. Users want to know what the model is doing with their time.
+Some models (Claude.ai with extended thinking, ChatGPT o-series, Cursor with agent mode) expose a separate reasoning phase before the visible reply. Structurally it is the same idea as a [multi-step wizard flow](https://www.setproduct.com/blog/steps-ui-design), just collapsed by default instead of expanded. Treat it as a collapsible section above the answer. Default collapsed. Label it honestly — `Thinking`, `Reasoning`, or `Searching the web` — not vague terms like `Working on it`. Users want to know what the model is doing with their time.
 
 ### Streaming
 
@@ -288,7 +288,7 @@ These are the mistakes I see over and over. Some are lazy, some are well-intenti
 
 ☞ **Fake typing animation that throttles a fast model**. If your model can stream at 80 tokens per second, do not artificially slow it down to "feel human". Users prefer fast and honest over slow and theatrical. ChatGPT used to do this. They stopped. Learn from that.
 
-☞ **Hiding errors as generic toast messages**. "Something went wrong" with no detail forces the user to retry blindly. Show the actual error class — rate limit, content filter, network drop — and the action that fixes it.
+☞ **Hiding errors as generic toast messages**. "Something went wrong" with no detail forces the user to retry blindly. The same rules from the [notifications UI guide](https://www.setproduct.com/blog/notifications-ui-design) apply here — show the actual error class — rate limit, content filter, network drop — and the action that fixes it.
 
 ☞ **No stop button during generation**. The user has no escape from a bad response. They watch tokens stream knowing the answer is wrong and cannot do anything about it. Inexcusable.
 
@@ -300,7 +300,7 @@ These are the mistakes I see over and over. Some are lazy, some are well-intenti
 
 ☞ **Disclaimers as walls of text**. "I am an AI and may make mistakes" pinned to every single message becomes noise. Show it once in the welcome state and again on errors. Users learned the lesson; stop repeating it.
 
-☞ **Suggestions you cannot dismiss**. Three "Related" chips under every reply, always there, always pushing the user toward someone else's path. If the user knows what they want next, suggestions are friction.
+☞ **Suggestions you cannot dismiss**. Three "Related" chips under every reply, always there, always pushing the user toward someone else's path. If the user knows what they want next, suggestions are friction. [Tooltip](https://www.setproduct.com/blog/tooltip-ui-design) timing rules apply to suggestion chips that appear on hover too — give the user time to ignore them.
 
 ☞ **No way to copy code**. Code blocks without a one-click copy button force users to triple-click and pray. Add a copy button. Show a transient checkmark on click. Cursor and Claude.ai both nail this.
 
