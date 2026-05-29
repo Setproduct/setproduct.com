@@ -169,31 +169,41 @@ h1[id], h2[id], h3[id], h4[id] {
 
 /*
  * GFM tables inside MDX blog posts.
- * Webflow's base reset only collapses borders and zeroes td padding,
- * so tables shrink to fit-content with no spacing if we do not style them.
- * Wrap in horizontal scroll on narrow viewports so wide tables stay usable
- * without breaking the layout.
+ *
+ * IMPORTANT: this project follows the Webflow "em as pixel" convention.
+ * The body has font-size: 0.0694445vw (~1px at 1440px viewport), and every
+ * blog typography rule uses em values that read like pixels — see
+ * `.rich-text-18 p { font-size: 18em }` in setproduct.webflow.shared.css.
+ * That means values like `0.95em` resolve to ~1px, not ~17px, which made
+ * the first version of these styles shrink tables to a microscopic block.
+ * All sizes below are expressed in em-as-px to match the rest of the blog.
+ *
+ * The block-level table with overflow-x: auto gives wide tables a horizontal
+ * scroll on narrow viewports instead of breaking the layout.
  */
 .rich-text-18 table {
   display: block;
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
-  margin: 1.5em 0;
+  margin: 24em 0;
   border-collapse: collapse;
-  font-size: 0.95em;
+  font-size: 16em;
   line-height: 1.5;
 }
 
 .rich-text-18 table thead {
   background-color: #f7f7f7;
-  border-bottom: 2px solid #e5e5e5;
+}
+
+.rich-text-18 table thead th {
+  border-bottom: 2em solid #e5e5e5;
 }
 
 .rich-text-18 table th,
 .rich-text-18 table td {
-  padding: 0.6em 0.9em;
-  border: 1px solid #e5e5e5;
+  padding: 0.75em 1em;
+  border: 1em solid #e5e5e5;
   text-align: left;
   vertical-align: top;
 }
