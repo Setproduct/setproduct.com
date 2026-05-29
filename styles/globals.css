@@ -168,19 +168,43 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
- * GFM tables inside MDX blog posts.
+ * GFM tables inside MDX blog posts — Material Design 3 data table style.
  *
- * IMPORTANT: this project follows the Webflow "em as pixel" convention.
- * The body has font-size: 0.0694445vw (~1px at 1440px viewport), and every
- * blog typography rule uses em values that read like pixels — see
- * `.rich-text-18 p { font-size: 18em }` in setproduct.webflow.shared.css.
- * That means values like `0.95em` resolve to ~1px, not ~17px, which made
- * the first version of these styles shrink tables to a microscopic block.
- * All sizes below are expressed in em-as-px to match the rest of the blog.
+ * ⚠️ TWO em scopes in this block — read carefully before editing.
  *
- * The block-level table with overflow-x: auto gives wide tables a horizontal
- * scroll on narrow viewports instead of breaking the layout.
+ * This project uses Webflow's "em as pixel" trick: body has
+ * font-size: 0.0694445vw (~1px on a 1440px viewport), so anywhere INSIDE
+ * .rich-text-18 (but BEFORE we set our own font-size), 1em ≈ 1px.
+ *
+ *   Scope A — `.rich-text-18 table { … }`
+ *     The table itself does NOT set its own font-size, so em values on
+ *     `margin`, `border-radius`, `border` here still resolve in the body
+ *     scope: 24em ≈ 24px, 12em ≈ 12px, 1em ≈ 1px. Use em-as-px.
+ *
+ *   Scope B — `.rich-text-18 table th, td { font-size: 16em; … }`
+ *     Once we set font-size on the cells, em-as-px is GONE inside this
+ *     rule and inside the cell's children. After font-size: 16em becomes
+ *     16px, every other em on this rule is computed against 16px:
+ *       0.875em = 14px, 1em = 16px, 1.25em = 20px, 0.0625em = 1px.
+ *     This is the normal CSS em ratio.
+ *
+ *   Previous bug: a single rule had `font-size: 16em` together with
+ *   `padding: 16em 20em` and `border-radius: 12em`. The padding turned
+ *   into 256×320px and the radius into 192px, blowing the table off
+ *   screen. Splitting into Scope A / Scope B fixes it.
+ *
+ * Material 3 design choices used below:
+ *   • No vertical cell borders, only hairline horizontal row dividers.
+ *   • No zebra striping (M3 prefers flat surface).
+ *   • Header: medium weight + tiny tint, on-surface-variant color.
+ *   • Hover row: 6% --primary as the state layer.
+ *   • Rounded outer container with a single 1px outline-variant border.
+ *
+ * The block-level wrapper with overflow-x: auto keeps wide tables from
+ * breaking the layout on narrow viewports.
  */
+
+/* Scope A — em ≈ 1px (body context) */
 .rich-text-18 table {
   display: block;
   overflow-x: auto;
@@ -188,32 +212,54 @@ h1[id], h2[id], h3[id], h4[id] {
   max-width: 100%;
   margin: 24em 0;
   border-collapse: collapse;
-  font-size: 16em;
-  line-height: 1.5;
+  border-spacing: 0;
+  background-color: #ffffff;
+  border: 1em solid #e7e0ec;
+  border-radius: 12em;
 }
 
 .rich-text-18 table thead {
-  background-color: #f7f7f7;
+  background-color: #f7f5fa;
 }
 
-.rich-text-18 table thead th {
-  border-bottom: 2em solid #e5e5e5;
-}
-
+/* Scope B — em ≈ 16px (cell font-size context) */
 .rich-text-18 table th,
 .rich-text-18 table td {
-  padding: 0.75em 1em;
-  border: 1em solid #e5e5e5;
+  font-size: 16em;
+  line-height: 1.5;
+  padding: 0.875em 1.25em; /* 14px 20px */
+  border: 0;
   text-align: left;
   vertical-align: top;
 }
 
 .rich-text-18 table th {
-  font-weight: 600;
+  font-weight: 500;
+  color: #49454f;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
-.rich-text-18 table tbody tr:nth-child(even) {
-  background-color: #fafafa;
+.rich-text-18 table tbody tr + tr td {
+  border-top: 0.0625em solid #e7e0ec; /* 1px */
+}
+
+.rich-text-18 table tbody tr {
+  transition: background-color 120ms ease;
+}
+
+.rich-text-18 table tbody tr:hover {
+  background-color: rgba(124, 77, 255, 0.06);
+}
+
+.rich-text-18 table thead th:first-child,
+.rich-text-18 table tbody td:first-child {
+  padding-left: 1.5em; /* 24px */
+}
+
+.rich-text-18 table thead th:last-child,
+.rich-text-18 table tbody td:last-child {
+  padding-right: 1.5em; /* 24px */
 }
 
 @media (min-width: 991px) {
