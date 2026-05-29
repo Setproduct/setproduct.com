@@ -377,24 +377,31 @@ Run your AI chat against this list before you ship it. If you cannot tick a box,
 ## Frequently asked questions
 
 **❶ Should I use bubbles or full-width messages for AI chat?**
+
 Full-width is the current best practice for serious AI chat. Bubbles signal "messenger" and undermine the tool framing users now expect from products like Claude.ai, ChatGPT, and Cursor. Use subtle background shading or alignment to separate user and assistant messages instead. Bubbles are fine for narrow in-app assistants where the chat is clearly a small widget, not the main surface.
 
 **❷ How fast does my AI chat need to feel?**
+
 Aim for first-token latency under 800ms. The total response can take 10 to 30 seconds for long replies — that is fine as long as streaming starts quickly and the caret signals progress. What kills perceived performance is a blank screen for two seconds before anything happens, not the total duration of the response.
 
 **❸ Do I need to show citations in AI chat?**
+
 If the model answers factual questions and you are using retrieval-augmented generation, yes — citations are non-negotiable for trust. Perplexity proved this is the new baseline. If the chat is purely creative or transformational (rewrite this, brainstorm that), citations do not apply. Do not fake them.
 
 **❹ How do I handle long conversations that exceed the context window?**
+
 Show a clear marker in the thread when earlier messages get summarized or dropped. Never silently truncate. Offer a "Start new conversation" option before the user runs into degraded replies. Claude.ai and ChatGPT both handle this by showing context indicators and prompting new threads.
 
 **❺ Should AI chat replace forms in my product?**
+
 Almost never. Forms collect structured input fast, with validation, and without ambiguity. Chat is conversational, slow, and prone to misunderstanding. Use chat for open-ended, exploratory tasks and forms for everything that has a clear data shape. The current overuse of AI chat in 2026 is a pendulum swing that will correct itself within a year.
 
 **❻ How do I design AI chat for mobile when the keyboard takes half the screen?**
+
 Dock the composer, give the message stream bottom padding equal to composer plus safe area, and let the keyboard animation push the layout without jumping. Show only the last two or three messages above the keyboard. Make the send and stop buttons at least 44 pixels tall for thumb reach. Hide non-essential header chrome when the keyboard is open.
 
 **❼ What is the biggest mistake teams make when adding AI chat to an existing product?**
+
 Bolting it on as a floating widget without rethinking the surrounding flows. AI chat that does not know what the user is doing elsewhere in the product is just a worse version of ChatGPT in a sidebar. The win comes from giving the chat real context — the current document, the selected text, the active project — so the answers are grounded in what the user already cares about.
 
 The best AI chat interface disappears when it should. It streams without showing off, fails honestly, and respects the fact that the user is here to get something done — not to admire your animation work. If you remember one thing from this guide, remember that AI chat is a tool first and a conversation second. Design the tool. The conversation will follow. Now go make every token count.
