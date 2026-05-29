@@ -20,14 +20,12 @@ relatedSlugs:
   - empty-state-ui-design
   - tooltip-ui-design
   - notifications-ui-design
+readingTimeText: "~20 min read"
 inlineCta:
-  title: "Got a product, app or service? Promote in our blog"
-  description: >-
-    We can write research, case study, and even UX roast to promote your product
-    in Setproduct blog. Increase your online visibility, drive targeted traffic,
-    and boost your website's SEO with our guest blogging services.
-  buttonText: "See prices"
-  buttonLink: "https://publish.setproduct.com/"
+  title: "Build AI products without the busywork"
+  description: "Nocra is a Figma UI kit for AI products: streaming message variants, prompt inputs, generation states, error fallbacks."
+  buttonText: "Get Nocra"
+  buttonLink: "https://www.setproduct.com/templates/nocra"
 ---
 
 <span class="blog_big-paragraph">An **AI chat interface** is a conversational UI where the second participant is a language model, not a person. It looks like a messenger but behaves nothing like one. Responses stream token by token, fail in unique ways, and carry uncertainty the user has to read between the lines. Designing it well means accepting that text alone is the product, and every pixel around it either helps the user trust the answer or quietly erodes that trust.</span>
@@ -105,6 +103,8 @@ Copy, edit, like, dislike, share, branch from this point. Surfaced on hover on d
 ### ❾ Suggestions and follow-ups
 
 Optional row of prompt chips under the last reply. Perplexity uses them aggressively as "Related". Claude.ai uses them sparingly. Suggestions are useful when the user is exploring and harmful when the user knows what they want. Make them dismissible.
+
+All nine regions also exist as ready-made Figma components inside [Nocra](https://www.setproduct.com/templates/nocra), with the streaming and error variants already wired up.
 
 ## States of an AI message
 
@@ -203,6 +203,8 @@ The composer should be docked, not floating. A floating composer that overlaps t
 ### Reading width and density
 
 Long-form replies need a generous line-height (around 1.6) and a max content width of about 65–72 characters per line. The classic readability research from the [WCAG 2.2 guidelines](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html) recommends no more than 80 characters per line for sustained reading. Going wider than that to fill the viewport is the lazy choice that punishes anyone trying to actually read the answer.
+
+Desktop and mobile versions of these layouts are inside [Nocra](https://www.setproduct.com/templates/nocra), with Figma auto-layout grids that adapt between breakpoints.
 
 ## When to use what: AI chat vs alternatives
 
