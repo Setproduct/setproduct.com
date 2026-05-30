@@ -38,22 +38,22 @@ thumbImage: /blog/covers/thumbs/effective-dashboard-design-principles.webp
 
 Dashboards live or die by one thing: how fast they let someone answer a question. Most fail at this. They stack KPIs, fight for color, and treat density like a virtue. The result is a wall of numbers nobody trusts.
 
-Below are eight principles that consistently separate readable dashboards from noisy ones. Each comes with a concrete rule, not just an idea: a number, a ratio, or a pattern you can apply tomorrow. They draw on common patterns from Stripe, Linear, Vercel, and the dashboards inside [Eclipse](https://www.setproduct.com/templates/eclipse) and [Neolex](https://www.setproduct.com/templates/neolex-dashboard).
+Below are eight principles that consistently separate readable dashboards from noisy ones. Each comes with a concrete rule you can apply tomorrow: a number, a ratio, or a pattern. They draw on common patterns from Stripe, Linear, Vercel, and the dashboards inside [Eclipse](https://www.setproduct.com/templates/eclipse) and [Neolex](https://www.setproduct.com/templates/neolex-dashboard).
 
 ![Dashboard layout example from the Material X design system showing clean hierarchy](/blog/assets/effective-dashboard-design-principles/img-1.webp)
 
 ## TL;DR — eight rules in one line each
 
-1. **Start from the question, not the data.** Decide what the user needs to know before you pick a chart.
+1. **Start from the question first.** Decide what the user needs to know before you pick a chart.
 2. **One screen, one decision.** Each view should serve a single primary action.
-3. **Show change, not snapshots.** Deltas beat absolute numbers for almost every KPI.
+3. **Show change over snapshots.** Deltas beat absolute numbers for almost every KPI.
 4. **Round aggressively.** Display 1.2M, not 1,234,567.
 5. **Color encodes meaning, not decoration.** Reserve hue for status; use grayscale for everything else.
 6. **Density follows information value.** Pack high-value zones tightly, leave low-value zones quiet.
 7. **Make filtering reversible and visible.** Users must always see what they filtered and how to undo it.
 8. **Match update frequency to user need.** Real-time is rarely the right answer.
 
-## Principle 1. Start from the user's question, not the data
+## Principle 1. Start from the user's question
 
 Open a Figma file with a blank artboard and you’ll be tempted to plot whatever data exists. Don’t. Write one sentence first: *what question does this screen answer?* If you can’t finish that sentence in under twelve words, the dashboard isn’t ready to be designed.
 
@@ -66,13 +66,13 @@ Linear’s project view answers “is this cycle on track?” in a single header
 
 ## Principle 2. One screen, one decision
 
-A dashboard that supports five decisions supports none of them well. If a user opens the page and can’t tell within two seconds what action it suggests, you’ve built a report, not a dashboard.
+A dashboard that supports five decisions supports none of them well. If a user opens the page and can’t tell within two seconds what action it suggests, you’ve built a report.
 
 Pick the single decision: ship or hold, scale or pause, escalate or ignore. Every chart on the screen should either confirm or refute that decision. Anything else belongs on a different tab or a different page entirely.
 
-Vercel’s analytics dashboard is a clean example. The entire page nudges you toward one question: “is performance healthy right now?” Multi-decision dashboards do exist (think trading terminals), but they’re a specialist tool with trained users, not the default.
+Vercel’s analytics dashboard is a clean example. The entire page nudges you toward one question: “is performance healthy right now?” Multi-decision dashboards do exist (think trading terminals), but they’re a specialist tool for trained users and a poor default everywhere else.
 
-## Principle 3. Show change, not snapshots
+## Principle 3. Show change over snapshots
 
 A number on its own is almost useless. 42,300 active users means nothing. *+8% vs last week* tells you whether to celebrate or investigate. Always pair the absolute number with a delta and a time window.
 
@@ -100,7 +100,7 @@ The hierarchy:
 
 The exception is tables with comparable rows. There, alignment and precision matter more than scannability. In KPI tiles, charts, and tooltips, round.
 
-## Principle 5. Color encodes meaning, not decoration
+## Principle 5. Color encodes meaning
 
 A dashboard should be readable in grayscale. If you remove color and the screen falls apart, color was doing work it shouldn’t have been doing.
 
@@ -131,10 +131,10 @@ Hidden filters are the single most reported cause of “the dashboard is wrong.�
 
 Two rules:
 
-1. **Active filters are always visible.** Show them as chips above the main content, not hidden in a dropdown.
+1. **Active filters are always visible.** Render them as removable chips at the top of the screen, never tucked inside a dropdown.
 2. **One-click reset.** A “clear all filters” button must always be reachable. Bonus points for showing a count: *“3 filters applied, clear all”*.
 
-Stripe and Linear both do this well. Every active filter is a removable chip, and the URL reflects the filter state so it can be shared. Treat filters as part of the state, not a side effect.
+Stripe and Linear both do this well. Every active filter is a removable chip, and the URL reflects the filter state so it can be shared. Treat filters as a first-class part of your application state.
 
 ## Principle 8. Match update frequency to user need
 
@@ -153,7 +153,7 @@ Always show a “last updated” timestamp. If you’re polling more often than 
 Most broken dashboards share the same handful of mistakes. Audit yours against this list.
 
 - **Twelve KPIs above the fold.** Bad because nothing is the lead. If everything is important, nothing is.
-- **Rainbow charts.** Bad because color carries no meaning. A six-color pie chart is a riddle, not a visualization.
+- **Rainbow charts.** Bad because color carries no meaning. A six-color pie chart is a riddle.
 - **Truncated y-axes.** Bad because they exaggerate change. A bar chart starting at 87% turns a 2% lift into a “huge spike.”
 - **3D charts and pie slices for more than 5 categories.** Bad because they hide proportion. Use a sorted bar chart instead.
 - **Hidden filter state.** Bad because users blame the data when they should blame the filter.
@@ -182,7 +182,7 @@ Run this list before any dashboard goes live. If you can’t check eight of thes
 
 **✅ Update cadence stated.** A “last updated” timestamp is present and honest.
 
-**✅ Empty and loading states.** Every chart has a defined empty state, not just a blank box.
+**✅ Empty and loading states.** Every chart has a defined empty state with text and an action.
 
 ## Dashboard design questions and answers (FAQ)
 
