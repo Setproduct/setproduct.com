@@ -1,7 +1,10 @@
 import { useState, useCallback } from "react";
 import type { FaqItem } from "../../types/data";
 
-type Props = { items: FaqItem[] };
+type Props = {
+  items: FaqItem[];
+  title?: string;
+};
 
 const FaqMinusIcon = () => (
   <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +28,7 @@ const FaqPlusIcon = () => (
   </svg>
 );
 
-export default function FaqSection({ items }: Props) {
+export default function FaqSection({ items, title = "FAQs" }: Props) {
   const [openSet, setOpenSet] = useState<Set<number>>(new Set());
 
   const toggle = useCallback((i: number) => {
@@ -44,7 +47,7 @@ export default function FaqSection({ items }: Props) {
           <div className="max-width-768-centered">
             <div className="main_faq-section">
               <div className="heading-center-wr">
-                <h2 className="heading-style-h2">FAQs</h2>
+                <h2 className="heading-style-h2">{title}</h2>
               </div>
               <div className="faq_component">
                 {items.map((item, i) => (
