@@ -675,3 +675,65 @@ h1[id], h2[id], h3[id], h4[id] {
     display: none;
   }
 }
+
+/*
+ * FAQ accordion — smooth expand/collapse + animated plus/minus icon.
+ * The answer wrapper is always in the DOM and animates via the
+ * grid-template-rows 0fr -> 1fr technique (no JS height measurement).
+ */
+.faq_answer-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  /* Emphasized decelerate curve: quick start, soft settle (feels less linear). */
+  transition: grid-template-rows 320ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.faq_item-wrapper.is-open .faq_answer-grid {
+  grid-template-rows: 1fr;
+}
+
+.faq_answer-grid-inner {
+  overflow: hidden;
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.faq_item-wrapper.is-open .faq_answer-grid-inner {
+  opacity: 1;
+  transition: opacity 240ms ease-out 80ms;
+}
+
+/* Animated + -> - icon: two stroked lines, vertical one collapses on open. */
+.faq-toggle-icon {
+  width: 24em;
+  height: 24em;
+  display: block;
+}
+
+.faq-toggle-icon__line {
+  stroke: var(--black);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transform-origin: center;
+}
+
+.faq-toggle-icon__line--v {
+  transition:
+    transform 240ms cubic-bezier(0.2, 0, 0, 1),
+    opacity 200ms ease-out;
+}
+
+.faq_item-wrapper.is-open .faq-toggle-icon__line--v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq_answer-grid,
+  .faq_answer-grid-inner,
+  .faq_item-wrapper.is-open .faq_answer-grid-inner,
+  .faq-toggle-icon__line--v {
+    transition: none;
+  }
+}
