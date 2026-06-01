@@ -157,6 +157,10 @@ Hard limit, zero exceptions. Em-dash is the single most reliable AI tell. Use co
 ✗ "It's not just X, it's Y"
 ✗ "Whether you're X or Y"
 ✗ "From X to Y" as a structural template
+✗ Sentence or fragment starting with "Not" (including 
+  fragments after a period, such as "Not higher, not purer.")
+✗ Echo pattern "Not X, not Y, just Z" (forbidden equally with 
+  "Not X, but Y")
 
 When the natural draft contains any of these, rewrite using "and", "yet", or two sentences.
 
@@ -276,7 +280,16 @@ Internal authority transfer.
 → 4-8 internal links to other Setproduct blog posts (descriptive anchors)
 → 1-2 links to product pages /templates/[slug]
 → 1 link to AI inspiration gallery app.setproduct.com
-→ 1-3 external authority links: WCAG, W3C ARIA, Material Design, Apple HIG, Microsoft Fluent
+→ External authority links are required, not optional.
+Minimum 1, maximum 3 per article. Acceptable sources:
+- WCAG (w3.org/TR/WCAG)
+- Nielsen Norman Group (nngroup.com)
+- Material Design (m3.material.io)
+- Apple Human Interface Guidelines (developer.apple.com)
+- Microsoft Fluent (fluent2.microsoft.design)
+- Specific peer-reviewed UX research papers
+If the post cannot accommodate any external authority link 
+in a natural place, the post structure is wrong.
 
 Never Dribbble for authority claims.
 
@@ -366,7 +379,10 @@ Verify every item before submitting:
 → Zero sentences starting with "Not"
 → Zero "Whether you're..."
 → Zero "It's not just..."
-→ Tricolon count: 0, 1, or 2 maximum
+→ Tricolon count check: list every (X, Y, and Z) and (X, Y, Z) 
+  pattern in the draft. Report the count. If count > 2, 
+  rewrite at least three of them into other rhythms (X and Y; 
+  X, then Y; or single sentences) before submitting.
 → No banned clichés from list
 → Paragraph lengths: mostly 2-4 sentences
 → Sentence length variance: short plus long plus medium
