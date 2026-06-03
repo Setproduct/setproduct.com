@@ -262,6 +262,33 @@ h1[id], h2[id], h3[id], h4[id] {
   padding-right: 1.5em; /* 24px */
 }
 
+/*
+ * Scoped override for narrow GFM tables that should fill the content width
+ * instead of shrinking to their content. Opt-in by wrapping the table in
+ * `<div class="blog-fit-table">` in MDX. The global rule sets the table to
+ * `display: block` for horizontal scrolling; for short tables that produces an
+ * empty gap on the right. Here the wrapper div carries the frame and rounded
+ * corners (overflow clips reliably on a block element), while the inner table
+ * switches back to the table box model so columns distribute across 100% width.
+ * Used only where explicitly added, so other posts are unaffected.
+ */
+.rich-text-18 .blog-fit-table {
+  margin: 24px 0;
+  background-color: #ffffff;
+  border: 1px solid #e7e0ec;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rich-text-18 .blog-fit-table table {
+  display: table;
+  width: 100%;
+  table-layout: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
 @media (min-width: 991px) {
   .section.is-height-100vh {
     height: calc(100dvh - 70em);
