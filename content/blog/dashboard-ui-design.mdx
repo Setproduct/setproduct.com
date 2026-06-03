@@ -162,29 +162,58 @@ Pie and donut work only for proportion, and only with five slices or fewer. The 
 These rules cover the common cases, but charts reward deeper study. The principles behind [effective dashboard design](/blog/effective-dashboard-design-principles) go further into hierarchy and restraint. When the data belongs in a table rather than a chart, [data grid design in Figma](/blog/figma-tables-data-grid-design) covers the details that matter, particularly for Figma-based design systems where every cell state has to be drawn by hand.
 
 ## Navigation patterns in dashboards
-{/* TODO Phase 2B
-   donor: none
-   length target: 200-300 words
-   key points: sidebars, tabs, drill-down, in-dashboard breadcrumbs, filtering vs navigation
-   read-more cluster (internal UI components): breadcrumbs-ui-design, tabs-ui-design
-*/}
+
+Dashboard navigation works across three layers: top-level picks which dashboard you are in, section-level picks which view, and detail-level picks which slice of data you see. Most confusion comes from collapsing these into one control. Keep them distinct and the interface stays legible even as the product grows.
+
+**Top-level: sidebar or top nav.** A sidebar wins once you have five or more destinations, or any multi-product app where sections nest. Top nav fits focused tools with two to four areas. Linear leans on a sidebar for its many views, while Stripe keeps a top nav for a tighter set.
+
+**Section-level: tabs and segmented controls.** Tabs handle three to seven parallel views that share a context, like Overview, Acquisition, and Retention sitting side by side. They keep related data one click apart without a full page change. The pattern has its own rules, covered in [tabs UI design](/blog/tabs-ui-design).
+
+**Detail-level: filters, breadcrumbs, drill-down.** This is the date range, the dimension filters, the segment selectors. Breadcrumbs earn their place here by showing the drill path back out of a deep view, so nobody gets stranded. The full treatment lives in [breadcrumbs UI design](/blog/breadcrumbs-ui-design).
+
+The classic mistake is mixing the layers. Drop a date filter into the main sidebar and people read it as navigation, then wonder why the page did not change. Keep filtering separate from moving between views, and the whole thing reads itself. The same discipline carries over when the screen shrinks to a phone.
 
 ## Mobile and responsive dashboards
-{/* TODO Phase 2B
-   donor: marketing-dashboard-ui-design-guide (#14, mobile section),
-          campaign-marketing-dashboards-guide (#13, watch-screen idea)
-   length target: 200-300 words
-   key points: KPI prioritization on narrow screens, stacking, touch targets, progressive disclosure
-   read-more cluster: marketing-dashboard-ui-design-guide
-*/}
+
+Dashboards on mobile are not desktop dashboards squeezed smaller. They demand ruthless KPI prioritization, vertical stacking, and a rethink of which interactions actually matter on a small touch surface. The data may be the same, but the reading order and the gestures change completely. Design for the phone as its own context, not as a leftover.
+
+**Prioritize ruthlessly.** Lead with the top KPIs, then the primary chart, then any table or list at the bottom. Push secondary filters behind a sheet or drawer so they stay reachable without crowding the screen. Keep the first viewport to three or four KPIs at most, because anything more turns into a scroll people abandon.
+
+**Replace rather than reduce.** A dense table or a multi-line chart rarely survives the shrink intact. Swap it for a summary card with a drill-down link into the full view. The [marketing dashboard UI guide](/blog/marketing-dashboard-ui-design-guide) covers the mobile section in more depth, including how to decide what gets summarized.
+
+**Touch and sticky context.** Size touch targets to at least 44 by 44 points, the long-standing iOS and WCAG guideline. Keep a sticky header carrying the current date range and active dimension so nobody loses their place mid-scroll. Where it helps, let time-series charts pinch-zoom for a closer read.
+
+Tablet sits in its own category, closer to desktop but driven by touch. A well-built responsive desktop layout often just works there with little extra effort. Phones are where the hard prioritization happens. Either way, none of it counts if the screen locks out the people trying to read it.
 
 ## Accessibility and performance
-{/* TODO Phase 2B
-   donor: marketing-dashboard-ui-design-guide (#14, accessibility check section)
-   length target: 200-300 words
-   key points: color contrast, ARIA for charts, keyboard nav, render speed for large datasets
-   read-more cluster: none
-*/}
+
+Dashboards stack two challenges most apps avoid: communicating data through visuals a screen reader cannot see, and rendering large datasets without freezing the interface. Both decide whether the dashboard is usable in practice. A chart nobody can parse and a table that stalls on scroll fail the same goal, just by different routes.
+
+**Accessibility essentials.** Build for non-visual access from the start.
+
+→ Hold contrast at 4.5:1 for text and 3:1 for UI components and chart elements (WCAG 2.2 AA)
+
+→ Never lean on color alone to separate categories; add a pattern, a shape, or a direct label
+
+→ Give data tables proper `<th scope>`, a caption, and arrow-key movement between cells
+
+→ Add ARIA labels to chart SVGs, plus a text data summary or table export beneath the visual
+
+→ Wrap real-time updates in an `aria-live="polite"` region so a screen reader announces changes without spamming
+
+**Performance essentials.** Speed is an access requirement, not a nicety.
+
+→ Virtualize any table past roughly 100 rows with a tool like react-window or TanStack Virtual
+
+→ Lazy-load sections below the first viewport instead of rendering everything upfront
+
+→ Show skeleton screens during data fetch rather than empty blocks that look broken
+
+→ Debounce filter inputs so a chart does not repaint on every keystroke in a date field
+
+→ Memoize chart props, a frequent cause of freezes once the dataset grows
+
+These two concerns meet in the middle. A sluggish dashboard is inaccessible in effect, even when it passes every WCAG check on paper. Which leads to the failures worth naming outright.
 
 ## Common anti-patterns
 {/* TODO Phase 2D
