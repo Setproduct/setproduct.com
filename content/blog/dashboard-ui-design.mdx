@@ -108,37 +108,58 @@ Most products end up with a small set rather than a single dashboard. A SaaS too
 For the full breakdown with deeper examples of each category, the guide on [types of dashboards](/blog/types-of-dashboards-main-categories) goes further than this overview can.
 
 ## Dashboard examples by industry
-{/* TODO Phase 2B
-   donor: partial from top-dashboard-design-examples-ideas (#2, kept as gallery)
-   length target: 400-500 words
-   key points: 4-6 industries — SaaS, marketing, e-commerce, analytics, finance
-   read-more cluster (deep-links):
-     - saas-dashboard-examples (#10)
-     - marketing-dashboard-ui-design-guide (#14, absorbs marketing-dashboard-examples-templates)
-     - e-commerce-dashboard-examples (#7)
-     - best-analytics-dashboard-examples (#8)
-     - top-dashboard-design-examples-ideas (#2)
-   note: generate 80-120 word rephrased summary per industry from cluster sources
-*/}
+
+Dashboard design varies by industry because data density and refresh speed differ, and because the questions users ask are never quite the same. A monitoring tool needs sub-second updates and loud alerts. A strategic SaaS view can refresh nightly and stay calm. The anatomy holds constant, yet the emphasis shifts hard from one domain to the next. Here is how six common categories play out.
+
+**SaaS dashboards.** These track recurring revenue and churn first, with activation and feature usage one layer down. The pattern is a fast scan of headline metrics, then drill-down by plan or cohort. Stripe and Linear both nail this: a calm KPI row up top, detail on demand. See more [SaaS dashboard examples](/blog/saas-dashboard-examples) for the full set.
+
+**Analytics dashboards.** Here the job is funnels and cohorts, with event streams and retention curves alongside. Filters and date range stop being controls and become the main interface. Density is high and exploration beats reporting. Google Analytics 4 and Mixpanel both lean this way. The [best analytics dashboard examples](/blog/best-analytics-dashboard-examples) break down the patterns.
+
+**Marketing dashboards.** Campaign performance and attribution sit at the center, with ROAS and channel mix shaping the story. Time-series charts dominate, because the question is almost always "is this better than last month." HubSpot and the GA4 Acquisition reports show the shape. The [marketing dashboard UI guide](/blog/marketing-dashboard-ui-design-guide) walks the full layout.
+
+**E-commerce dashboards.** Revenue and conversion lead, with inventory levels and customer lifetime value close behind. The twist is that one screen serves two modes at once: an operational pulse plus deeper analysis, with alerts firing when stock runs low. Shopify admin and Amazon Seller Central are the reference points. More in [e-commerce dashboard examples](/blog/e-commerce-dashboard-examples).
+
+**Operations and monitoring dashboards.** Uptime and latency get top billing, with error rates and incident status right alongside. Everything updates in real time, and status colors carry the primary signal before any number is read. Alerts are loud by design. Datadog and Grafana set the visual standard here, where a single red panel can pull a whole team's attention.
+
+**Internal admin dashboards.** User management and configuration dominate, with content moderation queues in the mix. The interface is table-first, built around bulk actions and filters more advanced than anything in analytics. Notion and Linear settings show the calm version. This is less about charts and more about control, so the patterns lean closer to data tables than data viz.
+
+Across all six, the foundation holds. The same anatomy and the same hierarchy rules apply, only the weighting changes. Learn one well and the others read faster. For a broader gallery across domains, [top dashboard design examples](/blog/top-dashboard-design-examples-ideas) collects more. Once the content is decided, the next question is how to arrange it on the page.
 
 ## Layout patterns
-{/* TODO Phase 2B
-   donor: dashboard-design-best-practices-top-dashboard-ui-design-tips (#1, steps/layout parts)
-   length target: 250-350 words
-   key points: single-page vs multi-page vs progressive disclosure; F/Z reading patterns; grid
-   read-more cluster: none (donor deprecates in Phase 4)
-*/}
+
+Dashboard layouts come down to three patterns, and picking the right one matters more than any visual polish. Single-page shows everything on one scroll. Multi-page splits content across tabs. Progressive disclosure opens with an overview and reveals detail on demand. Which fits depends on how people actually use the screen.
+
+**Single-page (canonical view).** One scrollable screen with everything visible at once. Best for focused tools where the whole story fits without tabs, like a status page or one team's metrics. The Vercel and GitHub status pages are the clean reference: current state and recent history, nothing more. When the data set is small, this beats any navigation.
+
+**Multi-page, tabbed.** Content split by theme, so each tab answers one job. Best for multi-faceted analytics where different users arrive with different questions. Google Analytics 4 does this with its Acquisition and Engagement sections. The tab pattern carries its own design rules, covered in [tabs UI design](/blog/tabs-ui-design).
+
+**Progressive disclosure, drill-down.** Start at an overview, click into detail, then click again for more. Best for investigative work where most users need only the top layer but some go deep. Linear models this well: a board view opens into an issue, which opens into its full history and comments. The screen stays calm until you ask for more.
+
+The choice follows the user journey rather than taste. Operational views usually want a single page so nothing hides during a shift. Analytical tools lean multi-page as the questions multiply. Whatever the shape, the page is only as clear as the charts inside it, which is where visualization rules come in.
 
 ## Data visualization principles
-{/* TODO Phase 2B
-   donor: none
-   length target: 300-400 words
-   key points: chart selection, color encodes meaning, data density, rounding, axis honesty
-   read-more cluster:
-     - effective-dashboard-design-principles (#11, viz principles)
-     - figma-tables-data-grid-design (#12, for data tables/grids)
-   note: generate 80-120 word rephrased summary from cluster sources for user review
-*/}
+
+Effective data visualization in dashboards rests on a few hard rules that survive every redesign. Match the chart to the question being asked. Encode values so they read accurately rather than merely looking good. Respect how much a person can absorb in a single glance. Break any of these and the screen looks busy while saying less than it should. Get them right and one look answers the question. The rest is refinement.
+
+**Match chart type to question.** Each chart answers a specific shape of question.
+
+• Bar for comparison across categories
+
+• Line for a trend over time
+
+• Area for composition as it shifts
+
+• Scatter for correlation between two values
+
+• Heatmap for density and pattern
+
+Pie and donut work only for proportion, and only with five slices or fewer. The wrong pick is choosing whatever looks most impressive.
+
+**Encode for accuracy.** People read position most precisely, then length, then angle, with area and color trailing far behind. Build the important comparison on the most accurate channel available. This is why 3D charts mislead: they distort area and depth for decoration. Let color support the story, never carry the main signal on its own.
+
+**Respect data density.** Treat the overview as a few-second read, because that is all most people give it before acting. Twenty charts on one screen waste that window. One primary chart with a few supporting metrics will always outperform five competing for attention. When everything is emphasized, nothing is. Cut until the most important number is the easiest thing to find.
+
+These rules cover the common cases, but charts reward deeper study. The principles behind [effective dashboard design](/blog/effective-dashboard-design-principles) go further into hierarchy and restraint. When the data belongs in a table rather than a chart, [data grid design in Figma](/blog/figma-tables-data-grid-design) covers the details that matter, particularly for Figma-based design systems where every cell state has to be drawn by hand.
 
 ## Navigation patterns in dashboards
 {/* TODO Phase 2B
