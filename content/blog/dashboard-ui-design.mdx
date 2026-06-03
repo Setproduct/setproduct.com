@@ -216,46 +216,87 @@ Dashboards stack two challenges most apps avoid: communicating data through visu
 These two concerns meet in the middle. A sluggish dashboard is inaccessible in effect, even when it passes every WCAG check on paper. Which leads to the failures worth naming outright.
 
 ## Common anti-patterns
-{/* TODO Phase 2D
-   donor: effective-dashboard-design-principles (#11, anti-patterns block) — reclassified B->D
-   length target: 250-350 words
-   key points: data dump, vanity metrics, overload, no visual hierarchy, mismatched chart types
-   read-more cluster: effective-dashboard-design-principles (until deprecated in Phase 4)
-*/}
+
+The most common dashboard mistakes share a root cause: designing for what is measurable instead of what is actionable. A dashboard that shows everything helps with nothing. Below are five failures that surface again and again in design reviews, each with a quick fix you can apply before the next handoff.
+
+**Data dump.** Cramming every available metric onto one screen because users might want it. The result is that nothing stands out and decisions slow down. The fix is ruthless prioritization: one primary question per dashboard, everything else demoted or pushed into drill-down.
+
+**Vanity metrics.** Total signups and total pageviews are numbers that only ever climb and rarely reflect health. Pair every vanity metric with a rate or quality signal beside it, so the figure means something the moment it is read rather than just looking impressive.
+
+**Inconsistent time ranges across charts.** One chart shows the last 7 days, the next shows the last 30, with no visible label to flag the mismatch. People read across them and draw false comparisons. Pin a single date range to the whole dashboard, or label each chart unmistakably.
+
+**Misleading visualizations.** A truncated y-axis makes a tiny change look dramatic, and a 3D pie chart distorts every proportion it shows. Lean on position-based encoding like bars and lines, where length maps honestly to value and the eye is not tricked into seeing a trend that is not there.
+
+**No actionable next step.** The dashboard flags that something is wrong but offers nowhere to go and fix it. Good dashboards wire each problem state to a drill-down link or an action button that leads straight to where the fix actually happens.
+
+These five cover the failures that show up most, but a thorough audit goes further. For the full set of design principles and a longer list of anti-patterns to check your own dashboard against, see our guide to [effective dashboard design principles](/blog/effective-dashboard-design-principles).
 
 ## Frequently asked questions
-{/* TODO Phase 2D — FAQPage JSON-LD
-   length target: 250-350 words
-   5-7 GENERAL dashboard questions ONLY:
-     - what is a dashboard
-     - what are the main types of dashboards
-     - when should you use a dashboard (vs a report)
-     - dashboard vs report — what is the difference
-     - how many metrics should a dashboard show
-     - what makes a good dashboard
-   DO NOT duplicate effective-dashboard-design-principles FAQ
-   (that cluster FAQ stays narrow about the 8 principles).
+
+Designers ask the same foundational questions when approaching dashboards for the first time. Here is what comes up most often, answered briefly enough to act on and broad enough to point you toward the deeper guides where they exist.
+
+### What is a dashboard?
+
+A dashboard is a curated single view that aggregates the most important metrics for a specific audience and decision context. Unlike a report, which documents a snapshot in time, a dashboard is built for ongoing monitoring and quick action, so its layout favors scanning over reading.
+
+### What are the main types of dashboards?
+
+Three broad types cover most cases. Operational dashboards track live activity for day-to-day work. Analytical dashboards support exploration and trend-finding across historical data. Strategic dashboards summarize high-level KPIs for leadership. For the full taxonomy and where each one fits, see [types of dashboards](/blog/types-of-dashboards-main-categories).
+
+### What is the difference between a dashboard and a report?
+
+A report documents what happened: it is historical, usually a static PDF, archived for the record. A dashboard is a live decision surface: interactive, optimized for a quick scan, and built to prompt action rather than to be filed away. One looks back at the data, the other drives the next move.
+
+### How many KPIs should a dashboard show?
+
+There is no magic number, but a workable rule is 3 to 7 KPIs in the primary above-the-fold area. Past that, focus dissolves and the eye has nowhere to land first. Push the rest into secondary sections or behind a drill-down, where they stay available without competing for attention.
+
+### What should every dashboard include?
+
+Three things. Primary KPIs that state what you are measuring. Context that answers compared to what, whether a previous period or a stated target. And an action: a drill-down or a clear next step. Drop any one of them and the dashboard quietly becomes a slide.
+
+### How do you design a dashboard for mobile?
+
+Rethink the layout rather than shrink the desktop one. KPI cards stack vertically, the primary chart is simplified or swapped for a summary, and secondary filters move into a drawer or sheet. Lead with the few metrics that matter on a small screen and let everything else wait behind a tap. The [mobile and responsive section](#mobile-and-responsive-dashboards) above goes deeper.
+
+### What tools do designers use to build dashboards?
+
+Most dashboard design happens in Figma, from early wireframes through high-fidelity prototypes. Component libraries and UI kits speed up production by giving you ready-made KPI cards and chart components instead of drawing each state from scratch. Setproduct's [dashboard UI kits](/dashboards) collect these patterns, and templates like [Material X](/templates/material-x) ship with full dashboard screens to start from.
+
+{/* TODO Phase 4: implement FAQPage JSON-LD schema
+   Source of truth for QA pairs: this section (7 questions H3 → paragraph A).
+   Implementation approach: extend lib/blog/schema.ts to detect FAQ section
+   by H2 anchor "frequently-asked-questions" and serialize H3+next-paragraph
+   pairs into FAQPage schema markup.
+   This MUST be done before publishing pillar to GitHub — otherwise we lose
+   rich-snippet opportunity in SERP and AI tool citations.
 */}
 
 ## Dashboard templates and UI kits
-{/* TODO Phase 2C — CONVERSION FUNNEL SECTION
-   length target: 400-600 words (больше остальных секций)
-   structure: opener → primary CTA to /dashboards →
-              use case grid with 7 template links →
-              soft fallback link
-   primary CTA target: /dashboards
-   secondary links: 7 template pages listed in plan
-     - SaaS analytics: /dashboard-templates/analytics-dashboard
-     - Admin panels:   /dashboard-templates/admin-dashboard
-     - iOS apps:       /dashboard-templates/ios-dashboard
-     - Android apps:   /dashboard-templates/android-dashboard
-     - Mobile-first:   /dashboard-templates/mobile-dashboard
-     - Finance:        /dashboard-templates/finance-dashboard
-     - Angular:        /dashboard-templates/angular-dashboard
-   conversion data justifying expanded length:
-   /dashboards has 70% of cluster key events (30 of 43, 1607 views)
-   tone: educational, not hard-sell; flow design → ready-made templates → pick by use case
-*/}
+
+Designing a dashboard from scratch takes weeks: every KPI card, chart state, and empty state drawn and wired by hand. Starting from a battle-tested template cuts that to days while leaving room for the customization your product actually needs. The sections above cover how to make the calls; this is where production-ready kits help you skip the groundwork and spend your time on the decisions that are specific to your data.
+
+Browse the full range of [Setproduct dashboard UI kits](/dashboards) to see what is ready to build on today.
+
+### Choose by use case
+
+**SaaS analytics and product metrics.** Tracking activation, retention, and conversion funnels for a product team. These lean on time-series charts and cohort views, so reach for a [SaaS analytics dashboard template](/dashboard-templates/analytics-dashboard) built around those patterns.
+
+**Internal admin panels.** User management, content moderation, and configuration for back-office tools. Table-heavy layouts with bulk actions and inline editing matter most here, which is the focus of the [admin dashboard template](/dashboard-templates/admin-dashboard).
+
+**iOS apps.** Native dashboard patterns that follow Apple HIG conventions, with large titles, segmented controls, and list-based detail views. An [iOS dashboard template](/dashboard-templates/ios-dashboard) gives you those conventions already wired in.
+
+**Android apps.** Material Design 3 surfaces for an Android-native context, with the elevation, typography, and motion the platform expects. Start from an [Android dashboard template](/dashboard-templates/android-dashboard) to stay on-spec.
+
+**Mobile-first responsive dashboards.** For products where mobile is the primary surface, not an afterthought. KPI prioritization, vertical stacking, and sheet or drawer patterns lead the design, all covered in a [mobile dashboard template](/dashboard-templates/mobile-dashboard).
+
+**Fintech and finance.** Heavy data density, real-time updates, and regulatory considerations shape these screens. A [finance dashboard template](/dashboard-templates/finance-dashboard) accounts for that density from the start.
+
+**Angular projects.** When the tech stack drives the choice as much as the design, pre-built [Angular dashboard components](/dashboard-templates/angular-dashboard) keep design and implementation aligned from day one.
+
+When you need a complete design system foundation rather than a single dashboard template, production-ready libraries carry more weight. Kits like the [Material You UI kit](/templates/material-you), [Material X for Figma](/templates/material-x), and the [Neolex Dashboard kit](/templates/neolex-dashboard) provide thousands of variants and dozens of pre-built templates ready to customize, so a new dashboard inherits a coherent system instead of a one-off screen.
+
+If none of these fit your niche, or you want to compare options side by side, the [full Setproduct dashboard collection](/dashboards) catalogues every available template by industry, stack, and complexity, so you can weigh the trade-offs before committing to one.
 
 ## Continue reading
 {/* TODO Phase 2B
