@@ -21,30 +21,91 @@ Good dashboard design turns scattered data into fast, confident decisions. A str
 A dashboard is a single screen that visualizes key metrics, KPIs, and data trends so people can monitor performance and make decisions at a glance. It pulls data from multiple sources into charts, tables, and cards organized by priority. Dashboards span [operational, analytical, and strategic types](/blog/types-of-dashboards-main-categories), each tuned to a different audience and [real-world examples](/blog/saas-dashboard-examples).
 
 ## Why dashboard design matters
-{/* TODO Phase 2B
-   donor: benefits-of-dashboards (#6), why-are-dashboards-important (#4)
-   length target: 250-350 words
-   key points: business decisions, ROI, speed, team alignment, single source of truth
-   read-more cluster: none (donor only — both donors deprecate in Phase 4)
-*/}
+
+A dashboard earns its place when it shortens the path from question to decision. That is the whole job. Everything else is decoration.
+
+Bad dashboard design costs real money. A sales lead who cannot find this week's pipeline number opens a spreadsheet instead, and now two sources of truth disagree. A founder who misreads a vanity metric ships the wrong feature. The data was right. The presentation failed.
+
+Good design does the opposite. It puts the one number that drives a decision where the eye lands first, then supports it with just enough context to act. When I audit dashboards for clients, the fastest win is almost always removing things, not adding them. Cut the chart nobody reads and the remaining signal gets louder.
+
+Speed is the metric that matters. If someone needs more than a few seconds to answer "are we on track," the layout is working against them. [Effective dashboards](/blog/effective-dashboard-design-principles) are judged by time-to-answer, and that number drops when the hierarchy is honest about what is important.
+
+There is a team angle too. A shared dashboard becomes the single source of truth a meeting can point at. No more arguing about whose export is current. Marketing and support read the same screen, and the conversation moves to what to do next.
+
+This is also why a consistent component foundation pays off. When KPI cards and tables behave the same on every screen, people stop relearning the interface and start trusting it. A system like [Eclipse](/templates/eclipse) gives you that baseline, so the design effort goes into decisions instead of re-styling another card.
 
 ## Anatomy of a modern dashboard
-{/* TODO Phase 2B
-   donor: marketing-dashboard-ui-design-guide (#14, anatomy section)
-   length target: 350-450 words
-   key points: KPI cards, primary chart area, filters, navigation, header/context,
-               data tables, status indicators
-   read-more cluster: marketing-dashboard-ui-design-guide
-*/}
+
+Most dashboards are built from the same seven parts. Learn the parts and you can read or design almost any of them.
+
+❶ **Header and context.** The top strip tells you where you are. Page title and active date range sit here, with the account switcher tucked to the right. It sounds trivial. People get lost without it.
+
+❷ **KPI cards.** The row of big numbers near the top. Each card shows one metric and its delta against the previous period. This is the first thing the eye should reach, so it carries the heaviest visual weight.
+
+❸ **Primary chart area.** The largest block on the screen, reserved for the trend that matters most. A revenue line, an active-user curve. One hero chart beats four competing ones.
+
+❹ **Filters and controls.** Date pickers and segment selectors. These reshape everything below them, so they belong above or beside the content they affect, never buried three clicks deep.
+
+❺ **Data tables.** Where numbers get specific. Sortable columns, with a clear split between header and row and real restraint on borders. Table design is its own craft, and [data grids in Figma](/blog/figma-tables-data-grid-design) deserve more attention than they usually get.
+
+❻ **Navigation.** The sidebar or tab bar that moves people between views. It frames the whole product and should stay predictable on every screen.
+
+❼ **Status indicators.** The small signals that something needs attention. A red badge on an overdue invoice, a green dot on a healthy service.
+
+These parts share a budget. Every pixel you give the navigation is a pixel taken from the data. The real skill is deciding what gets emphasis and what recedes.
+
+A practical test: squint at the screen until the detail blurs. The shapes that stay visible are your hierarchy. If the KPI cards and the hero chart dominate, you are close. If the sidebar and a dense table win the squint test, rework the weight before touching anything else.
+
+For a worked example that ties these parts to a real layout, the [marketing dashboard UI guide](/blog/marketing-dashboard-ui-design-guide) walks through each block on a live screen.
 
 ## Types of dashboards
-{/* TODO Phase 2B
-   donor: none (delegates outward)
-   length target: 300-400 words
-   key points: operational vs analytical vs strategic; matrix by audience + cadence
-   read-more cluster: types-of-dashboards-main-categories (PRIMARY deep-link)
-   note: generate 80-120 word rephrased summary from cluster source for user review
-*/}
+
+Three categories cover almost everything, and they differ by one question: how fast does someone need to act on what they see?
+
+Operational dashboards run the day. They sit on a wall or a second monitor and update in near real time. A support queue, a live ops board. The audience is whoever is on shift, and the cadence is now.
+
+Analytical dashboards answer "why." An analyst slices a few weeks of data, compares segments, and hunts for the cause behind a number that moved. Less urgency, more depth. Interactivity matters here because the questions keep branching.
+
+Strategic dashboards track the long arc. A founder or an exec checks them weekly or monthly against goals. Fewer metrics and a calmer pace. The job is steering toward direction, and reaction can wait.
+
+<div class="blog-fit-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Audience</th>
+        <th>Update cadence</th>
+        <th>Main job</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Operational</td>
+        <td>On-shift team</td>
+        <td>Real time to hourly</td>
+        <td>Monitor and react</td>
+      </tr>
+      <tr>
+        <td>Analytical</td>
+        <td>Analysts, specialists</td>
+        <td>Daily to weekly</td>
+        <td>Explore and explain</td>
+      </tr>
+      <tr>
+        <td>Strategic</td>
+        <td>Leadership</td>
+        <td>Weekly to monthly</td>
+        <td>Track goals and direction</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+The classic mistake is mixing the modes on one screen. A real-time ops widget bolted next to a quarterly goal tracker forces two reading speeds at once, and neither gets served well. Pick the dominant job of the screen and design for that tempo.
+
+Most products end up with a small set rather than a single dashboard. A SaaS tool might ship an operational view for daily users and a strategic summary for admins, each tuned to its audience.
+
+For the full breakdown with deeper examples of each category, the guide on [types of dashboards](/blog/types-of-dashboards-main-categories) goes further than this overview can.
 
 ## Dashboard examples by industry
 {/* TODO Phase 2B
