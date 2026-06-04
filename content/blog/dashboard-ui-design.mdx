@@ -225,17 +225,19 @@ These two concerns meet in the middle. A sluggish dashboard is inaccessible in e
 
 ## Common anti-patterns
 
+![Before-and-after dashboard comparison with five numbered fixes: a cluttered version with a row of raw vanity metrics, mismatched chart time ranges, and a 3D pie chart, beside a focused version with rate-paired KPIs, one consistent date range, an honest bar chart, and an investigate-causes action link](/blog/assets/dashboard-ui-design/img-6.webp)
+
 The most common dashboard mistakes share a root cause: designing for what is measurable instead of what is actionable. A dashboard that shows everything helps with nothing. Below are five failures that surface again and again in design reviews, each with a quick fix you can apply before the next handoff.
 
-**Data dump.** Cramming every available metric onto one screen because users might want it. The result is that nothing stands out and decisions slow down. The fix is ruthless prioritization: one primary question per dashboard, everything else demoted or pushed into drill-down.
+❶ **Data dump.** Cramming every available metric onto one screen because users might want it. The result is that nothing stands out and decisions slow down. The fix is ruthless prioritization: one primary question per dashboard, everything else demoted or pushed into drill-down.
 
-**Vanity metrics.** Total signups and total pageviews are numbers that only ever climb and rarely reflect health. Pair every vanity metric with a rate or quality signal beside it, so the figure means something the moment it is read rather than just looking impressive.
+❷ **Vanity metrics.** Total signups and total pageviews are numbers that only ever climb and rarely reflect health. Pair every vanity metric with a rate or quality signal beside it, so the figure means something the moment it is read rather than just looking impressive.
 
-**Inconsistent time ranges across charts.** One chart shows the last 7 days, the next shows the last 30, with no visible label to flag the mismatch. People read across them and draw false comparisons. Pin a single date range to the whole dashboard, or label each chart unmistakably.
+❸ **Inconsistent time ranges across charts.** One chart shows the last 7 days, the next shows the last 30, with no visible label to flag the mismatch. People read across them and draw false comparisons. Pin a single date range to the whole dashboard, or label each chart unmistakably.
 
-**Misleading visualizations.** A truncated y-axis makes a tiny change look dramatic, and a 3D pie chart distorts every proportion it shows. Lean on position-based encoding like bars and lines, where length maps honestly to value and the eye is not tricked into seeing a trend that is not there.
+❹ **Misleading visualizations.** A truncated y-axis makes a tiny change look dramatic, and a 3D pie chart distorts every proportion it shows. Lean on position-based encoding like bars and lines, where length maps honestly to value and the eye is not tricked into seeing a trend that is not there.
 
-**No actionable next step.** The dashboard flags that something is wrong but offers nowhere to go and fix it. Good dashboards wire each problem state to a drill-down link or an action button that leads straight to where the fix actually happens.
+❺ **No actionable next step.** The dashboard flags that something is wrong but offers nowhere to go and fix it. Good dashboards wire each problem state to a drill-down link or an action button that leads straight to where the fix actually happens.
 
 These five cover the failures that show up most, but a thorough audit goes further. For the full set of design principles and a longer list of anti-patterns to check your own dashboard against, see our guide to [effective dashboard design principles](/blog/effective-dashboard-design-principles).
 
