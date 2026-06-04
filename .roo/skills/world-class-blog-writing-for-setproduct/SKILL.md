@@ -1,6 +1,6 @@
 ---
 name: world-class-blog-writing-for-setproduct
-description: Placeholder, will be edited directly in SKILL.md file.
+description: 'Placeholder, will be edited directly in SKILL.md file.'
 ---
 
 # World Class Blog Writing For Setproduct
