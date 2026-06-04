@@ -52,6 +52,8 @@ Most dashboards are built from the same seven parts. Learn the parts and you can
 
 ❼ **Status indicators.** The small signals that something needs attention. A red badge on an overdue invoice, a green dot on a healthy service.
 
+Empty and error states are the parts this seven-block anatomy often forgets. A new user with no data yet, or a filter that returns nothing, needs a deliberate design rather than a blank panel that reads as broken. A good empty state names what will appear here and offers the one action that fills it, turning a dead end into a first step. For the full catalogue of [empty state design patterns](/blog/empty-state-ui-design), the dedicated guide covers each case.
+
 These parts share a budget. Every pixel you give the navigation is a pixel taken from the data. The real skill is deciding what gets emphasis and what recedes.
 
 A practical test: squint at the screen until the detail blurs. The shapes that stay visible are your hierarchy. If the KPI cards and the hero chart dominate, you are close. If the sidebar and a dense table win the squint test, rework the weight before touching anything else.
@@ -111,17 +113,29 @@ For the full breakdown with deeper examples of each category, the guide on [type
 
 Dashboard design varies by industry because data density and refresh speed differ, and because the questions users ask are never quite the same. A monitoring tool needs sub-second updates and loud alerts. A strategic SaaS view can refresh nightly and stay calm. The anatomy holds constant, yet the emphasis shifts hard from one domain to the next. Here is how six common categories play out.
 
-**SaaS dashboards.** These track recurring revenue and churn first, with activation and feature usage one layer down. The pattern is a fast scan of headline metrics, then drill-down by plan or cohort. Stripe and Linear both nail this: a calm KPI row up top, detail on demand. See more [SaaS dashboard examples](/blog/saas-dashboard-examples) for the full set.
+### SaaS dashboards
 
-**Analytics dashboards.** Here the job is funnels and cohorts, with event streams and retention curves alongside. Filters and date range stop being controls and become the main interface. Density is high and exploration beats reporting. Google Analytics 4 and Mixpanel both lean this way. The [best analytics dashboard examples](/blog/best-analytics-dashboard-examples) break down the patterns.
+These track recurring revenue and churn first, with activation and feature usage one layer down. The pattern is a fast scan of headline metrics, then drill-down by plan or cohort. Stripe and Linear both nail this: a calm KPI row up top, detail on demand. See more [SaaS dashboard examples](/blog/saas-dashboard-examples) for the full set.
 
-**Marketing dashboards.** Campaign performance and attribution sit at the center, with ROAS and channel mix shaping the story. Time-series charts dominate, because the question is almost always "is this better than last month." HubSpot and the GA4 Acquisition reports show the shape. The [marketing dashboard UI guide](/blog/marketing-dashboard-ui-design-guide) walks the full layout.
+### Analytics dashboards
 
-**E-commerce dashboards.** Revenue and conversion lead, with inventory levels and customer lifetime value close behind. The twist is that one screen serves two modes at once: an operational pulse plus deeper analysis, with alerts firing when stock runs low. Shopify admin and Amazon Seller Central are the reference points. More in [e-commerce dashboard examples](/blog/e-commerce-dashboard-examples).
+Here the job is funnels and cohorts, with event streams and retention curves alongside. Filters and date range stop being controls and become the main interface. Density is high and exploration beats reporting. Google Analytics 4 and Mixpanel both lean this way. The [best analytics dashboard examples](/blog/best-analytics-dashboard-examples) break down the patterns.
 
-**Operations and monitoring dashboards.** Uptime and latency get top billing, with error rates and incident status right alongside. Everything updates in real time, and status colors carry the primary signal before any number is read. Alerts are loud by design. Datadog and Grafana set the visual standard here, where a single red panel can pull a whole team's attention.
+### Marketing dashboards
 
-**Internal admin dashboards.** User management and configuration dominate, with content moderation queues in the mix. The interface is table-first, built around bulk actions and filters more advanced than anything in analytics. Notion and Linear settings show the calm version. This is less about charts and more about control, so the patterns lean closer to data tables than data viz.
+Campaign performance and attribution sit at the center, with ROAS and channel mix shaping the story. Time-series charts dominate, because the question is almost always "is this better than last month." HubSpot and the GA4 Acquisition reports show the shape. The [marketing dashboard UI guide](/blog/marketing-dashboard-ui-design-guide) walks the full layout.
+
+### E-commerce dashboards
+
+Revenue and conversion lead, with inventory levels and customer lifetime value close behind. The twist is that one screen serves two modes at once: an operational pulse plus deeper analysis, with alerts firing when stock runs low. Shopify admin and Amazon Seller Central are the reference points. More in [e-commerce dashboard examples](/blog/e-commerce-dashboard-examples).
+
+### Operations and monitoring dashboards
+
+Uptime and latency get top billing, with error rates and incident status right alongside. Everything updates in real time, and status colors carry the primary signal before any number is read. Alerts are loud by design. Datadog and Grafana set the visual standard here, where a single red panel can pull a whole team's attention.
+
+### Internal admin dashboards
+
+User management and configuration dominate, with content moderation queues in the mix. The interface is table-first, built around bulk actions and filters more advanced than anything in analytics. Notion and Linear settings show the calm version. This is less about charts and more about control, so the patterns lean closer to data tables than data viz.
 
 Across all six, the foundation holds. The same anatomy and the same hierarchy rules apply, only the weighting changes. Learn one well and the others read faster. For a broader gallery across domains, [top dashboard design examples](/blog/top-dashboard-design-examples-ideas) collects more. Once the content is decided, the next question is how to arrange it on the page.
 
@@ -140,6 +154,12 @@ Dashboard layouts come down to three patterns, and picking the right one matters
 The choice follows the user journey rather than taste. Operational views usually want a single page so nothing hides during a shift. Analytical tools lean multi-page as the questions multiply. Whatever the shape, the page is only as clear as the charts inside it, which is where visualization rules come in.
 
 ![Three dashboard layout patterns side by side: a single-page canonical status view like Vercel or GitHub, a multi-page tabbed analytics view like Google Analytics 4, and progressive disclosure drilling from a Linear board into an issue and its comments](/blog/assets/dashboard-ui-design/img-3.webp)
+
+| Pattern | Best for | Example product | Avoid when |
+| --- | --- | --- | --- |
+| Single-page, canonical | A focused tool where the whole story fits one scroll | Vercel status, GitHub status | Content spans many themes or audiences |
+| Multi-page, tabbed | Multi-faceted analytics where users arrive with different questions | Google Analytics 4 | One glance has to show everything at once |
+| Progressive disclosure, drill-down | Investigative work where only some users go deep | Linear | Every user needs all the detail immediately |
 
 ## Data visualization principles
 
@@ -166,6 +186,15 @@ Pie and donut work only for proportion, and only with five slices or fewer. The 
 These rules cover the common cases, but charts reward deeper study. The principles behind [effective dashboard design](/blog/effective-dashboard-design-principles) go further into hierarchy and restraint. When the data belongs in a table rather than a chart, [data grid design in Figma](/blog/figma-tables-data-grid-design) covers the details that matter, particularly for Figma-based design systems where every cell state has to be drawn by hand.
 
 ![The same quarterly revenue data shown three ways: a bar chart for comparing which quarter was best, a line chart for whether revenue is growing, and a pie chart for each quarter's share of the year, with each chart matched to the question it answers](/blog/assets/dashboard-ui-design/img-4.webp)
+
+| Chart type | Question shape | Example use | When NOT to use |
+| --- | --- | --- | --- |
+| Bar | Comparison across categories | Revenue by channel | Showing a continuous trend over time |
+| Line | Trend over time | Active users by week | Comparing unrelated categories |
+| Area | Composition as it shifts | Traffic mix over months | Precise per-series comparison |
+| Scatter | Correlation between two values | Spend against conversions | Tracking a single metric over time |
+| Heatmap | Density and pattern | Activity by hour and day | Reading exact individual values |
+| Pie or donut | Proportion of a whole | Share by segment | More than five slices, or any trend |
 
 ## Navigation patterns in dashboards
 
@@ -229,15 +258,25 @@ These two concerns meet in the middle. A sluggish dashboard is inaccessible in e
 
 The most common dashboard mistakes share a root cause: designing for what is measurable instead of what is actionable. A dashboard that shows everything helps with nothing. Below are five failures that surface again and again in design reviews, each with a quick fix you can apply before the next handoff.
 
-❶ **Data dump.** Cramming every available metric onto one screen because users might want it. The result is that nothing stands out and decisions slow down. The fix is ruthless prioritization: one primary question per dashboard, everything else demoted or pushed into drill-down.
+### ❶ Data dump
 
-❷ **Vanity metrics.** Total signups and total pageviews are numbers that only ever climb and rarely reflect health. Pair every vanity metric with a rate or quality signal beside it, so the figure means something the moment it is read rather than just looking impressive.
+Cramming every available metric onto one screen because users might want it. The result is that nothing stands out and decisions slow down. The fix is ruthless prioritization: one primary question per dashboard, everything else demoted or pushed into drill-down.
 
-❸ **Inconsistent time ranges across charts.** One chart shows the last 7 days, the next shows the last 30, with no visible label to flag the mismatch. People read across them and draw false comparisons. Pin a single date range to the whole dashboard, or label each chart unmistakably.
+### ❷ Vanity metrics
 
-❹ **Misleading visualizations.** A truncated y-axis makes a tiny change look dramatic, and a 3D pie chart distorts every proportion it shows. Lean on position-based encoding like bars and lines, where length maps honestly to value and the eye is not tricked into seeing a trend that is not there.
+Total signups and total pageviews are numbers that only ever climb and rarely reflect health. Pair every vanity metric with a rate or quality signal beside it, so the figure means something the moment it is read rather than just looking impressive.
 
-❺ **No actionable next step.** The dashboard flags that something is wrong but offers nowhere to go and fix it. Good dashboards wire each problem state to a drill-down link or an action button that leads straight to where the fix actually happens.
+### ❸ Inconsistent time ranges across charts
+
+One chart shows the last 7 days, the next shows the last 30, with no visible label to flag the mismatch. People read across them and draw false comparisons. Pin a single date range to the whole dashboard, or label each chart unmistakably.
+
+### ❹ Misleading visualizations
+
+A truncated y-axis makes a tiny change look dramatic, and a 3D pie chart distorts every proportion it shows. Lean on position-based encoding like bars and lines, where length maps honestly to value and the eye is not tricked into seeing a trend that is not there.
+
+### ❺ No actionable next step
+
+The dashboard flags that something is wrong but offers nowhere to go and fix it. Good dashboards wire each problem state to a drill-down link or an action button that leads straight to where the fix actually happens.
 
 These five cover the failures that show up most, but a thorough audit goes further. For the full set of design principles and a longer list of anti-patterns to check your own dashboard against, see our guide to [effective dashboard design principles](/blog/effective-dashboard-design-principles).
 
@@ -290,19 +329,43 @@ Browse the full range of [Setproduct dashboard UI kits](/dashboards) to see what
 
 ### Choose by use case
 
-**SaaS analytics and product metrics.** Tracking activation, retention, and conversion funnels for a product team. These lean on time-series charts and cohort views, so reach for a [SaaS analytics dashboard template](/dashboard-templates/analytics-dashboard) built around those patterns.
+#### SaaS analytics and product metrics
 
-**Internal admin panels.** User management, content moderation, and configuration for back-office tools. Table-heavy layouts with bulk actions and inline editing matter most here, which is the focus of the [admin dashboard template](/dashboard-templates/admin-dashboard).
+Tracking activation, retention, and conversion funnels for a product team. These lean on time-series charts and cohort views, so reach for a [SaaS analytics dashboard template](/dashboard-templates/analytics-dashboard) built around those patterns.
 
-**iOS apps.** Native dashboard patterns that follow Apple HIG conventions, with large titles, segmented controls, and list-based detail views. An [iOS dashboard template](/dashboard-templates/ios-dashboard) gives you those conventions already wired in.
+#### Internal admin panels
 
-**Android apps.** Material Design 3 surfaces for an Android-native context, with the elevation, typography, and motion the platform expects. Start from an [Android dashboard template](/dashboard-templates/android-dashboard) to stay on-spec.
+User management, content moderation, and configuration for back-office tools. Table-heavy layouts with bulk actions and inline editing matter most here, which is the focus of the [admin dashboard template](/dashboard-templates/admin-dashboard).
 
-**Mobile-first responsive dashboards.** For products where mobile is the primary surface, not an afterthought. KPI prioritization, vertical stacking, and sheet or drawer patterns lead the design, all covered in a [mobile dashboard template](/dashboard-templates/mobile-dashboard).
+#### iOS apps
 
-**Fintech and finance.** Heavy data density, real-time updates, and regulatory considerations shape these screens. A [finance dashboard template](/dashboard-templates/finance-dashboard) accounts for that density from the start.
+Native dashboard patterns that follow Apple HIG conventions, with large titles, segmented controls, and list-based detail views. An [iOS dashboard template](/dashboard-templates/ios-dashboard) gives you those conventions already wired in.
 
-**Angular projects.** When the tech stack drives the choice as much as the design, pre-built [Angular dashboard components](/dashboard-templates/angular-dashboard) keep design and implementation aligned from day one.
+#### Android apps
+
+Material Design 3 surfaces for an Android-native context, with the elevation, typography, and motion the platform expects. Start from an [Android dashboard template](/dashboard-templates/android-dashboard) to stay on-spec.
+
+#### Mobile-first responsive dashboards
+
+For products where mobile is the primary surface, not an afterthought. KPI prioritization, vertical stacking, and sheet or drawer patterns lead the design, all covered in a [mobile dashboard template](/dashboard-templates/mobile-dashboard).
+
+#### Fintech and finance
+
+Heavy data density, real-time updates, and regulatory considerations shape these screens. A [finance dashboard template](/dashboard-templates/finance-dashboard) accounts for that density from the start.
+
+#### Angular projects
+
+When the tech stack drives the choice as much as the design, pre-built [Angular dashboard components](/dashboard-templates/angular-dashboard) keep design and implementation aligned from day one.
+
+| Use case | Template | Best for | Stack |
+| --- | --- | --- | --- |
+| SaaS analytics and product metrics | [Analytics dashboard](/dashboard-templates/analytics-dashboard) | Activation, retention, conversion funnels | Figma |
+| Internal admin panels | [Admin dashboard](/dashboard-templates/admin-dashboard) | Table-heavy back-office tools with bulk actions | Figma |
+| iOS apps | [iOS dashboard](/dashboard-templates/ios-dashboard) | Native Apple HIG patterns | iOS |
+| Android apps | [Android dashboard](/dashboard-templates/android-dashboard) | Material Design 3 surfaces | Android |
+| Mobile-first responsive | [Mobile dashboard](/dashboard-templates/mobile-dashboard) | Products where mobile is the primary surface | Figma |
+| Fintech and finance | [Finance dashboard](/dashboard-templates/finance-dashboard) | Dense, real-time, regulated data | Figma |
+| Angular projects | [Angular dashboard](/dashboard-templates/angular-dashboard) | Stack-driven implementation | Angular |
 
 When you need a complete design system foundation rather than a single dashboard template, production-ready libraries carry more weight. Kits like the [Material You UI kit](/templates/material-you), [Material X for Figma](/templates/material-x), and the [Neolex Dashboard kit](/templates/neolex-dashboard) provide thousands of variants and dozens of pre-built templates ready to customize, so a new dashboard inherits a coherent system instead of a one-off screen.
 
