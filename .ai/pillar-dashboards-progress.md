@@ -66,3 +66,61 @@ Callout (одинаковый во всех 10):
   трогали — они в Фазе 4.
 - Pillar `dashboard-ui-design.mdx` не трогали (Фаза 2 закончена).
 - `next.config.js` не трогали (redirects — Фаза 4).
+
+---
+
+# Phase 4 — deprecation completed
+
+Удалили 4 низкокачественных D-поста с постоянными 301-редиректами на pillar.
+Salvage-аудит ([`pillar-d-posts-salvage-check.md`](pillar-d-posts-salvage-check.md))
+показал: уникального контента, изображений или ценного frontmatter ни в одном
+из 4 постов нет — все удалены as-is, в pillar ничего не переносили.
+
+## Status
+- [x] Step 1 — salvage-check (4 поста, читали целиком) — нет salvage
+- [x] Step 2 — поиск висячих ссылок — найдено 4 входящих
+- [x] Step 4.2 — правка ссылок — commit `4d51e06`
+- [x] Step 4.3 — 301-редиректы в `next.config.js` — commit `5305644`
+- [x] Step 4.4 — `git rm` 4 MDX-файлов — commit `43a4e63`
+- [x] Step 4.5 — lint + build + sitemap verify — commit `3b984c0`
+
+## Deprecated posts and 301 targets
+
+| Удалённый D-пост | 301 → |
+|---|---|
+| dashboard-design-best-practices-top-dashboard-ui-design-tips | /blog/dashboard-ui-design |
+| why-are-dashboards-important | /blog/dashboard-ui-design |
+| benefits-of-dashboards | /blog/dashboard-ui-design |
+| marketing-dashboard-examples-templates | /blog/marketing-dashboard-ui-design-guide |
+
+Редиректы добавлены в `redirects()` в `next.config.js` после существующих
+`.html`-правил, все с `permanent: true` (Next отдаёт 308, Google трактует
+как 301).
+
+## Inbound links repaired (Step 4.2)
+
+| Файл | Тип | Было → стало |
+|---|---|---|
+| marketing-dashboard-ui-design-guide.mdx:51 | body-ссылка | marketing-dashboard-examples-templates → /blog/dashboard-ui-design (устранён self-redirect loop) |
+| how-to-study-saas-dashboard-in-the-ai-era.mdx:261 | body-ссылка | dashboard-design-best-practices-... → /blog/dashboard-ui-design |
+| depth-in-ios-design.mdx | relatedSlugs | удалена запись dashboard-design-best-practices-... |
+| liquid-glass-design-explained-a-practical-guide.mdx | relatedSlugs | удалена запись dashboard-design-best-practices-... |
+
+В `data/*`, `pages/sitemap.xml.ts`, `components/` ссылок на D-слаги не было.
+
+## Verification (Step 4.5)
+- `npm run lint` (`tsc --noEmit`) — 0 ошибок.
+- `npm run build` — 246 страниц, 0 ошибок (pre-existing warnings про размер
+  data для `/search` и `/blog/filter-ui-design` не связаны с правками).
+- sitemap: D-слаги отсутствуют (NONE); pillar `/blog/dashboard-ui-design`
+  присутствует (1); `/blog/marketing-dashboard-ui-design-guide` присутствует (1).
+- Редирект `/blog/benefits-of-dashboards` → `/blog/dashboard-ui-design`
+  отдаёт 308 (permanent).
+
+## Notes
+- Картинки удалённых постов в `public/blog/assets/<slug>/` оставлены по
+  инструкции (не удалялись).
+- `data/blog-categories.ts` не трогали.
+- B/C cluster-посты по контенту не перерабатывали — только точечная правка
+  двух body-ссылок на удаляемые страницы (с явного «proceed» автора).
+- git push не делали.
