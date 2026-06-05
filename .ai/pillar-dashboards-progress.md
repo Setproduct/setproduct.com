@@ -127,9 +127,9 @@ Salvage-аудит ([`pillar-d-posts-salvage-check.md`](pillar-d-posts-salvage-c
 
 ---
 
-## Phase 5 — Launch (in progress)
+## Phase 5 — Launch (superseded by "Launched" below)
 
-**Status:** ready to push, awaiting manual Sync Changes
+**Status:** pushed to origin/main on 2026-06-05 (see "Phase 5 — Launched")
 **Total commits in launch batch:** 9 (8 previous + this docs commit)
 
 ### Manual steps remaining (user)
@@ -144,3 +144,12 @@ Salvage-аудит ([`pillar-d-posts-salvage-check.md`](pillar-d-posts-salvage-c
 - Day 14: First CTR data check for cluster
 - Day 21: 301 redirect impression transfer check
 - Day 30: First success criteria evaluation
+
+---
+
+## Phase 5 — Launched
+
+**Launch date:** 2026-06-05
+**Final commits in project:** 11
+**Phase 3B (C-post content rescue):** deferred — will be prioritized after 21-day post-launch data
+**Next strategic project:** Liquid glass cluster (to be planned separately)
