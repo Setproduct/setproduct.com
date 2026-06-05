@@ -19,6 +19,27 @@ const nextConfig = {
     return [
       { source: "/index.html", destination: "/", permanent: true },
       { source: "/:path+.html", destination: "/:path+", permanent: true },
+      // Deprecated dashboard D-posts merged into the pillar (Phase 4).
+      {
+        source: "/blog/dashboard-design-best-practices-top-dashboard-ui-design-tips",
+        destination: "/blog/dashboard-ui-design",
+        permanent: true,
+      },
+      {
+        source: "/blog/why-are-dashboards-important",
+        destination: "/blog/dashboard-ui-design",
+        permanent: true,
+      },
+      {
+        source: "/blog/benefits-of-dashboards",
+        destination: "/blog/dashboard-ui-design",
+        permanent: true,
+      },
+      {
+        source: "/blog/marketing-dashboard-examples-templates",
+        destination: "/blog/marketing-dashboard-ui-design-guide",
+        permanent: true,
+      },
     ];
   },
   async headers() {
