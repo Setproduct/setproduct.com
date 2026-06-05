@@ -124,3 +124,23 @@ Salvage-аудит ([`pillar-d-posts-salvage-check.md`](pillar-d-posts-salvage-c
 - B/C cluster-посты по контенту не перерабатывали — только точечная правка
   двух body-ссылок на удаляемые страницы (с явного «proceed» автора).
 - git push не делали.
+
+---
+
+## Phase 5 — Launch (in progress)
+
+**Status:** ready to push, awaiting manual Sync Changes
+**Total commits in launch batch:** 9 (8 previous + this docs commit)
+
+### Manual steps remaining (user)
+1. Source Control → Sync Changes
+2. Verify Vercel deploy success
+3. Production incognito checks (pillar URL, redirect URL, cluster callout)
+4. GSC URL Inspection: submit pillar + 2-3 key cluster posts
+5. Update baseline file post-launch with actual launch timestamp
+
+### Monitoring plan (post-launch)
+- Day 7: First reindexing check via GSC URL Inspection
+- Day 14: First CTR data check for cluster
+- Day 21: 301 redirect impression transfer check
+- Day 30: First success criteria evaluation
