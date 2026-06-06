@@ -51,6 +51,24 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Image captions inside MDX posts.
+ * IMPORTANT: this Webflow theme sets body { font-size: .0694445vw } (~1px at
+ * 1440) and sizes all rich-text via `font-size: 18em` (~18px). So font-size
+ * here MUST use the same `em` system (1em ~= 1px), NOT rem/em-of-parent:
+ * `15em` ~= 15px and stays consistent with the working body text. Scoped under
+ * .rich-text-18 with !important to beat the base `.rich-text-18 p` rule.
+ */
+.rich-text-18 p.blog-figcaption {
+  text-align: center !important;
+  font-style: italic !important;
+  color: #6b7280 !important;
+  font-size: 15em !important;
+  line-height: 150% !important;
+  margin-top: 0.8em !important;
+  margin-bottom: 1.8em !important;
+}
+
+/*
  * Tailwind Preflight removes list markers; MDX renders real <ul>/<ol>.
  * Restore visible bullets/numbers and proper indentation for rich-text content.
  */
