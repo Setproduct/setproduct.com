@@ -51,6 +51,49 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Reusable image text-wrap (float) for MDX posts.
+ * Opt-in via markdown title marker: ![alt](/path "float").
+ * The MDXImage component renders a <span class="blog-img-float ...">, which
+ * floats out of its wrapping <p> so the following paragraphs wrap around it.
+ * Place the "float" image directly BEFORE the paragraph it should wrap into.
+ */
+.blog-img-float {
+  display: block;
+}
+
+.blog-img-float--right {
+  float: right;
+  width: 40%;
+  margin: 0.25rem 0 1.25rem 1.75rem;
+}
+
+.blog-img-float--left {
+  float: left;
+  width: 40%;
+  margin: 0.25rem 1.75rem 1.25rem 0;
+}
+
+/*
+ * Only h2 (section starts) clear floats. h3 subsections intentionally do NOT
+ * clear, so one tall portrait image can wrap across several short h3
+ * subsections within a single H2 section instead of forcing each subheading
+ * to jump below the image (which left big empty gaps on the left).
+ */
+.rich-text-18 h2 {
+  clear: both;
+}
+
+/* Mobile: drop the float, image spans the full column width. */
+@media (max-width: 767px) {
+  .blog-img-float--right,
+  .blog-img-float--left {
+    float: none;
+    width: 100%;
+    margin: 1.25rem 0;
+  }
+}
+
+/*
  * Image captions inside MDX posts.
  * IMPORTANT: this Webflow theme sets body { font-size: .0694445vw } (~1px at
  * 1440) and sizes all rich-text via `font-size: 18em` (~18px). So font-size
@@ -305,6 +348,27 @@ h1[id], h2[id], h3[id], h4[id] {
   margin: 0;
   border: 0;
   border-radius: 0;
+}
+
+/*
+ * Mobile: on narrow screens the three text columns get crushed and become
+ * unreadable. Let the wrapper scroll horizontally and give the table a
+ * min-width so columns keep a comfortable size instead of squeezing.
+ * overflow-x is paired with overflow-y: hidden so the rounded corners still
+ * clip cleanly. Only applies inside the opt-in wrapper, so other tables and
+ * the desktop full-width behaviour above are untouched.
+ */
+@media (max-width: 767px) {
+  .rich-text-18 .blog-fit-table {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rich-text-18 .blog-fit-table table {
+    width: auto;
+    min-width: 600px;
+  }
 }
 
 @media (min-width: 991px) {
