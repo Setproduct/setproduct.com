@@ -158,7 +158,7 @@ If your options do not fit on one row and only one view is ever visible, tabs ar
 
 ### **Hover state**
 
-![Interactive tabs in action. Components included in Figma React UI kit](/blog/assets/tabs-ui-design/img-6.webp)
+![Interactive tabs in action. Components included in Figma React UI kit](/blog/assets/tabs-ui-design/img-6.webp "float")
 
 Interactive tabs in action. Components included in [Figma React UI kit](https://react.setproduct.com/components/tabs)
 
@@ -184,7 +184,7 @@ Interactive tabs in action. Components included in [Figma React UI kit](https://
 
 ### **Focus state**
 
-![](/blog/assets/tabs-ui-design/img-7.webp)
+![](/blog/assets/tabs-ui-design/img-7.webp "float-left")
 
 [Segmented controls](https://www.figma.com/design/OEmjKyp62DPePMl9yIDuR5/Figma-React-UI-kit-\(Preview\)?node-id=8522-0&t=HHWIwHcnbjFvzcrs-1) in action. Outline theme included in Figma React UI kit
 
@@ -366,16 +366,16 @@ Learn how to design the ideal dashboard navigation by applying [Tabs nested into
 
 Run through this before you call a tab component done. Most tab bugs are not visual, they show up in keyboard, focus, and what happens the moment someone switches.
 
-- [ ] Exactly one tab is active on load, and its state is obvious at a glance.
-- [ ] Arrow keys move between tabs; Home and End jump to first and last.
-- [ ] The active tab carries `aria-selected="true"` and panels are tied to tabs with `aria-controls`.
-- [ ] The focus ring is visible and meets WCAG 3:1 non-text contrast, never relying on color alone.
-- [ ] Overflow is handled: tabs scroll with a peek of the next item, they do not silently wrap into a second row.
-- [ ] No ghost tabs: every tab points to real content, nothing dead-ends.
-- [ ] Touch targets are at least 48×48px so thumbs do not miss on mobile.
-- [ ] Content height stays stable on switch, so the page does not jump as panels swap.
-- [ ] The indicator and label weight both signal the active tab, so it reads without color vision.
-- [ ] On a fresh reload, the right tab is restored when context demands it (a multi-step form, a deep link).
+- ✅ Exactly one tab is active on load, and its state is obvious at a glance.
+- ✅ Arrow keys move between tabs; Home and End jump to first and last.
+- ✅ The active tab carries `aria-selected="true"` and panels are tied to tabs with `aria-controls`.
+- ✅ The focus ring is visible and meets WCAG 3:1 non-text contrast, never relying on color alone.
+- ✅ Overflow is handled: tabs scroll with a peek of the next item, they do not silently wrap into a second row.
+- ✅ No ghost tabs: every tab points to real content, nothing dead-ends.
+- ✅ Touch targets are at least 48×48px so thumbs do not miss on mobile.
+- ✅ Content height stays stable on switch, so the page does not jump as panels swap.
+- ✅ The indicator and label weight both signal the active tab, so it reads without color vision.
+- ✅ On a fresh reload, the right tab is restored when context demands it (a multi-step form, a deep link).
 
 ## UX and usability tips
 
