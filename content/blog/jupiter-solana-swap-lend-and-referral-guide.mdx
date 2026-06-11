@@ -25,11 +25,12 @@ relatedSlugs:
   - pay-for-claude-pro-with-usdt
   - state-of-crypto-2025
 inlineCta:
-  title: "Try Jupiter on Solana"
+  title: "Swap on Solana at the best route"
   description: >-
-    Best rates, lending yields, and a rare 3-tier referral program. Sign up to
-    support this blog.
-  buttonText: "Open Jupiter"
+    Jupiter scans every major liquidity source so you rarely overpay, plus
+    stablecoin yield and a rare 3-tier referral. The link is mine, the rates are
+    the same for you.
+  buttonText: "Start swapping"
   buttonLink: "https://jup.ag/?ref=2o1dt5hloei8"
 ---
 
@@ -49,6 +50,7 @@ Jupiter is the router most Solana users hit without realizing it. When you swap 
 
 ## What Jupiter actually does on Solana
 
+![Jupiter splitting a 1,000 USDC order across Raydium, Orca, Lifinity, Phoenix, and Meteora into a single transaction for lower slippage](/blog/assets/jupiter-solana-swap-lend-and-referral-guide/route-splitting.webp "float-right")
 A DEX aggregator is a tool that checks many decentralized exchanges at once and routes your trade through whichever combination gives the best price. Instead of manually comparing pools on Raydium, Orca, and a dozen smaller venues, you get one quote that already accounts for all of them.
 
 That is the whole pitch. On a single DEX you take whatever price that one pool offers. Jupiter splits a large order across several pools when that lowers your slippage, then settles it in one transaction. For anything above a small trade, the price difference is real money.
@@ -88,6 +90,8 @@ Slippage is the gap between the price you saw and the price you actually got, be
 For large, liquid pairs like USDC to SOL, a low setting around 0.5% is usually fine. For thin, volatile tokens, you may need to raise it or your transaction keeps bouncing. Jupiter has an auto mode that estimates a sane value per trade, and for most people that is the right default.
 
 One note on gas. Solana fees are tiny, but during heavy congestion you may want to add a small priority fee so your transaction lands faster. Jupiter exposes this in settings, and the cost is still pennies.
+
+![The four steps of a Jupiter swap on Solana, connect a wallet, pick tokens, review the quote, then confirm and receive, settling in one to two seconds](/blog/assets/jupiter-solana-swap-lend-and-referral-guide/how-to-swap-steps.webp)
 
 ## Best rates and fees compared
 
@@ -129,6 +133,8 @@ Compared to centralized alternatives, the yield is often competitive, and you ke
 
 ☞ My rule: only lend what you can afford to leave untouched for a while, and never deposit money you need for rent next week.
 
+![How Jupiter Lend works, you deposit stablecoins into a pool, borrowers take overcollateralized loans and pay interest, and yield compounds back to you, with smart contract and depeg risk noted](/blog/assets/jupiter-solana-swap-lend-and-referral-guide/how-lending-works.webp)
+
 ## Connecting Jupiter with real-world spending
 
 Swapping and earning is satisfying, but at some point you want to spend. This is the bridge that turns on-chain balances into things you actually pay for.
@@ -141,6 +147,7 @@ The mental model is a short chain. Jupiter handles the cheap conversion, the car
 
 ## The Jupiter referral program and how 30/3/2 works
 
+![The Jupiter referral structure, you earn 30% from people you invite directly, 3% from their invites, and 2% from the level after that, paid in JupUSD](/blog/assets/jupiter-solana-swap-lend-and-referral-guide/referral-tiers.webp "float-right")
 Here is the part that turns Jupiter from a tool into a small income stream. The referral program pays you across three levels, and multi-tier structures like this are genuinely rare in DeFi.
 
 The breakdown:
@@ -202,6 +209,8 @@ Self-custody means you are the bank, which is freedom and responsibility in the 
 → **Self-custody basics.** Your seed phrase is the master key. Anyone who has it owns your funds, and no support team can reverse a theft. Write it on paper, store it offline, and consider a hardware wallet once your balances grow.
 
 ☛ The one habit that saves people: before approving any transaction, read what it is actually asking permission to do. If a swap of five dollars asks for unlimited spending access, reject it.
+
+![Four safety rules for using Jupiter, verify the URL is jup.ag, read every signature before approving, watch for MEV on large swaps, and protect your seed phrase offline](/blog/assets/jupiter-solana-swap-lend-and-referral-guide/safety-guide.webp)
 
 ## Frequently asked questions
 
