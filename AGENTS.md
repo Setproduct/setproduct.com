@@ -26,8 +26,17 @@
 ### MDX-блог
 - При создании новой статьи всегда заполняй полный frontmatter
 - Картинки кладутся в /public/blog/[slug-статьи]/
-- После добавления картинок предупреди о необходимости 
+- После добавления картинок предупреди о необходимости
   запустить check_images.js
+
+### File editing rules for AI agents
+For any file > 500 lines in `content/blog/`:
+- NEVER use write_to_file for content edits
+- Use apply_diff or search_and_replace for targeted changes
+- Break multi-edit tasks into atomic steps with checkpoints
+- Report after each step, wait for explicit user OK before continuing
+- If apply_diff fails on a section, STOP and ask — do not fall
+  back to write_to_file
 
 ### Типографика заголовков и текста: только sentence case
 Категорическое правило: НИКОГДА не использовать Title Case (где 
