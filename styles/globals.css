@@ -83,6 +83,17 @@ h1[id], h2[id], h3[id], h4[id] {
   clear: both;
 }
 
+/*
+ * Notifications post: every h3 subsection carries its OWN float image, so each
+ * heading must start on a clean line below the previous image. Without this,
+ * a short paragraph lets the next component's heading squeeze into the narrow
+ * column beside a still-floating image. Scoped by slug so it does not affect
+ * posts (e.g. tabs) where one image intentionally wraps across several h3s.
+ */
+.rich-text-18[data-post="notifications-ui-design"] h3 {
+  clear: both;
+}
+
 /* Mobile: drop the float, image spans the full column width. */
 @media (max-width: 767px) {
   .blog-img-float--right,
