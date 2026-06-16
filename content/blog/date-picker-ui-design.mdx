@@ -1,8 +1,8 @@
 ---
 title: Date picker UI design, from anatomy to accessibility
 description: >-
-  Design date pickers people trust: anatomy, 7 types, range selection, states,
-  accessibility, i18n, and the anti-patterns that quietly break dates.
+  Date picker UI design from anatomy to accessibility — when a calendar popover
+  beats a plain input, every type, states, range patterns, mobile UX, and i18n.
 slug: date-picker-ui-design
 date: '2026-06-15'
 author: Roman Kamushken
@@ -55,6 +55,8 @@ I have shipped date pickers inside dashboard UI kits for years, and the failure 
 
 ## What a date picker is (and is not)
 
+In UI design, a date picker is a form control that combines a text input with a calendar popover, allowing users to select a single date or a date range. It's used in booking flows, analytics filters, scheduling tools, and form fields where seeing surrounding days helps the choice.
+
 A date picker is a focused selection tool. Its whole job is to capture one date or a range and hand that value back to a form, a filter, or a query. It opens, you choose, it closes. The calendar grid is a means to an end, not the destination.
 
 This is where teams get confused, because three different components all show a grid of days and look superficially alike. They solve different problems.
@@ -105,11 +107,11 @@ A date picker looks simple until you list its parts. Each one carries a job, and
 
 • **Footer actions.** Apply, Cancel, and Clear. Decide deliberately whether selection commits instantly or waits for an explicit Apply. Ranges usually want an explicit commit so a half-finished selection never leaks into the query.
 
-![Date picker anatomy dissected into five horizontal strata, the trigger field, popover header, weekday axis, day grid, and footer actions](/blog/assets/date-picker-ui-design/img-1.webp)
+![Date picker anatomy dissected into five horizontal strata, the trigger field, popover header, weekday axis, day grid, and footer actions](/blog/assets/date-picker-ui-design/date-picker-anatomy-strata.webp)
 
 ## Types of date pickers
 
-![Bento grid of seven date picker types, single, range, date and time, inline, segmented, native mobile, and wheel](/blog/assets/date-picker-ui-design/img-2.webp "float-right")
+![Bento grid of seven date picker types, single, range, date and time, inline, segmented, native mobile, and wheel](/blog/assets/date-picker-ui-design/date-picker-types-bento.webp "float-right")
 
 There is no single correct date picker. There is the one that fits the task. Picking the wrong type is how you end up with a booking flow that cannot span two months, or a birthday field that makes someone tap a back arrow forty times. Here are the seven that cover almost every product need.
 
@@ -145,7 +147,7 @@ Real products mix these freely. Notion uses a popover single picker for a date p
 
 ## States and interactions
 
-![Exploded day cell showing seven stacked layers, base, glyph, hover, focus, today, selected, and in-range](/blog/assets/date-picker-ui-design/img-3.webp "float-right")
+![Exploded day cell showing seven stacked layers, base, glyph, hover, focus, today, selected, and in-range](/blog/assets/date-picker-ui-design/date-picker-cell-states.webp "float-right")
 
 The day cell is where a date picker earns or loses trust, because it has to communicate a lot in a tiny square. A cell that does not clearly say "you can pick me," "you already picked me," or "you cannot have me" leaves people guessing, and guessing on a date is how bookings get cancelled.
 
@@ -181,7 +183,7 @@ Start with the canonical reference. The [W3C ARIA Authoring Practices date picke
 
 **Touch target size.** Day cells are small by nature, which makes them a target-size risk. The [WCAG 2.2 target size minimum, success criterion 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), sets a floor of 24 by 24 CSS pixels, and platform guidance such as Material Design and Apple's HIG pushes toward 44 to 48. On mobile especially, give each cell room so people are not tapping the day next to the one they meant. When the native control is an option, the platform handles all of this for you, which is one more argument for `<input type="date">` on phones, [documented on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date).
 
-![Four pillars of date picker accessibility, keyboard navigation, focus management, screen reader support, and touch target size](/blog/assets/date-picker-ui-design/img-4.webp)
+![Four pillars of date picker accessibility, keyboard navigation, focus management, screen reader support, and touch target size](/blog/assets/date-picker-ui-design/date-picker-accessibility-pillars.webp)
 
 ## Internationalization
 
@@ -197,7 +199,7 @@ Dates are deceptively local. A picker that feels obvious to a designer in one co
 
 **A note on timezones.** This is where date pickers quietly corrupt data. A user in Tokyo picking "March 14" and a server interpreting that midnight as UTC can land the value on March 13. The rule of thumb: store an unambiguous value, typically UTC or a date-only string with no implied time, and convert for display at the edges. Decide explicitly whether the date is anchored to the user's timezone, the event's timezone, or no timezone at all, because "it depends" is how off-by-one-day bugs are born.
 
-![Date picker internationalization, a left-to-right grid beside its mirrored right-to-left layout with swapped navigation chevrons](/blog/assets/date-picker-ui-design/img-5.webp)
+![Date picker internationalization, a left-to-right grid beside its mirrored right-to-left layout with swapped navigation chevrons](/blog/assets/date-picker-ui-design/date-picker-internationalization-rtl.webp)
 
 ## Mobile vs desktop UX
 
@@ -224,7 +226,7 @@ Two desktop-specific rules earn their keep. First, for ranges, render two months
 
 ## Common anti-patterns
 
-![Five common date picker anti-patterns shown as wrong versus right corrections](/blog/assets/date-picker-ui-design/img-6.webp "float-right")
+![Five common date picker anti-patterns shown as wrong versus right corrections](/blog/assets/date-picker-ui-design/date-picker-anti-patterns.webp "float-right")
 
 Most date pickers fail in the same predictable ways. After auditing dozens of them across dashboards and booking flows, these are the mistakes that show up again and again. Each one is fixable, and each one quietly costs you completed tasks.
 
@@ -284,7 +286,7 @@ When you are staring at a field and unsure which pattern it deserves, four quest
 
 Answer those four and the right component usually picks itself. The grid is a powerful tool, but it is not the only one, and reaching for it reflexively is how simple date fields turn into four-click chores.
 
-![Date picker decision flowchart, single or range, near or far from today, mobile or desktop, presets or grid](/blog/assets/date-picker-ui-design/img-7.webp)
+![Date picker decision flowchart, single or range, near or far from today, mobile or desktop, presets or grid](/blog/assets/date-picker-ui-design/date-picker-decision-flowchart.webp)
 
 ## Frequently asked questions
 
@@ -302,7 +304,7 @@ Build to the [W3C ARIA Authoring Practices date picker pattern](https://www.w3.o
 
 ### ❹ What is the best way to handle date ranges?
 
-Two clicks in a single popover that stays open: first click sets the start, hover previews the span, second click sets the end. On desktop, show two months side by side so a range crossing a month boundary needs no navigation. Add a preset column for common spans, and guard against an end date earlier than the start.
+Two clicks in a single popover that stays open: first click sets the start, hover previews the span, second click sets the end. On desktop, show two months side by side so a range crossing a month boundary needs no navigation. Add a preset column for common spans, and guard against an end date earlier than the start. This pattern is especially common in analytics tools — see our [dashboard UI design reference](/blog/dashboard-ui-design) for how date pickers fit into the broader dashboard component system.
 
 ### ❺ Should I use the native date picker or build my own?
 
