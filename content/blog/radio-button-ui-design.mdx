@@ -56,7 +56,7 @@ I have shipped radio groups inside dashboard and onboarding UI kits for years, a
 
 ## What a radio button is (and is not)
 
-![Radio button UI specimen card with a large circular control and inner dot, numbered callouts for the outer ring, inner dot, ripple, label area, hit target, and focus halo, and a bottom row comparing it with a checkbox, a toggle, and a dropdown](/blog/assets/radio-button-ui-design/img-1.webp "float-left")
+![Radio button UI specimen card with a large circular control and inner dot, numbered callouts for the outer ring, inner dot, ripple, label area, hit target, and focus halo, and a bottom row comparing it with a checkbox, a toggle, and a dropdown](/blog/assets/radio-button-ui-design/radio-button-anatomy-specimen.webp "float-left")
 
 In UI design, a radio button is a form control that lets users select a single option from a set of two or more mutually exclusive choices. Selecting one option automatically deselects any other in the same group. The name comes from old car radios, where pushing one station button popped the others out.
 
@@ -102,11 +102,11 @@ A radio button looks like a single circle until you list its parts, and the most
 
 • **The spacing rhythm.** The vertical gap between options. Too tight and the group reads as one block and invites mis-taps; too loose and it stops reading as a single question. Consistent spacing is what tells the eye these items belong together.
 
-![Annotated radio group anatomy schematic of a billing cycle card, with measurements for radio size, inner dot, ring stroke, row gap, card radius, label and helper text sizes, the 44px touch target, and a token swatch row for the selected and default colors](/blog/assets/radio-button-ui-design/img-2.webp)
+![Annotated radio group anatomy schematic of a billing cycle card, with measurements for radio size, inner dot, ring stroke, row gap, card radius, label and helper text sizes, the 44px touch target, and a token swatch row for the selected and default colors](/blog/assets/radio-button-ui-design/radio-group-anatomy-measurements.webp)
 
 ## The states of a radio button
 
-![Timeline of a single radio button coming alive across 480 milliseconds, showing seven labeled frames from approach and hover to focus, press, selection landing, ripple, and the settled selected state, with millisecond markers and motion timings down the left edge](/blog/assets/radio-button-ui-design/img-3.webp "float-right")
+![Timeline of a single radio button coming alive across 480 milliseconds, showing seven labeled frames from approach and hover to focus, press, selection landing, ripple, and the settled selected state, with millisecond markers and motion timings down the left edge](/blog/assets/radio-button-ui-design/radio-button-states-timeline.webp "float-right")
 
 A radio button carries a small state machine, and the gap between a cheap control and a polished one lives entirely in how those states are drawn. Design all of them up front, because the ones you skip are the ones a real user lands on first. Here are the seven that matter.
 
@@ -140,7 +140,7 @@ The state when a required group was left unanswered on submit. The whole group, 
 
 ## Types and variants
 
-![Bento layout comparing the five radio button variants side by side, a vertical standard list, a card-based plan selector with title price and description, an iOS-style segmented control, a row of color and image swatches, and a one-to-five rating scale, each showing its selected state](/blog/assets/radio-button-ui-design/img-4.webp "float-right")
+![Bento layout comparing the five radio button variants side by side, a vertical standard list, a card-based plan selector with title price and description, an iOS-style segmented control, a row of color and image swatches, and a one-to-five rating scale, each showing its selected state](/blog/assets/radio-button-ui-design/radio-button-variants-comparison.webp "float-right")
 
 The plain circle-and-label list is only one way to ask a single-choice question. The underlying behavior stays identical, one selection out of many, but the presentation changes the feel and the conversion. Here are the five variants that cover almost every product need.
 
@@ -209,7 +209,7 @@ The visible circle is often 20 pixels, which is far below a safe touch target. E
 
 ## Theming and styling
 
-![A single radio button shown across light and dark themes, with the brand-colored selected dot, a default unselected ring, and a visible focus-visible ring, alongside a CSS panel revealing the appearance none reset, the border-drawn ring, and the pseudo-element dot that scales up on the checked state](/blog/assets/radio-button-ui-design/img-5.webp "float-left")
+![A single radio button shown across light and dark themes, with the brand-colored selected dot, a default unselected ring, and a visible focus-visible ring, alongside a CSS panel revealing the appearance none reset, the border-drawn ring, and the pseudo-element dot that scales up on the checked state](/blog/assets/radio-button-ui-design/radio-button-theming-light-dark.webp "float-left")
 
 Once the structure is sound, the styling is where a radio group either matches your brand or looks like a default browser leftover. The trick is to restyle the control without throwing away the native behavior you just secured.
 
@@ -243,7 +243,7 @@ Theory gets you a clean control; seeing where it lands in real products tells yo
 
 If you want to study these patterns as live, inspectable components rather than static screenshots, browsing a [component gallery of real radio buttons](https://app.setproduct.com/components/radio) is faster than rebuilding each one to see how its states behave.
 
-![A grid of five real-world radio patterns from SaaS and commerce, a card-based pricing tier selector with a highlighted plan, a checkout shipping list showing standard express and overnight with prices, an onboarding segmentation question with large tappable cards, a settings panel with mutually exclusive layout modes, and a survey rating scale with labeled endpoints](/blog/assets/radio-button-ui-design/img-6.webp)
+![A grid of five real-world radio patterns from SaaS and commerce, a card-based pricing tier selector with a highlighted plan, a checkout shipping list showing standard express and overnight with prices, an onboarding segmentation question with large tappable cards, a settings panel with mutually exclusive layout modes, and a survey rating scale with labeled endpoints](/blog/assets/radio-button-ui-design/radio-button-real-world-patterns.webp)
 
 ## Anti-patterns to avoid
 
@@ -267,7 +267,7 @@ Most radio buttons fail in the same predictable ways. After auditing dozens of f
 
 ☞ **Horizontal lists that wrap badly.** Laying radios in a row saves vertical space until the labels wrap on a narrow screen and the alignment falls apart. Default to a vertical stack, which scans cleanly and survives every viewport, and reserve horizontal layouts for short, fixed labels.
 
-![A side-by-side comparison of common radio button anti-patterns and their fixes, a binary on-off pair corrected to a toggle, a clickable circle with a dead label corrected to a full selectable row, a stripped focus ring corrected with a focus-visible outline, an overlong list corrected to a dropdown, and a wrapping horizontal row corrected to a clean vertical stack](/blog/assets/radio-button-ui-design/img-7.webp)
+![A side-by-side comparison of common radio button anti-patterns and their fixes, a binary on-off pair corrected to a toggle, a clickable circle with a dead label corrected to a full selectable row, a stripped focus ring corrected with a focus-visible outline, an overlong list corrected to a dropdown, and a wrapping horizontal row corrected to a clean vertical stack](/blog/assets/radio-button-ui-design/radio-button-anti-patterns-fixes.webp)
 
 ## Checklist before you ship
 
@@ -335,7 +335,7 @@ A card-based radio button presents each option as a full clickable card, often w
 
 ## Closing thought
 
-![A celebratory You are ready card summarizing the radio button essentials as a completed checklist, six green selected radios reading pick the right control, always set a smart default, design every state including focus, make the label clickable with a 44px hit area, respect keyboard navigation, and treat anti-patterns as hard rules, with a six of six principles applied tag at the bottom](/blog/assets/radio-button-ui-design/img-8.webp "float-right")
+![A celebratory You are ready card summarizing the radio button essentials as a completed checklist, six green selected radios reading pick the right control, always set a smart default, design every state including focus, make the label clickable with a 44px hit area, respect keyboard navigation, and treat anti-patterns as hard rules, with a six of six principles applied tag at the bottom](/blog/assets/radio-button-ui-design/radio-button-essentials-checklist.webp "float-right")
 
 The radio button is one of the oldest controls on the web, and it is still one of the easiest to get subtly wrong. The failure is rarely the circle and the dot. It is the missing group structure, the suppressed focus ring, the card selector that looks finished but locks out a keyboard, the binary choice that should have been a toggle. None of those show up in a static mockup, which is exactly why they survive to production.
 
