@@ -10,6 +10,14 @@ export function buildBlogPostingJsonLd(
     ? frontmatter.coverImage
     : `${SITE_URL}${frontmatter.coverImage ?? ""}`;
 
+  // Normalise lastUpdated ("YYYY-MM" or "YYYY-MM-DD") to a full ISO date
+  // for dateModified. When only the month is given, default to its first day.
+  const dateModified = frontmatter.lastUpdated
+    ? frontmatter.lastUpdated.length === 7
+      ? `${frontmatter.lastUpdated}-01`
+      : frontmatter.lastUpdated
+    : frontmatter.date;
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -17,7 +25,7 @@ export function buildBlogPostingJsonLd(
     description: frontmatter.description,
     image: absoluteImage,
     datePublished: frontmatter.date,
-    dateModified: frontmatter.date,
+    dateModified,
     author: {
       "@type": "Person",
       name: frontmatter.author,

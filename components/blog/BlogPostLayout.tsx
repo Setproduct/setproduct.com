@@ -65,6 +65,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
           date={frontmatter.date}
           readingTimeText={readingTimeText}
           category={frontmatter.category}
+          lastUpdated={frontmatter.lastUpdated}
         />
         <div className="section">
           <div className="section-padding bottom-112">
