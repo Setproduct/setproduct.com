@@ -5,7 +5,6 @@ import Image from "next/image";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
-import CtaSubscribe from "../sections/CtaSubscribe";
 import ArrowIcon from "../sections/ArrowIcon";
 import { TwitterIcon, LinkedInIcon, GlobeIcon } from "../layout/FooterSocialIcons";
 import { buildPersonJsonLd } from "../../lib/blog/schema";
@@ -203,7 +202,6 @@ export default function AuthorPage({ author, authorPosts, blogPosts = [] }: Prop
             </div>
           </div>
         </div>
-        <CtaSubscribe />
       </main>
       <SiteFooter />
       <ScrollUpButton />
