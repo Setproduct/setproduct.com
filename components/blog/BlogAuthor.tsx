@@ -28,7 +28,11 @@ export default function BlogAuthor({ authorSlug }: BlogAuthorProps) {
 
   if (registered) {
     return (
-      <Link href={`/authors/${author.slug}`} className="blogpost_author-wr w-inline-block">
+      <Link
+        href={`/authors/${author.slug}`}
+        className="blogpost_author-wr w-inline-block"
+        style={{ display: "inline-flex", width: "fit-content" }}
+      >
         {inner}
       </Link>
     );
