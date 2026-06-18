@@ -38,6 +38,7 @@ export type BlogPostPreview = {
   image: string;
   thumbImage: string;
   category: string;
+  author?: string;
 };
 
 export type FreebieItem = {
