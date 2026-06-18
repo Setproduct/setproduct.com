@@ -51,6 +51,20 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Brand-coloured links in the blog body.
+ * Webflow already paints .w-richtext links in --primary (#7c4dff); this rule
+ * only adds the hover treatment: a dashed underline instead of the default
+ * solid one. Scoped under .rich-text-18 so navbar/footer/card links are
+ * untouched. Applies to every post automatically (single source of truth).
+ */
+.rich-text-18 a:hover {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/*
  * Reusable image text-wrap (float) for MDX posts.
  * Opt-in via markdown title marker: ![alt](/path "float").
  * The MDXImage component renders a <span class="blog-img-float ...">, which
