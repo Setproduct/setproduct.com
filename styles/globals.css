@@ -39,6 +39,20 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Grid overflow guard for the blog post body.
+ * The layout grid is `grid-template-columns: 250em 1fr`. A `1fr` track defaults
+ * to `min-width: auto`, so it refuses to shrink below the intrinsic width of its
+ * content. A wide GFM table (5+ columns) or a long code block then stretches the
+ * track past the viewport, which kills text wrapping and pushes the whole column
+ * to the right. `min-width: 0` lets the track shrink so the table/pre
+ * `overflow-x: auto` actually engages instead of blowing out the layout.
+ * Global on purpose: it only ever helps, never hurts any post.
+ */
+.blogpost_content-column2 {
+  min-width: 0;
+}
+
+/*
  * Webflow's .rich-text-18 stylesheet applies `font-size: 18em` to both li and p.
  * MDX "loose" lists render as <li><p>…</p></li>, so the size multiplied itself.
  * Force descendant <p>/<li> to inherit instead of restacking the Webflow size.
