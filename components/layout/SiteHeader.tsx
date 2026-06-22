@@ -394,7 +394,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                               </div>
                               <div className="nav_dropdown-list-wr">
                                 <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div className="nav_tabs-list w-dyn-items w-row" role="list">
+                                  <div
+                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
+                                    role="list"
+                                    key={`tutorials-${activeBlogCategory ?? "all"}`}
+                                  >
                                     {filteredBlogPreviews.map((item) => (
                                        <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
                                          <div className="nav_tabs-list-item-wr">
@@ -476,7 +480,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                               </div>
                               <div className="nav_dropdown-list-wr">
                                 <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div className="nav_tabs-list w-dyn-items w-row" role="list">
+                                  <div
+                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
+                                    role="list"
+                                    key={`kits-${activeKitCategory ?? "all"}`}
+                                  >
                                     {filteredKitPreviews.map((item) => (
                                       <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.href} role="listitem">
                                         <div className="nav_tabs-list-item-wr">

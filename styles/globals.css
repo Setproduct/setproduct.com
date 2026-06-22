@@ -704,6 +704,27 @@ h1[id], h2[id], h3[id], h4[id] {
     color: var(--primary);
     transition: color 200ms ease;
   }
+
+  /*
+   * Content swap on category hover. The previews column gets a fresh React `key`
+   * each time the active category changes, so it remounts and the keyframes
+   * replay. Cards enter from the categories side (left) and settle to the right,
+   * matching the left→right reading flow between the menu's two columns.
+   */
+  .navbar .nav_tabs-list--animated {
+    animation: nav-cards-slide-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes nav-cards-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /*
@@ -719,6 +740,11 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav_tabs-list-item-img-wr,
   .navbar .nav_tabs-list-item-img-wr img {
     transition: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_tabs-list--animated {
+    animation: none !important;
     transform: none !important;
   }
 
