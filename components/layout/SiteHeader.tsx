@@ -9,6 +9,7 @@ import LaunchAppCallout from "./LaunchAppCallout";
 import ArrowIcon from "../sections/ArrowIcon";
 import type { BlogPostPreview, Product } from "../../types/data";
 import { PRODUCTS } from "../../data/products";
+import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
 
 function ChevronIcon() {
   return (
@@ -94,8 +95,23 @@ const INFORMATION_LINKS = [
   { href: "#", label: "Contact us", modal: true },
 ];
 
+// Curated subset of freebies categories surfaced in the nav dropdown. Like
+// DESIGN_KITS, we don't list every taxonomy entry — only the well-populated,
+// recognisable ones — so each hovered tab yields a full preview grid. `label`
+// is sentence-case for display; `category` must match FREEBIE_PRODUCTS exactly.
+const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
+  { label: "All topics", category: null },
+  { label: "Components", category: "Components" },
+  { label: "Mobile templates", category: "Mobile Templates" },
+  { label: "Mobile & desktop", category: "Mobile & Desktop" },
+  { label: "Data visualization", category: "Data visualization" },
+  { label: "Web design", category: "Web Design" },
+  { label: "Desktop", category: "Desktop" },
+];
+
 const NAV_BLOG_PREVIEW_COUNT = 6;
 const NAV_KIT_PREVIEW_COUNT = 6;
+const NAV_FREEBIE_PREVIEW_COUNT = 6;
 
 const SEARCH_PLACEHOLDERS = [
   "Search dashboards…",
@@ -203,6 +219,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [isSwitching, setIsSwitching] = useState(false);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
   const [activeKitCategory, setActiveKitCategory] = useState<string | null>(null);
+  const [activeFreebieCategory, setActiveFreebieCategory] = useState<string | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);
   const [previousPlaceholderIndex, setPreviousPlaceholderIndex] =
@@ -218,6 +235,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const isTutorialsActive = currentPath === "/blog" || currentPath.startsWith("/blog/");
   const isDesignKitsActive = DESIGN_KITS.some((k) => isPathActive(k.href)) ||
     currentPath.startsWith("/templates/");
+  const isFreebiesActive = currentPath === "/freebies" || currentPath.startsWith("/freebies/");
   const isInformationActive = INFORMATION_LINKS.some(
     (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
   );
@@ -340,6 +358,16 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
       .slice(0, NAV_KIT_PREVIEW_COUNT)
       .map(kitPreviewFromProduct);
     return matched.length ? matched : KIT_PREVIEWS;
+  })();
+
+  // Hovering a freebies category swaps the right-hand previews. Freebies have a
+  // single category each (unlike kits), so a plain equality filter is enough;
+  // empty categories fall back to the full set so a tab never renders blank.
+  const filteredFreebiePreviews = (() => {
+    const list = activeFreebieCategory
+      ? FREEBIE_PRODUCTS.filter((item) => item.category === activeFreebieCategory)
+      : FREEBIE_PRODUCTS;
+    return (list.length ? list : FREEBIE_PRODUCTS).slice(0, NAV_FREEBIE_PREVIEW_COUNT);
   })();
 
   return (
@@ -465,12 +493,93 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <a
-                  className={`nav-link-block w-inline-block${isPathActive("/freebies") ? " w--current" : ""}`}
-                  href="/freebies"
-                >
-                  <div className="text-size-regular">Freebies</div>
-                </a>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave}>
+                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("freebies") ? "w--open" : ""}`} data-delay="0" data-hover="true">
+                    <div
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
+                      onClick={() => toggleMenu("freebies")}
+                    >
+                      <div className="text-size-regular">Freebies</div>
+                      <span className="icon nav_chevron"><ChevronIcon /></span>
+                      <a className="nav_dropdown_toggle-link w-inline-block" href="/freebies" />
+                    </div>
+                    <nav
+                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("freebies") ? "w--open" : ""}`}
+                      aria-hidden={!isMenuOpen("freebies")}
+                    >
+                      <div className="container">
+                        <div className="form-block w-form">
+                          <form method="get" name="email-form-nav-3">
+                            <div className="nav_dropdown-menu2">
+                              <div className="nav_dropdown-column list">
+                                <div className="nav_dropdown-column-title-wr">
+                                  <div className="text-size-regular">Categories</div>
+                                </div>
+                                <div className="nav-links is-1-column">
+                                  {NAV_FREEBIE_CATEGORIES.map((item) => {
+                                    const isActive = activeFreebieCategory === item.category;
+                                    return (
+                                      <a
+                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
+                                        href="/freebies"
+                                        key={item.label}
+                                        onMouseEnter={() => setActiveFreebieCategory(item.category)}
+                                      >
+                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{item.label}</p>
+                                      </a>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                              <div className="nav_dropdown-list-wr">
+                                <div className="nav_tabs-list-wr w-dyn-list">
+                                  <div
+                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
+                                    role="list"
+                                    key={`freebies-${activeFreebieCategory ?? "all"}`}
+                                  >
+                                    {filteredFreebiePreviews.map((item) => (
+                                      <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
+                                        <div className="nav_tabs-list-item-wr">
+                                           <a
+                                             className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                             href={item.previewHref}
+                                           >
+                                             <Image
+                                               alt={item.title}
+                                               src={item.thumb}
+                                               fill
+                                               sizes="158px"
+                                               className="image-cover"
+                                             />
+                                           </a>
+                                          <div className="nav_tabs-list-item-info-wr">
+                                            <a className="w-inline-block" href={item.previewHref}>
+                                              <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                            </a>
+                                            <p className="text-size-tiny text-style-3lines">{item.description}</p>
+                                            <div className="nav_tabs-list-item-btn-wr">
+                                              <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
+                                                <div className="text-size-regular text-weight-bold">{item.isFree ? "Duplicate" : "Buy"}</div>
+                                              </a>
+                                              <a className="button-x-small is-text w-inline-block" href={item.previewHref}>
+                                                <div className="text-size-regular text-weight-bold">Preview</div>
+                                              </a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </nav>
+                  </div>
+                </div>
 
                 <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
