@@ -572,6 +572,15 @@ h1[id], h2[id], h3[id], h4[id] {
     transform: translateY(0);
     transition-delay: 60ms;
   }
+
+  /* Direct menu-to-menu switch (cursor slides between Tutorials / Design Kits /
+     Information while the panel is already open). Snap the height instantly so
+     there's no collapse→expand bounce; only the inner content cross-fades. The
+     outgoing panel drops to 0 height at once, the incoming one jumps to full
+     height, and each .container handles the soft opacity/translateY swap. */
+  .navbar.is-switching .nav_dropdown_list.w-dropdown-list {
+    transition: none;
+  }
 }
 
 /*

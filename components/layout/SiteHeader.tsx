@@ -158,6 +158,7 @@ type SiteHeaderProps = {
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [isSwitching, setIsSwitching] = useState(false);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);
@@ -187,6 +188,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const openOnHover = (menuName: string) => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      // Moving straight from one already-open menu to another: swap the panel
+      // content without the collapse→expand bounce. `is-switching` disables the
+      // panel's max-height transition so the new panel snaps to full height
+      // while its inner content cross-fades in.
+      setIsSwitching(openMenu !== null && openMenu !== menuName);
       setOpenMenu(menuName);
     }
   };
@@ -194,6 +200,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const closeOnHoverLeave = () => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setIsSwitching(false);
       setOpenMenu(null);
     }
   };
@@ -279,7 +286,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   return (
     <div
       ref={navbarRef}
-      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}`}
+      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}${isSwitching ? " is-switching" : ""}`}
       data-collapse="medium"
       role="banner"
     >
