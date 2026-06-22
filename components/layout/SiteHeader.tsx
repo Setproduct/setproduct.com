@@ -250,7 +250,7 @@ const NAV_HOVER_CLOSE_DELAY_MS = 250;
 // Debounce for switching subcategories *inside* an already-open panel. Without
 // it a cursor sweeping down the Categories column strobes through every preview
 // set; this makes only the category the pointer settles on actually load.
-const NAV_SUBCATEGORY_HOVER_DELAY_MS = 90;
+const NAV_SUBCATEGORY_HOVER_DELAY_MS = 200;
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
