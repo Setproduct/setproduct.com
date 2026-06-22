@@ -1037,6 +1037,8 @@ h1[id], h2[id], h3[id], h4[id] {
 
   .navbar .nav-menu .nav_info-promo-mobile-text {
     margin: 0;
+    font-size: 15px;
+    font-weight: 400;
     color: var(--black);
     opacity: 0.78;
   }
