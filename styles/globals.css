@@ -716,44 +716,85 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /*
-   * Information dropdown — social-proof wall. Mirrors the two-column pattern of
-   * Tutorials/Design Kits (links left, visual content right). Testimonial
-   * screenshots vary in aspect ratio, so a CSS column masonry packs them
-   * tightly without cropping. The wrapper is the same clipped .nav_dropdown-list-wr,
-   * so anything past 439em height is hidden — a clean fade-out at the bottom edge.
+   * Information dropdown promo. Fills the previously empty right side with a
+   * lead-gen card. Sits in the same two-column `.nav_dropdown-menu2` flex row as
+   * the links column, so it mirrors the Design Kits / Tutorials layout.
    */
-  .navbar .nav_info-testimonials {
-    column-count: 2;
-    column-gap: 16em;
-    padding-right: 8em;
-    -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+  .navbar .nav_info-promo-wr {
+    flex: 1 1 auto;
+    display: flex;
+    min-height: 200em;
   }
 
-  .navbar .nav_info-testimonial-card {
-    display: block;
+  .navbar .nav_info-promo {
+    position: relative;
+    display: flex;
     width: 100%;
-    margin-bottom: 16em;
-    border-radius: 12em;
+    border-radius: 20em;
+    padding: 36em 40em;
     overflow: hidden;
-    background-color: var(--white);
-    box-shadow: 0 1px 2px rgba(25, 24, 27, 0.06),
-      0 0 0 1px rgba(25, 24, 27, 0.05);
-    break-inside: avoid;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 260ms ease;
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
+    border: 1em solid var(--black-transparent);
   }
 
-  .navbar .nav_info-testimonial-img {
-    display: block;
-    width: 100%;
-    height: auto;
+  .navbar .nav_info-promo-glow {
+    position: absolute;
+    top: -40em;
+    right: -40em;
+    width: 220em;
+    height: 220em;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 77, 255, 0.28) 0%, rgba(124, 77, 255, 0) 70%);
+    pointer-events: none;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .navbar .nav_info-testimonial-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 28px -10px rgba(25, 24, 27, 0.28),
-      0 0 0 1px rgba(124, 77, 255, 0.18);
+  .navbar .nav_info-promo:hover .nav_info-promo-glow {
+    transform: scale(1.15) translate(-8em, 8em);
+  }
+
+  .navbar .nav_info-promo-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 460em;
+  }
+
+  .navbar .nav_info-promo-eyebrow {
+    font-size: 12em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 10em;
+  }
+
+  .navbar .nav_info-promo-title {
+    font-size: 24em;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--black);
+    margin-bottom: 12em;
+  }
+
+  .navbar .nav_info-promo-text {
+    color: var(--black);
+    opacity: 0.78;
+    margin-bottom: 24em;
+  }
+
+  .navbar .nav_info-promo-btn {
+    cursor: pointer;
+    border: none;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 220ms ease;
+  }
+
+  .navbar .nav_info-promo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px -10px rgba(124, 77, 255, 0.5);
   }
 }
 
@@ -789,9 +830,14 @@ h1[id], h2[id], h3[id], h4[id] {
     transform: none !important;
   }
 
-  .navbar .nav_info-testimonial-card,
-  .navbar .nav_info-testimonial-card:hover {
+  .navbar .nav_info-promo-glow,
+  .navbar .nav_info-promo-btn {
     transition: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_info-promo:hover .nav_info-promo-glow,
+  .navbar .nav_info-promo-btn:hover {
     transform: none !important;
   }
 

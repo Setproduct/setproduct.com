@@ -68,20 +68,6 @@ const INFORMATION_LINKS = [
   { href: "#", label: "Contact us", modal: true },
 ];
 
-// Social proof for the Information dropdown. Reuses the screenshot assets that
-// already power /testimonials — a curated set of wide, compact reviews that stay
-// legible at preview size. Served from the same /testimonials/ public folder.
-const INFORMATION_TESTIMONIALS = [
-  "reddit2.webp",
-  "Robert_A_-_Nov_24_20.webp",
-  "Jan_Irwin_levelup.webp",
-  "Tim_Rupper_-_Jul_2_2.webp",
-  "datamagican_24may.webp",
-  "Andrzej_-_Mar_3_2021.webp",
-  "driver202_2022-02-03.webp",
-  "Igor_2022-02-03.webp",
-];
-
 const NAV_BLOG_PREVIEW_COUNT = 6;
 const NAV_KIT_PREVIEW_COUNT = 6;
 
@@ -574,22 +560,23 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                               ))}
                             </div>
                           </div>
-                          <div className="nav_dropdown-list-wr">
-                            <div className="nav_info-testimonials">
-                              {INFORMATION_TESTIMONIALS.map((src) => (
-                                <a
-                                  className="nav_info-testimonial-card w-inline-block"
-                                  href="/testimonials"
-                                  key={src}
+                          <div className="nav_info-promo-wr">
+                            <div className="nav_info-promo">
+                              <span className="nav_info-promo-glow" aria-hidden="true" />
+                              <div className="nav_info-promo-content">
+                                <div className="nav_info-promo-eyebrow">Work with us</div>
+                                <div className="nav_info-promo-title">Need a custom design?</div>
+                                <p className="text-size-regular nav_info-promo-text">
+                                  Tell us about your product — our team crafts tailored dashboards, mobile, and web UI, or a full design system built around your brand.
+                                </p>
+                                <button
+                                  type="button"
+                                  className="button-small w-inline-block nav_info-promo-btn"
+                                  onClick={() => openContactModal()}
                                 >
-                                  <img
-                                    alt="Setproduct customer testimonial"
-                                    className="nav_info-testimonial-img"
-                                    loading="lazy"
-                                    src={`/testimonials/${src}`}
-                                  />
-                                </a>
-                              ))}
+                                  <div className="text-size-medium text-weight-bold">Get a quote</div>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
