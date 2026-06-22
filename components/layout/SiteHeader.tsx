@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, FocusEvent as ReactFocusEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
@@ -241,6 +241,13 @@ type SiteHeaderProps = {
   blogPosts?: BlogPostPreview[];
 };
 
+// Hover-intent timings. A short open delay stops a cursor that merely sweeps
+// across a trigger from dropping the full-width panel; a longer close grace
+// period lets the pointer travel diagonally into the panel (or hop to an
+// adjacent trigger) without the menu snapping shut underneath it.
+const NAV_HOVER_OPEN_DELAY_MS = 120;
+const NAV_HOVER_CLOSE_DELAY_MS = 250;
+
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSwitching, setIsSwitching] = useState(false);
@@ -252,6 +259,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [previousPlaceholderIndex, setPreviousPlaceholderIndex] =
     useState<number | null>(null);
   const navbarRef = useRef<HTMLDivElement | null>(null);
+  const hoverIntentRef = useRef<number | null>(null);
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -273,24 +281,72 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     setOpenMenu((current) => (current === menuName ? null : menuName));
   };
 
+  const clearHoverIntent = () => {
+    if (hoverIntentRef.current !== null) {
+      window.clearTimeout(hoverIntentRef.current);
+      hoverIntentRef.current = null;
+    }
+  };
+
+  // Open (or swap between) menus immediately. Shared by pointer hover-intent
+  // and keyboard focus so both input paths behave identically.
+  const openMenuImmediate = (menuName: string) => {
+    clearHoverIntent();
+    // Moving straight from one already-open menu to another: swap the panel
+    // content without the collapse→expand bounce. `is-switching` disables the
+    // panel's max-height transition so the new panel snaps to full height
+    // while its inner content cross-fades in.
+    setIsSwitching(openMenu !== null && openMenu !== menuName);
+    setOpenMenu(menuName);
+  };
+
+  const closeMenuImmediate = () => {
+    clearHoverIntent();
+    setIsSwitching(false);
+    setOpenMenu(null);
+  };
+
   const openOnHover = (menuName: string) => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      // Moving straight from one already-open menu to another: swap the panel
-      // content without the collapse→expand bounce. `is-switching` disables the
-      // panel's max-height transition so the new panel snaps to full height
-      // while its inner content cross-fades in.
-      setIsSwitching(openMenu !== null && openMenu !== menuName);
-      setOpenMenu(menuName);
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    clearHoverIntent();
+    // If a sibling menu is already open, swap instantly so sweeping across the
+    // bar stays responsive. Opening from a closed state waits out a short
+    // intent delay so an incidental pass-over never drops the panel.
+    if (openMenu !== null) {
+      openMenuImmediate(menuName);
+      return;
     }
+    hoverIntentRef.current = window.setTimeout(() => {
+      hoverIntentRef.current = null;
+      setIsSwitching(false);
+      setOpenMenu(menuName);
+    }, NAV_HOVER_OPEN_DELAY_MS);
   };
 
   const closeOnHoverLeave = () => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    clearHoverIntent();
+    // Grace period before collapsing: a diagonal path from trigger into the
+    // panel, or a quick hop to a neighbouring trigger, cancels this timer.
+    hoverIntentRef.current = window.setTimeout(() => {
+      hoverIntentRef.current = null;
       setIsSwitching(false);
       setOpenMenu(null);
-    }
+    }, NAV_HOVER_CLOSE_DELAY_MS);
+  };
+
+  // Keyboard parity: focus entering a dropdown wrapper opens it; focus leaving
+  // the wrapper entirely (relatedTarget outside) closes it. Moving focus
+  // between the trigger and the links inside keeps the panel open.
+  const openOnFocus = (menuName: string) => {
+    openMenuImmediate(menuName);
+  };
+
+  const closeOnBlur = (event: ReactFocusEvent<HTMLDivElement>) => {
+    if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
+    closeMenuImmediate();
   };
 
   const closeMobileNav = () => {
@@ -366,6 +422,35 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     };
   }, []);
 
+  // Close any open dropdown on Escape (keyboard escape hatch).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (openMenu === null) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (hoverIntentRef.current !== null) {
+          window.clearTimeout(hoverIntentRef.current);
+          hoverIntentRef.current = null;
+        }
+        setIsSwitching(false);
+        setOpenMenu(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [openMenu]);
+
+  // Tidy any pending hover-intent timer on unmount so a queued open/close
+  // never fires after teardown.
+  useEffect(
+    () => () => {
+      if (hoverIntentRef.current !== null) {
+        window.clearTimeout(hoverIntentRef.current);
+      }
+    },
+    [],
+  );
+
   const filteredBlogPreviews = (activeBlogCategory
     ? blogPosts.filter((p) => p.category === activeBlogCategory)
     : blogPosts
@@ -437,11 +522,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </a>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("tutorials")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("tutorials")}
+                      aria-haspopup="true"
+                      aria-expanded={isMenuOpen("tutorials")}
                     >
                       <div className="text-size-regular">Learn</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
@@ -470,6 +557,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         key={item.label}
                                         href={href}
                                         onMouseEnter={() => setActiveBlogCategory(item.category)}
+                                        onFocus={() => setActiveBlogCategory(item.category)}
                                       >
                                         <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
                                       </a>
@@ -523,11 +611,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("freebies")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("freebies") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("freebies")}
+                      aria-haspopup="true"
+                      aria-expanded={isMenuOpen("freebies")}
                     >
                       <div className="text-size-regular">Freebies</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
@@ -554,6 +644,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         href="/freebies"
                                         key={item.label}
                                         onMouseEnter={() => setActiveFreebieCategory(item.category)}
+                                        onFocus={() => setActiveFreebieCategory(item.category)}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{item.label}</p>
                                       </a>
@@ -611,11 +702,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("designKits")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("designKits")}
+                      aria-haspopup="true"
+                      aria-expanded={isMenuOpen("designKits")}
                     >
                       <div className="text-size-regular">UI Kits</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
@@ -644,6 +737,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         href={link.href}
                                         key={link.href}
                                         onMouseEnter={() => setActiveKitCategory(link.category)}
+                                        onFocus={() => setActiveKitCategory(link.category)}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{link.label}</p>
                                       </a>
@@ -701,11 +795,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave}>
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("information")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("information") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("information")}
+                      aria-haspopup="true"
+                      aria-expanded={isMenuOpen("information")}
                     >
                       <div className="text-size-regular">Company</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
