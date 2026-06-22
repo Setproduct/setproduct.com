@@ -988,6 +988,21 @@ h1[id], h2[id], h3[id], h4[id] {
    * without tearing the layout. Sizes use plain px here (not the em-fluid scale)
    * to stay predictable inside the drawer.
    */
+  /*
+   * The desktop `.nav_dropdown-menu2` is a flex ROW (links column + promo
+   * column side by side) and Webflow's mobile override never resets it. In the
+   * narrow drawer that row pushes the promo off the right edge. Stack it into a
+   * column and let the links column drop its fixed 200em width so children span
+   * the full drawer instead of overflowing.
+   */
+  .navbar .nav-menu .nav_dropdown-menu2 {
+    flex-direction: column;
+  }
+
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list {
+    width: 100%;
+  }
+
   .navbar .nav-menu .nav_info-promo-wr {
     display: none;
   }
