@@ -754,11 +754,20 @@ h1[id], h2[id], h3[id], h4[id] {
     transform: scale(1.15) translate(-8em, 8em);
   }
 
+  /*
+   * Spacing lives on the flex container as `gap`, NOT as `margin-bottom` on the
+   * children. The children below set their own `font-size` (e.g. 24em), and in
+   * this em-based system `margin: Nem` on a font-sized element multiplies
+   * against that font (12em × 24px ≈ 288px), which previously stretched the card
+   * to full screen. The wrapper keeps the root ~1px em scale, so `gap` stays
+   * predictable.
+   */
   .navbar .nav_info-promo-content {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 14em;
     max-width: 460em;
   }
 
@@ -768,7 +777,6 @@ h1[id], h2[id], h3[id], h4[id] {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--primary);
-    margin-bottom: 10em;
   }
 
   .navbar .nav_info-promo-title {
@@ -776,13 +784,11 @@ h1[id], h2[id], h3[id], h4[id] {
     font-weight: 700;
     line-height: 1.2;
     color: var(--black);
-    margin-bottom: 12em;
   }
 
   .navbar .nav_info-promo-text {
     color: var(--black);
     opacity: 0.78;
-    margin-bottom: 24em;
   }
 
   .navbar .nav_info-promo-btn {
