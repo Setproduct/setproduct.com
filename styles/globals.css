@@ -690,6 +690,36 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Motion-safety. Users who prefer reduced motion keep the colour/shadow cues
+ * but lose the transforms (chevron flip, panel lift, row nudge, card zoom).
+ * The dropdown still toggles instantly via the max-height clip.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .navbar .nav_dropdown_toggle .nav_chevron-svg,
+  .navbar .nav_dropdown_list.w-dropdown-list > .container,
+  .navbar .nav_dropdown_list .nav_radio,
+  .navbar .nav_dropdown_list .link-block,
+  .navbar .nav_tabs-list-item-img-wr,
+  .navbar .nav_tabs-list-item-img-wr img {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
+  .navbar .nav_dropdown_toggle.w--open .nav_chevron-svg,
+  .navbar .nav_dropdown_list .nav_radio:hover,
+  .navbar .nav_dropdown_list .link-block:hover,
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr,
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
+    transform: none !important;
+  }
+
+  .navbar .nav_dropdown_list.w-dropdown-list.w--open > .container {
+    opacity: 1;
+  }
+}
+
+/*
  * Mobile nav drawer.
  * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
  * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
