@@ -247,6 +247,10 @@ type SiteHeaderProps = {
 // adjacent trigger) without the menu snapping shut underneath it.
 const NAV_HOVER_OPEN_DELAY_MS = 120;
 const NAV_HOVER_CLOSE_DELAY_MS = 250;
+// Debounce for switching subcategories *inside* an already-open panel. Without
+// it a cursor sweeping down the Categories column strobes through every preview
+// set; this makes only the category the pointer settles on actually load.
+const NAV_SUBCATEGORY_HOVER_DELAY_MS = 90;
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -260,6 +264,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     useState<number | null>(null);
   const navbarRef = useRef<HTMLDivElement | null>(null);
   const hoverIntentRef = useRef<number | null>(null);
+  const subHoverIntentRef = useRef<number | null>(null);
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -288,6 +293,34 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     }
   };
 
+  const clearSubHoverIntent = () => {
+    if (subHoverIntentRef.current !== null) {
+      window.clearTimeout(subHoverIntentRef.current);
+      subHoverIntentRef.current = null;
+    }
+  };
+
+  // Pointer hover over a subcategory: debounce so a passing cursor doesn't
+  // load every set on the way; only the one it lingers on (~90ms) commits.
+  const switchSubcategoryOnHover = (apply: () => void) => {
+    clearSubHoverIntent();
+    if (typeof window === "undefined") {
+      apply();
+      return;
+    }
+    subHoverIntentRef.current = window.setTimeout(() => {
+      subHoverIntentRef.current = null;
+      apply();
+    }, NAV_SUBCATEGORY_HOVER_DELAY_MS);
+  };
+
+  // Keyboard focus on a subcategory: cancel any queued hover switch and commit
+  // instantly so Tab navigation maps 1:1 to the previews shown.
+  const switchSubcategoryNow = (apply: () => void) => {
+    clearSubHoverIntent();
+    apply();
+  };
+
   // Open (or swap between) menus immediately. Shared by pointer hover-intent
   // and keyboard focus so both input paths behave identically.
   const openMenuImmediate = (menuName: string) => {
@@ -302,6 +335,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
 
   const closeMenuImmediate = () => {
     clearHoverIntent();
+    clearSubHoverIntent();
     setIsSwitching(false);
     setOpenMenu(null);
   };
@@ -332,6 +366,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     // panel, or a quick hop to a neighbouring trigger, cancels this timer.
     hoverIntentRef.current = window.setTimeout(() => {
       hoverIntentRef.current = null;
+      clearSubHoverIntent();
       setIsSwitching(false);
       setOpenMenu(null);
     }, NAV_HOVER_CLOSE_DELAY_MS);
@@ -428,10 +463,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     if (openMenu === null) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        if (hoverIntentRef.current !== null) {
-          window.clearTimeout(hoverIntentRef.current);
-          hoverIntentRef.current = null;
-        }
+        clearHoverIntent();
+        clearSubHoverIntent();
         setIsSwitching(false);
         setOpenMenu(null);
       }
@@ -446,6 +479,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     () => () => {
       if (hoverIntentRef.current !== null) {
         window.clearTimeout(hoverIntentRef.current);
+      }
+      if (subHoverIntentRef.current !== null) {
+        window.clearTimeout(subHoverIntentRef.current);
       }
     },
     [],
@@ -556,8 +592,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         className={`nav_radio w-inline-block${activeBlogCategory === item.category ? " w--current" : ""}`}
                                         key={item.label}
                                         href={href}
-                                        onMouseEnter={() => setActiveBlogCategory(item.category)}
-                                        onFocus={() => setActiveBlogCategory(item.category)}
+                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveBlogCategory(item.category))}
+                                        onFocus={() => switchSubcategoryNow(() => setActiveBlogCategory(item.category))}
                                       >
                                         <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
                                       </a>
@@ -643,8 +679,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
                                         href="/freebies"
                                         key={item.label}
-                                        onMouseEnter={() => setActiveFreebieCategory(item.category)}
-                                        onFocus={() => setActiveFreebieCategory(item.category)}
+                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveFreebieCategory(item.category))}
+                                        onFocus={() => switchSubcategoryNow(() => setActiveFreebieCategory(item.category))}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{item.label}</p>
                                       </a>
@@ -736,8 +772,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
                                         href={link.href}
                                         key={link.href}
-                                        onMouseEnter={() => setActiveKitCategory(link.category)}
-                                        onFocus={() => setActiveKitCategory(link.category)}
+                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveKitCategory(link.category))}
+                                        onFocus={() => switchSubcategoryNow(() => setActiveKitCategory(link.category))}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{link.label}</p>
                                       </a>
