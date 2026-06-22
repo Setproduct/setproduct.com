@@ -658,6 +658,38 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Preview card hover (the blog/kit thumbnails in the mega-menu). The image
+ * wrapper already clips with overflow:hidden + radius, so we zoom the cover
+ * inside it and lift the thumbnail with a soft shadow. Title shifts to the
+ * brand colour to reinforce the affordance. Desktop only.
+ */
+@media (min-width: 991px) {
+  .navbar .nav_tabs-list-item-img-wr {
+    box-shadow: 0 0 0 rgba(25, 24, 27, 0);
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 260ms ease;
+  }
+
+  .navbar .nav_tabs-list-item-img-wr img {
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -10px rgba(25, 24, 27, 0.28);
+  }
+
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
+    transform: scale(1.06);
+  }
+
+  .navbar .nav_tabs-list-item:hover .text-color-dark-primary {
+    color: var(--primary);
+    transition: color 200ms ease;
+  }
+}
+
+/*
  * Mobile nav drawer.
  * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
  * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
