@@ -537,9 +537,10 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 }
 
-/* Navbar dropdown reveal: animate max-height clip (slide-down, no fade).
-   Inset is required on the closed state too — panel is always mounted and
-   would otherwise render at its natural absolute position. */
+/* Navbar dropdown reveal: combine a max-height clip (keeps page layout intact)
+   with an opacity + translateY fade on the inner content for a softer, more
+   polished entrance. Inset is required on the closed state too — the panel is
+   always mounted and would otherwise render at its natural absolute position. */
 @media (min-width: 991px) {
   .navbar .nav_dropdown_list.w-dropdown-list {
     display: block;
@@ -547,12 +548,29 @@ h1[id], h2[id], h3[id], h4[id] {
     max-height: 0;
     overflow: hidden;
     pointer-events: none;
-    transition: max-height 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 0 18px 40px -12px rgba(25, 24, 27, 0.18),
+      0 4px 12px -6px rgba(25, 24, 27, 0.1);
+    transition: max-height 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .navbar .nav_dropdown_list.w-dropdown-list.w--open {
     max-height: 90vh;
     pointer-events: auto;
+  }
+
+  /* Inner content fades + lifts into place; the clip above handles layout. */
+  .navbar .nav_dropdown_list.w-dropdown-list > .container {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 260ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_dropdown_list.w-dropdown-list.w--open > .container {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 60ms;
   }
 }
 
