@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
-import type { BlogPostPreview } from "../../types/data";
+import type { BlogPostPreview, Product } from "../../types/data";
+import { PRODUCTS } from "../../data/products";
 
 function ChevronIcon() {
   return (
@@ -50,14 +51,14 @@ const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "Research", category: "Research" },
 ];
 
-const DESIGN_KITS = [
-  { href: "/all", label: "All" },
-  { href: "/dashboards", label: "Dashboards" },
-  { href: "/mobile", label: "Mobile" },
-  { href: "/dataviz", label: "Charts" },
-  { href: "/code", label: "Code" },
-  { href: "/websites", label: "Websites" },
-  { href: "/bundle", label: "Bundle" },
+const DESIGN_KITS: Array<{ href: string; label: string; category: string | null }> = [
+  { href: "/all", label: "All", category: null },
+  { href: "/dashboards", label: "Dashboards", category: "dashboards" },
+  { href: "/mobile", label: "Mobile", category: "mobile" },
+  { href: "/dataviz", label: "Charts", category: "dataviz" },
+  { href: "/code", label: "Code", category: "code" },
+  { href: "/websites", label: "Websites", category: "websites" },
+  { href: "/bundle", label: "Bundle", category: null },
 ];
 
 const INFORMATION_LINKS = [
@@ -68,6 +69,7 @@ const INFORMATION_LINKS = [
 ];
 
 const NAV_BLOG_PREVIEW_COUNT = 6;
+const NAV_KIT_PREVIEW_COUNT = 6;
 
 const SEARCH_PLACEHOLDERS = [
   "Search dashboards…",
@@ -152,6 +154,20 @@ const KIT_PREVIEWS: KitPreview[] = [
   },
 ];
 
+// Map a catalogue product onto the mega-menu card shape so the Design Kits
+// dropdown can swap its right-hand previews per hovered category — mirroring
+// how Tutorials filters blog previews by category.
+function kitPreviewFromProduct(product: Product): KitPreview {
+  return {
+    href: `/templates/${product.slug}`,
+    buyHref: product.buyHref,
+    buyLabel: `Buy $${product.price}`,
+    image: product.image,
+    title: product.title,
+    description: product.description,
+  };
+}
+
 type SiteHeaderProps = {
   blogPosts?: BlogPostPreview[];
 };
@@ -160,6 +176,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSwitching, setIsSwitching] = useState(false);
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
+  const [activeKitCategory, setActiveKitCategory] = useState<string | null>(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);
   const [previousPlaceholderIndex, setPreviousPlaceholderIndex] =
@@ -282,6 +299,22 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     ? blogPosts.filter((p) => p.category === activeBlogCategory)
     : blogPosts
   ).slice(0, NAV_BLOG_PREVIEW_COUNT);
+
+  // Hovering a category on the left swaps the kit previews on the right. The
+  // featured six (KIT_PREVIEWS) belong to every category, so we rank matches by
+  // specificity — fewer categories means the kit is more characteristic of the
+  // hovered section — giving each tab a genuinely distinct set. "All"/"Bundle"
+  // (category === null) keep the curated featured order.
+  const filteredKitPreviews = (() => {
+    if (!activeKitCategory) return KIT_PREVIEWS;
+    const category = activeKitCategory;
+    const matched = PRODUCTS.filter((product) => product.categories.includes(category))
+      .slice()
+      .sort((a, b) => a.categories.length - b.categories.length)
+      .slice(0, NAV_KIT_PREVIEW_COUNT)
+      .map(kitPreviewFromProduct);
+    return matched.length ? matched : KIT_PREVIEWS;
+  })();
 
   return (
     <div
@@ -424,17 +457,27 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                   <div className="text-size-regular">Design Kits</div>
                                 </div>
                                 <div className="nav-links is-1-column">
-                                  {DESIGN_KITS.map((link) => (
-                                    <a className="nav_radio w-inline-block" href={link.href} key={link.href}>
-                                      <p className="text-size-regular">{link.label}</p>
-                                    </a>
-                                  ))}
+                                  {DESIGN_KITS.map((link) => {
+                                    const isActive =
+                                      link.category !== null &&
+                                      activeKitCategory === link.category;
+                                    return (
+                                      <a
+                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
+                                        href={link.href}
+                                        key={link.href}
+                                        onMouseEnter={() => setActiveKitCategory(link.category)}
+                                      >
+                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{link.label}</p>
+                                      </a>
+                                    );
+                                  })}
                                 </div>
                               </div>
                               <div className="nav_dropdown-list-wr">
                                 <div className="nav_tabs-list-wr w-dyn-list">
                                   <div className="nav_tabs-list w-dyn-items w-row" role="list">
-                                    {KIT_PREVIEWS.map((item) => (
+                                    {filteredKitPreviews.map((item) => (
                                       <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.href} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
                                            <a
