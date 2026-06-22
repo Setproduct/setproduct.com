@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
+import ArrowIcon from "../sections/ArrowIcon";
 import type { BlogPostPreview, Product } from "../../types/data";
 import { PRODUCTS } from "../../data/products";
 
@@ -571,10 +572,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                 </p>
                                 <button
                                   type="button"
-                                  className="button-small w-inline-block nav_info-promo-cta"
+                                  className="button w-inline-block nav_info-promo-cta"
                                   onClick={() => openContactModal()}
                                 >
-                                  <div className="text-size-medium text-weight-bold">Get a quote</div>
+                                  <div className="text-size-large text-weight-bold">Get a quote</div>
                                 </button>
                               </div>
                             </div>
@@ -592,7 +593,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
-                                  <div className="text-size-medium text-weight-bold">Advertise with us</div>
+                                  <div className="text-size-large text-weight-bold">Advertise with us</div>
+                                  <div className="button-icon w-embed"><ArrowIcon /></div>
                                 </a>
                               </div>
                             </div>
