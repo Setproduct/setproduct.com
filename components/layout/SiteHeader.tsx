@@ -8,6 +8,28 @@ import { useContactModal } from "../modals/ContactModalContext";
 import LaunchAppCallout from "./LaunchAppCallout";
 import type { BlogPostPreview } from "../../types/data";
 
+function ChevronIcon() {
+  return (
+    <svg
+      className="nav_chevron-svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M4 6l4 4 4-4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 type KitPreview = {
   href: string;
   buyHref: string;
@@ -297,7 +319,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       onClick={() => toggleMenu("tutorials")}
                     >
                       <div className="text-size-regular">Tutorials</div>
-                      <div className="icon w-icon-dropdown-toggle" />
+                      <span className="icon nav_chevron"><ChevronIcon /></span>
                       <a className="nav_dropdown_toggle-link w-inline-block" href="/blog" />
                     </div>
                     <nav
@@ -379,7 +401,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       onClick={() => toggleMenu("designKits")}
                     >
                       <div className="text-size-regular">Design Kits</div>
-                      <div className="icon w-icon-dropdown-toggle" />
+                      <span className="icon nav_chevron"><ChevronIcon /></span>
                       <a className="nav_dropdown_toggle-link w-inline-block" href="/all" />
                     </div>
                     <nav
@@ -455,7 +477,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       onClick={() => toggleMenu("information")}
                     >
                       <div className="text-size-regular">Information</div>
-                      <div className="icon w-icon-dropdown-toggle" />
+                      <span className="icon nav_chevron"><ChevronIcon /></span>
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("information") ? "w--open" : ""}`}

@@ -584,6 +584,37 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Animated dropdown chevron. Replaces Webflow's static icon-font glyph with an
+ * inline SVG (rendered in SiteHeader as .nav_chevron). Webflow's base `.icon`
+ * class is absolutely positioned, so we re-anchor it inline next to the label
+ * and rotate it 180deg on hover (desktop) and when the panel is open (touch).
+ */
+.navbar .nav_dropdown_toggle .icon.nav_chevron {
+  position: static;
+  inset: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  margin: 0;
+  font-size: 16em;
+  line-height: 0;
+  color: inherit;
+}
+
+.navbar .nav_dropdown_toggle .nav_chevron-svg {
+  display: block;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
+.navbar .nav_dropdown_toggle.w--open .nav_chevron-svg {
+  transform: rotate(180deg);
+}
+
+/*
  * Mobile nav drawer.
  * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
  * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
