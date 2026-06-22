@@ -465,6 +465,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
+                <a
+                  className={`nav-link-block w-inline-block${isPathActive("/freebies") ? " w--current" : ""}`}
+                  href="/freebies"
+                >
+                  <div className="text-size-regular">Freebies</div>
+                </a>
+
                 <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
@@ -631,12 +638,6 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <a
-                  className={`nav-link-block w-inline-block${isPathActive("/freebies") ? " w--current" : ""}`}
-                  href="/freebies"
-                >
-                  <div className="text-size-regular">Freebies</div>
-                </a>
               </div>
 
               <div className="nav-menu-mob-btn-wr">
