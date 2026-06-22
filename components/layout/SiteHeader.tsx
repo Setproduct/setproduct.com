@@ -906,6 +906,28 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                               </div>
                             </div>
                           </div>
+                          <div className="nav_info-promo-mobile">
+                            <div className="nav_info-promo-mobile-eyebrow">Work with us</div>
+                            <div className="nav_info-promo-mobile-title">Custom design or advertising?</div>
+                            <p className="text-size-regular nav_info-promo-mobile-text">
+                              Tell us about your product, or place a sponsored post in front of our audience.
+                            </p>
+                            <button
+                              type="button"
+                              className="button-small w-inline-block nav_info-promo-mobile-cta"
+                              onClick={() => openContactModal()}
+                            >
+                              <div className="text-size-medium text-weight-bold">Get a quote</div>
+                            </button>
+                            <a
+                              className="button-small secondary w-inline-block nav_info-promo-mobile-cta"
+                              href="https://publish.setproduct.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <div className="text-size-medium text-weight-bold">Advertise with us</div>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </nav>

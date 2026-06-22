@@ -808,6 +808,11 @@ h1[id], h2[id], h3[id], h4[id] {
     margin-top: auto;
     padding-top: 4em;
   }
+
+  /* Desktop shows the two full promo cards; the compact mobile banner is hidden. */
+  .navbar .nav_info-promo-mobile {
+    display: none;
+  }
 }
 
 @keyframes nav-cards-slide-in {
@@ -973,6 +978,58 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.information,
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.earm-money {
     margin-bottom: 0;
+  }
+
+  /*
+   * Company dropdown on mobile. The two side-by-side `.nav_info-promo` cards are
+   * desktop-only (their styling lives in the min-width:991px block); in the
+   * narrow drawer they overflow and clip text, so we hide them and show a single
+   * compact CTA banner instead — keeps both intents (custom design + advertising)
+   * without tearing the layout. Sizes use plain px here (not the em-fluid scale)
+   * to stay predictable inside the drawer.
+   */
+  .navbar .nav-menu .nav_info-promo-wr {
+    display: none;
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 20px;
+    border-radius: 16px;
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
+    border: 1px solid var(--black-transparent);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--black);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-text {
+    margin: 0;
+    color: var(--black);
+    opacity: 0.78;
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-cta {
+    width: 100%;
+    margin-top: 4px;
+    cursor: pointer;
   }
 
   .navbar .menu-button.w-nav-button {
