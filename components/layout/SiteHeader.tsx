@@ -937,9 +937,21 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
               </div>
 
               <div className="nav-menu-mob-btn-wr">
-                <a className="button-small w-inline-block" href="#" onClick={(e) => { e.preventDefault(); openContactModal(); }}>
-                  <div className="text-size-medium text-weight-bold">Get a Quote</div>
-                </a>
+                <form action="/search" className="search w-form nav-menu-mob-search" role="search">
+                  <input
+                    aria-label="Search Setproduct"
+                    className="w-input nav-menu-mob-search-input"
+                    enterKeyHint="search"
+                    maxLength={256}
+                    name="query"
+                    placeholder="Search Setproduct…"
+                    required
+                    type="search"
+                  />
+                  <button aria-label="Search" className="nav-menu-mob-search-btn" type="submit">
+                    <img alt="" className="search-icon" loading="lazy" src="/images/search.svg" />
+                  </button>
+                </form>
               </div>
             </div>
           </nav>

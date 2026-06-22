@@ -951,6 +951,61 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /*
+   * Bottom sticky zone now hosts the search field (replaces the old
+   * "Get a Quote" button — that intent moved into the Company CTA banner).
+   * Native GET form to /search: Enter / the mobile keyboard "Search" key
+   * (enterKeyHint) submits to /search?query=… The trailing icon button is a
+   * tappable submit affordance for users who don't reach for the keyboard key.
+   */
+  .navbar .nav-menu .nav-menu-mob-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-input {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 52px 0 18px;
+    font-size: 16px;            /* ≥16px prevents iOS zoom-on-focus */
+    line-height: 1.2;
+    color: var(--black);
+    background: var(--light-grey);
+    border: 1px solid var(--black-transparent);
+    border-radius: 12px;
+    outline: none;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-input:focus {
+    border-color: var(--primary);
+    background: var(--white);
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-btn .search-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /*
    * Mobile dropdown sub-panels (Tutorials/Design Kits/Information) — slide-down
    * animation via max-height. Margins stay constant across open/close so child
    * items don't jump horizontally during the collapse animation.
