@@ -32,6 +32,31 @@ function ChevronIcon() {
   );
 }
 
+// Small ↗ glyph appended to nav items that navigate to an external subdomain
+// (Inspiration → app.setproduct.com), so the target="_blank" jump is honest
+// and predictable instead of silently leaving the marketing site.
+function ExternalLinkIcon() {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+      style={{ marginLeft: "0.3em", opacity: 0.6 }}
+    >
+      <path
+        d="M6 4h6v6M12 4L4.5 11.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 type KitPreview = {
   href: string;
   buyHref: string;
@@ -342,14 +367,15 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   href="https://app.setproduct.com/"
                   rel="noreferrer"
                   target="_blank"
-                  aria-label="Inspiration — AI UI library"
+                  aria-label="Inspiration — AI UI library (opens in a new tab)"
                 >
                   <div
                     className="text-size-regular"
                     style={{ display: "inline-flex", alignItems: "center" }}
                   >
                     Inspiration
-                    <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">AI</span>
+                    <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
+                    <ExternalLinkIcon />
                   </div>
                 </a>
 
