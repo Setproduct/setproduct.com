@@ -250,7 +250,7 @@ const NAV_HOVER_CLOSE_DELAY_MS = 250;
 // Debounce for switching subcategories *inside* an already-open panel. Without
 // it a cursor sweeping down the Categories column strobes through every preview
 // set; this makes only the category the pointer settles on actually load.
-const NAV_SUBCATEGORY_HOVER_DELAY_MS = 200;
+const NAV_SUBCATEGORY_HOVER_DELAY_MS = 260;
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -593,6 +593,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         key={item.label}
                                         href={href}
                                         onMouseEnter={() => switchSubcategoryOnHover(() => setActiveBlogCategory(item.category))}
+                                        onMouseLeave={clearSubHoverIntent}
                                         onFocus={() => switchSubcategoryNow(() => setActiveBlogCategory(item.category))}
                                       >
                                         <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
@@ -680,6 +681,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         href="/freebies"
                                         key={item.label}
                                         onMouseEnter={() => switchSubcategoryOnHover(() => setActiveFreebieCategory(item.category))}
+                                        onMouseLeave={clearSubHoverIntent}
                                         onFocus={() => switchSubcategoryNow(() => setActiveFreebieCategory(item.category))}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{item.label}</p>
@@ -773,6 +775,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                         href={link.href}
                                         key={link.href}
                                         onMouseEnter={() => switchSubcategoryOnHover(() => setActiveKitCategory(link.category))}
+                                        onMouseLeave={clearSubHoverIntent}
                                         onFocus={() => switchSubcategoryNow(() => setActiveKitCategory(link.category))}
                                       >
                                         <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{link.label}</p>
