@@ -716,26 +716,32 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /*
-   * Information dropdown promo. Fills the previously empty right side with a
-   * lead-gen card. Sits in the same two-column `.nav_dropdown-menu2` flex row as
-   * the links column, so it mirrors the Design Kits / Tutorials layout.
+   * Information dropdown promo. Fills the previously empty right side with two
+   * lead-gen cards side by side (Work with us + Advertising). The wrapper sits in
+   * the same `.nav_dropdown-menu2` flex row as the links column, mirroring the
+   * Design Kits / Tutorials layout; inside, the two cards share the width evenly.
    */
   .navbar .nav_info-promo-wr {
     flex: 1 1 auto;
     display: flex;
-    min-height: 200em;
+    gap: 24em;
   }
 
   .navbar .nav_info-promo {
     position: relative;
     display: flex;
-    width: 100%;
+    flex: 1 1 0;
     border-radius: 20em;
-    padding: 36em 40em;
+    padding: 32em 32em;
     overflow: hidden;
     background:
       radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
     border: 1em solid var(--black-transparent);
+  }
+
+  .navbar .nav_info-promo.is-advertising {
+    background:
+      radial-gradient(120% 140% at 0% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
   }
 
   .navbar .nav_info-promo-glow {
@@ -767,8 +773,8 @@ h1[id], h2[id], h3[id], h4[id] {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14em;
-    max-width: 460em;
+    gap: 12em;
+    width: 100%;
   }
 
   .navbar .nav_info-promo-eyebrow {
@@ -791,16 +797,16 @@ h1[id], h2[id], h3[id], h4[id] {
     opacity: 0.78;
   }
 
-  .navbar .nav_info-promo-btn {
+  /*
+   * CTA reuses the project's native button styles (`button-small` /
+   * `button secondary`). We only nudge it to the bottom of each card so the two
+   * CTAs line up even when the body copy differs in length, and add a small
+   * top gap above it.
+   */
+  .navbar .nav_info-promo-cta {
     cursor: pointer;
-    border: none;
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 220ms ease;
-  }
-
-  .navbar .nav_info-promo-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px -10px rgba(124, 77, 255, 0.5);
+    margin-top: auto;
+    padding-top: 4em;
   }
 }
 
@@ -836,14 +842,12 @@ h1[id], h2[id], h3[id], h4[id] {
     transform: none !important;
   }
 
-  .navbar .nav_info-promo-glow,
-  .navbar .nav_info-promo-btn {
+  .navbar .nav_info-promo-glow {
     transition: none !important;
     transform: none !important;
   }
 
-  .navbar .nav_info-promo:hover .nav_info-promo-glow,
-  .navbar .nav_info-promo-btn:hover {
+  .navbar .nav_info-promo:hover .nav_info-promo-glow {
     transform: none !important;
   }
 

@@ -571,11 +571,29 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                 </p>
                                 <button
                                   type="button"
-                                  className="button-small w-inline-block nav_info-promo-btn"
+                                  className="button-small w-inline-block nav_info-promo-cta"
                                   onClick={() => openContactModal()}
                                 >
                                   <div className="text-size-medium text-weight-bold">Get a quote</div>
                                 </button>
+                              </div>
+                            </div>
+                            <div className="nav_info-promo is-advertising">
+                              <span className="nav_info-promo-glow" aria-hidden="true" />
+                              <div className="nav_info-promo-content">
+                                <div className="nav_info-promo-eyebrow">Advertising</div>
+                                <div className="nav_info-promo-title">Publish on our blog</div>
+                                <p className="text-size-regular nav_info-promo-text">
+                                  Reach thousands of designers and founders. Place a sponsored article or banner and put your product in front of our audience.
+                                </p>
+                                <a
+                                  className="button secondary w-inline-block nav_info-promo-cta"
+                                  href="https://publish.setproduct.com"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <div className="text-size-medium text-weight-bold">Advertise with us</div>
+                                </a>
                               </div>
                             </div>
                           </div>
