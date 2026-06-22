@@ -633,6 +633,31 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Friendlier hover for dropdown menu rows. Webflow only recolours the text on
+ * hover; here we add a soft pill background, rounded corners and a subtle
+ * horizontal nudge so each row reads as an interactive target. Desktop only —
+ * the mobile drawer keeps its flat list. The negative-margin/padding pair keeps
+ * the text baseline aligned while giving the hover pill breathing room.
+ */
+@media (min-width: 991px) {
+  .navbar .nav_dropdown_list .nav_radio,
+  .navbar .nav_dropdown_list .link-block {
+    border-radius: 10px;
+    padding-left: 10em;
+    padding-right: 10em;
+    margin-left: -10em;
+    margin-right: -10em;
+    transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_dropdown_list .nav_radio:hover,
+  .navbar .nav_dropdown_list .link-block:hover {
+    background-color: var(--light-purple);
+    transform: translateX(4px);
+  }
+}
+
+/*
  * Mobile nav drawer.
  * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
  * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
