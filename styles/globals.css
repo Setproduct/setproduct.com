@@ -714,6 +714,47 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav_tabs-list--animated {
     animation: nav-cards-slide-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
+
+  /*
+   * Information dropdown — social-proof wall. Mirrors the two-column pattern of
+   * Tutorials/Design Kits (links left, visual content right). Testimonial
+   * screenshots vary in aspect ratio, so a CSS column masonry packs them
+   * tightly without cropping. The wrapper is the same clipped .nav_dropdown-list-wr,
+   * so anything past 439em height is hidden — a clean fade-out at the bottom edge.
+   */
+  .navbar .nav_info-testimonials {
+    column-count: 2;
+    column-gap: 16em;
+    padding-right: 8em;
+    -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+  }
+
+  .navbar .nav_info-testimonial-card {
+    display: block;
+    width: 100%;
+    margin-bottom: 16em;
+    border-radius: 12em;
+    overflow: hidden;
+    background-color: var(--white);
+    box-shadow: 0 1px 2px rgba(25, 24, 27, 0.06),
+      0 0 0 1px rgba(25, 24, 27, 0.05);
+    break-inside: avoid;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 260ms ease;
+  }
+
+  .navbar .nav_info-testimonial-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .navbar .nav_info-testimonial-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -10px rgba(25, 24, 27, 0.28),
+      0 0 0 1px rgba(124, 77, 255, 0.18);
+  }
 }
 
 @keyframes nav-cards-slide-in {
@@ -745,6 +786,12 @@ h1[id], h2[id], h3[id], h4[id] {
 
   .navbar .nav_tabs-list--animated {
     animation: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_info-testimonial-card,
+  .navbar .nav_info-testimonial-card:hover {
+    transition: none !important;
     transform: none !important;
   }
 

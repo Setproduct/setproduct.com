@@ -68,6 +68,20 @@ const INFORMATION_LINKS = [
   { href: "#", label: "Contact us", modal: true },
 ];
 
+// Social proof for the Information dropdown. Reuses the screenshot assets that
+// already power /testimonials — a curated set of wide, compact reviews that stay
+// legible at preview size. Served from the same /testimonials/ public folder.
+const INFORMATION_TESTIMONIALS = [
+  "reddit2.webp",
+  "Robert_A_-_Nov_24_20.webp",
+  "Jan_Irwin_levelup.webp",
+  "Tim_Rupper_-_Jul_2_2.webp",
+  "datamagican_24may.webp",
+  "Andrzej_-_Mar_3_2021.webp",
+  "driver202_2022-02-03.webp",
+  "Igor_2022-02-03.webp",
+];
+
 const NAV_BLOG_PREVIEW_COUNT = 6;
 const NAV_KIT_PREVIEW_COUNT = 6;
 
@@ -542,8 +556,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       aria-hidden={!isMenuOpen("information")}
                     >
                       <div className="container">
-                        <div className="nav_dropdown-menu">
-                          <div className="nav_dropdown-column information">
+                        <div className="nav_dropdown-menu2">
+                          <div className="nav_dropdown-column list">
                             <div className="nav_dropdown-column-title-wr">
                               <div className="text-size-regular">Information</div>
                             </div>
@@ -556,6 +570,24 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                   onClick={link.modal ? (e) => { e.preventDefault(); openContactModal(); } : undefined}
                                 >
                                   <div className="text-size-regular">{link.label}</div>
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="nav_dropdown-list-wr">
+                            <div className="nav_info-testimonials">
+                              {INFORMATION_TESTIMONIALS.map((src) => (
+                                <a
+                                  className="nav_info-testimonial-card w-inline-block"
+                                  href="/testimonials"
+                                  key={src}
+                                >
+                                  <img
+                                    alt="Setproduct customer testimonial"
+                                    className="nav_info-testimonial-img"
+                                    loading="lazy"
+                                    src={`/testimonials/${src}`}
+                                  />
                                 </a>
                               ))}
                             </div>
