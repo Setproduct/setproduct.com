@@ -359,7 +359,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("tutorials")}
                     >
-                      <div className="text-size-regular">Tutorials</div>
+                      <div className="text-size-regular">Learn</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
                       <a className="nav_dropdown_toggle-link w-inline-block" href="/blog" />
                     </div>
@@ -445,7 +445,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("designKits")}
                     >
-                      <div className="text-size-regular">Design Kits</div>
+                      <div className="text-size-regular">UI Kits</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
                       <a className="nav_dropdown_toggle-link w-inline-block" href="/all" />
                     </div>
@@ -459,7 +459,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                             <div className="nav_dropdown-menu2">
                               <div className="nav_dropdown-column list">
                                 <div className="nav_dropdown-column-title-wr">
-                                  <div className="text-size-regular">Design Kits</div>
+                                  <div className="text-size-regular">Categories</div>
                                 </div>
                                 <div className="nav-links is-1-column">
                                   {DESIGN_KITS.map((link) => {
@@ -535,7 +535,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("information")}
                     >
-                      <div className="text-size-regular">Information</div>
+                      <div className="text-size-regular">Company</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
                     </div>
                     <nav
@@ -546,7 +546,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                         <div className="nav_dropdown-menu2">
                           <div className="nav_dropdown-column list">
                             <div className="nav_dropdown-column-title-wr">
-                              <div className="text-size-regular">Information</div>
+                              <div className="text-size-regular">Company</div>
                             </div>
                             <div className="nav-links is-1-column">
                               {INFORMATION_LINKS.map((link) => (
