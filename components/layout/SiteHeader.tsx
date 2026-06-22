@@ -10,6 +10,8 @@ import ArrowIcon from "../sections/ArrowIcon";
 import type { BlogPostPreview, Product } from "../../types/data";
 import { PRODUCTS } from "../../data/products";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
+import { BUNDLES } from "../../data/bundles";
+import type { BundleItem } from "../../data/bundles";
 
 function ChevronIcon() {
   return (
@@ -78,6 +80,12 @@ const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "Research", category: "Research" },
 ];
 
+// Sentinel category for the Bundle tab. Bundles aren't catalogue Products and
+// carry no `categories` array, so we route this tab through a dedicated branch
+// in filteredKitPreviews instead of the product filter — otherwise it falls
+// back to the featured set and duplicates the "All" tab.
+const BUNDLE_CATEGORY = "__bundles__";
+
 const DESIGN_KITS: Array<{ href: string; label: string; category: string | null }> = [
   { href: "/all", label: "All", category: null },
   { href: "/dashboards", label: "Dashboards", category: "dashboards" },
@@ -85,7 +93,7 @@ const DESIGN_KITS: Array<{ href: string; label: string; category: string | null 
   { href: "/dataviz", label: "Charts", category: "dataviz" },
   { href: "/code", label: "Code", category: "code" },
   { href: "/websites", label: "Websites", category: "websites" },
-  { href: "/bundle", label: "Bundle", category: null },
+  { href: "/bundle", label: "Bundle", category: BUNDLE_CATEGORY },
 ];
 
 const INFORMATION_LINKS = [
@@ -207,6 +215,25 @@ function kitPreviewFromProduct(product: Product): KitPreview {
     image: product.image,
     title: product.title,
     description: product.description,
+  };
+}
+
+// Map a bundle onto the mega-menu card shape. Bundles point at the /bundle
+// listing (no per-bundle detail route), keep their already-formatted "$210"
+// price, and have their HTML description flattened to plain text for the
+// clamped preview line.
+function bundlePreviewFromItem(bundle: BundleItem): KitPreview {
+  return {
+    href: "/bundle",
+    buyHref: bundle.buyHref,
+    buyLabel: `Buy ${bundle.price}`,
+    image: bundle.image,
+    title: bundle.title,
+    description: bundle.descriptionHtml
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim(),
   };
 }
 
@@ -350,6 +377,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   // hovered section — giving each tab a genuinely distinct set. "All"/"Bundle"
   // (category === null) keep the curated featured order.
   const filteredKitPreviews = (() => {
+    if (activeKitCategory === BUNDLE_CATEGORY) {
+      return BUNDLES.slice(0, NAV_KIT_PREVIEW_COUNT).map(bundlePreviewFromItem);
+    }
     if (!activeKitCategory) return KIT_PREVIEWS;
     const category = activeKitCategory;
     const matched = PRODUCTS.filter((product) => product.categories.includes(category))
