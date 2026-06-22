@@ -4,7 +4,6 @@ import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
-import TemplateShowcase from "../sections/TemplateShowcase";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import type { BlogPostPreview, FreebieItem } from "../../types/data";
 
@@ -75,7 +74,6 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
         </div>
         <FreebiesShowcase excludeSlug={item.slug} />
         <CtaSubscribe />
-        <TemplateShowcase />
       </main>
       <SiteFooter />
       <ScrollUpButton />

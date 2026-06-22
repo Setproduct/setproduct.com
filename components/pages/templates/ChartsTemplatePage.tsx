@@ -3,7 +3,6 @@ import SiteHeader from "../../layout/SiteHeader";
 import SiteFooter from "../../layout/SiteFooter";
 import ScrollUpButton from "../../layout/ScrollUpButton";
 import Breadcrumbs from "../../sections/Breadcrumbs";
-import TemplateShowcase from "../../sections/TemplateShowcase";
 import TemplateVideo from "../../sections/TemplateVideo";
 import TemplateTabsWithSplitter from "../../sections/TemplateTabsWithSplitter";
 import TemplateImageSection from "../../sections/TemplateImageSection";
@@ -155,8 +154,6 @@ export default function ChartsTemplatePage({ item, blogPosts = [] }: Props) {
         {/* FAQ */}
         <FaqSection items={chartsContent.faq} />
 
-        {/* Related Templates */}
-        <TemplateShowcase />
       </main>
       <SiteFooter />
       <ScrollUpButton />
