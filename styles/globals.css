@@ -537,9 +537,10 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 }
 
-/* Navbar dropdown reveal: animate max-height clip (slide-down, no fade).
-   Inset is required on the closed state too — panel is always mounted and
-   would otherwise render at its natural absolute position. */
+/* Navbar dropdown reveal: combine a max-height clip (keeps page layout intact)
+   with an opacity + translateY fade on the inner content for a softer, more
+   polished entrance. Inset is required on the closed state too — the panel is
+   always mounted and would otherwise render at its natural absolute position. */
 @media (min-width: 991px) {
   .navbar .nav_dropdown_list.w-dropdown-list {
     display: block;
@@ -547,12 +548,38 @@ h1[id], h2[id], h3[id], h4[id] {
     max-height: 0;
     overflow: hidden;
     pointer-events: none;
-    transition: max-height 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 0 18px 40px -12px rgba(25, 24, 27, 0.18),
+      0 4px 12px -6px rgba(25, 24, 27, 0.1);
+    transition: max-height 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .navbar .nav_dropdown_list.w-dropdown-list.w--open {
     max-height: 90vh;
     pointer-events: auto;
+  }
+
+  /* Inner content fades + lifts into place; the clip above handles layout. */
+  .navbar .nav_dropdown_list.w-dropdown-list > .container {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 260ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_dropdown_list.w-dropdown-list.w--open > .container {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 60ms;
+  }
+
+  /* Direct menu-to-menu switch (cursor slides between Tutorials / Design Kits /
+     Information while the panel is already open). Snap the height instantly so
+     there's no collapse→expand bounce; only the inner content cross-fades. The
+     outgoing panel drops to 0 height at once, the incoming one jumps to full
+     height, and each .container handles the soft opacity/translateY swap. */
+  .navbar.is-switching .nav_dropdown_list.w-dropdown-list {
+    transition: none;
   }
 }
 
@@ -581,6 +608,266 @@ h1[id], h2[id], h3[id], h4[id] {
 .navbar .nav_dropdown_toggle.w--current .text-size-regular,
 .navbar .nav_dropdown_toggle.w--current .icon {
   color: var(--primary);
+}
+
+/*
+ * Animated dropdown chevron. Replaces Webflow's static icon-font glyph with an
+ * inline SVG (rendered in SiteHeader as .nav_chevron). Webflow's base `.icon`
+ * class is absolutely positioned, so we re-anchor it inline next to the label
+ * and rotate it 180deg on hover (desktop) and when the panel is open (touch).
+ */
+.navbar .nav_dropdown_toggle .icon.nav_chevron {
+  position: static;
+  inset: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  margin: 0;
+  font-size: 16em;
+  line-height: 0;
+  color: inherit;
+}
+
+.navbar .nav_dropdown_toggle .nav_chevron-svg {
+  display: block;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
+.navbar .nav_dropdown_toggle.w--open .nav_chevron-svg {
+  transform: rotate(180deg);
+}
+
+/*
+ * Friendlier hover for dropdown menu rows. Webflow only recolours the text on
+ * hover; here we add a soft pill background, rounded corners and a subtle
+ * horizontal nudge so each row reads as an interactive target. Desktop only —
+ * the mobile drawer keeps its flat list. The negative-margin/padding pair keeps
+ * the text baseline aligned while giving the hover pill breathing room.
+ */
+@media (min-width: 991px) {
+  .navbar .nav_dropdown_list .nav_radio,
+  .navbar .nav_dropdown_list .link-block {
+    border-radius: 10px;
+    padding-left: 10em;
+    padding-right: 10em;
+    margin-left: -10em;
+    margin-right: -10em;
+    transition: background-color 200ms ease, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_dropdown_list .nav_radio:hover,
+  .navbar .nav_dropdown_list .link-block:hover {
+    background-color: var(--light-purple);
+    transform: translateX(4px);
+  }
+}
+
+/*
+ * Preview card hover (the blog/kit thumbnails in the mega-menu). The image
+ * wrapper already clips with overflow:hidden + radius, so we zoom the cover
+ * inside it and lift the thumbnail with a soft shadow. Title shifts to the
+ * brand colour to reinforce the affordance. Desktop only.
+ */
+@media (min-width: 991px) {
+  /* The list column clips its content with a fixed max-height + overflow:hidden.
+     That also clipped the lifted card's box-shadow below. Let the shadow breathe
+     — the outer panel (.nav_dropdown_list, overflow:hidden, 90vh) still bounds the
+     open/close animation, so nothing escapes the dropdown itself. */
+  .navbar .nav_dropdown-list-wr {
+    overflow: visible;
+  }
+
+  .navbar .nav_tabs-list-item-img-wr {
+    box-shadow: 0 0 0 rgba(25, 24, 27, 0);
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 260ms ease;
+  }
+
+  .navbar .nav_tabs-list-item-img-wr img {
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -10px rgba(25, 24, 27, 0.28);
+  }
+
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
+    transform: scale(1.06);
+  }
+
+  .navbar .nav_tabs-list-item:hover .text-color-dark-primary {
+    color: var(--primary);
+    transition: color 200ms ease;
+  }
+
+  /*
+   * Content swap on category hover. The previews column gets a fresh React `key`
+   * each time the active category changes, so it remounts and the keyframes
+   * replay. Cards enter from the categories side (left) and settle to the right,
+   * matching the left→right reading flow between the menu's two columns.
+   */
+  .navbar .nav_tabs-list--animated {
+    animation: nav-cards-slide-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /*
+   * Information dropdown promo. Fills the previously empty right side with two
+   * lead-gen cards side by side (Work with us + Advertising). The wrapper sits in
+   * the same `.nav_dropdown-menu2` flex row as the links column, mirroring the
+   * Design Kits / Tutorials layout; inside, the two cards share the width evenly.
+   */
+  .navbar .nav_info-promo-wr {
+    flex: 1 1 auto;
+    display: flex;
+    gap: 24em;
+  }
+
+  .navbar .nav_info-promo {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    border-radius: 20em;
+    padding: 32em 32em;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
+    border: 1em solid var(--black-transparent);
+  }
+
+  .navbar .nav_info-promo.is-advertising {
+    background:
+      radial-gradient(120% 140% at 0% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
+  }
+
+  .navbar .nav_info-promo-glow {
+    position: absolute;
+    top: -40em;
+    right: -40em;
+    width: 220em;
+    height: 220em;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 77, 255, 0.28) 0%, rgba(124, 77, 255, 0) 70%);
+    pointer-events: none;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .navbar .nav_info-promo:hover .nav_info-promo-glow {
+    transform: scale(1.15) translate(-8em, 8em);
+  }
+
+  /*
+   * Spacing lives on the flex container as `gap`, NOT as `margin-bottom` on the
+   * children. The children below set their own `font-size` (e.g. 24em), and in
+   * this em-based system `margin: Nem` on a font-sized element multiplies
+   * against that font (12em × 24px ≈ 288px), which previously stretched the card
+   * to full screen. The wrapper keeps the root ~1px em scale, so `gap` stays
+   * predictable.
+   */
+  .navbar .nav_info-promo-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12em;
+    width: 100%;
+  }
+
+  .navbar .nav_info-promo-eyebrow {
+    font-size: 12em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .navbar .nav_info-promo-title {
+    font-size: 24em;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--black);
+  }
+
+  .navbar .nav_info-promo-text {
+    color: var(--black);
+    opacity: 0.78;
+  }
+
+  /*
+   * CTA reuses the project's native button styles (`button-small` /
+   * `button secondary`). We only nudge it to the bottom of each card so the two
+   * CTAs line up even when the body copy differs in length, and add a small
+   * top gap above it.
+   */
+  .navbar .nav_info-promo-cta {
+    cursor: pointer;
+    margin-top: auto;
+    padding-top: 4em;
+  }
+
+  /* Desktop shows the two full promo cards; the compact mobile banner is hidden. */
+  .navbar .nav_info-promo-mobile {
+    display: none;
+  }
+}
+
+@keyframes nav-cards-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/*
+ * Motion-safety. Users who prefer reduced motion keep the colour/shadow cues
+ * but lose the transforms (chevron flip, panel lift, row nudge, card zoom).
+ * The dropdown still toggles instantly via the max-height clip.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .navbar .nav_dropdown_toggle .nav_chevron-svg,
+  .navbar .nav_dropdown_list.w-dropdown-list > .container,
+  .navbar .nav_dropdown_list .nav_radio,
+  .navbar .nav_dropdown_list .link-block,
+  .navbar .nav_tabs-list-item-img-wr,
+  .navbar .nav_tabs-list-item-img-wr img {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_tabs-list--animated {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_info-promo-glow {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .navbar .nav_info-promo:hover .nav_info-promo-glow {
+    transform: none !important;
+  }
+
+  .navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
+  .navbar .nav_dropdown_toggle.w--open .nav_chevron-svg,
+  .navbar .nav_dropdown_list .nav_radio:hover,
+  .navbar .nav_dropdown_list .link-block:hover,
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr,
+  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
+    transform: none !important;
+  }
+
+  .navbar .nav_dropdown_list.w-dropdown-list.w--open > .container {
+    opacity: 1;
+  }
 }
 
 /*
@@ -664,6 +951,61 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /*
+   * Bottom sticky zone now hosts the search field (replaces the old
+   * "Get a Quote" button — that intent moved into the Company CTA banner).
+   * Native GET form to /search: Enter / the mobile keyboard "Search" key
+   * (enterKeyHint) submits to /search?query=… The trailing icon button is a
+   * tappable submit affordance for users who don't reach for the keyboard key.
+   */
+  .navbar .nav-menu .nav-menu-mob-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-input {
+    width: 100%;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 52px 0 18px;
+    font-size: 16px;            /* ≥16px prevents iOS zoom-on-focus */
+    line-height: 1.2;
+    color: var(--black);
+    background: var(--light-grey);
+    border: 1px solid var(--black-transparent);
+    border-radius: 12px;
+    outline: none;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-input:focus {
+    border-color: var(--primary);
+    background: var(--white);
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .navbar .nav-menu .nav-menu-mob-search-btn .search-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /*
    * Mobile dropdown sub-panels (Tutorials/Design Kits/Information) — slide-down
    * animation via max-height. Margins stay constant across open/close so child
    * items don't jump horizontally during the collapse animation.
@@ -691,6 +1033,75 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.information,
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.earm-money {
     margin-bottom: 0;
+  }
+
+  /*
+   * Company dropdown on mobile. The two side-by-side `.nav_info-promo` cards are
+   * desktop-only (their styling lives in the min-width:991px block); in the
+   * narrow drawer they overflow and clip text, so we hide them and show a single
+   * compact CTA banner instead — keeps both intents (custom design + advertising)
+   * without tearing the layout. Sizes use plain px here (not the em-fluid scale)
+   * to stay predictable inside the drawer.
+   */
+  /*
+   * The desktop `.nav_dropdown-menu2` is a flex ROW (links column + promo
+   * column side by side) and Webflow's mobile override never resets it. In the
+   * narrow drawer that row pushes the promo off the right edge. Stack it into a
+   * column and let the links column drop its fixed 200em width so children span
+   * the full drawer instead of overflowing.
+   */
+  .navbar .nav-menu .nav_dropdown-menu2 {
+    flex-direction: column;
+  }
+
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list {
+    width: 100%;
+  }
+
+  .navbar .nav-menu .nav_info-promo-wr {
+    display: none;
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 20px;
+    border-radius: 16px;
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
+    border: 1px solid var(--black-transparent);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--black);
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-text {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--black);
+    opacity: 0.78;
+  }
+
+  .navbar .nav-menu .nav_info-promo-mobile-cta {
+    width: 100%;
+    margin-top: 4px;
+    cursor: pointer;
   }
 
   .navbar .menu-button.w-nav-button {

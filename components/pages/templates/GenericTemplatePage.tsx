@@ -3,7 +3,6 @@ import SiteHeader from "../../layout/SiteHeader";
 import SiteFooter from "../../layout/SiteFooter";
 import ScrollUpButton from "../../layout/ScrollUpButton";
 import Breadcrumbs from "../../sections/Breadcrumbs";
-import TemplateShowcase from "../../sections/TemplateShowcase";
 import TemplateVideo from "../../sections/TemplateVideo";
 import TemplateTabsWithSplitter from "../../sections/TemplateTabsWithSplitter";
 import TemplatePricing from "../../sections/TemplatePricing";
@@ -271,8 +270,6 @@ export default function GenericTemplatePage({ item, content, blogPosts = [] }: P
           <FaqSection items={content.faq} />
         )}
 
-        {/* Related Templates */}
-        <TemplateShowcase />
       </main>
       <SiteFooter />
       <ScrollUpButton />

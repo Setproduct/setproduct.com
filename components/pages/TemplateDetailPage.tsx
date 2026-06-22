@@ -4,7 +4,6 @@ import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
-import TemplateShowcase from "../sections/TemplateShowcase";
 import FaqSection from "../sections/FaqSection";
 import type { BlogPostPreview, TemplateItem } from "../../types/data";
 
@@ -114,9 +113,6 @@ export default function TemplateDetailPage({ item, blogPosts = [] }: Props) {
             </div>
           </div>
         )}
-
-        {/* Related Templates */}
-        <TemplateShowcase />
 
         <CtaSubscribe />
       </main>

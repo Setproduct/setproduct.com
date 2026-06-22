@@ -10,7 +10,6 @@ import BlogSidebar from "./BlogSidebar";
 import BlogInlineCta from "./BlogInlineCta";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import CtaSubscribe from "../sections/CtaSubscribe";
-import TemplateShowcase from "../sections/TemplateShowcase";
 import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd } from "../../lib/blog/schema";
 import { SITE_URL } from "../../lib/blog/site-config";
@@ -93,7 +92,6 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
         </div>
         {frontmatter.inlineCta ? <BlogInlineCta cta={frontmatter.inlineCta} /> : <CtaSubscribe />}
         <BlogRelatedPosts posts={relatedPosts} />
-        <TemplateShowcase />
       </main>
       <SiteFooter />
       <ScrollUpButton />
