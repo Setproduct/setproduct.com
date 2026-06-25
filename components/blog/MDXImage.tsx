@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -75,6 +75,17 @@ export default function MDXImage({
       close={closeLightbox}
       slides={[{ src }]}
       carousel={{ finite: true }}
+      // Click anywhere outside the image (the backdrop) closes the lightbox.
+      controller={{ closeOnBackdropClick: true }}
+      // White backdrop instead of the default black, with a dark close icon
+      // (YARL exposes button colors via these CSS variables on the root).
+      styles={{
+        container: { backgroundColor: "rgba(255, 255, 255, 0.96)" },
+        root: {
+          "--yarl__color_button": "#19181b",
+          "--yarl__color_button_active": "#000",
+        } as CSSProperties,
+      }}
       render={{ buttonPrev: () => null, buttonNext: () => null }}
     />
   );
