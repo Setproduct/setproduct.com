@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useRef, useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -84,7 +84,7 @@ export default function MDXImage({
         root: {
           "--yarl__color_button": "#19181b",
           "--yarl__color_button_active": "#000",
-        } as CSSProperties,
+        },
       }}
       render={{ buttonPrev: () => null, buttonNext: () => null }}
     />
