@@ -1,5 +1,5 @@
 ---
-name: seo-content-optimization
+name: seo
 description: Activate when user asks to improve, optimize, or rewrite SEO metadata (title tags, meta descriptions, card descriptions, subtitles, frontmatter fields) for any blog post. Also activate for requests involving Search Console data analysis, CTR improvements, click-through rate optimization, SERP performance, or work on .ai/seo-baseline-*.md or .ai/seo-benchmarks.md files. Covers all blog categories — UI design, tutorials, startups, crypto, growth, career, design trends, technology, research, SEO, resources.
 ---
 
@@ -57,6 +57,7 @@ These apply to every post, regardless of topic:
   "Definitive" — they signal undifferentiated template content
 - Forbidden weak endings: bare "Guide" or "Tutorial" without 
   a hook
+- Forbidden to use ":" in title — it splits the title in SERP and reduces CTR
 
 ### Description rules
 
