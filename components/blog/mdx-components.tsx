@@ -1,7 +1,9 @@
 import type { MDXRemoteProps } from "next-mdx-remote";
 import MDXImage from "./MDXImage";
+import CodeBlock from "./CodeBlock";
 
 export const blogMdxComponents: MDXRemoteProps["components"] = {
+  pre: (props) => <CodeBlock {...props} />,
   img: (props) => {
     const title = typeof props.title === "string" ? props.title : "";
     const float =

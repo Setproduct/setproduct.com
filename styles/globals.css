@@ -189,7 +189,7 @@ h1[id], h2[id], h3[id], h4[id] {
   font-weight: 400;
   font-size: 0.875rem !important;
   line-height: 1.5 !important;
-  border-radius: 0.375rem !important;
+  border-radius: 1.25rem !important;
   white-space: pre !important;
   tab-size: 2;
 }
@@ -200,11 +200,56 @@ h1[id], h2[id], h3[id], h4[id] {
   overflow-x: auto;
   padding: 1rem !important;
   background-color: #2b2b2b !important;
+  border-radius: 1.25rem !important;
   color: #d2d2d2;
   font-family: inherit !important;
   font-size: inherit !important;
   line-height: inherit !important;
   white-space: inherit !important;
+}
+
+/*
+ * Copy-to-clipboard button injected by the CodeBlock React component
+ * (components/blog/CodeBlock.tsx, mapped onto <pre> in mdx-components.tsx).
+ * The wrapper anchors the round button to the top-right corner of the code
+ * block, 4px in from both edges. The button sits above the .hljs scroll area.
+ */
+.rich-text-18 .code-block-wrap {
+  position: relative;
+}
+
+.rich-text-18 .code-block-wrap pre {
+  margin: 1.5rem 0 !important;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.code-copy-btn:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.code-copy-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 .rich-text-18 pre .hljs::-webkit-scrollbar {
@@ -1289,10 +1334,11 @@ h1[id], h2[id], h3[id], h4[id] {
 .text-input.is-nav-search {
   width: 16.6667em;          /* was 11.1111em — +50% wider */
   font-size: 14em;
-  min-height: 3.214em;       /* preserves outer height: 2.5em * 18 / 14 */
-  padding-top: 0.771em;      /* preserves vertical padding: 0.6 * 18 / 14 */
-  padding-bottom: 0.771em;
+  min-height: 2.928em;       /* −4px vs 3.214em to match the Inspire me button height (4/14 ≈ 0.286em) */
+  padding-top: 0.629em;      /* re-centred vertically after the 4px height cut: 0.771 − 2px */
+  padding-bottom: 0.629em;
   padding-left: 3.143em;     /* preserves icon clearance: 2.44444 * 18 / 14 */
+  border-radius: 1.143em;    /* ≈16px at 14px scope — slightly rounder to visually match the button */
 }
 
 /* Rotating placeholder rendered as absolutely-positioned spans on top of
