@@ -1454,3 +1454,67 @@ h1[id], h2[id], h3[id], h4[id] {
     transition: none;
   }
 }
+
+/* Floating share buttons stacked above the scroll-up button on blog posts */
+.blog-floating-share {
+  z-index: 2;
+  position: fixed;
+  inset: auto 25em 62em auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-row-gap: 12em;
+  row-gap: 12em;
+  padding-bottom: 12em;
+}
+
+/* Subtle divider that separates the share group from the scroll-up arrow */
+.blog-floating-share::after {
+  content: "";
+  width: 24em;
+  height: 1px;
+  background-color: var(--black-transparent);
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.blog-floating-share.is-visible::after {
+  opacity: 1;
+  transition-delay: 150ms;
+}
+
+.blog-floating-share .blogpost_soc-link {
+  width: 32em;
+  height: 32em;
+}
+
+/* Hover "even zoom": icon scales up uniformly from its center, no vertical
+   shift — matching the footer social icons. Transform lives on the <img> so
+   it doesn't fight the cascade transform applied inline on the <a> wrapper. */
+.blog-floating-share .blogpost_soc-link img {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+.blog-floating-share .blogpost_soc-link:hover {
+  opacity: 1;
+}
+
+.blog-floating-share .blogpost_soc-link:hover img {
+  transform: scale(1.144);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-floating-share .blogpost_soc-link img,
+  .blog-floating-share .blogpost_soc-link:hover img {
+    transition: none;
+    transform: none;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .blog-floating-share {
+    right: 18em;
+    bottom: 50em;
+  }
+}

@@ -2,16 +2,13 @@ import { useRef, useEffect, useState, type RefObject, type CSSProperties } from 
 import type { BlogHeading } from "../../types/blog";
 import { useSubscribe } from "../../hooks/useSubscribe";
 import BlogTableOfContents from "./BlogTableOfContents";
-import BlogShareLinks from "./BlogShareLinks";
 
 type BlogSidebarProps = {
   headings: BlogHeading[];
-  postUrl: string;
-  postTitle: string;
   containerRef: RefObject<HTMLDivElement | null>;
 };
 
-export default function BlogSidebar({ headings, postUrl, postTitle, containerRef }: BlogSidebarProps) {
+export default function BlogSidebar({ headings, containerRef }: BlogSidebarProps) {
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
   const innerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(true);
@@ -131,8 +128,6 @@ export default function BlogSidebar({ headings, postUrl, postTitle, containerRef
               <p className="text-size-small">Thank you! You&apos;re subscribed.</p>
             )}
           </div>
-          <div className="blogpost_content-line-divider" />
-          <BlogShareLinks url={postUrl} title={postTitle} />
         </div>
       </div>
     </div>

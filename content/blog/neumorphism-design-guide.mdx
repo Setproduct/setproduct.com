@@ -44,13 +44,13 @@ Every neumorphism interface runs on the same small set of moves. Learn these six
 
 ❷ **Dual shadow recipe.** Each element carries two shadows at once. A light shadow on the top-left, as if a soft lamp sits above and left, and a dark shadow on the bottom-right. Together they read as a rounded extrusion. Remove either one and the shape collapses flat.
 
-❸ **Subtle border radius.** Corners are rounded but restrained, usually 12-20px, softer and tighter than claymorphism's chunky 24-32px. The radius should feel like molded hardware, not an inflated balloon. Sharp corners break the molded illusion just as fast as oversized ones overshoot it.
+❸ **Subtle border radius.** Corners are rounded but restrained, usually 12-20px, softer and tighter than claymorphism's chunky 24-32px. The radius should feel like molded hardware rather than an inflated balloon. Sharp corners break the molded illusion just as fast as oversized ones overshoot it.
 
 ❹ **Monochrome palette.** The default is one hue across the whole screen, most often a light gray or a desaturated tint. Color, when it appears, is reserved for a single accent. This restraint is what gives neumorphism its quiet, instrument-panel calm.
 
 ❺ **Low-contrast typography.** Text sits close to the background in tone, soft grays on lighter grays. This is both the signature and the wound. It looks serene in a hero shot and fails real legibility tests, which is the central tension of the entire style.
 
-❻ **Pressed and inset states.** Interaction flips the shadows inward. A resting button extrudes outward, and on press the same shadows move to `inset`, so the surface looks pushed into the page. This inversion is the one motion neumorphism does genuinely well, because a physical-looking dent reads as "pressed" even without color change.
+❻ **Pressed and inset states.** Interaction flips the shadows inward. A resting button extrudes outward, and on press the same shadows move to `inset`, so the surface looks pushed into the page. This inversion is the one motion neumorphism gets right, because a physical-looking dent reads as "pressed" even without color change.
 
 ## Visual examples gallery
 
@@ -175,16 +175,16 @@ This is where I stop being charmed. Neumorphism has a structural accessibility p
 
 ![A side-by-side comparison of a low-contrast neumorphic button and an accessible high-contrast version](/blog/assets/neumorphism-design-guide/img-11.webp "float-right")
 
-The failures are specific. Text on a background-matching surface routinely lands below the WCAG AA minimum of 4.5:1 for normal text, because soft gray on gray is the whole aesthetic. Buttons look identical to non-interactive surfaces, so users cannot tell what is clickable without trial and error. Focus states are weak, since a focus ring on a shadow-only element is barely visible. And screen readers get nothing from shadows, so any state you communicate through depth alone is invisible to assistive technology.
+The failures are specific. Text on a background-matching surface routinely lands below the WCAG AA minimum of 4.5:1 for normal text, because soft gray on gray is the whole aesthetic. Buttons look identical to non-interactive surfaces, so users can't tell what is clickable without trial and error. Focus states are weak, since a focus ring on a shadow-only element is barely visible. And screen readers get nothing from shadows, so any state you communicate through depth alone is invisible to assistive technology.
 
-The fix is not to abandon the style. It is to bend it. Add a real accent color on interactive elements so a button announces itself instead of hiding. Use a visible border or a bold ring for focus, not a soft glow, and lean on the MDX-friendly [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) selector so the indicator shows for keyboard users. Push text contrast to 7:1 even when the aesthetic begs for less, matching the WCAG AAA bar rather than the AA floor. The [WCAG 2.2 contrast guidelines](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) give you the exact ratios to test against. When in doubt, ship hybrid neumorphism: keep the soft shadows for mood, but add clear borders and accent fills so the interface stays usable. The shadows can stay soft. The legibility cannot.
+The fix is not to abandon the style. It is to bend it. Add a real accent color on interactive elements so a button announces itself instead of hiding. Use a visible border or a bold ring for focus instead of a soft glow, and lean on the MDX-friendly [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) selector so the indicator shows for keyboard users. Push text contrast to 7:1 even when the aesthetic begs for less, matching the WCAG AAA bar rather than the AA floor. The [WCAG 2.2 contrast guidelines](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) give you the exact ratios to test against. When in doubt, ship hybrid neumorphism: keep the soft shadows for mood, but add clear borders and accent fills so the interface stays usable. That hybrid keeps the calm surface while the contrast does the real work of telling users what to read and tap.
 
 ## Neumorphism guidelines for AI agents
 
 This is the part I actually keep on hand. When I prototype a neumorphic screen in Cursor, Claude, v0, or Lovable, the prompt "make it neumorphism" produces gray mush with unreadable text. A precise spec produces something shippable and accessible. Copy the block below into your AI tool as a style instruction, then describe the screen. It pins the exact shadow values and, more importantly, the accessibility floors the model would otherwise ignore.
 
 ```text
-NEUMORPHISM.md — design spec for AI agents
+NEUMORPHISM.md, design spec for AI agents
 Follow these tokens verbatim. Accessibility rules are NOT optional.
 
 == 1. Visual identity ==
@@ -214,7 +214,7 @@ Light/dark stops:
    dark gray, NOT black)
 
 == 3. Typography ==
-  Family: clean sans — Inter, SF Pro, Manrope, Nunito Sans
+  Family: clean sans, like Inter, SF Pro, Manrope, Nunito Sans
   Weights: 500 body, 600 labels, 700 headings
   Sizes: h1 28-32, h2 22, body 16 min, caption 13
   Contrast: body text >= 7:1 against the surface. This overrides
@@ -236,7 +236,7 @@ Input:
 Toggle:
   track = inset well, thumb = extruded circle,
   ON state fills the track or thumb with --accent (color, not
-  shadow, communicates state — screen readers need aria-checked).
+  shadow, communicates state, so screen readers need aria-checked).
 Slider:
   track = inset groove, thumb = extruded knob with --accent dot,
   never rely on shadow alone to show the filled portion.
@@ -268,7 +268,7 @@ Slider:
   - Letting text sit gray-on-gray below 4.5:1 (the cardinal sin)
   - Using a single drop shadow instead of the dual light+dark pair
   - Adding bright, saturated accent colors everywhere, which
-    destroys the monochrome calm — accent is ONE color, used rarely
+    destroys the monochrome calm; accent is ONE color, used rarely
   - Making buttons indistinguishable from cards (no accent, no
     border), so users cannot find the clickable element
   - Pure white highlights / pure black shades in dark mode, which
@@ -279,7 +279,7 @@ If you keep that spec around, you can compare your generation against real produ
 
 ## When neumorphism works and when it doesn't
 
-The style is a narrow instrument, and most products are not the nail it hits. Use this as a decision framework, not a vibe.
+The style is a narrow instrument, and most products are not the nail it hits. Treat the lists below as a decision framework you can apply rather than a mood board to admire.
 
 ![A split layout contrasting a calm neumorphic remote with a dense, unusable data table](/blog/assets/neumorphism-design-guide/img-12.webp "float-left")
 
@@ -303,7 +303,7 @@ The honest test: if the product is one tactile instrument used by people with go
 
 ## Related design morphisms
 
-Neumorphism is one stop on a longer tour of depth styles, and the contrast between them is the fun part. For the warmer, higher-contrast cousin that fixes most of neumorphism's legibility sins, read the [claymorphism design guide](/blog/claymorphism-design-guide), where bright pastel surfaces do the work shadows cannot. For the frosted, translucent direction that Apple pushed into the mainstream, the [practical guide to liquid glass](/blog/liquid-glass-design-explained-a-practical-guide) shows depth built from refraction instead of extrusion. And for the exact opposite philosophy, loud, sharp, and deliberately ugly, the [retro brutalist UI guide](/blog/retro-brutalist-ui-design-2026) does everything neumorphism refuses to.
+Neumorphism is one stop on a longer tour of depth styles, and the contrast between them is the fun part. For the warmer, higher-contrast cousin that fixes most of neumorphism's legibility sins, read the [claymorphism design guide](/blog/claymorphism-design-guide), where bright pastel surfaces do the work shadows can't. For the frosted, translucent direction that Apple pushed into the mainstream, the [practical guide to liquid glass](/blog/liquid-glass-design-explained-a-practical-guide) shows depth built from refraction instead of extrusion. And for the exact opposite philosophy, loud, sharp, and deliberately ugly, the [retro brutalist UI guide](/blog/retro-brutalist-ui-design-2026) does everything neumorphism refuses to.
 
 Trends like these rarely win outright. They each solve one mood well and then overstay it. The useful skill is not picking a favorite, it is knowing which one the screen in front of you actually needs.
 
@@ -311,7 +311,7 @@ Trends like these rarely win outright. They each solve one mood well and then ov
 
 ### Is neumorphism still used in 2026?
 
-In its niche, yes. Neumorphism never became a default like flat design, and the accessibility backlash cooled the 2020 hype fast. As of 2026 it stays popular for single-purpose instruments like players, smart-home remotes, and calculators, plus concept shots on Dribbble. It is a deliberate stylistic choice for calm, tactile widgets, not a general-purpose system.
+In its niche, yes. Neumorphism never became a default like flat design, and the accessibility backlash cooled the 2020 hype fast. As of 2026 it stays popular for single-purpose instruments like players, smart-home remotes, and calculators, plus concept shots on Dribbble. It works as a deliberate stylistic choice for calm, tactile widgets rather than a general-purpose system.
 
 ### What is the difference between neumorphism and claymorphism?
 
@@ -319,7 +319,7 @@ Neumorphism keeps surfaces the same color as the page and extrudes them with one
 
 ### Why is neumorphism considered bad for accessibility?
 
-Because the look depends on low contrast. Text on a background-matching surface often falls below the WCAG AA minimum of 4.5:1, buttons look identical to non-interactive surfaces, focus states are weak, and screen readers get no cue from shadows. You can adapt the style with accent colors, borders, and higher text contrast, but the default version fails common accessibility checks.
+Because the look depends on low contrast. Text on a background-matching surface often falls below the WCAG AA minimum of 4.5:1, buttons look identical to non-interactive surfaces, focus states are weak, and screen readers get no cue from shadows. You can adapt the style by adding an accent color and a visible border, then pushing text contrast higher, but the default version fails common accessibility checks.
 
 ### How do I create the neumorphism shadow in CSS?
 

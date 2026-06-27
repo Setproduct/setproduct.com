@@ -7,6 +7,7 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import BlogHero from "./BlogHero";
 import BlogAuthor from "./BlogAuthor";
 import BlogSidebar from "./BlogSidebar";
+import BlogFloatingShare from "./BlogFloatingShare";
 import BlogInlineCta from "./BlogInlineCta";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import CtaSubscribe from "../sections/CtaSubscribe";
@@ -70,12 +71,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
           <div className="section-padding bottom-112">
             <div className="container">
               <div className="blogpost_content-section" ref={contentSectionRef}>
-                <BlogSidebar
-                  headings={headings}
-                  postUrl={postUrl}
-                  postTitle={frontmatter.title}
-                  containerRef={contentSectionRef}
-                />
+                <BlogSidebar headings={headings} containerRef={contentSectionRef} />
                 <div
                   id="w-node-content"
                   className="blogpost_content-column2"
@@ -94,6 +90,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
         <BlogRelatedPosts posts={relatedPosts} />
       </main>
       <SiteFooter />
+      <BlogFloatingShare url={postUrl} title={frontmatter.title} />
       <ScrollUpButton />
     </>
   );
