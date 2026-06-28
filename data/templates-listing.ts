@@ -283,7 +283,7 @@ export const TEMPLATE_PRODUCTS: TemplateItem[] = [
     heroImage: "/images/nucleus-cover-1920-m.webp",
     ogImage: "/images/nucleus-cover-1920-m.webp",
     category: "Mobile",
-    price: "$68",
+    price: "$99",
     buyHref: "https://gumroad.com/a/169902547/snlaf",
     previewHref: "https://www.figma.com/file/yCECl956c0oOr3K8GdXdNe/%5BPREVIEW%5D-Nucleus-Plus---2023-Update-2.5-(For-Mobile-App-%26-Web)?type=design&node-id=770-5839&mode=design",
     features: [],

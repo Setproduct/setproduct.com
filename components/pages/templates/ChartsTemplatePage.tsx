@@ -9,6 +9,7 @@ import TemplateImageSection from "../../sections/TemplateImageSection";
 import TemplatePricing from "../../sections/TemplatePricing";
 import TemplateCtaHire from "../../sections/TemplateCtaHire";
 import FaqSection from "../../sections/FaqSection";
+import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import { chartsContent } from "../../../data/template-content/charts";
 import type { BlogPostPreview, TemplateItem } from "../../../types/data";
 
@@ -156,6 +157,11 @@ export default function ChartsTemplatePage({ item, blogPosts = [] }: Props) {
 
       </main>
       <SiteFooter />
+      <TemplateStickyCta
+        item={item}
+        price={chartsContent.pricing.cards[0]?.price}
+        buyHref={chartsContent.pricing.cards[0]?.buyHref}
+      />
       <ScrollUpButton />
     </>
   );

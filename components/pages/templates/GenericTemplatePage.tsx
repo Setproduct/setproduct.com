@@ -7,6 +7,7 @@ import TemplateVideo from "../../sections/TemplateVideo";
 import TemplateTabsWithSplitter from "../../sections/TemplateTabsWithSplitter";
 import TemplatePricing from "../../sections/TemplatePricing";
 import TemplateCtaHire from "../../sections/TemplateCtaHire";
+import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
@@ -55,6 +56,7 @@ type TemplateContent = {
       title: string;
       description: string;
       image: string;
+      imageFit?: "cover" | "contain";
       price?: string;
       buyHref: string;
       buyLabel: string;
@@ -272,6 +274,11 @@ export default function GenericTemplatePage({ item, content, blogPosts = [] }: P
 
       </main>
       <SiteFooter />
+      <TemplateStickyCta
+        item={item}
+        price={content.pricing?.cards[0]?.price}
+        buyHref={content.pricing?.cards[0]?.buyHref}
+      />
       <ScrollUpButton />
     </>
   );

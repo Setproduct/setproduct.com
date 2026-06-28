@@ -2,6 +2,7 @@ type PricingCard = {
   title: string;
   description: string;
   image: string;
+  imageFit?: "cover" | "contain";
   price?: string;
   buyHref: string;
   buyLabel: string;
@@ -16,7 +17,7 @@ type Props = {
 
 export default function TemplatePricing({ title, subtitle, cards }: Props) {
   return (
-    <div className="section">
+    <div className="section" id="template-pricing">
       <div className="section-padding top-80 bottom-80">
         <div className="container">
           {(title || subtitle) && (
@@ -33,7 +34,11 @@ export default function TemplatePricing({ title, subtitle, cards }: Props) {
                 <div className="template-list-item-img-wr is-height-480">
                   <img
                     alt={card.title}
-                    className="image-cover"
+                    className={
+                      card.imageFit === "contain"
+                        ? "image-cover is-fit-contain"
+                        : "image-cover"
+                    }
                     loading="lazy"
                     src={card.image}
                   />

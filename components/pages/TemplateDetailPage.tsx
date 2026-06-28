@@ -5,6 +5,7 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FaqSection from "../sections/FaqSection";
+import TemplateStickyCta from "../sections/TemplateStickyCta";
 import type { BlogPostPreview, TemplateItem } from "../../types/data";
 
 type Props = {
@@ -117,6 +118,7 @@ export default function TemplateDetailPage({ item, blogPosts = [] }: Props) {
         <CtaSubscribe />
       </main>
       <SiteFooter />
+      <TemplateStickyCta item={item} />
       <ScrollUpButton />
     </>
   );
