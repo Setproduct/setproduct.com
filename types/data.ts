@@ -51,6 +51,8 @@ export type FreebieItem = {
   previewHref: string;
   duplicateHref: string;
   isFree: boolean;
+  ctaLabel?: string;
+  menuCtaLabel?: string;
 };
 
 export type Testimonial = {

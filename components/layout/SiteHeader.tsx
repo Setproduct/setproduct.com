@@ -110,6 +110,7 @@ const INFORMATION_LINKS = [
 // is sentence-case for display; `category` must match FREEBIE_PRODUCTS exactly.
 const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "All topics", category: null },
+  { label: "Code", category: "Code" },
   { label: "Components", category: "Components" },
   { label: "Mobile templates", category: "Mobile Templates" },
   { label: "Mobile & desktop", category: "Mobile & Desktop" },
@@ -720,7 +721,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                             <div className="nav_tabs-list-item-btn-wr">
                                               <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
-                                                <div className="text-size-regular text-weight-bold">{item.isFree ? "Duplicate" : "Buy"}</div>
+                                                <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
                                               </a>
                                               <a className="button-x-small is-text w-inline-block" href={item.previewHref}>
                                                 <div className="text-size-regular text-weight-bold">Preview</div>

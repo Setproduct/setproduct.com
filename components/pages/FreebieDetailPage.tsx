@@ -5,6 +5,7 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
+import FreebieArticle from "../sections/FreebieArticle";
 import type { BlogPostPreview, FreebieItem } from "../../types/data";
 
 type Props = {
@@ -50,7 +51,7 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
                       rel="noopener noreferrer"
                     >
                       <div className="text-size-large text-weight-bold">
-                        {item.isFree ? "Duplicate ⚡" : "Buy"}
+                        {item.ctaLabel ?? (item.isFree ? "Duplicate ⚡" : "Buy")}
                       </div>
                     </a>
                   </div>
@@ -71,7 +72,9 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
         </div>
         <div className="hide-on-mobile">
           <Breadcrumbs items={breadcrumbs} />
+          <div className="spacer-24" />
         </div>
+        <FreebieArticle slug={item.slug} />
         <FreebiesShowcase excludeSlug={item.slug} />
         <CtaSubscribe />
       </main>
