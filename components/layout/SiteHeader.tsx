@@ -5,7 +5,8 @@ import type { CSSProperties, FocusEvent as ReactFocusEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
-import LaunchAppCallout from "./LaunchAppCallout";
+// Temporarily disabled — kept for potential future use.
+// import LaunchAppCallout from "./LaunchAppCallout";
 import ArrowIcon from "../sections/ArrowIcon";
 import type { BlogPostPreview, Product } from "../../types/data";
 import { PRODUCTS } from "../../data/products";
@@ -1013,7 +1014,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                 <div className="text-size-medium text-weight-bold">Inspire me</div>
                 <div style={LAUNCH_APP_SUBLABEL_STYLE}>AI UI library →</div>
               </a>
-              <LaunchAppCallout />
+              {/* Temporarily disabled — kept for potential future use. */}
+              {/* <LaunchAppCallout /> */}
             </div>
           </div>
         </div>
