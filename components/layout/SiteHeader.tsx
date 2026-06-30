@@ -8,11 +8,12 @@ import { useContactModal } from "../modals/ContactModalContext";
 // Temporarily disabled — kept for potential future use.
 // import LaunchAppCallout from "./LaunchAppCallout";
 import ArrowIcon from "../sections/ArrowIcon";
-import type { BlogPostPreview, Product } from "../../types/data";
+import type { BlogPostPreview, InspirationItem, Product } from "../../types/data";
 import { PRODUCTS } from "../../data/products";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
 import { BUNDLES } from "../../data/bundles";
 import type { BundleItem } from "../../data/bundles";
+import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
 
 function ChevronIcon() {
   return (
@@ -27,31 +28,6 @@ function ChevronIcon() {
     >
       <path
         d="M4 6l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-// Small ↗ glyph appended to nav items that navigate to an external subdomain
-// (Inspiration → app.setproduct.com), so the target="_blank" jump is honest
-// and predictable instead of silently leaving the marketing site.
-function ExternalLinkIcon() {
-  return (
-    <svg
-      width="1em"
-      height="1em"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-      style={{ marginLeft: "0.3em", opacity: 0.6 }}
-    >
-      <path
-        d="M6 4h6v6M12 4L4.5 11.5"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
@@ -122,6 +98,78 @@ const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> 
 const NAV_BLOG_PREVIEW_COUNT = 6;
 const NAV_KIT_PREVIEW_COUNT = 6;
 const NAV_FREEBIE_PREVIEW_COUNT = 6;
+const NAV_INSPIRATION_PREVIEW_COUNT = 6;
+
+// Safety net: if a failed/empty scrape leaves data/inspiration.ts with no
+// items, the mega-menu would render a blank panel. In that case we fall back
+// to a plain external link to the AI UI library instead.
+const HAS_INSPIRATION = INSPIRATION_ITEMS.length > 0;
+
+// UTM tagging for every outbound Inspiration link so app.setproduct.com can
+// attribute the traffic this mega-menu sends. Appended at render time (the
+// scraped hrefs in data/inspiration.ts stay clean).
+const INSPIRATION_UTM = "utm_source=setproduct.com&utm_medium=navbar&utm_campaign=inspiration";
+function withUtm(href: string): string {
+  return href.includes("?") ? `${href}&${INSPIRATION_UTM}` : `${href}?${INSPIRATION_UTM}`;
+}
+
+// Fisher–Yates shuffle — returns a new array, leaving the source untouched.
+function shuffle<T>(input: readonly T[]): T[] {
+  const out = input.slice();
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+// Tracks image URLs that have already been revealed once. Cards remount when
+// the active category changes (key={item.id}); without this, every remount
+// would replay the blur fade-in even though the image is already cached. By
+// remembering revealed URLs we initialise such thumbs as already-loaded, so the
+// reveal animation plays only the first time each preview appears.
+const revealedInspirationImages = new Set<string>();
+
+// Thumbnail with a shimmer skeleton until the lazy image decodes. The wrapper
+// gets `.is-loaded` on load → shimmer fades out, image blur-fades in. We check
+// `complete` on mount so cached images (which may skip onLoad) reveal at once,
+// and skip the animation entirely for previews already shown earlier.
+function InspirationThumb({ href, image }: { href: string; image: string }) {
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const [loaded, setLoaded] = useState(() => revealedInspirationImages.has(image));
+
+  const reveal = () => {
+    revealedInspirationImages.add(image);
+    setLoaded(true);
+  };
+
+  useEffect(() => {
+    if (!loaded && imgRef.current?.complete) {
+      reveal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <a
+      className={`nav_tabs-list-item-img-wr nav_inspiration-img-wr w-inline-block relative${loaded ? " is-loaded" : ""}`}
+      href={href}
+      rel="noreferrer"
+      target="_blank"
+    >
+      <img
+        ref={imgRef}
+        alt=""
+        src={image}
+        loading="lazy"
+        onLoad={reveal}
+        onError={reveal}
+        className="image-cover nav_inspiration-img"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
+    </a>
+  );
+}
 
 const SEARCH_PLACEHOLDERS = [
   "Search dashboards…",
@@ -260,6 +308,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
   const [activeKitCategory, setActiveKitCategory] = useState<string | null>(null);
   const [activeFreebieCategory, setActiveFreebieCategory] = useState<string | null>(null);
+  const [activeInspirationCategory, setActiveInspirationCategory] = useState<string | null>(null);
+  // Server render and first client paint must match, so we start from the
+  // source order and reshuffle on mount — giving a fresh six on every refresh
+  // without tripping hydration.
+  const [shuffledInspiration, setShuffledInspiration] = useState<InspirationItem[]>(INSPIRATION_ITEMS);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);
   const [previousPlaceholderIndex, setPreviousPlaceholderIndex] =
@@ -281,6 +334,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const isInformationActive = INFORMATION_LINKS.some(
     (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
   );
+  // The Inspiration tab points off-site (app.setproduct.com), so it never maps
+  // to a local route — its "active" state is purely the open-menu highlight.
+  const isInspirationActive = openMenu === "inspiration";
 
   const isMenuOpen = (menuName: string) => openMenu === menuName;
 
@@ -489,6 +545,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     [],
   );
 
+  // Reshuffle the inspiration pool once on mount. Doing it in an effect (not at
+  // render) keeps SSR and the first client paint identical — the randomised
+  // order swaps in right after hydration, so each refresh shows a fresh six.
+  useEffect(() => {
+    setShuffledInspiration(shuffle(INSPIRATION_ITEMS));
+  }, []);
+
   const filteredBlogPreviews = (activeBlogCategory
     ? blogPosts.filter((p) => p.category === activeBlogCategory)
     : blogPosts
@@ -523,6 +586,27 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     return (list.length ? list : FREEBIE_PRODUCTS).slice(0, NAV_FREEBIE_PREVIEW_COUNT);
   })();
 
+  // Hovering a category on the left narrows the inspiration previews to that
+  // component type; "All" (category === null) draws from the whole shuffled
+  // pool. We filter the already-shuffled list so the six shown stay random yet
+  // refresh-stable. If a category has fewer than NAV_INSPIRATION_PREVIEW_COUNT
+  // items (e.g. Badges only has 4), we top the row up with other items from the
+  // pool so the grid always renders a full set of six cards.
+  const filteredInspirationPreviews = (() => {
+    if (!activeInspirationCategory) {
+      return shuffledInspiration.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+    }
+    const matched = shuffledInspiration.filter(
+      (item) => item.componentType === activeInspirationCategory,
+    );
+    if (matched.length >= NAV_INSPIRATION_PREVIEW_COUNT) {
+      return matched.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+    }
+    const matchedIds = new Set(matched.map((item) => item.id));
+    const filler = shuffledInspiration.filter((item) => !matchedIds.has(item.id));
+    return [...matched, ...filler].slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+  })();
+
   return (
     <div
       ref={navbarRef}
@@ -543,22 +627,109 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
           >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
-                <a
-                  className="nav-link-block w-inline-block"
-                  href="https://app.setproduct.com/"
-                  rel="noreferrer"
-                  target="_blank"
-                  aria-label="Inspiration — AI UI library (opens in a new tab)"
-                >
-                  <div
-                    className="text-size-regular"
-                    style={{ display: "inline-flex", alignItems: "center" }}
-                  >
-                    Inspiration
-                    <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
-                    <ExternalLinkIcon />
+                {HAS_INSPIRATION ? (
+                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("inspiration")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("inspiration")} onBlur={closeOnBlur}>
+                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("inspiration") ? "w--open" : ""}`} data-delay="0" data-hover="true">
+                    <div
+                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("inspiration") ? "w--open" : ""}${isInspirationActive ? " w--current" : ""}`}
+                      onClick={() => toggleMenu("inspiration")}
+                      aria-haspopup="true"
+                      aria-expanded={isMenuOpen("inspiration")}
+                    >
+                      <div className="text-size-regular" style={{ display: "inline-flex", alignItems: "center" }}>
+                        Inspiration
+                        <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
+                      </div>
+                      <span className="icon nav_chevron"><ChevronIcon /></span>
+                      <a
+                        className="nav_dropdown_toggle-link w-inline-block"
+                        href={withUtm("https://app.setproduct.com/")}
+                        rel="noreferrer"
+                        target="_blank"
+                        aria-label="Inspiration — AI UI library (opens in a new tab)"
+                      />
+                    </div>
+                    <nav
+                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("inspiration") ? "w--open" : ""}`}
+                      aria-hidden={!isMenuOpen("inspiration")}
+                    >
+                      <div className="container">
+                        <div className="form-block w-form">
+                          <form method="get" name="email-form-nav-inspiration">
+                            <div className="nav_dropdown-menu2">
+                              <div className="nav_dropdown-column list">
+                                <div className="nav_dropdown-column-title-wr">
+                                  <div className="text-size-regular">Categories</div>
+                                </div>
+                                <div className="nav-links is-1-column">
+                                  {INSPIRATION_CATEGORIES.map((cat) => {
+                                    const isActive = activeInspirationCategory === cat.slug;
+                                    return (
+                                      <a
+                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
+                                        href={withUtm(`https://app.setproduct.com/components/${cat.slug}`)}
+                                        rel="noreferrer"
+                                        target="_blank"
+                                        key={cat.slug}
+                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveInspirationCategory(cat.slug))}
+                                        onMouseLeave={clearSubHoverIntent}
+                                        onFocus={() => switchSubcategoryNow(() => setActiveInspirationCategory(cat.slug))}
+                                      >
+                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{cat.label}</p>
+                                      </a>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                              <div className="nav_dropdown-list-wr">
+                                <div className="nav_tabs-list-wr w-dyn-list">
+                                  <div
+                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
+                                    role="list"
+                                    key={`inspiration-${activeInspirationCategory ?? "all"}`}
+                                  >
+                                    {filteredInspirationPreviews.map((item) => (
+                                      <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.id} role="listitem">
+                                        <div className="nav_tabs-list-item-wr">
+                                          <InspirationThumb href={withUtm(item.href)} image={item.image} />
+                                          <div className="nav_tabs-list-item-info-wr">
+                                            <a className="w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
+                                              <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                            </a>
+                                            <p className="text-size-tiny text-style-3lines">{item.description}</p>
+                                            <div className="nav_tabs-list-item-btn-wr">
+                                              <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
+                                                <div className="text-size-regular text-weight-bold">View</div>
+                                              </a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </nav>
                   </div>
-                </a>
+                </div>
+                ) : (
+                  <a
+                    className="nav-link-block w-inline-block"
+                    href={withUtm("https://app.setproduct.com/")}
+                    rel="noreferrer"
+                    target="_blank"
+                    aria-label="Inspiration — AI UI library (opens in a new tab)"
+                  >
+                    <div className="text-size-regular" style={{ display: "inline-flex", alignItems: "center" }}>
+                      Inspiration
+                      <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
+                    </div>
+                  </a>
+                )}
 
                 <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("tutorials")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
