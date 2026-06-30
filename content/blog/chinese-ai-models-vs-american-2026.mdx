@@ -78,16 +78,19 @@ This is why the aggregate 4% figure is honest but incomplete. If your workload i
 
 ## Reading the intelligence-vs-cost map
 
+![Intelligence vs cost quadrant map: Chinese AI models cluster in the high-intelligence, low-cost zone in mid-2026, while leading Western models occupy the high-cost region](/blog/assets/chinese-ai-models-vs-american-2026/intelligence-cost-quadrant.webp "float")
+
 The six-task table answers which model to pick per job. A second view, the intelligence-versus-cost map published by independent benchmark trackers, answers a broader question about where the whole market sits in mid-2026.
 
-![Intelligence vs cost quadrant map: Chinese AI models cluster in the high-intelligence, low-cost zone in mid-2026, while leading Western models occupy the high-cost region](/blog/assets/chinese-ai-models-vs-american-2026/intelligence-cost-quadrant.webp)
 *Source: Artificial Analysis Intelligence Index, mid-2026.*
 
 The attractive quadrant is the one every buyer wants, high measured intelligence paired with low cost per task. As of mid-2026, that zone is crowded with Chinese models. MiMo V2.5 Pro, DeepSeek V4 Pro, Kimi K2.6, MiniMax M3, GLM-5.2 max, and three Qwen variants, including Qwen 3.7 Max and Qwen 3.5 397B A17B, all land there. The Western presence in that same low-cost, high-intelligence corner is thinner, anchored mainly by Gemini 3.1 Pro Preview and Gemini 3.5 Flash.
 
 The expensive zone reads almost like a roll call of the frontier labs. GPT-5.5 high, Claude Opus 4.8 max, Claude Sonnet 4.6 max, Claude 4.5 Haiku, GPT-5.4 mini, Grok 4.3 high, Nemotron 3 Ultra, and Mistral Medium 3.5 cluster where cost per task runs high. Some of these models top the intelligence axis. The point of the map is that they are no longer alone at the top, and their pricing assumes a scarcity that the lower-left quadrant is steadily eroding.
 
-Two readings follow. The optimistic one says buyers now have genuine choice on the efficient frontier, with several models offering most of the intelligence at a fraction of the price. The cautious one notes that the very highest intelligence scores still sit in the expensive zone, so the most demanding reasoning and code work may still justify a premium model. Both readings can be true at once, which is exactly why per-task routing beats picking a single house model.
+Two readings follow. The optimistic one says buyers now have genuine choice on the efficient frontier, with several models offering most of the intelligence at a fraction of the price. The cautious one notes that the very highest intelligence scores still sit in the expensive zone, so the most demanding reasoning and code work may still justify a premium model.
+
+**Both readings can be true at once, which is exactly why per-task routing beats picking a single house model.**
 
 ## The offshoring parallel and compute as a product
 
@@ -99,7 +102,9 @@ The first lesson is about know-how. Offshoring the build step was cheap, but the
 
 The second lesson is about intellectual property. Sending designs to an external producer always carried some IP exposure, and managing that exposure became a discipline of its own. Compute behaves the same way. When prompts, proprietary code, and internal data flow to a hosted model, they leave your boundary. That risk is manageable, and the next section covers the concrete levers, but pretending it does not exist is how the offshoring era produced its expensive surprises.
 
-Compute, in other words, is becoming a commodity input the way contract manufacturing once did. Commodities get cheaper and more interchangeable over time, which is good for buyers. The durable advantage shifts to whoever holds the design taste and the quality bar, not to whoever runs the cheapest inference.
+Compute, in other words, is becoming a commodity input the way contract manufacturing once did. Commodities get cheaper and more interchangeable over time, which is good for buyers.
+
+**The durable advantage shifts to whoever holds the design taste and the quality bar, not to whoever runs the cheapest inference.**
 
 ## Self-hosting, data sovereignty and regulatory risk
 
@@ -109,7 +114,9 @@ Open weights mean self-hosting is on the table. A team can run the model inside 
 
 Self-hosting also enables local fine-tuning. A model can be adapted to a domain on private data without sending a single training example outside the organization. Teams that depend on a closed API for tuning give up exactly that boundary. With open weights, the boundary stays intact.
 
-Regulatory exposure is the third factor, and it cuts in an unexpected direction. A hosted API is a single point of policy failure. If a provider changes terms, restricts a region, or faces its own regulatory pressure, dependent teams have little recourse. A self-hosted open-weight model carries a lower risk of sudden access loss, because the weights already sit on infrastructure the team controls. None of this erases the geopolitical and compliance questions that come with the provenance of any model, and those deserve real diligence. The structural point stands. Owning the weights converts a vendor relationship into an asset you hold.
+Regulatory exposure is the third factor, and it cuts in an unexpected direction. A hosted API is a single point of policy failure. If a provider changes terms, restricts a region, or faces its own regulatory pressure, dependent teams have little recourse. A self-hosted open-weight model carries a lower risk of sudden access loss, because the weights already sit on infrastructure the team controls. None of this erases the geopolitical and compliance questions that come with the provenance of any model, and those deserve real diligence. The structural point stands.
+
+**Owning the weights converts a vendor relationship into an asset you hold.**
 
 ## A practical migration checklist
 
