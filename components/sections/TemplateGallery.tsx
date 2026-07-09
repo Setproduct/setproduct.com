@@ -15,10 +15,19 @@ type Props = {
   title?: string;
   subtitle?: string;
   previewLink?: string;
+  subtitleLinkText?: string;
+  subtitleLinkHref?: string;
   items: GalleryItem[];
 };
 
-export default function TemplateGallery({ title, subtitle, previewLink, items }: Props) {
+export default function TemplateGallery({
+  title,
+  subtitle,
+  previewLink,
+  subtitleLinkText,
+  subtitleLinkHref,
+  items,
+}: Props) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -54,7 +63,24 @@ export default function TemplateGallery({ title, subtitle, previewLink, items }:
                   )}
                 </h2>
               )}
-              {subtitle && <div className="heading-style-h5">{subtitle}</div>}
+              {subtitle && (
+                <div className="heading-style-h5">
+                  {subtitle}
+                  {subtitleLinkText && subtitleLinkHref && (
+                    <>
+                      {" "}
+                      <a
+                        className="span-link"
+                        href={subtitleLinkHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {subtitleLinkText}
+                      </a>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           )}
           {(title || subtitle) && <div className="spacer-64" />}

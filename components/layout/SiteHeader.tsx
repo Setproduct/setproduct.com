@@ -560,17 +560,24 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   // Hovering a category on the left swaps the kit previews on the right. The
   // featured six (KIT_PREVIEWS) belong to every category, so we rank matches by
   // specificity — fewer categories means the kit is more characteristic of the
-  // hovered section — giving each tab a genuinely distinct set. "All"/"Bundle"
-  // (category === null) keep the curated featured order.
+  // hovered section — giving each tab a genuinely distinct set. On top of that
+  // we pin the freshest catalogue product (PRODUCTS[0]) to the front of any
+  // section it belongs to, so the newest kit always leads its tabs. "All"/
+  // "Bundle" (category === null) keep the curated featured order.
   const filteredKitPreviews = (() => {
     if (activeKitCategory === BUNDLE_CATEGORY) {
       return BUNDLES.slice(0, NAV_KIT_PREVIEW_COUNT).map(bundlePreviewFromItem);
     }
     if (!activeKitCategory) return KIT_PREVIEWS;
     const category = activeKitCategory;
+    const freshest = PRODUCTS[0];
     const matched = PRODUCTS.filter((product) => product.categories.includes(category))
       .slice()
-      .sort((a, b) => a.categories.length - b.categories.length)
+      .sort((a, b) => {
+        if (a === freshest) return -1;
+        if (b === freshest) return 1;
+        return a.categories.length - b.categories.length;
+      })
       .slice(0, NAV_KIT_PREVIEW_COUNT)
       .map(kitPreviewFromProduct);
     return matched.length ? matched : KIT_PREVIEWS;
