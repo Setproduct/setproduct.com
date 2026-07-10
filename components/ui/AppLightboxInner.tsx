@@ -74,7 +74,14 @@ export default function AppLightboxInner({
           "--yarl__color_button_disabled": "rgba(25, 24, 27, 0.35)",
           // Kill the default drop shadow under the close/nav icons.
           "--yarl__button_filter": "none",
+          // Thumbnails strip: white backdrop instead of the default black tiles.
+          "--yarl__thumbnails_container_background_color": "transparent",
+          "--yarl__thumbnails_thumbnail_background": "transparent",
+          "--yarl__thumbnails_thumbnail_border_color": "rgba(25, 24, 27, 0.12)",
+          "--yarl__thumbnails_thumbnail_active_border_color": "#7c4dff",
         },
+        thumbnail: { backgroundColor: "transparent" },
+        thumbnailsContainer: { backgroundColor: "transparent" },
       }}
       render={single ? { buttonPrev: () => null, buttonNext: () => null } : undefined}
     />
