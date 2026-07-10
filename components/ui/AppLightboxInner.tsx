@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import Lightbox, { type SlideImage } from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/styles.css";
@@ -33,18 +33,44 @@ export default function AppLightboxInner({
 }: AppLightboxProps) {
   const single = slides.length <= 1;
 
-  // The library locks body scroll while open (react-remove-scroll). On some
-  // pages releasing the lock resets the scroll position to the top. Remember
-  // the reading position on mount and restore it right after unmount, so the
-  // user always lands exactly where they were before opening the lightbox.
-  useEffect(() => {
+  // Scroll lock without any jump.
+  //
+  // YARL's built-in lock puts `overflow: hidden` on the scrolling element,
+  // which per CSS spec clamps scrollTop to 0 — the page instantly jumps to
+  // the top the moment the lightbox opens. We disable that (noScroll below)
+  // and freeze the page ourselves with the classic `position: fixed` body
+  // lock: the page visually stays exactly where it is, and on close we
+  // restore the offset synchronously (useLayoutEffect cleanup runs before
+  // the browser paints), so neither opening nor closing moves anything.
+  useLayoutEffect(() => {
     const scrollY = window.scrollY;
+    const body = document.body;
+    const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
+
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      paddingRight: body.style.paddingRight,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    if (scrollbarGap > 0) body.style.paddingRight = `${scrollbarGap}px`;
+
     return () => {
-      requestAnimationFrame(() => {
-        if (Math.abs(window.scrollY - scrollY) > 1) {
-          window.scrollTo({ top: scrollY, left: 0, behavior: "instant" });
-        }
-      });
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.left = prev.left;
+      body.style.right = prev.right;
+      body.style.width = prev.width;
+      body.style.paddingRight = prev.paddingRight;
+      window.scrollTo({ top: scrollY, left: 0, behavior: "instant" });
     };
   }, []);
 
@@ -58,6 +84,7 @@ export default function AppLightboxInner({
       carousel={{ finite: true }}
       animation={{ fade: 300, swipe: 250 }}
       controller={{ closeOnBackdropClick: true, closeOnPullDown: true }}
+      noScroll={{ disabled: true }}
       thumbnails={{
         position: "bottom",
         width: 100,
