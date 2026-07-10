@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { event } from "../../lib/gtag";
+import { getGumroadLinkProps } from "../../lib/gumroad";
 import type { TemplateItem } from "../../types/data";
 
 type Props = {
@@ -89,11 +90,12 @@ export default function TemplateStickyCta({ item, price, buyHref }: Props) {
       aria-hidden={!isShown}
     >
       <a
-        className="button w-inline-block template-sticky-cta-btn"
         href={purchaseHref}
-        target="_blank"
-        rel="noopener noreferrer"
         onClick={handleClick}
+        {...getGumroadLinkProps(
+          purchaseHref,
+          "button w-inline-block template-sticky-cta-btn"
+        )}
       >
         <div className="text-size-large text-weight-bold">Get Started</div>
         {displayPrice && (

@@ -33,6 +33,10 @@ export const blogMdxComponents: MDXRemoteProps["components"] = {
   a: ({ href, children, ...props }) => {
     const isGumroad = href?.includes("gumroad.com");
     if (isGumroad) {
+      // Gumroad overlay: gumroad.js intercepts clicks on plain gumroad.com
+      // links (no target="_blank") and opens the product in an on-site popup.
+      // Do NOT add the `gumroad-button` class — it replaces the link content
+      // with Gumroad's own huge button widget and breaks the layout.
       return <a href={href} {...props}>{children}</a>;
     }
     return (

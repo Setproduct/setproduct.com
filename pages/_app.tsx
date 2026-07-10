@@ -49,6 +49,13 @@ export default function App({ Component, pageProps }: AppProps) {
           </Script>
         </>
       ) : null}
+      {/* Gumroad overlay: gumroad.js intercepts clicks on plain gumroad.com
+          links (without target="_blank") and opens the product in an on-site
+          popup instead of a new tab. */}
+      <Script
+        src="https://gumroad.com/js/gumroad.js"
+        strategy="afterInteractive"
+      />
       <Component {...pageProps} />
     </ContactModalProvider>
   );

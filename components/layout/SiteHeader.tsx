@@ -14,6 +14,7 @@ import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
 import { BUNDLES } from "../../data/bundles";
 import type { BundleItem } from "../../data/bundles";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
+import { getGumroadLinkProps } from "../../lib/gumroad";
 
 function ChevronIcon() {
   return (
@@ -992,7 +993,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                             </a>
                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                             <div className="nav_tabs-list-item-btn-wr">
-                                          <a className="button-x-small is-secondary w-inline-block" href={item.buyHref} rel="noreferrer" target="_blank">
+                                          <a href={item.buyHref} {...getGumroadLinkProps(item.buyHref, "button-x-small is-secondary w-inline-block")}>
                                             <div className="text-size-regular text-weight-bold">{item.buyLabel}</div>
                                           </a>
                                               <a className="button-x-small is-text w-inline-block" href={item.href}>

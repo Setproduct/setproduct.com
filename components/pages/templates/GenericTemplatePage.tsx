@@ -11,6 +11,7 @@ import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
+import { getGumroadLinkProps } from "../../../lib/gumroad";
 import type { BlogPostPreview, TemplateItem } from "../../../types/data";
 
 type TemplateContent = {
@@ -117,10 +118,8 @@ export default function GenericTemplatePage({ item, content, blogPosts = [] }: P
                   <p className="heading-style-h5">{item.description}</p>
                   <div className="template_hero-btn-wr">
                     <a
-                      className="button secondary w-inline-block"
                       href={item.buyHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...getGumroadLinkProps(item.buyHref, "button secondary w-inline-block")}
                     >
                       <div className="text-size-large text-weight-bold">Get Started</div>
                     </a>

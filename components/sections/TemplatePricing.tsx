@@ -1,3 +1,5 @@
+import { getGumroadLinkProps } from "../../lib/gumroad";
+
 type PricingCard = {
   title: string;
   description: string;
@@ -66,10 +68,8 @@ export default function TemplatePricing({ title, subtitle, cards, previewLabel }
                 </div>
                 <div className="template-list-btn-wr">
                   <a
-                    className="button-small w-inline-block"
                     href={card.buyHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    {...getGumroadLinkProps(card.buyHref, "button-small w-inline-block")}
                   >
                     <div className="text-size-medium text-weight-bold">
                       {card.price ? `${card.buyLabel} ${card.price}` : card.buyLabel}
