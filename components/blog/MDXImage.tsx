@@ -1,6 +1,5 @@
-import { useRef, useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
+import { useState } from "react";
+import AppLightbox, { preloadLightbox } from "../ui/AppLightbox";
 
 type MDXImageProps = {
   src?: string;
@@ -21,26 +20,6 @@ export default function MDXImage({
   float,
 }: MDXImageProps) {
   const [open, setOpen] = useState(false);
-  // Remember the reading position so closing the lightbox returns the user
-  // exactly where they clicked. The lightbox locks body scroll while open
-  // (react-remove-scroll), and without this the page jumps to the top on close.
-  const scrollYRef = useRef(0);
-
-  const openLightbox = () => {
-    scrollYRef.current = window.scrollY;
-    setOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setOpen(false);
-    const targetY = scrollYRef.current;
-    // Restore after the library releases its scroll lock (next frame).
-    // behavior: "instant" overrides the global `html { scroll-behavior: smooth }`
-    // so the jump back is immediate instead of a slow animated scroll.
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
-    });
-  };
 
   if (!src) return null;
 
@@ -65,29 +44,14 @@ export default function MDXImage({
         cursor: "zoom-in",
       }}
       loading="lazy"
-      onClick={openLightbox}
+      onClick={() => setOpen(true)}
+      onMouseEnter={preloadLightbox}
+      onTouchStart={preloadLightbox}
     />
   );
 
   const lightbox = (
-    <Lightbox
-      open={open}
-      close={closeLightbox}
-      slides={[{ src }]}
-      carousel={{ finite: true }}
-      // Click anywhere outside the image (the backdrop) closes the lightbox.
-      controller={{ closeOnBackdropClick: true }}
-      // White backdrop instead of the default black, with a dark close icon
-      // (YARL exposes button colors via these CSS variables on the root).
-      styles={{
-        container: { backgroundColor: "rgba(255, 255, 255, 0.96)" },
-        root: {
-          "--yarl__color_button": "#19181b",
-          "--yarl__color_button_active": "#000",
-        },
-      }}
-      render={{ buttonPrev: () => null, buttonNext: () => null }}
-    />
+    <AppLightbox open={open} close={() => setOpen(false)} slides={[{ src, alt }]} />
   );
 
   if (caption) {

@@ -5,6 +5,17 @@ html {
   scroll-behavior: smooth;
 }
 
+/*
+ * Lightbox (yet-another-react-lightbox) scroll-jump fix.
+ * While the lightbox portal is mounted, the library locks body scroll
+ * (react-remove-scroll). Combined with `scroll-behavior: smooth` this used
+ * to produce a visible animated jump to the top on open/close. Disabling
+ * smooth scrolling for the lock window keeps the reading position intact.
+ */
+html:has(.yarl__portal) {
+  scroll-behavior: auto;
+}
+
 html,
 body {
   margin: 0;

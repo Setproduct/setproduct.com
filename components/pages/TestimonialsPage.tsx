@@ -1,10 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import Lightbox from "yet-another-react-lightbox";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
+import AppLightbox, { preloadLightbox } from "../ui/AppLightbox";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
@@ -113,6 +110,8 @@ export default function TestimonialsPage({ blogPosts = [] }: Props) {
                             e.preventDefault();
                             setLightboxIndex(index);
                           }}
+                          onMouseEnter={preloadLightbox}
+                          onTouchStart={preloadLightbox}
                           className="lightbox-link-with-zoom w-inline-block"
                           style={{ cursor: "zoom-in" }}
                         >
@@ -146,12 +145,12 @@ export default function TestimonialsPage({ blogPosts = [] }: Props) {
                   )}
                 </div>
               </div>
-              <Lightbox
+              <AppLightbox
                 open={lightboxIndex >= 0}
                 index={lightboxIndex}
                 close={() => setLightboxIndex(-1)}
                 slides={visiblePhotos}
-                plugins={[Thumbnails]}
+                thumbnails
               />
             </div>
           </div>

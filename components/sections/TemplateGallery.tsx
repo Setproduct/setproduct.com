@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
+import AppLightbox, { preloadLightbox } from "../ui/AppLightbox";
 
 type GalleryItem = {
   image: string;
@@ -91,6 +88,8 @@ export default function TemplateGallery({
                 key={index}
                 className="template_img-gallery-item"
                 onClick={() => openLightbox(index)}
+                onMouseEnter={preloadLightbox}
+                onTouchStart={preloadLightbox}
                 style={{ cursor: "zoom-in" }}
               >
                 <div className="lightbox-link-with-text w-inline-block">
@@ -108,19 +107,12 @@ export default function TemplateGallery({
         </div>
       </div>
 
-      <Lightbox
+      <AppLightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
         index={lightboxIndex}
         slides={slides}
-        plugins={[Thumbnails]}
-        thumbnails={{
-          position: "bottom",
-          width: 100,
-          height: 60,
-          gap: 8,
-          showToggle: false,
-        }}
+        thumbnails
       />
     </div>
   );
