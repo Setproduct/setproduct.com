@@ -68,20 +68,21 @@ export default function AppLightboxInner({
       }}
       styles={{
         root: {
-          "--yarl__color_backdrop": "rgba(255, 255, 255, 0.96)",
+          // Solid white everywhere: no page content may show through.
+          "--yarl__color_backdrop": "#fff",
           "--yarl__color_button": "#19181b",
           "--yarl__color_button_active": "#000",
           "--yarl__color_button_disabled": "rgba(25, 24, 27, 0.35)",
           // Kill the default drop shadow under the close/nav icons.
           "--yarl__button_filter": "none",
-          // Thumbnails strip: white backdrop instead of the default black tiles.
-          "--yarl__thumbnails_container_background_color": "transparent",
-          "--yarl__thumbnails_thumbnail_background": "transparent",
+          // Thumbnails strip: same solid white as the main backdrop.
+          "--yarl__thumbnails_container_background_color": "#fff",
+          "--yarl__thumbnails_thumbnail_background": "#fff",
           "--yarl__thumbnails_thumbnail_border_color": "rgba(25, 24, 27, 0.12)",
           "--yarl__thumbnails_thumbnail_active_border_color": "#7c4dff",
         },
-        thumbnail: { backgroundColor: "transparent" },
-        thumbnailsContainer: { backgroundColor: "transparent" },
+        thumbnail: { backgroundColor: "#fff" },
+        thumbnailsContainer: { backgroundColor: "#fff" },
       }}
       render={single ? { buttonPrev: () => null, buttonNext: () => null } : undefined}
     />
