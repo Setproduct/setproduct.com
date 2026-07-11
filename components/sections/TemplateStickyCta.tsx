@@ -87,7 +87,7 @@ export default function TemplateStickyCta({ item, price, buyHref }: Props) {
       ]
         .filter(Boolean)
         .join(" ")}
-      aria-hidden={!isShown}
+      inert={!isShown}
     >
       <a
         href={purchaseHref}

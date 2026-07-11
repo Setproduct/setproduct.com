@@ -21,6 +21,7 @@ export default function CtaSubscribe() {
                     <form className="form-cta" onSubmit={handleSubscribe}>
                       <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
                       <input
+                        aria-label="Email address"
                         className="text-input w-input"
                         disabled={isSubmitting}
                         maxLength={256}

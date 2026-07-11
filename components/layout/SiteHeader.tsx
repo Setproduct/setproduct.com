@@ -641,8 +641,6 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("inspiration") ? "w--open" : ""}${isInspirationActive ? " w--current" : ""}`}
                       onClick={() => toggleMenu("inspiration")}
-                      aria-haspopup="true"
-                      aria-expanded={isMenuOpen("inspiration")}
                     >
                       <div className="text-size-regular" style={{ display: "inline-flex", alignItems: "center" }}>
                         Inspiration
@@ -655,11 +653,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                         rel="noreferrer"
                         target="_blank"
                         aria-label="Inspiration — AI UI library (opens in a new tab)"
+                        aria-haspopup="true"
+                        aria-expanded={isMenuOpen("inspiration")}
                       />
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("inspiration") ? "w--open" : ""}`}
-                      aria-hidden={!isMenuOpen("inspiration")}
+                      inert={!isMenuOpen("inspiration")}
                     >
                       <div className="container">
                         <div className="form-block w-form">
@@ -744,16 +744,20 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("tutorials")}
-                      aria-haspopup="true"
-                      aria-expanded={isMenuOpen("tutorials")}
                     >
                       <div className="text-size-regular">Learn</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a className="nav_dropdown_toggle-link w-inline-block" href="/blog" />
+                      <a
+                        className="nav_dropdown_toggle-link w-inline-block"
+                        href="/blog"
+                        aria-label="Learn — blog and tutorials"
+                        aria-haspopup="true"
+                        aria-expanded={isMenuOpen("tutorials")}
+                      />
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("tutorials") ? "w--open" : ""}`}
-                      aria-hidden={!isMenuOpen("tutorials")}
+                      inert={!isMenuOpen("tutorials")}
                     >
                       <div className="container">
                         <div className="form-block w-form">
@@ -834,16 +838,20 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("freebies")}
-                      aria-haspopup="true"
-                      aria-expanded={isMenuOpen("freebies")}
                     >
                       <div className="text-size-regular">Freebies</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a className="nav_dropdown_toggle-link w-inline-block" href="/freebies" />
+                      <a
+                        className="nav_dropdown_toggle-link w-inline-block"
+                        href="/freebies"
+                        aria-label="Freebies"
+                        aria-haspopup="true"
+                        aria-expanded={isMenuOpen("freebies")}
+                      />
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("freebies") ? "w--open" : ""}`}
-                      aria-hidden={!isMenuOpen("freebies")}
+                      inert={!isMenuOpen("freebies")}
                     >
                       <div className="container">
                         <div className="form-block w-form">
@@ -926,16 +934,20 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("designKits")}
-                      aria-haspopup="true"
-                      aria-expanded={isMenuOpen("designKits")}
                     >
                       <div className="text-size-regular">UI Kits</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a className="nav_dropdown_toggle-link w-inline-block" href="/all" />
+                      <a
+                        className="nav_dropdown_toggle-link w-inline-block"
+                        href="/all"
+                        aria-label="UI kits"
+                        aria-haspopup="true"
+                        aria-expanded={isMenuOpen("designKits")}
+                      />
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("designKits") ? "w--open" : ""}`}
-                      aria-hidden={!isMenuOpen("designKits")}
+                      inert={!isMenuOpen("designKits")}
                     >
                       <div className="container">
                         <div className="form-block w-form">
@@ -1020,6 +1032,14 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("information")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          toggleMenu("information");
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
                       aria-haspopup="true"
                       aria-expanded={isMenuOpen("information")}
                     >
@@ -1028,7 +1048,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                     </div>
                     <nav
                       className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("information") ? "w--open" : ""}`}
-                      aria-hidden={!isMenuOpen("information")}
+                      inert={!isMenuOpen("information")}
                     >
                       <div className="container">
                         <div className="nav_dropdown-menu2">
@@ -1153,6 +1173,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
           <div className="nav-button-wr">
             <form action="/search" className="search w-form" style={{ position: "relative" }}>
               <input
+                aria-label="Search Setproduct"
                 className="text-input is-nav-search w-input"
                 id="search"
                 maxLength={256}
