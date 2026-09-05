@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "m3e-canvas",
+    title: "M3E Canvas — Material 3 Expressive UI builder",
+    description:
+      "Assemble Material 3 Expressive interfaces in your browser and export a ready-to-use prompt for AI. Open source, free, and built for Android vibe coding.",
+    thumb: "/freebies/thumbs/freebie-m3e-canvas.webp",
+    image: "/freebies/freebie-m3e-canvas.webp",
+    category: "Code",
+    previewHref: "/freebies/m3e-canvas",
+    duplicateHref: "https://github.com/lnkiai/m3e-canvas",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "driver-js",
     title: "Driver.js — product tours & onboarding",
     description:

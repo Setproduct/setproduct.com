@@ -26,6 +26,21 @@ const DRIVER_JS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs", text: "Why it belongs in your stack" },
 ];
 
+const M3E_CANVAS_HEADINGS: ArticleHeading[] = [
+  { id: "what-m3e-canvas-does", text: "What M3E Canvas actually does" },
+  { id: "material-3-expressive", text: "Why Material 3 Expressive matters" },
+  { id: "how-prompt-works", text: "How the prompt export works" },
+  { id: "vibe-coding", text: "Fitting it into vibe coding" },
+  { id: "what-you-build", text: "What you can build with it" },
+  { id: "open-source", text: "Free, open source, no lock-in" },
+  { id: "why-it-belongs-m3e", text: "Why it belongs in your workflow" },
+];
+
+const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
+  "driver-js": DRIVER_JS_HEADINGS,
+  "m3e-canvas": M3E_CANVAS_HEADINGS,
+};
+
 /**
  * Long-form body content for specific freebie detail pages.
  * Rendered between the breadcrumbs and the "More Figma freebies" showcase.
@@ -40,10 +55,11 @@ export default function FreebieArticle({ slug }: Props) {
   const [stickyStyle, setStickyStyle] = useState<CSSProperties>({});
   const [activeId, setActiveId] = useState<string>("");
 
-  const isDriverJs = slug === "driver-js";
+  const headings = ARTICLE_HEADINGS[slug] ?? [];
+  const hasArticle = headings.length > 0;
 
   useEffect(() => {
-    if (!isDriverJs) return;
+    if (!hasArticle) return;
     const checkMobile = () => {
       const mobile = window.innerWidth < 991;
       setIsMobile(mobile);
@@ -52,10 +68,10 @@ export default function FreebieArticle({ slug }: Props) {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, [isDriverJs]);
+  }, [hasArticle]);
 
   useEffect(() => {
-    if (!isDriverJs || isMobile) {
+    if (!hasArticle || isMobile) {
       setStickyStyle({});
       return;
     }
@@ -106,10 +122,10 @@ export default function FreebieArticle({ slug }: Props) {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
     };
-  }, [isDriverJs, isMobile]);
+  }, [hasArticle, isMobile]);
 
   useEffect(() => {
-    if (!isDriverJs) return;
+    if (!hasArticle) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -123,15 +139,15 @@ export default function FreebieArticle({ slug }: Props) {
       { rootMargin: "-80px 0px -60% 0px", threshold: 0 }
     );
 
-    DRIVER_JS_HEADINGS.forEach(({ id }) => {
+    headings.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
     return () => observer.disconnect();
-  }, [isDriverJs]);
+  }, [hasArticle, headings]);
 
-  if (!isDriverJs) return null;
+  if (!hasArticle) return null;
 
   return (
     <div className="section">
@@ -145,7 +161,7 @@ export default function FreebieArticle({ slug }: Props) {
                 </div>
                 <div className="spacer-16 hide-on-mobile" />
                 <div className="blogpost_navigation-wr">
-                  {DRIVER_JS_HEADINGS.map((h) => (
+                  {headings.map((h) => (
                     <div key={h.id} className="blogpost_navigation-link-wr">
                       <a
                         href={`#${h.id}`}
@@ -163,6 +179,8 @@ export default function FreebieArticle({ slug }: Props) {
 
             <div className="blogpost_content-column2">
               <article className="rich-text-18 w-richtext">
+                {slug === "driver-js" && (
+                  <>
                 <p className="blog_big-paragraph">
                   You shipped the app. The AI wrote half the code. The feature
                   works. Then the first real user opens it, stares at the screen,
@@ -323,6 +341,167 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo-founder workflow.
                 </p>
+                  </>
+                )}
+
+                {slug === "m3e-canvas" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You prompt an AI to build an Android screen. It hands you back
+                  generic Material components that look nothing like the app in
+                  your head. M3E Canvas fixes the gap. You lay out the interface
+                  visually, then hand the model a prompt that already knows what
+                  you want.
+                </p>
+
+                <h2 id="what-m3e-canvas-does">What M3E Canvas actually does</h2>
+                <p>
+                  M3E Canvas is a web tool for assembling Material 3 Expressive
+                  interfaces. You drag real components onto a canvas: buttons,
+                  FABs, navigation bars, cards, list items. You arrange them the
+                  way you want the screen to look. The tool reads that layout and
+                  writes a structured prompt you can paste straight into an AI
+                  coding assistant.
+                </p>
+                <p>
+                  It runs in the browser. Nothing to install, no account, no
+                  build step. Open the{" "}
+                  <a
+                    href="https://lnkiai.github.io/m3e-canvas/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    live M3E Canvas tool
+                  </a>
+                  , assemble a screen, copy the prompt. The code lives on{" "}
+                  <a
+                    href="https://github.com/lnkiai/m3e-canvas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>{" "}
+                  under an open source license, so you can read it, fork it, or
+                  file an issue.
+                </p>
+
+                <h2 id="material-3-expressive">
+                  Why Material 3 Expressive matters
+                </h2>
+                <p>
+                  Material 3 Expressive is Google&rsquo;s latest evolution of
+                  Material Design. It leans into bigger shapes, bolder color, and
+                  motion that reacts to touch. The{" "}
+                  <a
+                    href="https://m3.material.io"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Material 3 guidelines
+                  </a>{" "}
+                  cover the rules, and they run long. Reading them is one thing.
+                  Getting an AI to honor them in generated code is another.
+                </p>
+                <p>
+                  Here is the problem M3E Canvas solves. When you ask a model for
+                  a Material screen in plain words, it averages out. You get the
+                  safe defaults: a stock app bar, a flat button, spacing that
+                  ignores the spec. The expressive part, the reason M3 looks
+                  current, goes missing. By building the layout in the tool first,
+                  you pin down the exact components and states, and the prompt
+                  carries that intent instead of leaving it to chance.
+                </p>
+
+                <h2 id="how-prompt-works">How the prompt export works</h2>
+                <p>
+                  The canvas keeps a live model of your screen. Every component
+                  you place has a type, a role, and a position. When you hit
+                  export, the tool serializes all of that into text a language
+                  model reads well:
+                </p>
+                <ul>
+                  <li>
+                    ❶ The components on screen and their Material 3 names
+                  </li>
+                  <li>
+                    ❷ How they stack, so the AI knows the layout order
+                  </li>
+                  <li>
+                    ❸ Enough structure for the model to write real Compose code
+                  </li>
+                </ul>
+                <p>
+                  You copy that block and paste it into your assistant. The prompt
+                  does the describing for you, so you skip the part where you try
+                  to explain a visual layout in a paragraph of English and hope
+                  the model guesses right.
+                </p>
+
+                <h2 id="vibe-coding">Fitting it into vibe coding</h2>
+                <p>
+                  Vibe coding is building software by prompting instead of typing
+                  every line. It works until the interface gets specific. Layout
+                  is the exact thing plain language handles badly. &ldquo;Put the
+                  favorite button next to share, then a list of three items with
+                  icons&rdquo; turns into a guessing game the moment the screen
+                  has more than two elements.
+                </p>
+                <p>
+                  M3E Canvas gives that workflow a visual front end. You do the
+                  layout by eye, where eyes are good, and let the tool translate
+                  it into words, where words are precise. The AI still writes the
+                  code. You just stop fighting it over where things go.
+                </p>
+
+                <h2 id="what-you-build">What you can build with it</h2>
+                <p>
+                  The tool targets Android app screens, and the component set
+                  reflects that:
+                </p>
+                <ul>
+                  <li>❶ Home screens with a navigation bar and FAB</li>
+                  <li>❷ List and detail views built from Material cards</li>
+                  <li>❸ Settings pages with switches and list items</li>
+                  <li>❹ Onboarding flows that string several screens together</li>
+                </ul>
+                <p>
+                  If you are prototyping an Android app and want it to look like
+                  it belongs on a 2026 phone rather than a 2019 one, this is a
+                  fast way to get there without memorizing the spec.
+                </p>
+
+                <h2 id="open-source">Free, open source, no lock-in</h2>
+                <p>
+                  M3E Canvas is free and open source. The prompt it produces is
+                  plain text you own. There is no paid tier gating the export, no
+                  runtime you have to keep installed, and no vendor sitting
+                  between you and your code. If the project ever stalls, the
+                  source is on GitHub and you can carry it forward yourself.
+                </p>
+                <p>
+                  That independence is the point. A tool that hands you portable
+                  output and then gets out of the way earns a spot in your
+                  workflow. One that traps your work behind a login does not.
+                </p>
+
+                <h2 id="why-it-belongs-m3e">Why it belongs in your workflow</h2>
+                <p>
+                  You want Android screens that look current, and you want them
+                  fast. M3E Canvas gives you a visual way to lay out Material 3
+                  Expressive components and a prompt that carries your intent into
+                  the AI. Build the screen, copy the prompt, let the model write
+                  the code.
+                </p>
+                <p>
+                  For a solo builder shipping with AI, that saves the slow part:
+                  explaining a layout in words. When you want reference designs
+                  for the screens you assemble, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> cover the same
+                  mobile-first, ship-fast workflow.
+                </p>
+                  </>
+                )}
               </article>
             </div>
           </div>
