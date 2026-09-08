@@ -12,7 +12,7 @@ import BlogInlineCta from "./BlogInlineCta";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
-import { buildBlogPostingJsonLd } from "../../lib/blog/schema";
+import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
 import { SITE_URL } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
 import type { BlogPostPreview } from "../../types/data";
@@ -32,6 +32,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
     ? frontmatter.coverImage
     : `${SITE_URL}${frontmatter.coverImage ?? ""}`;
   const jsonLd = buildBlogPostingJsonLd(frontmatter, canonical, readingTimeMinutes);
+  const faqJsonLd = frontmatter.faq?.length ? buildFaqJsonLd(frontmatter.faq) : null;
 
   return (
     <>
@@ -54,6 +55,12 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {faqJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        ) : null}
       </Head>
       <SiteHeader blogPosts={blogPosts} />
       <main>

@@ -1,4 +1,4 @@
-import type { Author, BlogFrontmatter } from "../../types/blog";
+import type { Author, BlogFrontmatter, FaqItem } from "../../types/blog";
 import { getAuthor } from "./authors";
 import { SITE_URL } from "./site-config";
 
@@ -45,6 +45,26 @@ export function buildBlogPostingJsonLd(
       "@id": pageUrl,
     },
     timeRequired: `PT${readingTimeMinutes}M`,
+  };
+}
+
+/**
+ * FAQPage JSON-LD. Rendered alongside BlogPosting when a post defines `faq`
+ * items in frontmatter. Drives the FAQ rich result in Google and feeds
+ * AI Overview extraction.
+ */
+export function buildFaqJsonLd(items: FaqItem[]): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }
 

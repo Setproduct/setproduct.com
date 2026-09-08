@@ -28,6 +28,15 @@
 - Картинки кладутся в /public/blog/[slug-статьи]/
 - После добавления картинок предупреди о необходимости
   запустить check_images.js
+- НИКОГДА не вставляй сырой `<script type="application/ld+json">` в тело
+  MDX. MDX-парсер трактует `{` как JSX-выражение и падает с ошибкой
+  `Could not parse expression with acorn`. Страница отдаёт 404.
+  FAQPage JSON-LD генерируется автоматически из поля `faq:` во frontmatter
+  (см. `buildFaqJsonLd` в `lib/blog/schema.ts`).
+- НИКОГДА не используй blockquote (`>`) для цитат-примеров внутри статей.
+  В CSS проекта blockquote имеет `font-size: 24em` и рендерится
+  гигантским текстом, ломая вёрстку. Для примеров «плохо/хорошо»
+  используй inline-код (backticks) или обычные параграфы.
 
 ### File editing rules for AI agents
 For any file > 500 lines in `content/blog/`:
