@@ -196,14 +196,6 @@ const INSPIRATION_BADGE_STYLE: CSSProperties = {
   lineHeight: 1,
 };
 
-const LAUNCH_APP_SUBLABEL_STYLE: CSSProperties = {
-  marginTop: "0.15em",
-  fontSize: "0.7em",
-  fontWeight: 500,
-  opacity: 0.85,
-  letterSpacing: "0.01em",
-};
-
 const KIT_PREVIEWS: KitPreview[] = [
   {
     href: "/templates/orion",
@@ -1206,14 +1198,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             <div className="relative inline-flex items-center">
               <a
                 className="button-small w-inline-block"
-                href="https://app.setproduct.com/"
+                href="https://publish.setproduct.com/"
                 rel="noreferrer"
                 target="_blank"
-                aria-label="Inspire me — open the AI UI library"
-                style={{ flexDirection: "column", alignItems: "center", lineHeight: 1.1 }}
+                aria-label="Write for us — publish your article on Setproduct"
               >
-                <div className="text-size-medium text-weight-bold">Inspire me</div>
-                <div style={LAUNCH_APP_SUBLABEL_STYLE}>AI UI library →</div>
+                <div className="text-size-medium text-weight-bold">Write for us</div>
               </a>
               {/* Temporarily disabled — kept for potential future use. */}
               {/* <LaunchAppCallout /> */}
