@@ -1201,9 +1201,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                 href="https://publish.setproduct.com/"
                 rel="noreferrer"
                 target="_blank"
-                aria-label="Write for us — publish your article on Setproduct"
+                aria-label="Write for Us — publish your article on Setproduct"
               >
-                <div className="text-size-medium text-weight-bold">Write for us</div>
+                <div className="text-size-medium text-weight-bold">Write for Us</div>
               </a>
               {/* Temporarily disabled — kept for potential future use. */}
               {/* <LaunchAppCallout /> */}
