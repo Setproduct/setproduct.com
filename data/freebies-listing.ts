@@ -49,6 +49,20 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     menuCtaLabel: "Get the code",
   },
   {
+    slug: "pdfcn",
+    title: "pdfcn — PDF viewer component for React",
+    description:
+      "Open source PDF viewer built on the shadcn stack. Renders documents inside your React app with zoom, search, and navigation. No iframe, no vendor lock-in, MIT license.",
+    thumb: "/freebies/thumbs/freebie-pdfcn.webp",
+    image: "/freebies/freebie-pdfcn.webp",
+    category: "Code",
+    previewHref: "/freebies/pdfcn",
+    duplicateHref: "https://github.com/shadcn-labs/pdfcn",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "invoice",
     title: "Free invoice template for Figma",
     description: "Clear and simple table-based document for your business purposes. Powered by editable data grid, which is easy to manage.",

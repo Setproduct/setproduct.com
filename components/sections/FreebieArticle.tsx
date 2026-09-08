@@ -36,9 +36,20 @@ const M3E_CANVAS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-m3e", text: "Why it belongs in your workflow" },
 ];
 
+const PDFCN_HEADINGS: ArticleHeading[] = [
+  { id: "what-pdfcn-does", text: "What pdfcn actually does" },
+  { id: "why-pdf-in-react", text: "Why PDF in React is harder than it looks" },
+  { id: "shadcn-stack", text: "Built on the shadcn stack" },
+  { id: "how-pdfcn-works", text: "How it works under the hood" },
+  { id: "wiring-into-ai-app-pdfcn", text: "Wiring it into an AI-built app" },
+  { id: "open-source-pdfcn", text: "Free, open source, no lock-in" },
+  { id: "why-it-belongs-pdfcn", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
+  pdfcn: PDFCN_HEADINGS,
 };
 
 /**
@@ -340,6 +351,163 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo-founder workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "pdfcn" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You shipped the SaaS. The dashboard works. Then a user clicks
+                  an invoice, the browser opens a new tab, and your app loses
+                  them. pdfcn closes that gap. It renders the PDF inside your
+                  React app, styled like the rest of your interface, with zoom,
+                  search, and page navigation already wired.
+                </p>
+
+                <h2 id="what-pdfcn-does">What pdfcn actually does</h2>
+                <p>
+                  pdfcn is a PDF viewer component for React. You give it a file
+                  URL, and it renders the document on the page: pages scale to
+                  the container, a toolbar carries zoom in and out, a search
+                  field jumps to matches, and arrow keys move between pages.
+                  The whole thing runs in your app instead of the browser&rsquo;s
+                  default PDF tab, so the user never leaves the flow you
+                  designed.
+                </p>
+                <p>
+                  The component ships as open source under an MIT license and
+                  lives on{" "}
+                  <a
+                    href="https://github.com/shadcn-labs/pdfcn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  . You read the code, fork it, or file an issue. The demo at{" "}
+                  <a
+                    href="https://www.pdfcn.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    pdfcn.dev
+                  </a>{" "}
+                  shows the viewer running live, so you can test the interaction
+                  before you install anything.
+                </p>
+
+                <h2 id="why-pdf-in-react">
+                  Why PDF in React is harder than it looks
+                </h2>
+                <p>
+                  Every React app eventually meets a PDF. An invoice, a contract,
+                  a report, a terms-of-service the lawyer insists you show
+                  inline. The default answer is an iframe pointed at the file,
+                  and that answer breaks the experience. The browser takes over
+                  rendering, your dark mode stops applying, your design tokens
+                  mean nothing, and the user gets a UI that looks bolted on
+                  because it is.
+                </p>
+                <p>
+                  The serious alternative used to be pulling in Mozilla&rsquo;s
+                  PDF.js and building the viewer yourself. That path costs days.
+                  You wire the canvas rendering, then the toolbar, then search,
+                  then keyboard support, then mobile pinch zoom. Most solo
+                  founders skip the whole thing and let the new-tab version
+                  ship, and every invoice view quietly leaks session time.
+                </p>
+
+                <h2 id="shadcn-stack">Built on the shadcn stack</h2>
+                <p>
+                  pdfcn is assembled from shadcn/ui components, so it inherits
+                  the look of the stack you probably already use. The buttons,
+                  the input, the tooltip, and the dropdown are the same
+                  primitives as the rest of your app. Tailwind classes control
+                  the styling, which means the viewer picks up your theme
+                  instead of fighting it.
+                </p>
+                <p>
+                  That choice matters more than it sounds. A PDF viewer built on
+                  its own design system forces you to override a stranger&rsquo;s
+                  CSS. A viewer built on shadcn slots into the tokens you
+                  already set. Dark mode works because your dark mode works. The
+                  focus ring matches because the focus ring is the same
+                  component. You style the viewer the way you style everything
+                  else, not as a special case.
+                </p>
+
+                <h2 id="how-pdfcn-works">How it works under the hood</h2>
+                <p>
+                  The rendering layer is PDF.js, the same engine Firefox uses.
+                  pdfcn wraps it in React components so you touch props instead
+                  of canvas APIs:
+                </p>
+                <ul>
+                  <li>❶ A document component that loads and parses the file</li>
+                  <li>❷ Page components that render each sheet to canvas</li>
+                  <li>❸ A toolbar with zoom, page count, and search built in</li>
+                  <li>
+                    ❹ Keyboard navigation, so arrows and escape behave as users
+                    expect
+                  </li>
+                </ul>
+                <p>
+                  You install the package, import the viewer, and pass a source.
+                  The library handles the parsing workers, the render loop, and
+                  the resize observer that keeps pages sharp when the container
+                  changes size. You write one line of JSX. It handles the rest.
+                </p>
+
+                <h2 id="wiring-into-ai-app-pdfcn">
+                  Wiring it into an AI-built app
+                </h2>
+                <p>
+                  If your product came out of an AI assistant, pdfcn fits the
+                  workflow. The component is plain React with TypeScript types,
+                  so the model reads the API surface cleanly and generates
+                  working integration code on the first pass.
+                </p>
+                <p>
+                  Ask your assistant to add pdfcn, point it at the invoice route
+                  or the contract modal, and describe the chrome you want around
+                  the viewer. The model writes the wrapper. You review the
+                  spacing. The PDF stops being the screen that breaks your
+                  design system, and you did not spend a weekend on canvas
+                  rendering to get there.
+                </p>
+
+                <h2 id="open-source-pdfcn">Free, open source, no lock-in</h2>
+                <p>
+                  pdfcn is free and MIT-licensed. The code is on GitHub, the
+                  issues are public, and the rendering happens in your own app.
+                  There is no vendor account, no API key, no usage quota, and no
+                  hosted viewer that could change its pricing next quarter.
+                </p>
+                <p>
+                  That independence matters for documents. An invoice viewer
+                  that phones home to a third party is a privacy problem waiting
+                  for a lawyer to notice. A viewer that renders locally, from
+                  code you can read, is one less question in the security
+                  review.
+                </p>
+
+                <h2 id="why-it-belongs-pdfcn">Why it belongs in your stack</h2>
+                <p>
+                  You care about session time. Every new tab is a chance the
+                  user does not come back. pdfcn keeps the document inside your
+                  app, styled like your app, for the price of one install and a
+                  few lines of JSX.
+                </p>
+                <p>
+                  For a solo founder shipping with AI, that is a rare trade: a
+                  real PDF viewer without the weekend of PDF.js plumbing. Grab
+                  the code, point it at your invoice route, and keep the user in
+                  the flow. When you want the screens around that viewer to
+                  look sharp, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> cover the same
+                  fast, ship-it-yourself workflow.
                 </p>
                   </>
                 )}
