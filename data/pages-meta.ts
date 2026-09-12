@@ -2,9 +2,9 @@ import type { PageMeta } from "../types/data";
 
 export const PAGE_META: Record<string, PageMeta> = {
   index: {
-    title: "Setproduct: AI UI inspiration, design tutorials, and UI kits",
+    title: "Setproduct — a tech publication for founders and builders",
     description:
-      "A curated library of AI UI inspiration with thousands of images for product design. Browse by component, learn from practical UI tutorials, and access templates and UI kits.",
+      "Setproduct covers startups, AI, growth, product and design. Nine years of archives, 11,000 monthly readers, and citations in Google AI Overviews.",
     ogImage:
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com",

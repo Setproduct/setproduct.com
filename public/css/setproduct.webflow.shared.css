@@ -5019,6 +5019,10 @@ figcaption {
   max-width: 800em;
 }
 
+.max-width-900 {
+  max-width: 900em;
+}
+
 .hero-cta-row {
   grid-column-gap: 12px;
   grid-row-gap: 12px;

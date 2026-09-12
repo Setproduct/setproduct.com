@@ -16,6 +16,7 @@ import type { BlogPostPreview } from "../../types/data";
 
 const HOME_TEMPLATES_INITIAL = 15;
 const HOME_TEMPLATES_PAGE = 15;
+const SITE_URL = "https://www.setproduct.com";
 
 
 type Props = {
@@ -33,6 +34,15 @@ export default function HomePage({ blogPosts = [] }: Props) {
         <title>{meta.title}</title>
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
+        <meta content={meta.title} property="og:title" />
+        <meta content={meta.description} property="og:description" />
+        <meta content="website" property="og:type" />
+        <meta content={meta.canonical} property="og:url" />
+        <meta content={`${SITE_URL}${meta.ogImage}`} property="og:image" />
+        <meta content="summary_large_image" name="twitter:card" />
+        <meta content={meta.title} name="twitter:title" />
+        <meta content={meta.description} name="twitter:description" />
+        <meta content={`${SITE_URL}${meta.ogImage}`} name="twitter:image" />
       </Head>
       <SiteHeader blogPosts={blogPosts} />
       <main className="mt-18">
@@ -41,25 +51,32 @@ export default function HomePage({ blogPosts = [] }: Props) {
             <div className="container">
               <div className="main_hero-section">
                 <div className="heading-center-wr">
-                  <h1 className="heading-style-h1">
-                    Find <span className="span-gradient">UI inspiration</span> that feels shippable
-                  </h1>
+                  <div className="max-width-900">
+                    <h1 className="heading-style-h1">
+                      Notes from the people <span className="span-gradient">building and growing</span> tech companies
+                    </h1>
+                  </div>
                   <div className="max-width-800">
                     <div className="heading-style-h5">
-                      A curated AI gallery of UI components and patterns you can actually use.
+                      Practical writing on startups, AI, growth, careers and design.
                       <br />
-                      New images weekly. Search by component. Like to build your library.
+                      An independent magazine, trusted by 11,000 readers a month.
                     </div>
                   </div>
                   <div className="spacer-16" />
                   <div className="hero-cta-row">
-                    <a className="button w-inline-block" href="https://app.setproduct.com">
-                      <div className="text-size-large text-weight-bold">Launch App</div>
-                    </a>
-                    <Link className="button secondary w-inline-block" href="/all">
-                      <div className="text-size-large text-weight-bold">Browse UI kits</div>
-                      <div className="button-icon w-embed"><ArrowIcon /></div>
+                    <Link className="button w-inline-block" href="/blog">
+                      <div className="text-size-large text-weight-bold">Read the latest</div>
                     </Link>
+                    <a
+                      className="button secondary w-inline-block"
+                      href="https://publish.setproduct.com"
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <div className="text-size-large text-weight-bold">Publish with Us</div>
+                      <div className="button-icon w-embed"><ArrowIcon /></div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -75,7 +92,7 @@ export default function HomePage({ blogPosts = [] }: Props) {
           <div className="section-padding top-80 bottom-64">
             <div className="container">
               <div className="heading-center-wr mob-align-left">
-                <h2 className="heading-style-h2">Browse our collection of Figma templates &amp; UI kits</h2>
+                <h2 className="heading-style-h2">Resources for your team</h2>
               </div>
               <div className="spacer-32" />
               <TemplateGrid
