@@ -46,6 +46,8 @@ export type FreebieItem = {
   title: string;
   description: string;
   image: string;
+  /** Optional CSS object-position for the hero cover crop, e.g. "center 20%". */
+  heroImagePosition?: string;
   thumb: string;
   category: string;
   previewHref: string;
@@ -70,6 +72,8 @@ export type TemplateItem = {
   title: string;
   description: string;
   heroImage: string;
+  /** Optional CSS object-position for the hero cover crop, e.g. "center 20%". */
+  heroImagePosition?: string;
   ogImage: string;
   category: string;
   price: string;
@@ -135,6 +139,8 @@ export type DashboardTemplateItem = {
   title: string;
   description: string;
   heroImage: string;
+  /** Optional CSS object-position for the hero cover crop, e.g. "center 20%". */
+  heroImagePosition?: string;
   ogImage: string;
   category: string;
   buyHref: string;

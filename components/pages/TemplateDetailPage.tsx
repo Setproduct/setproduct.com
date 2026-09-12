@@ -6,7 +6,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FaqSection from "../sections/FaqSection";
 import TemplateStickyCta from "../sections/TemplateStickyCta";
-import { getGumroadLinkProps } from "../../lib/gumroad";
+import TemplateHero from "../sections/TemplateHero";
 import type { BlogPostPreview, TemplateItem } from "../../types/data";
 
 type Props = {
@@ -37,45 +37,25 @@ export default function TemplateDetailPage({ item, blogPosts = [] }: Props) {
       </Head>
       <SiteHeader blogPosts={blogPosts} />
       <main className="pt-[70em]">
-        {/* Hero Section */}
-        <div className="section is-height-100vh">
-          <div className="section-padding top-80 bottom-64">
-            <div className="container">
-              <div className="template_hero-sect">
-                <div className="template_hero-wr max-width-900">
-                  <h1 className="heading-style-h1">{item.title}</h1>
-                  <p className="heading-style-h5">{item.description}</p>
-                  <div className="template_hero-btn-wr">
-                    <a
-                      href={item.buyHref}
-                      {...getGumroadLinkProps(item.buyHref, "button secondary w-inline-block")}
-                    >
-                      <div className="text-size-large text-weight-bold">Get Started</div>
-                    </a>
-                    <a
-                      className="button w-inline-block"
-                      href={item.previewHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <div className="text-size-large text-weight-bold">Preview in Figma</div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="section-bg-image-wr">
-            <img
-              alt={item.title}
-              className="image-cover"
-              loading="eager"
-              sizes="100vw"
-              src={item.heroImage}
-            />
-            <div className="section-bg-gradient" />
-          </div>
-        </div>
+        <TemplateHero
+          title={item.title}
+          description={item.description}
+          image={item.heroImage}
+          imagePosition={item.heroImagePosition}
+          actions={[
+            {
+              label: "Get Started",
+              href: item.buyHref,
+              variant: "light",
+              gumroad: true,
+            },
+            {
+              label: "Preview in Figma",
+              href: item.previewHref,
+              external: true,
+            },
+          ]}
+        />
 
         {/* Breadcrumbs */}
         <div className="hide-on-mobile">
