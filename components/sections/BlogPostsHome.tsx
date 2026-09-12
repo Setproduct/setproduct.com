@@ -21,7 +21,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
   return (
     <div className={`main_blog-liist2-section ${styles.homeBlogSection}`}>
       <div className="heading-center-wr mob-align-left">
-        <h2 className="heading-style-h2"> or design better with these practical insights</h2>
+        <h2 className="heading-style-h2">What we published this week</h2>
       </div>
 
       <div className="main_blog-liist2-form w-form">
