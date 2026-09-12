@@ -518,11 +518,12 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /* Give the image layer vertical slack so it can lag behind the section while
-     scrolling without exposing a gap at the edges. The slight oversize means
-     the cover-cropped screenshot is framed ~6% tighter than before. */
+     scrolling without exposing a gap at the edges. 12% top and bottom makes
+     the layer 124% tall, which buys roughly 150px of safe travel on a 100vh
+     hero. The cover-cropped screenshot is framed slightly tighter than before. */
   .section.is-height-100vh .section-bg-image-wr {
-    top: -6%;
-    bottom: -6%;
+    top: -12%;
+    bottom: -12%;
   }
 }
 
@@ -545,19 +546,23 @@ h1[id], h2[id], h3[id], h4[id] {
 
 @keyframes hero-kenburns {
   from {
-    transform: scale(1.015) translate3d(0, 0, 0);
+    transform: scale(1.02) translate3d(0, 0, 0);
   }
   to {
-    transform: scale(1.075) translate3d(0, -1.25%, 0);
+    transform: scale(1.1) translate3d(0, -1.5%, 0);
   }
 }
 
+/* Symmetric travel: the layer starts slightly above centre and drifts to
+   slightly below it, so the background visibly lags behind the section as it
+   scrolls away. 6% of the 124% tall layer is ~7.4% of the section height per
+   direction, well inside the 12% slack, so no edge gap can appear. */
 @keyframes hero-parallax {
   from {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, -6%, 0);
   }
   to {
-    transform: translate3d(0, 4%, 0);
+    transform: translate3d(0, 6%, 0);
   }
 }
 

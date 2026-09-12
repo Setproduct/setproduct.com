@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { getGumroadLinkProps } from "../../lib/gumroad";
+import { useHeroParallax } from "../../hooks/useHeroParallax";
 
 export type HeroAction = {
   label: string;
@@ -32,8 +34,15 @@ export default function TemplateHero({
   actions,
   maxWidthClass = "max-width-900",
 }: Props) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const layerRef = useRef<HTMLDivElement>(null);
+
+  // No-op in browsers that support `animation-timeline: view()`; in Safari and
+  // older Firefox it drives the parallax with a passive scroll listener.
+  useHeroParallax(sectionRef, layerRef);
+
   return (
-    <div className="section is-height-100vh">
+    <div className="section is-height-100vh" ref={sectionRef}>
       <div className="section-padding top-80 bottom-64">
         <div className="container">
           <div className="template_hero-sect">
@@ -87,7 +96,7 @@ export default function TemplateHero({
           </div>
         </div>
       </div>
-      <div className="section-bg-image-wr">
+      <div className="section-bg-image-wr" ref={layerRef}>
         <img
           alt={imageAlt ?? title}
           className="image-cover"
