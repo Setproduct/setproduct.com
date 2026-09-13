@@ -46,10 +46,34 @@ const PDFCN_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-pdfcn", text: "Why it belongs in your stack" },
 ];
 
+const AMICRO_HEADINGS: ArticleHeading[] = [
+  { id: "what-amicro-does", text: "What Amicro actually does" },
+  { id: "why-micro-interactions-matter", text: "Why micro-interactions decide how a page feels" },
+  { id: "what-ships-in-the-box", text: "What ships in the box" },
+  { id: "how-to-add-one", text: "How to add one in five minutes" },
+  { id: "motion-without-bloat", text: "Motion without the performance tax" },
+  { id: "accessible-by-default", text: "Accessible by default" },
+  { id: "faq-amicro", text: "Frequently asked questions" },
+  { id: "why-it-belongs-amicro", text: "Why it belongs in your build" },
+];
+
+const RUNEICONS_HEADINGS: ArticleHeading[] = [
+  { id: "what-runeicons-does", text: "What RuneIcons actually does" },
+  { id: "why-icon-consistency", text: "Why icon consistency decides the whole interface" },
+  { id: "what-is-inside", text: "What is inside the set" },
+  { id: "how-to-use-icons", text: "How to get the icons into your project" },
+  { id: "icons-in-figma-and-code", text: "One set across Figma and code" },
+  { id: "licensing-and-customization", text: "Licensing and customization" },
+  { id: "faq-runeicons", text: "Frequently asked questions" },
+  { id: "why-it-belongs-runeicons", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
   pdfcn: PDFCN_HEADINGS,
+  amicro: AMICRO_HEADINGS,
+  runeicons: RUNEICONS_HEADINGS,
 };
 
 /**
@@ -667,6 +691,400 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> cover the same
                   mobile-first, ship-fast workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "amicro" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  A page can be correct and still feel dead. The layout works,
+                  the copy is fine, the buttons are where they should be. It
+                  still reads as a template because nothing responds when you
+                  touch it. Amicro is a set of ready-made micro-interactions
+                  that fixes that feeling in an afternoon.
+                </p>
+
+                <h2 id="what-amicro-does">What Amicro actually does</h2>
+                <p>
+                  Amicro is an open source collection of micro-interactions for
+                  the web. Each one is a small, self-contained piece of motion:
+                  a button that glows under the cursor, a card that lifts on
+                  hover, a heading that slides into place when you scroll to it,
+                  a cursor that stays glued to a magnetic element. You pick the
+                  effect you want, copy the snippet, and drop it into the page
+                  you already have.
+                </p>
+                <p>
+                  There is no framework to adopt and no build step to add. The
+                  effects run on CSS and a little vanilla JavaScript, so they
+                  work inside a Next.js app, a plain HTML file, a Webflow
+                  export, or whatever your AI assistant generated last week.
+                  The code lives on{" "}
+                  <a
+                    href="https://github.com/Subhan-code/Amicro--Micro-transitions-"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>{" "}
+                  and every effect has a live preview at{" "}
+                  <a
+                    href="https://amicro.vercel.app/mono-charts"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    amicro.vercel.app
+                  </a>
+                  , so you can test the motion before you commit to it.
+                </p>
+
+                <h2 id="why-micro-interactions-matter">
+                  Why micro-interactions decide how a page feels
+                </h2>
+                <p>
+                  Micro-interactions are the small responses a page gives back
+                  when someone acts on it. A button darkens as the cursor
+                  reaches it. A form field glows when it takes focus. A section
+                  fades up as it enters the viewport. None of them change what
+                  the product does. All of them change whether it feels alive or
+                  inert.
+                </p>
+                <p>
+                  The difference shows up in how much people trust the page.
+                  Motion signals that the interface heard the click, that the
+                  state changed, that the thing under the cursor is the thing
+                  you meant to press. A page with none of that feels broken in a
+                  way users cannot name. They do not file a bug. They just leave.
+                </p>
+                <p>
+                  Most designers know this. The reason micro-interactions still
+                  get skipped is cost. Writing them by hand means touching
+                  requestAnimationFrame, transition timing, and reduced-motion
+                  fallbacks for every small effect. Amicro removes that cost by
+                  handing you the effects already written.
+                </p>
+
+                <h2 id="what-ships-in-the-box">What ships in the box</h2>
+                <p>
+                  The collection covers the effects landing pages reach for
+                  most:
+                </p>
+                <ul>
+                  <li>
+                    ❶ Hover states that glow, lift, or tilt a card as the cursor
+                    passes over it
+                  </li>
+                  <li>
+                    ❷ Magnetic buttons that pull toward the pointer and snap
+                    back when it leaves
+                  </li>
+                  <li>
+                    ❸ Scroll reveals that fade and slide content into view as it
+                    enters the viewport
+                  </li>
+                  <li>
+                    ❹ Text effects that animate a headline on load or on hover
+                  </li>
+                  <li>
+                    ❺ Cursor effects that add a soft trail or a blending dot on
+                    desktop
+                  </li>
+                </ul>
+                <p>
+                  Each effect is isolated. You take the one you need and leave
+                  the rest. Nothing pulls in a shared runtime, and removing an
+                  effect is as easy as deleting the snippet you pasted.
+                </p>
+
+                <h2 id="how-to-add-one">How to add one in five minutes</h2>
+                <p>
+                  The workflow is short enough to do between two other tasks:
+                </p>
+                <ul>
+                  <li>
+                    ❶ Open the live demo and find the effect that fits the
+                    section you have in mind
+                  </li>
+                  <li>❷ Copy the HTML, the CSS, and the small script for that effect</li>
+                  <li>
+                    ❸ Paste them into your component and point the class names at
+                    your own elements
+                  </li>
+                  <li>
+                    ❹ Adjust the timing values until the motion matches the pace
+                    of the rest of the page
+                  </li>
+                </ul>
+                <p>
+                  If you build with an AI assistant, the snippet is also the
+                  prompt. Paste the effect into the chat, describe which element
+                  it should wrap, and let the model do the wiring. The effect is
+                  plain <code>CSS</code> and <code>JS</code>, so the assistant
+                  reads it cleanly and generates working code on the first pass.
+                </p>
+
+                <h2 id="motion-without-bloat">Motion without the performance tax</h2>
+                <p>
+                  The usual objection to adding motion is weight. Animation
+                  libraries can drag in hundreds of kilobytes and a render loop
+                  that runs on every frame. Amicro avoids that by staying close
+                  to the platform.
+                </p>
+                <p>
+                  The effects lean on CSS transitions and transforms, which the
+                  browser can hand to the GPU. The JavaScript is limited to the
+                  few cases where a pointer position or a scroll threshold has to
+                  be read. When a section is off screen, nothing runs. On a
+                  mid-range phone the page keeps its scroll speed, and the motion
+                  still reads as smooth.
+                </p>
+
+                <h2 id="accessible-by-default">Accessible by default</h2>
+                <p>
+                  Motion is not welcome for everyone. Some people get dizzy from
+                  parallax and large movement, and their operating system already
+                  tells your page to tone it down. A good micro-interaction
+                  respects that signal.
+                </p>
+                <p>
+                  Amicro checks the <code>prefers-reduced-motion</code> setting
+                  before it animates. When a visitor has that preference on, the
+                  effects fall back to a static state instead of playing. The
+                  page still looks finished. It just stops moving. That check is
+                  built into the snippets, so you do not have to remember it for
+                  each one you paste.
+                </p>
+
+                <h2 id="faq-amicro">Frequently asked questions</h2>
+                <h3>Do I need React to use Amicro?</h3>
+                <p>
+                  No. The effects are plain CSS and vanilla JavaScript. React,
+                  Vue, and Next.js projects can use them, and so can a static
+                  HTML page. You paste the snippet wherever the element lives.
+                </p>
+                <h3>Will the effects slow my page down?</h3>
+                <p>
+                  They use CSS transitions and transforms, so the browser can
+                  offload the work to the GPU. Most effects only run while the
+                  element is on screen and interacting. The heavier cursor
+                  effects are desktop-only by design.
+                </p>
+                <h3>Can I mix several effects on one page?</h3>
+                <p>
+                  Yes. Each effect is independent and scoped to the element you
+                  apply it to. Add as many as the page can carry without
+                  competing. A good rule is one motion idea per section.
+                </p>
+                <h3>Is it really free?</h3>
+                <p>
+                  Yes. The code is open source on GitHub. You read it, fork it,
+                  and ship it in personal or commercial work without a license
+                  fee.
+                </p>
+
+                <h2 id="why-it-belongs-amicro">Why it belongs in your build</h2>
+                <p>
+                  You want the page to feel designed, not generated. Amicro gets
+                  you there by giving the interface a set of small, believable
+                  responses that cost almost nothing to add. Grab the effect that
+                  fits, paste it, tune the timing, and watch the page stop
+                  feeling flat.
+                </p>
+                <p>
+                  For a solo builder shipping fast with AI, that is the useful
+                  part: real motion without writing animation code from scratch.
+                  When you want the static design underneath that motion to hold
+                  up, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same ship-it-yourself workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "runeicons" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  Icons are the smallest elements on the screen and the fastest
+                  way to make a product look unfinished. Pull a set from three
+                  different sources and the mismatch shows before anyone reads a
+                  word. RuneIcons gives you one open source set to draw from, so
+                  the whole interface keeps the same line weight and the same
+                  rhythm.
+                </p>
+
+                <h2 id="what-runeicons-does">What RuneIcons actually does</h2>
+                <p>
+                  RuneIcons is an open source icon library built for modern
+                  interfaces. It ships a large collection of clean SVG icons you
+                  can browse, search, and copy straight into your project. Every
+                  icon is drawn to a shared grid with a consistent stroke and
+                  corner radius, so picking any two of them side by side still
+                  looks like one family.
+                </p>
+                <p>
+                  The set lives at{" "}
+                  <a
+                    href="https://www.runeicons.com/icons"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    runeicons.com
+                  </a>
+                  , where you can filter the collection and preview each icon at
+                  the size you plan to use. The source is on{" "}
+                  <a
+                    href="https://github.com/Nexvyn/runeicons"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  , so you can read how the icons are built, open an issue, or
+                  fork the set and grow it for your own product.
+                </p>
+
+                <h2 id="why-icon-consistency">
+                  Why icon consistency decides the whole interface
+                </h2>
+                <p>
+                  Icons carry more visual weight than people expect. They sit
+                  next to your labels, inside your buttons, and along your
+                  navigation, and they repeat on almost every screen. When those
+                  icons come from different sets, the eye catches the small
+                  differences: a stroke that is slightly heavier, a corner that
+                  is sharper, a shape that leans the other way. The screen reads
+                  as assembled rather than designed.
+                </p>
+                <p>
+                  Fixing that by hand is slow. You open each icon, adjust the
+                  grid, redraw the paths that do not match, then repeat for every
+                  size you support. Most teams skip the cleanup and live with the
+                  mismatch. A single consistent set removes that chore at the
+                  source, because the icons already agree with each other.
+                </p>
+
+                <h2 id="what-is-inside">What is inside the set</h2>
+                <p>
+                  The collection covers the categories a product interface
+                  actually needs:
+                </p>
+                <ul>
+                  <li>❶ Navigation and directional arrows</li>
+                  <li>❷ Interface actions like edit, copy, delete, and share</li>
+                  <li>❸ Media controls for play, pause, and volume</li>
+                  <li>❹ Communication icons for mail, chat, and notifications</li>
+                  <li>❺ File, folder, and document symbols</li>
+                  <li>❻ Commerce and finance marks for carts, cards, and pricing</li>
+                </ul>
+                <p>
+                  Each icon comes as an SVG, which means you can scale it to any
+                  size without losing sharpness, recolor it with a single CSS
+                  property, and drop it into any stack that renders markup.
+                </p>
+
+                <h2 id="how-to-use-icons">
+                  How to get the icons into your project
+                </h2>
+                <p>
+                  The path from the site to your code is short:
+                </p>
+                <ul>
+                  <li>
+                    ❶ Open the gallery and search for the concept you need, such
+                    as &ldquo;settings&rdquo; or &ldquo;upload&rdquo;
+                  </li>
+                  <li>❷ Copy the SVG or grab the file from the repository</li>
+                  <li>
+                    ❸ Paste it into your component and set the color and size
+                    with your own classes
+                  </li>
+                </ul>
+                <p>
+                  The icons are plain <code>SVG</code>, so they work as inline
+                  markup, as the source of an image tag, or as a sprite
+                  you reference by id. If you build with an AI assistant, paste
+                  the SVG into the chat and describe where it belongs. The model
+                  reads the path data cleanly and places it without extra setup.
+                </p>
+
+                <h2 id="icons-in-figma-and-code">
+                  One set across Figma and code
+                </h2>
+                <p>
+                  The gap between design and build shows up worst in icons. A
+                  designer places one set in Figma, an engineer pulls a different
+                  set from a package, and the shipped screen quietly differs from
+                  the file. Nobody notices until the review.
+                </p>
+                <p>
+                  Because RuneIcons ships raw SVG, the same file can sit in your
+                  design file and your codebase. The designer drags the icon onto
+                  the artboard. The engineer pastes the same path into the
+                  component. What you approved is what ships, which removes a
+                  whole class of review comments.
+                </p>
+
+                <h2 id="licensing-and-customization">
+                  Licensing and customization
+                </h2>
+                <p>
+                  The set is open source and free to use. You can ship it in
+                  personal and commercial work, modify the icons to fit your
+                  brand, and keep the changes you make. There is no account to
+                  create and no attribution requirement forced onto your UI.
+                </p>
+                <p>
+                  Customization stays simple because the icons are plain vector
+                  files. Change the stroke width, soften a corner, or adjust the
+                  color to match your tokens. Nothing is locked behind a
+                  proprietary editor, and the source stays readable if you want
+                  to understand how an icon was drawn.
+                </p>
+
+                <h2 id="faq-runeicons">Frequently asked questions</h2>
+                <h3>Can I use RuneIcons in commercial projects?</h3>
+                <p>
+                  Yes. The set is open source, so you can use it in client work
+                  and paid products. The license file in the repository spells out
+                  the exact terms.
+                </p>
+                <h3>Do the icons work outside Figma?</h3>
+                <p>
+                  They do. Every icon is an SVG file, so it renders in any
+                  browser, in React and Vue components, and in static HTML. Figma
+                  is just one place you can use them.
+                </p>
+                <h3>Can I change the color and size?</h3>
+                <p>
+                  Yes. Set the size with width and height, and the color with the
+                  fill or stroke property. Inline SVGs also inherit the text color
+                  of their parent, which keeps them in step with your theme.
+                </p>
+                <h3>Is the collection still growing?</h3>
+                <p>
+                  It is open source, so the set grows as contributors add icons.
+                  You can follow the repository to see new additions, or open an
+                  issue to request a specific symbol.
+                </p>
+
+                <h2 id="why-it-belongs-runeicons">Why it belongs in your stack</h2>
+                <p>
+                  You want the interface to look deliberate, and icons are where
+                  that impression is won or lost. RuneIcons hands you a single
+                  consistent set in a format that fits both the design file and
+                  the codebase, with no license fee and no account.
+                </p>
+                <p>
+                  For a solo builder shipping fast with AI, that saves the slow
+                  part: hunting for icons and fixing the mismatches after the
+                  fact. Grab the set, keep one source of truth, and let the small
+                  elements finally match. When you want the screens around those
+                  icons to look sharp, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for the
+                  same ship-it-yourself workflow.
                 </p>
                   </>
                 )}

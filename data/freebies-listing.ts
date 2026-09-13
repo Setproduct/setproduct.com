@@ -21,6 +21,34 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "runeicons",
+    title: "RuneIcons — open source icon set for modern UIs",
+    description:
+      "Thousands of clean, consistent SVG icons for web and app interfaces. Open source, MIT licensed, and ready to drop into Figma, React, or plain HTML today.",
+    thumb: "/freebies/thumbs/freebie-runeicons.webp",
+    image: "/freebies/freebie-runeicons.webp",
+    category: "Components",
+    previewHref: "/freebies/runeicons",
+    duplicateHref: "https://github.com/Nexvyn/runeicons",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
+    slug: "amicro",
+    title: "Amicro — micro-interactions for any landing page",
+    description:
+      "Open source collection of ready-made micro-interactions: hover glow, magnetic buttons, scroll reveals. Copy a snippet, paste into any page, ship motion today.",
+    thumb: "/freebies/thumbs/freebie-amicro.webp",
+    image: "/freebies/freebie-amicro.webp",
+    category: "Code",
+    previewHref: "/freebies/amicro",
+    duplicateHref: "https://github.com/Subhan-code/Amicro--Micro-transitions-",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "m3e-canvas",
     title: "M3E Canvas — Material 3 Expressive UI builder",
     description:
