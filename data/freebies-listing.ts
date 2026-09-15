@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "sfinterface-numbers",
+    title: "@sfinterface/numbers — rolling numbers for React",
+    description:
+      "React component that turns only the digits that changed. 13 kB, no dependencies, Intl formatting, five transitions, and reduced-motion support.",
+    thumb: "/freebies/thumbs/freebie-sfinterface-numbers.webp",
+    image: "/freebies/freebie-sfinterface-numbers.webp",
+    category: "Code",
+    previewHref: "/freebies/sfinterface-numbers",
+    duplicateHref: "https://github.com/wherescz/sfinterface-numbers",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "runeicons",
     title: "RuneIcons — open source icon set for modern UIs",
     description:

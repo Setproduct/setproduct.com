@@ -13,6 +13,12 @@ type Props = {
   blogPosts?: BlogPostPreview[];
 };
 
+function suffixForCategory(category: string) {
+  if (category === "Code" || category === "Design & Code") return "code freebie";
+  if (category === "Tutorials & Education") return "tutorial";
+  return "Figma freebie";
+}
+
 export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -20,7 +26,7 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
     { label: item.title },
   ];
 
-  const title = `${item.title} — Figma freebie`;
+  const title = `${item.title} — ${suffixForCategory(item.category)}`;
   const description = item.description;
   const canonical = `https://setproduct.com/freebies/${item.slug}`;
 

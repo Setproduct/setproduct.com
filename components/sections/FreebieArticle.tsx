@@ -68,12 +68,25 @@ const RUNEICONS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-runeicons", text: "Why it belongs in your stack" },
 ];
 
+const SFINTERFACE_NUMBERS_HEADINGS: ArticleHeading[] = [
+  { id: "what-sfinterface-numbers-does", text: "What @sfinterface/numbers does" },
+  { id: "why-static-numbers-feel-dead", text: "Why a number that jumps feels broken" },
+  { id: "how-the-columns-work", text: "How the columns work" },
+  { id: "formatting-with-intl", text: "Formatting comes from Intl" },
+  { id: "five-transitions", text: "Five transitions, one prop" },
+  { id: "theming-and-inheritance", text: "Theming and inherited type" },
+  { id: "accessible-by-default", text: "Accessible by default" },
+  { id: "faq-sfinterface-numbers", text: "Frequently asked questions" },
+  { id: "why-it-belongs-numbers", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
   pdfcn: PDFCN_HEADINGS,
   amicro: AMICRO_HEADINGS,
   runeicons: RUNEICONS_HEADINGS,
+  "sfinterface-numbers": SFINTERFACE_NUMBERS_HEADINGS,
 };
 
 /**
@@ -1085,6 +1098,343 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same ship-it-yourself workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "sfinterface-numbers" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  Your dashboard polls an API every ten seconds. Revenue ticks
+                  from 1,204 to 1,251. Or rather, it blinks. The old figure
+                  vanishes, the new one appears, and the change slides past your
+                  eye. @sfinterface/numbers turns that swap into motion, so the
+                  column you were watching rolls to its next value while you
+                  watch it happen.
+                </p>
+
+                <h2 id="what-sfinterface-numbers-does">
+                  What @sfinterface/numbers does
+                </h2>
+                <p>
+                  @sfinterface/numbers is a React component that renders numbers
+                  the way a mechanical counter does. Each digit sits in its own
+                  column, and each column is a strip of digits behind a window.
+                  When the value changes, only the columns whose digit actually
+                  moved turn. Add one to 1,204 and a single wheel goes round. Add
+                  forty-seven and three do, each by a different distance, on the
+                  same clock.
+                </p>
+                <p>
+                  The install is two imports and a value:
+                </p>
+                <ul>
+                  <li>
+                    <code>npm i @sfinterface/numbers</code>
+                  </li>
+                  <li>
+                    <code>
+                      import &#123; Numbers &#125; from
+                      "@sfinterface/numbers"
+                    </code>
+                  </li>
+                  <li>
+                    <code>import "@sfinterface/numbers/styles.css"</code>
+                  </li>
+                  <li>
+                    <code>{"<Numbers value={count} />"}</code>
+                  </li>
+                </ul>
+                <p>
+                  It comes from The San Francisco Interface and ships on its own,
+                  apart from the rest of that library. The source lives on{" "}
+                  <a
+                    href="https://github.com/wherescz/sfinterface-numbers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  , and the full prop reference with a playground sits at{" "}
+                  <a
+                    href="https://numbers.sfinterface.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    numbers.sfinterface.com
+                  </a>
+                  . Both are open, so you can read the code, test the motion, or
+                  file an issue before you commit to anything.
+                </p>
+
+                <h2 id="why-static-numbers-feel-dead">
+                  Why a number that jumps feels broken
+                </h2>
+                <p>
+                  Counters are everywhere in a product: revenue, users, stock,
+                  cart totals, likes, progress. They update on almost every screen
+                  that shows live data. Most of them update by replacing the old
+                  figure with the new one in a single frame, and that hard cut
+                  hides the one thing the reader wants to know. Did it go up or
+                  down, and by how much?
+                </p>
+                <p>
+                  Motion answers that question without a label. A wheel that
+                  turns forward reads as an increase. A wheel that turns back
+                  reads as a loss. The direction of the movement carries the
+                  meaning, which is why a rolling figure feels alive and a blinking
+                  one feels like a glitch.
+                </p>
+                <p>
+                  The usual fix is an animated counter written by hand. You
+                  lerp a number from the old value to the new one and re-render
+                  sixty times a second. It works until the figure has a currency
+                  symbol, a thousands separator, or a locale that puts the decimal
+                  comma in a different place. Then you are writing number
+                  formatting on top of animation, and both are now your problem.
+                  If you have fought that before, the notes in our{" "}
+                  <Link href="/blog/dashboard-ui-design">
+                    dashboard UI design guide
+                  </Link>{" "}
+                  cover where live figures tend to break layouts.
+                </p>
+
+                <h2 id="how-the-columns-work">How the columns work</h2>
+                <p>
+                  The geometry is worth understanding because it explains why the
+                  component stays light. A column is a strip of thirty digits
+                  behind a window one cell tall. That is each digit 0 to 9,
+                  repeated three times, so the strip can roll in either direction
+                  without hitting an end. Turning a column means moving the strip
+                  three cells. The window does not move. It is where it always was.
+                </p>
+                <p>
+                  The window is slightly taller than the glyph, and the extra
+                  space at each end is the bleed. The veil lives in that overhang,
+                  and two props shape it. <code>fade</code> sets how far into the
+                  overhang a digit dissolves. <code>softness</code> sets the shape
+                  of that dissolve, from a crisp edge that lets go quickly to an
+                  even ramp with no knee in it. While a column turns, the fade
+                  deepens, so the passing digits go ghostly and settle back when
+                  the roll stops.
+                </p>
+                <p>
+                  The turning direction follows the number. Counting up out of 9
+                  goes forward to 0, the way an odometer does, rather than
+                  rewinding through eight digits. Set <code>trend</code> to{" "}
+                  <code>up</code> or <code>down</code> when you want to force the
+                  reading, and leave it on <code>auto</code> when you want the
+                  component to decide from the values.
+                </p>
+
+                <h2 id="formatting-with-intl">
+                  Formatting comes from Intl
+                </h2>
+                <p>
+                  The component does not format numbers itself. It hands the value
+                  to{" "}
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Intl.NumberFormat
+                  </a>
+                  , the browser API that already knows about currencies,
+                  percentages, compact notation, numbering systems, and every
+                  locale. You pass the standard options and the platform does the
+                  work:
+                </p>
+                <ul>
+                  <li>
+                    Currency:{" "}
+                    <code>
+                      {'<Numbers value={1125.64} format={{ style: "currency", currency: "USD" }} />'}
+                    </code>
+                  </li>
+                  <li>
+                    Percent:{" "}
+                    <code>
+                      {'<Numbers value={0.0241} format={{ style: "percent", maximumFractionDigits: 2 }} />'}
+                    </code>
+                  </li>
+                  <li>
+                    Compact:{" "}
+                    <code>
+                      {'<Numbers value={48200} format={{ notation: "compact" }} locale="en-GB" />'}
+                    </code>
+                  </li>
+                </ul>
+                <p>
+                  That choice removes a whole class of bugs. The separators, the
+                  symbol placement, and the rounding rules come from the platform
+                  instead of from a formatter you have to maintain. Change the{" "}
+                  <code>locale</code> prop and the readout follows the reader
+                  rather than the developer.
+                </p>
+
+                <h2 id="five-transitions">Five transitions, one prop</h2>
+                <p>
+                  The motion is a single prop with five values, so you can match
+                  the feel of the number to the product:
+                </p>
+                <ul>
+                  <li>
+                    ❶ <code>roll</code> turns the strip through every digit on
+                    the way, the classic counter
+                  </li>
+                  <li>
+                    ❷ <code>tick</code> slides the old digit out and the new one
+                    in, quieter and more medical
+                  </li>
+                  <li>
+                    ❸ <code>blur</code> dissolves the digit in place, defocused,
+                    good for live data that should feel soft
+                  </li>
+                  <li>
+                    ❹ <code>flip</code> turns the digit over like a split-flap
+                    board, which reads as arrivals and departures
+                  </li>
+                  <li>
+                    ❺ <code>scale</code> shrinks the old digit away and grows the
+                    new one, the lightest of the five
+                  </li>
+                </ul>
+                <p>
+                  <code>duration</code> controls the clock in milliseconds and
+                  defaults to 520. <code>blur</code> is a boolean you can switch
+                  off when the smear feels like too much. <code>prefix</code> and{" "}
+                  <code>suffix</code> take any node, so a currency symbol, a
+                  percent sign, or an icon sits beside the digits. Because the box
+                  is one inline box, the affix travels with the number as it gains
+                  a column or loses one instead of staying put while the digits
+                  shift underneath it.
+                </p>
+
+                <h2 id="theming-and-inheritance">
+                  Theming and inherited type
+                </h2>
+                <p>
+                  The stylesheet describes motion and geometry and nothing else.
+                  It does not set a font, a size, a weight, a colour, or letter
+                  spacing. All of that is inherited from wherever you drop the
+                  component, so a readout inside a heading is the heading&rsquo;s
+                  type, and the same component in a table cell takes the
+                  table&rsquo;s type. You do not restyle a widget to make it fit.
+                </p>
+                <p>
+                  When you do want to change the motion, every value is a CSS
+                  custom property. Set one on <code>:root</code>, on a wrapper, or
+                  inline. The tokens include{" "}
+                  <code>--sfi-numbers-roll</code> for how long a column takes to
+                  turn, <code>--sfi-numbers-exit</code> for how long a leaving
+                  column takes to go, <code>--sfi-numbers-cell</code> for the
+                  pitch the digits stack at, and{" "}
+                  <code>--sfi-numbers-ease</code> for the curve a column turns on.
+                  The stylesheet ships in one <code>@layer arc</code>, below your
+                  own rules, so a class of yours wins over the component without{" "}
+                  <code>!important</code>.
+                </p>
+
+                <h2 id="accessible-by-default">Accessible by default</h2>
+                <p>
+                  A rolling digit is a visual trick, and visual tricks need a
+                  fallback. The digits in @sfinterface/numbers are marked{" "}
+                  <code>aria-hidden</code>, and one formatted string sits behind
+                  them. A screen reader announces one thousand two hundred and
+                  four, the number as a person would say it, instead of reading
+                  twelve glyphs one at a time. The animation is decoration. The
+                  value is the content.
+                </p>
+                <p>
+                  Motion follows{" "}
+                  <a
+                    href="https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    the accessibility guidance on animation from interaction
+                  </a>
+                  . When the operating system reports{" "}
+                  <code>prefers-reduced-motion: reduce</code>, the columns do not
+                  turn, blur, or fade. The number changes and nothing moves, which
+                  is the behavior a reader who asked for less motion expects.
+                </p>
+                <p>
+                  Server rendering is handled too. The component renders the
+                  formatted value into the markup on the server, so the first
+                  paint shows the real figure. There is no empty box, no
+                  placeholder width to reserve, and no hydration guard to write.
+                  The package requires React 18 or 19, carries no dependencies,
+                  and ships its own types.
+                </p>
+
+                <h2 id="faq-sfinterface-numbers">
+                  Frequently asked questions
+                </h2>
+                <h3>How do I animate a number in React without a chart library?</h3>
+                <p>
+                  You install the package, import the stylesheet, and pass your
+                  value as a prop. The component handles the columns, the timing,
+                  and the formatting. You do not write a timer, a requestAnimationFrame
+                  loop, or a formatter. If you only need one figure to count up,
+                  this is less code than a custom hook.
+                </p>
+                <h3>Does it support currency, percentages, and compact notation?</h3>
+                <p>
+                  Yes. Formatting runs through Intl.NumberFormat, so you pass the
+                  standard options for style, currency, and notation, plus a locale.
+                  That covers currency symbols, percent signs, compact values like
+                  48K, and the separators each locale uses.
+                </p>
+                <h3>Will it work in a Next.js app with server rendering?</h3>
+                <p>
+                  It will. The component is SSR ready and renders the formatted
+                  value into the markup, so the number shows on first paint. It
+                  supports React 18 and 19, and it has no runtime dependencies to
+                  fight over.
+                </p>
+                <h3>What happens for users who prefer reduced motion?</h3>
+                <p>
+                  The component reads the reduced-motion preference and stops the
+                  animation. The value still updates, it just arrives without the
+                  roll, blur, or fade. The digits also stay hidden from screen
+                  readers, which read the number as a single formatted string.
+                </p>
+                <h3>How large is the package and is it free?</h3>
+                <p>
+                  It weighs about 13 kB and pulls in nothing else. It is MIT
+                  licensed, so you can use it in personal and commercial work.
+                  Version 0.3.4 is current, and the changelog notes that the props
+                  and motion are still being settled, so pin an exact version if
+                  you need the behavior to hold still.
+                </p>
+
+                <h2 id="why-it-belongs-numbers">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  You care about the moment a figure changes, because that is the
+                  moment the reader looks. A number that rolls tells them the
+                  direction and the size of the change in one gesture. A number
+                  that blinks makes them check the previous screen to be sure.
+                  That difference repeats on every live screen you ship.
+                </p>
+                <p>
+                  For a solo builder shipping fast, the trade is clean: one small
+                  component, no dependencies, formatting from the platform, and
+                  motion that already respects the accessibility settings. Grab
+                  the package, point it at your revenue or user count, and let the
+                  figure move the way the data did. When you want the dashboard
+                  around that figure to look deliberate, our{" "}
+                  <Link href="/templates/orion">Orion charts UI kit</Link> and the
+                  rest of the <Link href="/code">design and code kits</Link> are
+                  built for the same workflow. If you are still wiring the screen
+                  the number lives on, the guide on{" "}
+                  <Link href="/blog/how-to-study-saas-dashboard-in-the-ai-era">
+                    studying a SaaS dashboard in the AI era
+                  </Link>{" "}
+                  is a useful starting point.
                 </p>
                   </>
                 )}
