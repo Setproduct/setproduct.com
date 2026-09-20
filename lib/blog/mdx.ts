@@ -48,7 +48,14 @@ function slugify(text: string): string {
 function extractHeadings(content: string): BlogHeading[] {
   const headings: BlogHeading[] = [];
   const lines = content.split("\n");
+  let inCodeFence = false;
   for (const line of lines) {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+    if (inCodeFence) continue;
+
     const h3 = line.match(/^###\s+(.+)$/);
     const h2 = !h3 && line.match(/^##\s+(.+)$/);
     if (h3) {
