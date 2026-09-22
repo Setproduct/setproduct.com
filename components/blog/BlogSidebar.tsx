@@ -50,21 +50,33 @@ export default function BlogSidebar({ headings, containerRef }: BlogSidebarProps
       const containerBottom = containerRect.bottom;
       const stickyBottom = topOffset + innerHeight;
 
+      // The wrapper (.blogpost_content-column1) has horizontal padding
+      // (padding-right: 16em). getBoundingClientRect().width includes that
+      // padding, but once the inner block becomes position: fixed it leaves
+      // the flow and the parent's padding no longer applies to it. Subtract
+      // the wrapper's horizontal padding so the fixed width matches the
+      // in-flow content width and the block doesn't grow when it sticks.
+      const wrapperStyles = window.getComputedStyle(wrapper);
+      const paddingLeft = parseFloat(wrapperStyles.paddingLeft) || 0;
+      const paddingRight = parseFloat(wrapperStyles.paddingRight) || 0;
+      const contentLeft = wrapperRect.left + paddingLeft;
+      const contentWidth = wrapperRect.width - paddingLeft - paddingRight;
+
       if (containerTop >= topOffset) {
         setStickyStyle({});
       } else if (containerBottom <= stickyBottom) {
         setStickyStyle({
           position: "fixed",
           top: containerBottom - innerHeight,
-          left: wrapperRect.left,
-          width: wrapperRect.width,
+          left: contentLeft,
+          width: contentWidth,
         });
       } else {
         setStickyStyle({
           position: "fixed",
           top: topOffset,
-          left: wrapperRect.left,
-          width: wrapperRect.width,
+          left: contentLeft,
+          width: contentWidth,
         });
       }
     };
