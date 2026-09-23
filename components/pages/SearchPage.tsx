@@ -54,11 +54,16 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const [inputValue, setInputValue] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
 
+  // На SSG-странице router.query пуст при первом рендере.
+  // Ждём router.isReady, чтобы не мигать пустым состоянием.
+  const isReady = router.isReady;
+
   useEffect(() => {
+    if (!router.isReady) return;
     const q = typeof router.query.query === "string" ? router.query.query : "";
     setInputValue(q);
     setQuery(q);
-  }, [router.query.query]);
+  }, [router.isReady, router.query.query]);
 
   useEffect(() => {
     const id = setTimeout(() => setQuery(inputValue), 180);
@@ -93,8 +98,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   );
 
   const totalFound = results.length;
-  const showEmptyState = query.trim().length < 2;
-  const showNoResults = !showEmptyState && totalFound === 0;
+  const showEmptyState = isReady && query.trim().length < 2;
+  const showNoResults = isReady && !showEmptyState && totalFound === 0;
+  const showResults = isReady && !showEmptyState && !showNoResults;
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -165,6 +171,25 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                 </form>
                 <div className="h-5" />
 
+                {!isReady && (
+                  <div aria-busy="true" aria-label="Loading results">
+                    <div className="h-5 w-64 max-w-full rounded bg-gray-100 animate-pulse" />
+                    <div className="spacer-40" />
+                    <ul className="list-none p-0 m-0 grid gap-5">
+                      {[0, 1, 2].map((i) => (
+                        <li key={i} className="flex gap-4 items-start">
+                          <div className="w-32 h-24 rounded-lg shrink-0 bg-gray-100 animate-pulse" />
+                          <div className="flex-1 min-w-0 grid gap-2">
+                            <div className="h-3 w-24 rounded bg-gray-100 animate-pulse" />
+                            <div className="h-5 w-3/4 rounded bg-gray-100 animate-pulse" />
+                            <div className="h-4 w-full rounded bg-gray-100 animate-pulse" />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {showEmptyState && (
                   <div>
                     <p className="text-size-regular is-mob-14">
@@ -208,7 +233,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   </div>
                 )}
 
-                {!showEmptyState && !showNoResults && (
+                {showResults && (
                   <div>
                     <p className="text-size-regular is-mob-14">
                       Found <strong>{totalFound}</strong> result
