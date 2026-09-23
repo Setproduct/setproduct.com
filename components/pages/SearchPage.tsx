@@ -28,6 +28,7 @@ import {
   splitByMatches,
 } from "../../lib/search/highlight";
 import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
+import { event as gtagEvent } from "../../lib/gtag";
 import type { BlogPostPreview } from "../../types/data";
 
 const SLUG = "search";
@@ -42,6 +43,9 @@ const TOP_MIN_TOTAL = 4;
 // Сколько популярных китов и свежих постов показывать на пустых экранах.
 const POPULAR_KITS_COUNT = 4;
 const FRESH_POSTS_COUNT = 3;
+// GA4: запрос считается «законченным», если пользователь не печатает 1,5 с.
+// Так в отчёт не попадают промежуточные «des», «desi», «desig».
+const ANALYTICS_DELAY = 1500;
 
 // Ссылки «Browse by type» для стартового экрана.
 const BROWSE_LINKS: { label: string; href: string; type?: SearchableType }[] = [
@@ -375,6 +379,25 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     () => runSearch(fuse, query),
     [fuse, query],
   );
+
+  // GA4: событие search (рекомендованное Google, поле search_term)
+  // и отдельное search_no_results для запросов без выдачи.
+  // Один и тот же запрос подряд не отправляется повторно.
+  const lastTrackedRef = useRef("");
+  useEffect(() => {
+    if (!isReady) return;
+    const term = query.trim().toLowerCase();
+    if (term.length < 2 || term === lastTrackedRef.current) return;
+    const count = results.length;
+    const id = setTimeout(() => {
+      lastTrackedRef.current = term;
+      gtagEvent("search", { search_term: term, results_count: count });
+      if (count === 0) {
+        gtagEvent("search_no_results", { search_term: term });
+      }
+    }, ANALYTICS_DELAY);
+    return () => clearTimeout(id);
+  }, [isReady, query, results.length]);
 
   // Нечёткий поиск по словарю сайта для «Did you mean».
   const vocabFuse = useMemo(
