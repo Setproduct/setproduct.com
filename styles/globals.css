@@ -598,7 +598,14 @@ h1[id], h2[id], h3[id], h4[id] {
   max-width: none !important;
   margin: 0 !important;
   overflow: hidden;
-  border-radius: 16px;
+  /* radius-24 from the project scale (AGENTS.md, «Скругления») */
+  border-radius: 24em;
+}
+
+@media screen and (max-width: 479px) {
+  .blog-gallery-item {
+    border-radius: 16em;
+  }
 }
 
 /* Tiles use markdown image syntax so each one routes through MDXImage and stays
@@ -825,7 +832,8 @@ h1[id], h2[id], h3[id], h4[id] {
 @media (min-width: 991px) {
   .navbar .nav_dropdown_list .nav_radio,
   .navbar .nav_dropdown_list .link-block {
-    border-radius: 10px;
+    /* radius-12 from the project scale (AGENTS.md, «Скругления») */
+    border-radius: 12em;
     padding-left: 10em;
     padding-right: 10em;
     margin-left: -10em;
