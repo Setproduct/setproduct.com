@@ -2641,6 +2641,10 @@ figcaption {
   display: none;
 }
 
+.spacer-4 {
+  height: 4em;
+}
+
 .spacer-8 {
   height: 8em;
 }
