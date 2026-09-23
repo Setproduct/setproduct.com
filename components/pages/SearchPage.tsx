@@ -54,6 +54,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const [inputValue, setInputValue] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
 
+  // Группы, которые пользователь раскрыл кнопкой «Show all».
+  const [expandedGroups, setExpandedGroups] = useState<Set<SearchableType>>(
+    () => new Set(),
+  );
+
   // На SSG-странице router.query пуст при первом рендере.
   // Ждём router.isReady, чтобы не мигать пустым состоянием.
   const isReady = router.isReady;
@@ -66,6 +71,15 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     setInputValue((prev) => (prev.trim() === q ? prev : q));
     setQuery(q);
   }, [router.isReady, router.query.query]);
+
+  // Новый запрос — сворачиваем раскрытые группы.
+  useEffect(() => {
+    setExpandedGroups(new Set());
+  }, [query]);
+
+  const expandGroup = (type: SearchableType) => {
+    setExpandedGroups((prev) => new Set(prev).add(type));
+  };
 
   // Debounce: обновляем выдачу и URL (?query=) через 250 мс после ввода.
   // router.replace + shallow не добавляет запись в историю и не перезагружает данные.
@@ -265,7 +279,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     {SEARCHABLE_TYPE_ORDER.map((type) => {
                       const group = grouped[type];
                       if (!group || group.length === 0) return null;
-                      const visible = group.slice(0, MAX_RESULTS_PER_GROUP);
+                      const visible = expandedGroups.has(type)
+                        ? group
+                        : group.slice(0, MAX_RESULTS_PER_GROUP);
                       const hidden = group.length - visible.length;
 
                       return (
@@ -317,9 +333,13 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                             ))}
                           </ul>
                           {hidden > 0 && (
-                            <p className="text-size-small mt-3 opacity-60">
-                              +{hidden} more in {SEARCHABLE_TYPE_LABELS[type]}
-                            </p>
+                            <button
+                              type="button"
+                              onClick={() => expandGroup(type)}
+                              className="text-size-small text-weight-semibold mt-4 p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
+                            >
+                              Show all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
+                            </button>
                           )}
                         </section>
                       );
