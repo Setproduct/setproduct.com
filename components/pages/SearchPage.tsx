@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -29,7 +29,19 @@ import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
 import type { BlogPostPreview } from "../../types/data";
 
 const SLUG = "search";
-const MAX_RESULTS_PER_GROUP = 8;
+// Во вкладке «All» каждая группа показывает короткое превью.
+const ALL_GROUP_PREVIEW = 4;
+// Во вкладке конкретного типа — плоский список, догружаемый порциями.
+const TYPE_PAGE_SIZE = 20;
+
+type SearchTab = "all" | SearchableType;
+
+function parseTab(value: unknown): SearchTab {
+  if (typeof value !== "string") return "all";
+  return (SEARCHABLE_TYPE_ORDER as readonly string[]).includes(value)
+    ? (value as SearchableType)
+    : "all";
+}
 
 type Props = {
   items: SearchableItem[];
@@ -138,10 +150,14 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const [inputValue, setInputValue] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
 
-  // Группы, которые пользователь раскрыл кнопкой «Show all».
-  const [expandedGroups, setExpandedGroups] = useState<Set<SearchableType>>(
-    () => new Set(),
-  );
+  const inputRef = useRef<HTMLInputElement>(null);
+  const tabRefs = useRef<Partial<Record<SearchTab, HTMLButtonElement | null>>>({});
+
+  // Активная вкладка живёт в URL (?type=), чтобы ссылкой можно было поделиться.
+  const activeTab = parseTab(router.query.type);
+
+  // Сколько строк показано во вкладке конкретного типа.
+  const [visibleCount, setVisibleCount] = useState(TYPE_PAGE_SIZE);
 
   // На SSG-странице router.query пуст при первом рендере.
   // Ждём router.isReady, чтобы не мигать пустым состоянием.
@@ -156,13 +172,29 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     setQuery(q);
   }, [router.isReady, router.query.query]);
 
-  // Новый запрос — сворачиваем раскрытые группы.
+  // Новый запрос или другая вкладка — начинаем список сначала.
   useEffect(() => {
-    setExpandedGroups(new Set());
-  }, [query]);
+    setVisibleCount(TYPE_PAGE_SIZE);
+  }, [query, activeTab]);
 
-  const expandGroup = (type: SearchableType) => {
-    setExpandedGroups((prev) => new Set(prev).add(type));
+  const selectTab = (tab: SearchTab) => {
+    const nextQuery = { ...router.query };
+    if (tab === "all") {
+      delete nextQuery.type;
+    } else {
+      nextQuery.type = tab;
+    }
+    router.push(
+      { pathname: router.pathname, query: nextQuery },
+      undefined,
+      { shallow: true, scroll: false },
+    );
+  };
+
+  const clearInput = () => {
+    setInputValue("");
+    setQuery("");
+    inputRef.current?.focus();
   };
 
   // Debounce: обновляем выдачу и URL (?query=) через 250 мс после ввода.
@@ -220,7 +252,46 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     [results],
   );
 
+  // Порядок групп во вкладке «All»: по лучшему score внутри группы.
+  // Fuse уже отдаёт результаты по возрастанию score, поэтому
+  // достаточно запомнить порядок первого появления каждого типа.
+  const groupOrder = useMemo(() => {
+    const order: SearchableType[] = [];
+    for (const r of results) {
+      if (!order.includes(r.item.type)) order.push(r.item.type);
+    }
+    return order;
+  }, [results]);
+
   const totalFound = results.length;
+
+  // Если во вкладке из URL нет результатов по новому запросу — показываем «All».
+  const effectiveTab: SearchTab =
+    activeTab !== "all" && grouped[activeTab].length === 0 ? "all" : activeTab;
+
+  const tabs: { id: SearchTab; label: string; count: number }[] = [
+    { id: "all", label: "All", count: totalFound },
+    ...SEARCHABLE_TYPE_ORDER.map((type) => ({
+      id: type as SearchTab,
+      label: SEARCHABLE_TYPE_LABELS[type],
+      count: grouped[type].length,
+    })),
+  ];
+  const enabledTabs = tabs.filter((t) => t.count > 0).map((t) => t.id);
+
+  const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const index = enabledTabs.indexOf(effectiveTab);
+    let next = index;
+    if (event.key === "ArrowRight") next = (index + 1) % enabledTabs.length;
+    if (event.key === "ArrowLeft") next = (index - 1 + enabledTabs.length) % enabledTabs.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = enabledTabs.length - 1;
+    const tab = enabledTabs[next];
+    selectTab(tab);
+    tabRefs.current[tab]?.focus();
+  };
   const showEmptyState = isReady && query.trim().length < 2;
   const showNoResults = isReady && !showEmptyState && totalFound === 0;
   const showResults = isReady && !showEmptyState && !showNoResults;
@@ -284,18 +355,37 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     Search UI kits, templates, freebies, and blog posts
                   </label>
                   <input
+                    ref={inputRef}
                     aria-controls="search-results"
                     autoComplete="off"
-                    className="text-input is-nav-search is-page-search w-input"
+                    className="text-input is-nav-search is-page-search w-input pr-12 [&::-webkit-search-cancel-button]:appearance-none"
                     enterKeyHint="search"
                     id="search-page-input"
                     maxLength={256}
                     name="query"
                     onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape" && inputValue) {
+                        e.preventDefault();
+                        clearInput();
+                      }
+                    }}
                     placeholder="Search UI kits, templates, articles…"
                     type="search"
                     value={inputValue}
                   />
+                  {inputValue && (
+                    <button
+                      type="button"
+                      onClick={clearInput}
+                      aria-label="Clear search"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full border-0 bg-transparent cursor-pointer opacity-60 hover:opacity-100 hover:bg-(--light-primary) focus-visible:outline-2 focus-visible:outline-(--primary)"
+                    >
+                      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  )}
                   <input
                     className="hide w-button"
                     type="submit"
@@ -387,45 +477,122 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       {totalFound === 1 ? "" : "s"} for{" "}
                       <strong>&ldquo;{query}&rdquo;</strong>
                     </p>
+                    <div className="spacer-24" />
+
+                    {/* На мобильных вкладки прокручиваются по горизонтали. */}
+                    <div
+                      role="tablist"
+                      aria-label="Filter results by type"
+                      className="flex gap-2 overflow-x-auto whitespace-nowrap -mx-4 px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    >
+                      {tabs.map((tab) => {
+                        const selected = tab.id === effectiveTab;
+                        const disabled = tab.count === 0;
+                        return (
+                          <button
+                            key={tab.id}
+                            ref={(el) => {
+                              tabRefs.current[tab.id] = el;
+                            }}
+                            type="button"
+                            role="tab"
+                            id={`search-tab-${tab.id}`}
+                            aria-selected={selected}
+                            aria-controls="search-tabpanel"
+                            tabIndex={selected ? 0 : -1}
+                            disabled={disabled}
+                            onClick={() => selectTab(tab.id)}
+                            onKeyDown={onTabKeyDown}
+                            className={`blog_list-filters-item shrink-0 border-0 m-0! text-inherit outline-none focus-visible:ring-2 focus-visible:ring-(--primary) disabled:opacity-40 disabled:cursor-default disabled:hover:text-inherit${selected ? " fs-cmsfilter_active" : ""}`}
+                          >
+                            <span className="text-size-regular">
+                              {tab.label}{" "}
+                              <span className="font-normal opacity-60">{tab.count}</span>
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                     <div className="spacer-40" />
 
-                    {SEARCHABLE_TYPE_ORDER.map((type) => {
-                      const group = grouped[type];
-                      if (!group || group.length === 0) return null;
-                      const visible = expandedGroups.has(type)
-                        ? group
-                        : group.slice(0, MAX_RESULTS_PER_GROUP);
-                      const hidden = group.length - visible.length;
+                    <div
+                      role="tabpanel"
+                      id="search-tabpanel"
+                      aria-labelledby={`search-tab-${effectiveTab}`}
+                    >
+                      {effectiveTab === "all" ? (
+                        groupOrder.map((type) => {
+                          const group = grouped[type];
+                          const visible = group.slice(0, ALL_GROUP_PREVIEW);
+                          const hidden = group.length - visible.length;
 
-                      return (
-                        <section key={type} className="mb-12">
-                          <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0 mb-4">
-                            {SEARCHABLE_TYPE_LABELS[type]}
-                            <span className="font-normal opacity-60">
-                              ({group.length})
-                            </span>
-                          </h2>
-                          <ul className="list-none p-0 m-0 grid gap-5">
-                            {visible.map((item) => (
-                              <ResultRow
-                                key={`${item.type}-${item.slug}`}
-                                item={item}
-                                re={highlightRe}
-                              />
-                            ))}
-                          </ul>
-                          {hidden > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => expandGroup(type)}
-                              className="text-size-small text-weight-semibold mt-4 p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
-                            >
-                              Show all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
-                            </button>
-                          )}
-                        </section>
-                      );
-                    })}
+                          return (
+                            <section key={type} className="mb-12">
+                              <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0 mb-4">
+                                {SEARCHABLE_TYPE_LABELS[type]}
+                                <span className="font-normal opacity-60">
+                                  ({group.length})
+                                </span>
+                              </h2>
+                              <ul className="list-none p-0 m-0 grid gap-5">
+                                {visible.map((item) => (
+                                  <ResultRow
+                                    key={`${item.type}-${item.slug}`}
+                                    item={item}
+                                    re={highlightRe}
+                                  />
+                                ))}
+                              </ul>
+                              {hidden > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => selectTab(type)}
+                                  className="text-size-small text-weight-semibold mt-4 p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
+                                >
+                                  See all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
+                                </button>
+                              )}
+                            </section>
+                          );
+                        })
+                      ) : (
+                        (() => {
+                          const list = grouped[effectiveTab];
+                          const visible = list.slice(0, visibleCount);
+                          const remaining = list.length - visible.length;
+                          return (
+                            <section>
+                              <h2 className="sr-only">
+                                {SEARCHABLE_TYPE_LABELS[effectiveTab]}
+                              </h2>
+                              <ul className="list-none p-0 m-0 grid gap-5">
+                                {visible.map((item) => (
+                                  <ResultRow
+                                    key={`${item.type}-${item.slug}`}
+                                    item={item}
+                                    re={highlightRe}
+                                  />
+                                ))}
+                              </ul>
+                              {remaining > 0 && (
+                                <>
+                                  <div className="spacer-40" />
+                                  <button
+                                    type="button"
+                                    onClick={() => setVisibleCount((c) => c + TYPE_PAGE_SIZE)}
+                                    className="button secondary w-inline-block cursor-pointer"
+                                  >
+                                    <div className="text-size-large text-weight-bold">
+                                      Show {Math.min(TYPE_PAGE_SIZE, remaining)} more
+                                    </div>
+                                  </button>
+                                </>
+                              )}
+                            </section>
+                          );
+                        })()
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
