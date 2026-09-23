@@ -177,9 +177,9 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
     <li className="group">
       <Link
         href={getSearchItemUrl(item)}
-        className="flex gap-4 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+        className="flex gap-4 items-start no-underline text-inherit radius-12 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="relative w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="relative w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
               alt=""
@@ -233,9 +233,9 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
     <li className="group">
       <Link
         href={getSearchItemUrl(item)}
-        className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+        className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit radius-16 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="relative w-18 h-18 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="relative w-18 h-18 md:w-full md:h-auto md:aspect-video radius-16 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
               alt=""
@@ -694,7 +694,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <ul className="list-none p-0! m-0! grid gap-5">
                       {[0, 1, 2].map((i) => (
                         <li key={i} className="flex gap-4 items-start">
-                          <div className="w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 bg-gray-100 animate-pulse" />
+                          <div className="w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 bg-gray-100 animate-pulse" />
                           <div className="flex-1 min-w-0 grid gap-2">
                             <div className="h-3 w-24 rounded bg-gray-100 animate-pulse" />
                             <div className="h-5 w-3/4 rounded bg-gray-100 animate-pulse" />
@@ -724,7 +724,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           <li key={link.href}>
                             <Link
                               href={link.href}
-                              className="flex flex-col gap-1 h-full rounded-lg p-4 no-underline text-inherit bg-(--light-purple) border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
+                              className="flex flex-col gap-1 h-full radius-16 p-4 no-underline text-inherit bg-(--light-purple) border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
                             >
                               <span className="text-size-regular text-weight-semibold">
                                 {link.label}
@@ -801,7 +801,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       </>
                     )}
                     <div className="spacer-40" />
-                    <div className="rounded-lg p-6 bg-(--light-purple) border border-(--light-primary) flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
+                    <div className="radius-16 p-6 bg-(--light-purple) border border-(--light-primary) flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
                       <p className="text-size-regular m-0">
                         Still can&rsquo;t find it? Tell us what you need, and we&rsquo;ll point
                         you to the right kit.
