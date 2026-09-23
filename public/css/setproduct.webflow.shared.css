@@ -2641,6 +2641,42 @@ figcaption {
   display: none;
 }
 
+/* Radius scale for images and cards (see AGENTS.md, «Скругления»).
+   em-based so corners scale with the layout, like spacer-*. */
+.radius-8 {
+  border-radius: 8em;
+}
+
+.radius-12 {
+  border-radius: 12em;
+}
+
+.radius-16 {
+  border-radius: 16em;
+}
+
+.radius-24 {
+  border-radius: 24em;
+}
+
+.radius-full {
+  border-radius: 100em;
+}
+
+@media screen and (max-width: 479px) {
+  .radius-12 {
+    border-radius: 8em;
+  }
+
+  .radius-16 {
+    border-radius: 12em;
+  }
+
+  .radius-24 {
+    border-radius: 16em;
+  }
+}
+
 .spacer-4 {
   height: 4em;
 }
