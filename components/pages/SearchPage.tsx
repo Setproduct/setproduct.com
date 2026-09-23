@@ -174,19 +174,19 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
   if (!item.isFree && item.price) meta.push(item.price);
 
   return (
-    <li className="group">
+    <li>
       <Link
         href={getSearchItemUrl(item)}
-        className="flex gap-4 items-start no-underline text-inherit radius-12 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+        className="hover-lift flex gap-4 items-start no-underline text-inherit radius-12 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="relative w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="hover-lift-media relative w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
               alt=""
               fill
               src={item.image}
               sizes="(min-width: 768px) 128px, 72px"
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover"
             />
           ) : (
             <div
@@ -213,7 +213,7 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
               </span>
             )}
           </div>
-          <p className="text-xl! font-semibold! leading-6! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
+          <p className="hover-lift-title text-xl! font-semibold! leading-6! text-style-2lines m-0">
             <Highlight text={item.title} re={re} />
           </p>
           <div className="spacer-4" />
@@ -230,19 +230,19 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
 // На десктопе превью 16:9 в три колонки, на мобильных — строка как в обычной выдаче.
 function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }) {
   return (
-    <li className="group">
+    <li>
       <Link
         href={getSearchItemUrl(item)}
-        className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit radius-16 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+        className="hover-lift flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit radius-16 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="relative w-18 h-18 md:w-full md:h-auto md:aspect-video radius-16 shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="hover-lift-media relative w-18 h-18 md:w-full md:h-auto md:aspect-video radius-16 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
               alt=""
               fill
               src={item.image}
               sizes="(min-width: 768px) 33vw, 72px"
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover"
             />
           ) : (
             <div
@@ -264,7 +264,7 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
               <span className="text-size-tiny text-weight-semibold opacity-70">{item.price}</span>
             ) : null}
           </div>
-          <p className="text-xl! font-semibold! leading-6! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
+          <p className="hover-lift-title text-xl! font-semibold! leading-6! text-style-2lines m-0">
             <Highlight text={item.title} re={re} />
           </p>
         </div>
