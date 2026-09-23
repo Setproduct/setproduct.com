@@ -5,7 +5,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Fuse from "fuse.js";
+// Только типы: сам модуль fuse.js грузится динамически (см. loadFuse),
+// чтобы не утяжелять стартовый JS страницы.
+import type Fuse from "fuse.js";
 import type { FuseResult } from "fuse.js";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
@@ -58,9 +60,11 @@ const BROWSE_LINKS: { label: string; href: string; type?: SearchableType }[] = [
   { label: "Blog", href: "/blog", type: "blog" },
 ];
 
-function runSearch(fuse: Fuse<SearchableItem>, raw: string): FuseResult<SearchableItem>[] {
+type FuseCtor = typeof Fuse;
+
+function runSearch(fuse: Fuse<SearchableItem> | null, raw: string): FuseResult<SearchableItem>[] {
   const trimmed = raw.trim();
-  if (trimmed.length < 2) return [];
+  if (!fuse || trimmed.length < 2) return [];
   // Пословный поиск с синонимами: все слова обязательны,
   // каждое может совпасть в любом поле или через синоним.
   const expression = buildFuseQuery(trimmed);
@@ -366,9 +370,28 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     return () => clearTimeout(id);
   }, [inputValue, router.isReady]);
 
+  // Lazy Fuse: модуль подгружается при фокусе на поле или при запросе от 2 символов.
+  const [FuseClass, setFuseClass] = useState<FuseCtor | null>(null);
+  const fuseLoadingRef = useRef(false);
+  const loadFuse = () => {
+    if (fuseLoadingRef.current) return;
+    fuseLoadingRef.current = true;
+    import("fuse.js")
+      .then((mod) => setFuseClass(() => mod.default))
+      .catch(() => {
+        // Дадим шанс повторить загрузку при следующем вводе.
+        fuseLoadingRef.current = false;
+      });
+  };
+  useEffect(() => {
+    if (inputValue.trim().length >= 2 || query.trim().length >= 2) loadFuse();
+  }, [inputValue, query]);
+  const fuseReady = FuseClass !== null;
+
   const fuse = useMemo(
     () =>
-      new Fuse(items, {
+      FuseClass &&
+      new FuseClass(items, {
         keys: SEARCH_KEYS.map((k) => ({ ...k })),
         // Каждое слово ищется отдельно, поэтому порог можно держать строже.
         threshold: 0.3,
@@ -376,7 +399,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
         includeScore: true,
         minMatchCharLength: 2,
       }),
-    [items],
+    [FuseClass, items],
   );
 
   const results = useMemo<FuseResult<SearchableItem>[]>(
@@ -389,7 +412,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   // Один и тот же запрос подряд не отправляется повторно.
   const lastTrackedRef = useRef("");
   useEffect(() => {
-    if (!isReady) return;
+    if (!isReady || !fuseReady) return;
     const term = query.trim().toLowerCase();
     if (term.length < 2 || term === lastTrackedRef.current) return;
     const count = results.length;
@@ -401,21 +424,22 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
       }
     }, ANALYTICS_DELAY);
     return () => clearTimeout(id);
-  }, [isReady, query, results.length]);
+  }, [isReady, fuseReady, query, results.length]);
 
   // Нечёткий поиск по словарю сайта для «Did you mean».
   const vocabFuse = useMemo(
     () =>
-      new Fuse(buildVocabulary(items), {
+      FuseClass &&
+      new FuseClass(buildVocabulary(items), {
         threshold: 0.45,
         ignoreLocation: true,
         includeScore: true,
       }),
-    [items],
+    [FuseClass, items],
   );
 
   const didYouMean = useMemo<string[]>(() => {
-    if (results.length > 0) return [];
+    if (!fuse || !vocabFuse || results.length > 0) return [];
     const tokens = tokenizeQuery(query);
     if (tokens.length === 0) return [];
     const corrected = tokens.map((token) => {
@@ -543,8 +567,10 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     tabRefs.current[tab]?.focus();
   };
   const showEmptyState = isReady && query.trim().length < 2;
-  const showNoResults = isReady && !showEmptyState && totalFound === 0;
-  const showResults = isReady && !showEmptyState && !showNoResults;
+  // Запрос есть, но Fuse ещё грузится: показываем скелетон, а не «No results».
+  const searchPending = isReady && !showEmptyState && !fuseReady;
+  const showNoResults = isReady && !showEmptyState && fuseReady && totalFound === 0;
+  const showResults = isReady && !showEmptyState && fuseReady && !showNoResults;
 
   const trimmedQuery = query.trim();
   const pageHeading = !isReady
@@ -619,6 +645,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     maxLength={256}
                     name="query"
                     onChange={(e) => setInputValue(e.target.value)}
+                    onFocus={loadFuse}
                     onKeyDown={(e) => {
                       if (e.key === "Escape" && inputValue) {
                         e.preventDefault();
@@ -658,7 +685,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                 </div>
                 <div className="h-5" />
 
-                {!isReady && (
+                {(!isReady || searchPending) && (
                   <div aria-busy="true" aria-label="Loading results">
                     <div className="h-5 w-64 max-w-full rounded bg-gray-100 animate-pulse" />
                     <div className="spacer-40" />
