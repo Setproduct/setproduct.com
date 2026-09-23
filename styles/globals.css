@@ -1124,6 +1124,91 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Card hover pattern: "hover-lift" (AGENTS.md, «Ховер карточек с картинкой»).
+ * Distilled from the mega-menu previews so every image card on the site moves
+ * the same way:
+ *   .hover-lift        the whole card; it is the hover/focus trigger
+ *   .hover-lift-media  the image frame; lifts and casts a shadow
+ *   img inside media   zooms inside the clipped frame (slower than the lift,
+ *                      so the picture "settles" after the frame)
+ *   .hover-lift-title  the card title; turns brand colour
+ * Size variants: default (small cards, identical to the mega-menu) and
+ * .is-large (tall listing/blog covers: bigger lift, wider shadow, softer zoom).
+ * Values are in em so they scale with the Webflow layout like spacer-/radius-.
+ */
+.hover-lift {
+  --lift-y: -3em;
+  --lift-shadow: 0 14em 28em -10em rgba(25, 24, 27, 0.28);
+  --lift-zoom: 1.06;
+}
+
+.hover-lift.is-large {
+  --lift-y: -6em;
+  --lift-shadow: 0 24em 48em -16em rgba(25, 24, 27, 0.24);
+  --lift-zoom: 1.03;
+}
+
+/* isolation keeps the rounded clip intact in Safari while the img is scaled */
+.hover-lift-media {
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: 0 0 0 rgba(25, 24, 27, 0);
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease;
+}
+
+.hover-lift-media img {
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hover-lift-title {
+  transition: color 200ms ease;
+}
+
+/* Mouse / trackpad only: touch devices would get a "sticky" hover after a tap */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift:hover .hover-lift-media {
+    transform: translateY(var(--lift-y));
+    box-shadow: var(--lift-shadow);
+  }
+
+  .hover-lift:hover .hover-lift-media img {
+    transform: scale(var(--lift-zoom));
+  }
+
+  .hover-lift:hover .hover-lift-title {
+    color: var(--primary);
+  }
+}
+
+/* Keyboard focus gets the same state as hover, on any device */
+.hover-lift:focus-visible .hover-lift-media,
+.hover-lift:has(:focus-visible) .hover-lift-media {
+  transform: translateY(var(--lift-y));
+  box-shadow: var(--lift-shadow);
+}
+
+.hover-lift:focus-visible .hover-lift-media img,
+.hover-lift:has(:focus-visible) .hover-lift-media img {
+  transform: scale(var(--lift-zoom));
+}
+
+.hover-lift:focus-visible .hover-lift-title,
+.hover-lift:has(:focus-visible) .hover-lift-title {
+  color: var(--primary);
+}
+
+/* Reduced motion: no lift, no zoom; the shadow and colour cues stay */
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift-media,
+  .hover-lift-media img {
+    transition: box-shadow 260ms ease;
+    transform: none !important;
+  }
+}
+
+/*
  * Mobile nav drawer.
  * Webflow's runtime normally hides .nav-menu on ≤991px until the burger is tapped.
  * The React port doesn't ship Webflow's IX2, so we replicate the open/closed states
