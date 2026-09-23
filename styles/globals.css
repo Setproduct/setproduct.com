@@ -849,10 +849,8 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
- * Preview card hover (the blog/kit thumbnails in the mega-menu). The image
- * wrapper already clips with overflow:hidden + radius, so we zoom the cover
- * inside it and lift the thumbnail with a soft shadow. Title shifts to the
- * brand colour to reinforce the affordance. Desktop only.
+ * Mega-menu preview cards use the shared `hover-lift` pattern (see below,
+ * AGENTS.md «Ховер карточек с картинкой»): the classes are set in SiteHeader.
  */
 @media (min-width: 991px) {
   /* The list column clips its content with a fixed max-height + overflow:hidden.
@@ -861,30 +859,6 @@ h1[id], h2[id], h3[id], h4[id] {
      open/close animation, so nothing escapes the dropdown itself. */
   .navbar .nav_dropdown-list-wr {
     overflow: visible;
-  }
-
-  .navbar .nav_tabs-list-item-img-wr {
-    box-shadow: 0 0 0 rgba(25, 24, 27, 0);
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 260ms ease;
-  }
-
-  .navbar .nav_tabs-list-item-img-wr img {
-    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 28px -10px rgba(25, 24, 27, 0.28);
-  }
-
-  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
-    transform: scale(1.06);
-  }
-
-  .navbar .nav_tabs-list-item:hover .text-color-dark-primary {
-    color: var(--primary);
-    transition: color 200ms ease;
   }
 
   /*
@@ -1042,9 +1016,9 @@ h1[id], h2[id], h3[id], h4[id] {
 
 /*
  * Higher specificity (wrapper class + img class) is required so this beats the
- * Webflow hover rule `.nav_tabs-list-item-img-wr img { transition: transform }`,
- * which otherwise wins and makes opacity/filter snap instantly. We keep the
- * transform transition in the list so the hover zoom still animates smoothly.
+ * shared `.hover-lift-media img { transition: transform }` rule, which
+ * otherwise wins and makes opacity/filter snap instantly. The transform entry
+ * repeats the hover-lift zoom timing so the hover zoom still animates smoothly.
  */
 .navbar .nav_inspiration-img-wr .nav_inspiration-img {
   opacity: 0;
@@ -1079,9 +1053,7 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav_dropdown_toggle .nav_chevron-svg,
   .navbar .nav_dropdown_list.w-dropdown-list > .container,
   .navbar .nav_dropdown_list .nav_radio,
-  .navbar .nav_dropdown_list .link-block,
-  .navbar .nav_tabs-list-item-img-wr,
-  .navbar .nav_tabs-list-item-img-wr img {
+  .navbar .nav_dropdown_list .link-block {
     transition: none !important;
     transform: none !important;
   }
@@ -1112,9 +1084,7 @@ h1[id], h2[id], h3[id], h4[id] {
   .navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
   .navbar .nav_dropdown_toggle.w--open .nav_chevron-svg,
   .navbar .nav_dropdown_list .nav_radio:hover,
-  .navbar .nav_dropdown_list .link-block:hover,
-  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr,
-  .navbar .nav_tabs-list-item:hover .nav_tabs-list-item-img-wr img {
+  .navbar .nav_dropdown_list .link-block:hover {
     transform: none !important;
   }
 

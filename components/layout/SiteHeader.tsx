@@ -153,7 +153,7 @@ function InspirationThumb({ href, image }: { href: string; image: string }) {
 
   return (
     <a
-      className={`nav_tabs-list-item-img-wr nav_inspiration-img-wr w-inline-block relative${loaded ? " is-loaded" : ""}`}
+      className={`nav_tabs-list-item-img-wr nav_inspiration-img-wr hover-lift-media w-inline-block relative${loaded ? " is-loaded" : ""}`}
       href={href}
       rel="noreferrer"
       target="_blank"
@@ -689,12 +689,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                     key={`inspiration-${activeInspirationCategory ?? "all"}`}
                                   >
                                     {filteredInspirationPreviews.map((item) => (
-                                      <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.id} role="listitem">
+                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.id} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
                                           <InspirationThumb href={withUtm(item.href)} image={item.image} />
                                           <div className="nav_tabs-list-item-info-wr">
                                             <a className="w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
-                                              <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
                                             </a>
                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                             <div className="nav_tabs-list-item-btn-wr">
@@ -787,10 +787,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                     key={`tutorials-${activeBlogCategory ?? "all"}`}
                                   >
                                     {filteredBlogPreviews.map((item) => (
-                                       <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
+                                       <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
                                          <div className="nav_tabs-list-item-wr">
                                             <a
-                                              className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                              className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                               href={`/blog/${item.slug}`}
                                             >
                                               <img
@@ -802,7 +802,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                             </a>
                                            <div className="nav_tabs-list-item-info-wr">
                                              <a className="w-inline-block" href={`/blog/${item.slug}`}>
-                                               <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                               <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
                                              </a>
                                              <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                              <div className="nav_tabs-list-item-btn-wr">
@@ -879,10 +879,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                     key={`freebies-${activeFreebieCategory ?? "all"}`}
                                   >
                                     {filteredFreebiePreviews.map((item) => (
-                                      <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
+                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
                                            <a
-                                             className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                             className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                              href={item.previewHref}
                                            >
                                              <Image
@@ -895,7 +895,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                            </a>
                                           <div className="nav_tabs-list-item-info-wr">
                                             <a className="w-inline-block" href={item.previewHref}>
-                                              <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
                                             </a>
                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                             <div className="nav_tabs-list-item-btn-wr">
@@ -977,10 +977,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                     key={`kits-${activeKitCategory ?? "all"}`}
                                   >
                                     {filteredKitPreviews.map((item) => (
-                                      <div className="nav_tabs-list-item w-dyn-item w-col w-col-6" key={item.href} role="listitem">
+                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.href} role="listitem">
                                         <div className="nav_tabs-list-item-wr">
                                            <a
-                                             className="nav_tabs-list-item-img-wr w-inline-block relative"
+                                             className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                              href={item.href}
                                            >
                                              <Image
@@ -993,7 +993,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                            </a>
                                           <div className="nav_tabs-list-item-info-wr">
                                             <a className="w-inline-block" href={item.href}>
-                                              <p className="text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
+                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
                                             </a>
                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
                                             <div className="nav_tabs-list-item-btn-wr">
