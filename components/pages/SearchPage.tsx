@@ -689,7 +689,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   <div aria-busy="true" aria-label="Loading results">
                     <div className="h-5 w-64 max-w-full rounded bg-gray-100 animate-pulse" />
                     <div className="spacer-40" />
-                    <ul className="list-none p-0 m-0 grid gap-5">
+                    <ul className="list-none p-0! m-0! grid gap-5">
                       {[0, 1, 2].map((i) => (
                         <li key={i} className="flex gap-4 items-start">
                           <div className="w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 bg-gray-100 animate-pulse" />
@@ -716,7 +716,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <div className="spacer-40" />
                     <nav aria-label="Browse by type">
                       <h2 className="subtitle-all-caps mt-0 mb-4">Browse by type</h2>
-                      <ul className="list-none p-0 m-0 grid grid-cols-2 md:grid-cols-5 gap-3">
+                      <ul className="list-none p-0! m-0! grid grid-cols-2 md:grid-cols-5 gap-3">
                         {BROWSE_LINKS.map((link) => (
                           <li key={link.href}>
                             <Link
@@ -774,7 +774,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                         <div className="spacer-40" />
                         <section>
                           <h2 className="subtitle-all-caps mt-0 mb-4">Popular UI kits</h2>
-                          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
+                          <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
                             {popularKits.map((item) => (
                               <TopResultCard key={item.slug} item={item} re={null} />
                             ))}
@@ -787,7 +787,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                         <div className="spacer-40" />
                         <section>
                           <h2 className="subtitle-all-caps mt-0 mb-4">Fresh from the blog</h2>
-                          <ul className="list-none p-0 m-0 grid gap-5">
+                          <ul className="list-none p-0! m-0! grid gap-5">
                             {freshPosts.map((item) => (
                               <ResultRow key={item.slug} item={item} re={null} />
                             ))}
@@ -873,7 +873,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       {effectiveTab === "all" && topResults.length > 0 && (
                         <section className="mb-12">
                           <h2 className="subtitle-all-caps mt-0 mb-4">Top results</h2>
-                          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+                          <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
                             {topResults.map((item) => (
                               <TopResultCard
                                 key={`top-${item.type}-${item.slug}`}
@@ -904,7 +904,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                                   ({group.length})
                                 </span>
                               </h2>
-                              <ul className="list-none p-0 m-0 grid gap-5">
+                              <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
                                   <ResultRow
                                     key={`${item.type}-${item.slug}`}
@@ -935,7 +935,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                               <h2 className="sr-only">
                                 {SEARCHABLE_TYPE_LABELS[effectiveTab]}
                               </h2>
-                              <ul className="list-none p-0 m-0 grid gap-5">
+                              <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
                                   <ResultRow
                                     key={`${item.type}-${item.slug}`}
