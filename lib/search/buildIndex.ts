@@ -1,4 +1,8 @@
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
+import { computeReadingTime } from "../blog/reading-time";
 import { PRODUCTS } from "../../data/products";
 import { TEMPLATE_PRODUCTS } from "../../data/templates-listing";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
@@ -18,6 +22,21 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+
+function getBlogReadingTime(slug: string): string | undefined {
+  try {
+    const raw = fs.readFileSync(path.join(BLOG_DIR, `${slug}.mdx`), "utf8");
+    const { data, content } = matter(raw);
+    if (typeof data.readingTimeText === "string" && data.readingTimeText.trim()) {
+      return data.readingTimeText.trim();
+    }
+    return `${computeReadingTime(content).minutes} min read`;
+  } catch {
+    return undefined;
+  }
+}
+
 export function buildSearchIndex(): SearchableItem[] {
   const items: SearchableItem[] = [];
   const blogPosts = getBlogPostPreviews();
@@ -31,6 +50,7 @@ export function buildSearchIndex(): SearchableItem[] {
       category: post.category,
       url: `/blog/${post.slug}`,
       image: post.image,
+      readingTime: getBlogReadingTime(post.slug),
     });
   }
 
@@ -71,6 +91,7 @@ export function buildSearchIndex(): SearchableItem[] {
       category: freebie.category,
       url: `/freebies/${freebie.slug}`,
       image: freebie.image,
+      isFree: true,
     });
   }
 
@@ -81,7 +102,7 @@ export function buildSearchIndex(): SearchableItem[] {
       title: bundle.title,
       description: stripHtml(bundle.descriptionHtml),
       category: bundle.subtitle,
-      url: "/bundle",
+      url: `/bundle#${bundle.slug}`,
       image: bundle.image,
       price: bundle.price,
     });

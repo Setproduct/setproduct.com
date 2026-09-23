@@ -6,7 +6,7 @@ type Props = { item: BundleItem };
 
 export default function BundleCard({ item }: Props) {
   return (
-    <div className="template-list-item">
+    <div className="template-list-item scroll-mt-28" id={item.slug}>
       <div className="template-list-item-img-wr is-height-480">
         <img
           alt=""

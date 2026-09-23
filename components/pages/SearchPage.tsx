@@ -13,6 +13,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import {
+  SEARCHABLE_TYPE_BADGES,
   SEARCHABLE_TYPE_LABELS,
   SEARCHABLE_TYPE_ORDER,
   type SearchableItem,
@@ -27,6 +28,63 @@ type Props = {
   items: SearchableItem[];
   blogPosts?: BlogPostPreview[];
 };
+
+function ResultRow({ item }: { item: SearchableItem }) {
+  const meta: string[] = [];
+  if (item.category) meta.push(item.category);
+  if (item.type === "blog" && item.readingTime) meta.push(item.readingTime);
+  if (!item.isFree && item.price) meta.push(item.price);
+
+  return (
+    <li className="group">
+      <Link
+        href={item.url}
+        className="flex gap-4 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+      >
+        <div className="w-32 h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+          {item.image ? (
+            <img
+              alt=""
+              loading="lazy"
+              src={item.image}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              className="w-full h-full flex items-center justify-center text-size-tiny text-weight-semibold uppercase tracking-wide text-(--primary)"
+            >
+              {SEARCHABLE_TYPE_BADGES[item.type]}
+            </div>
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap gap-x-2 gap-y-1 items-center mb-1">
+            <span className="text-size-tiny text-weight-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-(--light-primary) text-(--dark-primary)">
+              {SEARCHABLE_TYPE_BADGES[item.type]}
+            </span>
+            {item.isFree && (
+              <span className="text-size-tiny text-weight-semibold text-(--primary)">
+                Free
+              </span>
+            )}
+            {meta.length > 0 && (
+              <span className="text-size-tiny text-weight-semibold opacity-70 min-w-0 truncate">
+                {meta.join(" · ")}
+              </span>
+            )}
+          </div>
+          <p className="text-xl! font-semibold! leading-5! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
+            {item.title}
+          </p>
+          <p className="text-size-small text-style-2lines mt-1 mb-0 opacity-80">
+            {item.description}
+          </p>
+        </div>
+      </Link>
+    </li>
+  );
+}
 
 function groupResults(results: SearchableItem[]): Record<SearchableType, SearchableItem[]> {
   const grouped = {
@@ -321,41 +379,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           </h2>
                           <ul className="list-none p-0 m-0 grid gap-5">
                             {visible.map((item) => (
-                              <li key={`${item.type}-${item.slug}`} className="group">
-                                <Link
-                                  href={item.url}
-                                  className="flex gap-4 items-start no-underline text-inherit"
-                                >
-                                  {item.image && (
-                                    <img
-                                      alt=""
-                                      loading="lazy"
-                                      src={item.image}
-                                      className="w-32 h-24 object-cover rounded-lg shrink-0 m-auto group-hover:scale-105 transition-transform duration-300"
-                                    />
-                                  )}
-                                  <div className="min-w-0">
-                                    <div className="flex gap-2 items-center mb-1">
-                                      {item.category && (
-                                        <span className="text-size-tiny text-weight-semibold opacity-70">
-                                          {item.category}
-                                        </span>
-                                      )}
-                                      {item.price && (
-                                        <span className="text-size-tiny text-weight-semibold opacity-70">
-                                          · {item.price}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="text-xl! font-semibold! leading-5! text-style-2lines m-0 group-hover:text-purple-700 transition-colors duration-300">
-                                      {item.title}
-                                    </p>
-                                    <p className="text-size-small text-style-2lines mt-1 mb-0 opacity-80">
-                                      {item.description}
-                                    </p>
-                                  </div>
-                                </Link>
-                              </li>
+                              <ResultRow key={`${item.type}-${item.slug}`} item={item} />
                             ))}
                           </ul>
                           {hidden > 0 && (
