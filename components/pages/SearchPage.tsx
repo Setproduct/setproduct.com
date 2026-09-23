@@ -832,7 +832,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       {totalFound === 1 ? "" : "s"} for{" "}
                       <strong>&ldquo;{query}&rdquo;</strong>
                     </p>
-                    <div className="spacer-24" />
+                    <div className="spacer-12" />
 
                     {/* На мобильных вкладки прокручиваются по горизонтали. */}
                     <div
