@@ -562,7 +562,7 @@ inlineCta:
 ### Слой 2: Webflow-классы для типографики и отступов
 Тоже в [`public/css/setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css) и [`public/css/webflow.css`](public/css/webflow.css):
 - **Типографика:** `heading-style-h1` … `heading-style-h6`, `text-size-large` / `regular` / `small` / `tiny-normal`, `text-weight-bold`
-- **Сетка/отступы:** `section`, `section-padding`, `container`, `top-80`, `bottom-64`, `spacer-16` / `spacer-32` / `spacer-40`
+- **Сетка/отступы:** `section`, `section-padding`, `container`, `top-80`, `bottom-64`, `spacer-*` (полная шкала — в разделе «Вертикальный ритм» ниже)
 - **Лимиты ширины:** `max-width-800`, `max-width-900`, `max-width-768-centered`
 - **Лейаут-блоки:** `heading-center-wr`, `heading-left-text-wr`, `main_hero-section`, `hero-cta-row`
 - **Кнопки:** `button`, `button secondary`, `w-inline-block`, `button-small`
@@ -581,8 +581,48 @@ inlineCta:
 
 **Где править токены:**
 - Изменить **цвет бренда** → CSS-переменная `--primary` в [`setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css:2094)
-- Добавить **новые отступы/типографику** → лучше через Tailwind-утилиты в JSX
+- **Вертикальные отступы между блоками** → только шкала `spacer-*` / `section-padding` (см. «Вертикальный ритм»). Tailwind-утилиты — только для отступов внутри компонента
 - Не существует `tailwind.config.js` — конфиг Tailwind v4 строится из `@theme` в CSS (но в проекте директива `@theme` ещё не используется)
+
+### Вертикальный ритм (обязательное правило)
+
+**Правило:** расстояние **между блоками** страницы задаётся только классами Webflow — `section-padding top-N bottom-N` (поля секции) и пустыми div-ами `<div className="spacer-N" />` (зазор между блоками внутри секции). Tailwind-отступы (`mb-*`, `mt-*`, `h-*` как распорка, `py-*`) допустимы **только внутри компонента**: зазоры в сетке карточек (`gap-5`), отступы внутри карточки (`p-4`, `mt-1`), sticky-обёртки и т.п.
+
+**Почему так:** шкала Webflow задана в `em`, а `em` здесь привязан к ширине окна:
+- `body { font-size: .0694445vw }` → при ширине 1440px `1em = 1px`, при 1024px `1em ≈ 0.71px`, при 768px `1em ≈ 0.53px`;
+- `@media (min-width: 1440px)` фиксирует `body` на `1px`, то есть шире 1440 отступы не растут;
+- `@media (max-width: 479px)` ставит `body` в `.278vw` (≈ `1.08px` при 390px) и одновременно уменьшает часть spacer-ов (таблица ниже).
+
+Поэтому `spacer-40` вместе со всей вёрсткой пропорционально сжимается на планшете. Tailwind работает в `rem` (фиксированные px): `mb-12` остаётся 48px на любой ширине. Если смешать обе системы между блоками, на 1024px `spacer-40` ≈ 28px стоит рядом с 48px от `mb-12`, и ритм разваливается.
+
+**Шкала** (определения в [`public/css/setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css:2644)):
+
+| Класс | Desktop (≥480px) | Мобильный (≤479px) | Типичное применение |
+|---|---|---|---|
+| `spacer-8` | 8em | 8em | Микрозазор между связанными строками |
+| `spacer-12` | 12em | 12em | Редко; между подписью и контролом |
+| `spacer-16` | 16em | 16em | Заголовок группы (`subtitle-all-caps`) → её содержимое; кнопка «See all» под списком |
+| `spacer-24` | 24em | 16em | Поле поиска / строка статуса → контент |
+| `spacer-32` | 32em | 24em | Средний зазор (добавлен в e1dd956, раньше класс использовался, но не был определён) |
+| `spacer-36` | 36em | 36em | Редко |
+| `spacer-40` | 40em | 32em\* | **Стандарт между блоками внутри секции:** H1 → форма, табы → сетка, группа → группа |
+| `spacer-48` | 48em | 40em | Крупный разрыв внутри секции |
+| `spacer-64` | 64em | 32em | Заголовок страницы → табы/фильтры (CategoryPage, FreebiesListingPage, DashboardsPage) |
+| `spacer-80` | 80em | 80em (есть модификатор `mob-32`) | Очень крупный разрыв |
+| `section-padding top-40` / `bottom-40` | 40em | 20em | Компактная секция |
+| `section-padding top-80` / `bottom-80` | 80em | 40em | **Стандартная секция** (листинги, /search) |
+| `top-80 bottom-64` | 80em / 64em | 40em / 32em | Секция, за которой идёт соседняя секция |
+| `section-padding top-112` / `bottom-112` | 112em | 64em | Hero и крупные промо-секции |
+
+\* мобильное значение `spacer-40` задано в отдельном media-блоке (около строки 5570).
+
+**Как применять:**
+1. Все заголовки `h1–h4` в проекте имеют нулевые margin (Webflow сбрасывает их у `h1, h2`, для `.subtitle-all-caps` ставим `mt-0`). Отступ под заголовком — всегда отдельный `spacer-*`, не `mb-*` на самом заголовке.
+2. Между соседними блоками ставится **один** spacer — перед блоком, у которого есть сосед сверху. Не ставить `mb-*` на последний блок, чтобы не получить «хвост» над нижним `section-padding`.
+3. Нужного значения нет в шкале? Сначала взять ближайшее существующее. Если новое значение действительно нужно, добавить класс в `setproduct.webflow.shared.css` рядом с остальными spacer-ами **вместе с мобильным значением** в блоке `@media screen and (max-width: 479px)`.
+4. Перед коммитом новой страницы проверить ритм на 1440 / 1024 / 768 / 390 px.
+
+**Эталоны:** [`CategoryPage`](components/pages/CategoryPage.tsx), [`FreebiesListingPage`](components/pages/FreebiesListingPage.tsx), [`SearchPage`](components/pages/SearchPage.tsx) (после 4dc8796): `section-padding top-80 bottom-80` → H1 → `spacer-40`/`spacer-64` → фильтры/табы → `spacer-40` → контент.
 
 ---
 
