@@ -111,7 +111,7 @@ export default function TemplateCarousel({ title, subtitle, previewLink, items }
           {items.map((item, index) => (
             <div
               key={index}
-              className="shrink-0 rounded-3xl border border-black/10 overflow-hidden"
+              className="shrink-0 radius-24 border border-black/10 overflow-hidden"
               style={{
                 width: "40vw",
                 minWidth: "350px",

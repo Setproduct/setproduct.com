@@ -36,7 +36,7 @@ export default function MDXImage({
       alt={alt}
       width={width || 1600}
       height={height || 900}
-      className="rounded-3xl"
+      className="radius-24"
       style={{
         width: "100%",
         height: "auto",
