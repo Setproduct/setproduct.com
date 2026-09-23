@@ -57,7 +57,6 @@ export function buildSearchIndex(): SearchableItem[] {
       title: post.title,
       description: post.description,
       category: post.category,
-      url: `/blog/${post.slug}`,
       image: getBlogThumb(post.image),
       readingTime: getBlogReadingTime(post.slug),
     });
@@ -70,7 +69,6 @@ export function buildSearchIndex(): SearchableItem[] {
       title: product.title,
       description: product.description,
       category: product.categories.join(", "),
-      url: `/templates/${product.slug}`,
       image: product.image,
       price: product.price ? `$${product.price}` : undefined,
     });
@@ -85,7 +83,6 @@ export function buildSearchIndex(): SearchableItem[] {
       title: tpl.title,
       description: tpl.description,
       category: tpl.category,
-      url: `/templates/${tpl.slug}`,
       image: tpl.heroImage,
       price: tpl.price,
     });
@@ -98,7 +95,6 @@ export function buildSearchIndex(): SearchableItem[] {
       title: freebie.title,
       description: freebie.description,
       category: freebie.category,
-      url: `/freebies/${freebie.slug}`,
       image: freebie.image,
       isFree: true,
     });
@@ -111,7 +107,6 @@ export function buildSearchIndex(): SearchableItem[] {
       title: bundle.title,
       description: stripHtml(bundle.descriptionHtml),
       category: bundle.subtitle,
-      url: `/bundle#${bundle.slug}`,
       image: bundle.image,
       price: bundle.price,
     });
@@ -124,10 +119,17 @@ export function buildSearchIndex(): SearchableItem[] {
       title: dash.heroTitle,
       description: stripHtml(dash.heroSubtitleHtml).slice(0, 240),
       category: "Dashboards",
-      url: `/dashboard-templates/${dash.slug}`,
       image: dash.ogImage,
     });
   }
 
-  return items;
+  // Next.js сериализует props в JSON: пустые поля — лишние байты на каждый элемент.
+  return items.map((item) => {
+    const compact = { ...item };
+    for (const key of Object.keys(compact) as (keyof SearchableItem)[]) {
+      const value = compact[key];
+      if (value === undefined || value === "" || value === false) delete compact[key];
+    }
+    return compact;
+  });
 }

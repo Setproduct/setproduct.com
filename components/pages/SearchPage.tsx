@@ -17,6 +17,7 @@ import {
   SEARCHABLE_TYPE_BADGES,
   SEARCHABLE_TYPE_LABELS,
   SEARCHABLE_TYPE_ORDER,
+  getSearchItemUrl,
   type SearchableItem,
   type SearchableType,
 } from "../../lib/search/types";
@@ -170,7 +171,7 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
   return (
     <li className="group">
       <Link
-        href={item.url}
+        href={getSearchItemUrl(item)}
         className="flex gap-4 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
         <div className="relative w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
@@ -225,7 +226,7 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
   return (
     <li className="group">
       <Link
-        href={item.url}
+        href={getSearchItemUrl(item)}
         className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
         <div className="relative w-18 h-18 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">

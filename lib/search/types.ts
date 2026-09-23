@@ -12,7 +12,6 @@ export type SearchableItem = {
   title: string;
   description: string;
   category?: string;
-  url: string;
   image?: string;
   price?: string;
   /** Blog only: "N min read" */
@@ -20,6 +19,21 @@ export type SearchableItem = {
   /** Freebies: rendered as a "Free" label instead of a price */
   isFree?: boolean;
 };
+
+// URL не хранится в индексе (экономия ~12 kB в данных /search),
+// а вычисляется по типу и slug.
+const URL_PREFIX: Record<SearchableType, string> = {
+  blog: "/blog/",
+  product: "/templates/",
+  template: "/templates/",
+  freebie: "/freebies/",
+  bundle: "/bundle#",
+  dashboard: "/dashboard-templates/",
+};
+
+export function getSearchItemUrl(item: Pick<SearchableItem, "type" | "slug">): string {
+  return URL_PREFIX[item.type] + item.slug;
+}
 
 export const SEARCHABLE_TYPE_LABELS: Record<SearchableType, string> = {
   blog: "Blog",
