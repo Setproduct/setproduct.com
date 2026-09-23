@@ -26,6 +26,11 @@
 }
 
 @media (min-width: 480px) {
+  /* Webflow clips this wrapper for the mobile max-height cap only; on desktop
+     the cap is `none`, and the clip would cut off the hover-lift shadow. */
+  .homeBlogSection :global(.main_blog-liist2-wr) {
+    overflow: visible;
+  }
   .homeBlogSection :global(.main_blog-liist2-item:nth-child(4n+1)) {
     grid-column-start: span 1;
     grid-row-start: span 2;

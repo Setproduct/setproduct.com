@@ -117,10 +117,10 @@ export default function BlogListingPage({ blogPosts = [] }: Props) {
                   <div className="w-dyn-list">
                     <div className="blog_list w-dyn-items" role="list">
                       {visiblePosts.map((post, index) => (
-                        <div key={post.slug} className="blog_list-item w-dyn-item" role="listitem">
-                          <div className="blog_list-item-wr">
+                        <div key={post.slug} className="blog_list-item w-dyn-item hover-lift is-large" role="listitem">
+                          <div className="blog_list-item-wr hover-lift-media">
                             <Link
-                              className="blog_list-item-img-wr w-inline-block relative"
+                              className="blog_list-item-img-wr w-inline-block relative overflow-hidden"
                               href={`/blog/${post.slug}`}
                             >
                               <Image
@@ -139,7 +139,7 @@ export default function BlogListingPage({ blogPosts = [] }: Props) {
                                 </div>
                               </div>
                               <Link className="blog_liist-item-heading-wr w-inline-block" href={`/blog/${post.slug}`}>
-                                <p className="heading-style-h5 text-style-2lines">{post.title}</p>
+                                <p className="hover-lift-title heading-style-h5 text-style-2lines">{post.title}</p>
                               </Link>
                               <p className="text-size-small text-style-3lines">{post.description}</p>
                               <div className="main_blog-liist-item-btn-wr">

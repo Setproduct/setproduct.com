@@ -45,16 +45,16 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
                   return (
                     <div
                       key={post.frontmatter.slug}
-                      className="main_blog-liist1-item w-dyn-item"
+                      className="main_blog-liist1-item w-dyn-item hover-lift is-large"
                       role="listitem"
                       style={index === 0 ? { gridRow: "1 / 3" } : undefined}
                     >
                       <div
-                        className="main_blog-liist1-item-wr"
+                        className="main_blog-liist1-item-wr hover-lift-media"
                         style={index === 0 ? { flexDirection: "column", alignItems: "stretch" } : undefined}
                       >
                         <Link
-                          className="main_blog-liist1-item-img-wr w-inline-block"
+                          className="main_blog-liist1-item-img-wr w-inline-block overflow-hidden"
                           href={href}
                           style={index === 0 ? { minWidth: "unset", width: "100%", flex: "1", display: "block", overflow: "hidden" } : undefined}
                         >
@@ -82,7 +82,7 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
                             </div>
                           </div>
                           <Link className="w-inline-block" href={href}>
-                            <p className="heading-style-h5 text-color-dark-primary text-style-3lines">
+                            <p className="hover-lift-title heading-style-h5 text-color-dark-primary text-style-3lines">
                               {post.frontmatter.title}
                             </p>
                           </Link>

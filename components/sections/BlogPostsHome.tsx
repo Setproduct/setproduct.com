@@ -59,14 +59,14 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
         <div className="main_blog-liist2-wr w-dyn-list">
           <div className="main_blog-liist2 w-dyn-items" role="list">
             {filteredPosts.map((post, index) => (
-              <div key={post.slug} className="main_blog-liist2-item w-dyn-item" role="listitem">
-                <div className="main_blog-liist2-item-wr">
+              <div key={post.slug} className="main_blog-liist2-item w-dyn-item hover-lift is-large" role="listitem">
+                <div className="main_blog-liist2-item-wr hover-lift-media">
                   <div className="main_blog-liist2-item-info">
                     <div className="category-tag">
                       <p className="text-size-tiny text-weight-semibold">{post.category}</p>
                     </div>
                     <Link className="w-inline-block" href={`/blog/${post.slug}`}>
-                      <p className="heading-style-h5 text-color-dark-primary text-style-3lines">{post.title}</p>
+                      <p className="hover-lift-title heading-style-h5 text-color-dark-primary text-style-3lines">{post.title}</p>
                     </Link>
                     <p className="text-size-small text-style-2lines">{post.description}</p>
                     <div className="main_blog-liist-item-btn-wr">
@@ -77,7 +77,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                     </div>
                   </div>
                   <Link
-                    className="main_blog-liist2-item-img-wr w-inline-block relative"
+                    className="main_blog-liist2-item-img-wr w-inline-block relative overflow-hidden"
                     href={`/blog/${post.slug}`}
                   >
                     <img
