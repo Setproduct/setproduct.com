@@ -299,13 +299,12 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
 
                       return (
                         <section key={type} className="mb-12">
-                          <p className="flex items-baseline gap-2 m
-                          pb-4 text-sm font-medium">
+                          <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0 mb-4">
                             {SEARCHABLE_TYPE_LABELS[type]}
-                            <span className="text-sm font-normal opacity-80">
+                            <span className="font-normal opacity-60">
                               ({group.length})
                             </span>
-                          </p>
+                          </h2>
                           <ul className="list-none p-0 m-0 grid gap-5">
                             {visible.map((item) => (
                               <li key={`${item.type}-${item.slug}`} className="group">
