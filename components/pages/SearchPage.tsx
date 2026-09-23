@@ -216,7 +216,7 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
           <p className="text-xl! font-semibold! leading-6! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
             <Highlight text={item.title} re={re} />
           </p>
-          <div className="spacer-8" />
+          <div className="spacer-4" />
           <p className="text-size-small text-style-2lines mt-0 mb-0 opacity-80">
             <Highlight text={buildSnippet(item.description, re)} re={re} />
           </p>
