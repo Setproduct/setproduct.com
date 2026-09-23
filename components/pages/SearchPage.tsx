@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -115,7 +115,8 @@ function pickPopularKits(items: SearchableItem[], count: number): SearchableItem
 function SuggestionChips({ label }: { label: string }) {
   return (
     <nav aria-label={label}>
-      <h2 className="subtitle-all-caps mt-0 mb-4">{label}</h2>
+      <h2 className="subtitle-all-caps mt-0">{label}</h2>
+      <div className="spacer-16" />
       <div className="flex flex-wrap gap-3">
         {SEARCH_SUGGESTIONS.map((suggestion) => (
           <Link
@@ -683,7 +684,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   </div>
                 </form>
                 </div>
-                <div className="h-5" />
+                <div className="spacer-24" />
 
                 {(!isReady || searchPending) && (
                   <div aria-busy="true" aria-label="Loading results">
@@ -715,7 +716,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <SuggestionChips label="Popular searches" />
                     <div className="spacer-40" />
                     <nav aria-label="Browse by type">
-                      <h2 className="subtitle-all-caps mt-0 mb-4">Browse by type</h2>
+                      <h2 className="subtitle-all-caps mt-0">Browse by type</h2>
+                      <div className="spacer-16" />
                       <ul className="list-none p-0! m-0! grid grid-cols-2 md:grid-cols-5 gap-3">
                         {BROWSE_LINKS.map((link) => (
                           <li key={link.href}>
@@ -773,7 +775,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       <>
                         <div className="spacer-40" />
                         <section>
-                          <h2 className="subtitle-all-caps mt-0 mb-4">Popular UI kits</h2>
+                          <h2 className="subtitle-all-caps mt-0">Popular UI kits</h2>
+                          <div className="spacer-16" />
                           <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
                             {popularKits.map((item) => (
                               <TopResultCard key={item.slug} item={item} re={null} />
@@ -786,7 +789,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       <>
                         <div className="spacer-40" />
                         <section>
-                          <h2 className="subtitle-all-caps mt-0 mb-4">Fresh from the blog</h2>
+                          <h2 className="subtitle-all-caps mt-0">Fresh from the blog</h2>
+                          <div className="spacer-16" />
                           <ul className="list-none p-0! m-0! grid gap-5">
                             {freshPosts.map((item) => (
                               <ResultRow key={item.slug} item={item} re={null} />
@@ -871,8 +875,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       aria-labelledby={`search-tab-${effectiveTab}`}
                     >
                       {effectiveTab === "all" && topResults.length > 0 && (
-                        <section className="mb-12">
-                          <h2 className="subtitle-all-caps mt-0 mb-4">Top results</h2>
+                        <section>
+                          <h2 className="subtitle-all-caps mt-0">Top results</h2>
+                          <div className="spacer-16" />
                           <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
                             {topResults.map((item) => (
                               <TopResultCard
@@ -885,25 +890,35 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                         </section>
                       )}
                       {effectiveTab === "all" ? (
-                        groupOrder.map((type) => {
-                          const group = grouped[type];
-                          // Элементы из Top results не повторяем в превью группы,
-                          // но счётчик и «See all» остаются по полной группе.
-                          const rest = group.filter(
-                            (item) => !topKeys.has(`${item.type}-${item.slug}`),
-                          );
-                          if (rest.length === 0) return null;
+                        groupOrder
+                          .map((type) => {
+                            const group = grouped[type];
+                            // Элементы из Top results не повторяем в превью группы,
+                            // но счётчик и «See all» остаются по полной группе.
+                            const rest = group.filter(
+                              (item) => !topKeys.has(`${item.type}-${item.slug}`),
+                            );
+                            return { type, group, rest };
+                          })
+                          .filter(({ rest }) => rest.length > 0)
+                          .map(({ type, group, rest }, index) => {
                           const visible = rest.slice(0, ALL_GROUP_PREVIEW);
                           const hidden = rest.length - visible.length;
+                          // Отступ между блоками выдачи — spacer-40 (шкала Webflow),
+                          // только перед блоком, у которого есть сосед сверху.
+                          const hasBlockAbove = index > 0 || topResults.length > 0;
 
                           return (
-                            <section key={type} className="mb-12">
-                              <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0 mb-4">
+                            <Fragment key={type}>
+                            {hasBlockAbove && <div className="spacer-40" />}
+                            <section>
+                              <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0">
                                 {SEARCHABLE_TYPE_LABELS[type]}
                                 <span className="font-normal opacity-60">
                                   ({group.length})
                                 </span>
                               </h2>
+                              <div className="spacer-16" />
                               <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
                                   <ResultRow
@@ -914,15 +929,19 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                                 ))}
                               </ul>
                               {hidden > 0 && (
-                                <button
-                                  type="button"
-                                  onClick={() => selectTab(type)}
-                                  className="text-size-small text-weight-semibold mt-4 p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
-                                >
-                                  See all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
-                                </button>
+                                <>
+                                  <div className="spacer-16" />
+                                  <button
+                                    type="button"
+                                    onClick={() => selectTab(type)}
+                                    className="text-size-small text-weight-semibold p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
+                                  >
+                                    See all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
+                                  </button>
+                                </>
                               )}
                             </section>
+                            </Fragment>
                           );
                         })
                       ) : (
