@@ -22,6 +22,15 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+// В выдаче описание всё равно обрезается в 2 строки (~160 символов), хвост — лишние байты.
+const DESCRIPTION_LIMIT = 160;
+
+function truncate(text: string, limit = DESCRIPTION_LIMIT): string {
+  if (!text || text.length <= limit) return text;
+  const cut = text.lastIndexOf(" ", limit);
+  return `${text.slice(0, cut > limit * 0.6 ? cut : limit).replace(/[\s,.;:–-]+$/, "")}…`;
+}
+
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
@@ -117,7 +126,7 @@ export function buildSearchIndex(): SearchableItem[] {
       type: "dashboard",
       slug: dash.slug,
       title: dash.heroTitle,
-      description: stripHtml(dash.heroSubtitleHtml).slice(0, 240),
+      description: stripHtml(dash.heroSubtitleHtml),
       category: "Dashboards",
       image: dash.ogImage,
     });
@@ -125,7 +134,7 @@ export function buildSearchIndex(): SearchableItem[] {
 
   // Next.js сериализует props в JSON: пустые поля — лишние байты на каждый элемент.
   return items.map((item) => {
-    const compact = { ...item };
+    const compact = { ...item, description: truncate(item.description) };
     for (const key of Object.keys(compact) as (keyof SearchableItem)[]) {
       const value = compact[key];
       if (value === undefined || value === "" || value === false) delete compact[key];
