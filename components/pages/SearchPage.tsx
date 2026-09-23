@@ -125,7 +125,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const results = useMemo<FuseResult<SearchableItem>[]>(() => {
     const trimmed = query.trim();
     if (trimmed.length < 2) return [];
-    return fuse.search(trimmed, { limit: 120 });
+    // Без limit: индекс небольшой, а счётчик должен быть честным.
+    return fuse.search(trimmed);
   }, [fuse, query]);
 
   const grouped = useMemo(
@@ -137,6 +138,19 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const showEmptyState = isReady && query.trim().length < 2;
   const showNoResults = isReady && !showEmptyState && totalFound === 0;
   const showResults = isReady && !showEmptyState && !showNoResults;
+
+  const trimmedQuery = query.trim();
+  const pageHeading = !isReady
+    ? "Search"
+    : showEmptyState
+      ? "Search Setproduct"
+      : showNoResults
+        ? `No results for “${trimmedQuery}”`
+        : `Results for “${trimmedQuery}”`;
+  const pageTitle =
+    isReady && !showEmptyState
+      ? `${pageHeading} | Setproduct`
+      : meta.title;
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -158,7 +172,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   return (
     <>
       <Head>
-        <title>{meta.title}</title>
+        <title>{pageTitle}</title>
         <meta content={meta.description} name="description" />
         <meta content="noindex" name="robots" />
         <meta content={meta.title} property="og:title" />
@@ -172,7 +186,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
           <div className="section-padding top-80 bottom-80">
             <div className="container">
               <div className="freebies_rich-text-component">
-                <h1 className="heading-style-h1">Search results</h1>
+                <h1 className="heading-style-h1 break-words">{pageHeading}</h1>
                 <div className="spacer-40" />
                 <form
                   action="/search"
