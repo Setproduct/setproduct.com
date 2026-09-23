@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Fuse from "fuse.js";
@@ -172,13 +173,14 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
         href={item.url}
         className="flex gap-4 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="relative w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
-            <img
+            <Image
               alt=""
-              loading="lazy"
+              fill
               src={item.image}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(min-width: 768px) 128px, 72px"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
             <div
@@ -226,13 +228,14 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
         href={item.url}
         className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="w-18 h-18 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="relative w-18 h-18 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
-            <img
+            <Image
               alt=""
-              loading="lazy"
+              fill
               src={item.image}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(min-width: 768px) 33vw, 72px"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
             <div

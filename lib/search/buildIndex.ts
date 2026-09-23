@@ -23,6 +23,15 @@ function stripHtml(html: string): string {
 }
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+
+// Превью в выдаче не больше 400px, поэтому для блога берём уже сгенерированный
+// thumb (scripts/generate-blog-thumbs.js), если он есть, а не полноразмерную обложку.
+function getBlogThumb(image: string): string {
+  if (!image.startsWith("/blog/covers/")) return image;
+  const thumb = `/blog/covers/thumbs/${path.basename(image)}`;
+  return fs.existsSync(path.join(PUBLIC_DIR, thumb)) ? thumb : image;
+}
 
 function getBlogReadingTime(slug: string): string | undefined {
   try {
@@ -49,7 +58,7 @@ export function buildSearchIndex(): SearchableItem[] {
       description: post.description,
       category: post.category,
       url: `/blog/${post.slug}`,
-      image: post.image,
+      image: getBlogThumb(post.image),
       readingTime: getBlogReadingTime(post.slug),
     });
   }
