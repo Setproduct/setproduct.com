@@ -2653,6 +2653,10 @@ figcaption {
   height: 24em;
 }
 
+.spacer-32 {
+  height: 32em;
+}
+
 .spacer-36 {
   height: 36em;
 }
@@ -5144,6 +5148,10 @@ figcaption {
 
   .spacer-24 {
     height: 16em;
+  }
+
+  .spacer-32 {
+    height: 24em;
   }
 
   .spacer-48 {
