@@ -22,7 +22,6 @@ const STATIC_PATHS = [
   "/legal/refunds-policy",
   "/legal/terms-of-paid-posts",
   "/mobile",
-  "/search",
   "/testimonials",
   "/websites",
 ];
