@@ -178,16 +178,21 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   action="/search"
                   className="search w-form"
                   onSubmit={onSubmit}
+                  role="search"
                 >
+                  <label htmlFor="search-page-input" className="sr-only">
+                    Search UI kits, templates, freebies, and blog posts
+                  </label>
                   <input
+                    aria-controls="search-results"
                     autoComplete="off"
                     className="text-input is-nav-search is-page-search w-input"
-                    id="search"
+                    enterKeyHint="search"
+                    id="search-page-input"
                     maxLength={256}
                     name="query"
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Search…"
-                    required
+                    placeholder="Search UI kits, templates, articles…"
                     type="search"
                     value={inputValue}
                   />
@@ -267,8 +272,16 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   </div>
                 )}
 
+                <p aria-live="polite" role="status" className="sr-only">
+                  {showResults
+                    ? `${totalFound} result${totalFound === 1 ? "" : "s"} for ${query}`
+                    : showNoResults
+                      ? `No results for ${query}`
+                      : ""}
+                </p>
+
                 {showResults && (
-                  <div>
+                  <div id="search-results">
                     <p className="text-size-regular is-mob-14">
                       Found <strong>{totalFound}</strong> result
                       {totalFound === 1 ? "" : "s"} for{" "}
