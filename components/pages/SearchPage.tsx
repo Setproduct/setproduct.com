@@ -61,14 +61,36 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   useEffect(() => {
     if (!router.isReady) return;
     const q = typeof router.query.query === "string" ? router.query.query : "";
-    setInputValue(q);
+    // Не перетираем поле, если URL лишь догнал текущий ввод
+    // (иначе съедается пробел в конце при наборе фразы).
+    setInputValue((prev) => (prev.trim() === q ? prev : q));
     setQuery(q);
   }, [router.isReady, router.query.query]);
 
+  // Debounce: обновляем выдачу и URL (?query=) через 250 мс после ввода.
+  // router.replace + shallow не добавляет запись в историю и не перезагружает данные.
   useEffect(() => {
-    const id = setTimeout(() => setQuery(inputValue), 180);
+    if (!router.isReady) return;
+    const id = setTimeout(() => {
+      const trimmed = inputValue.trim();
+      setQuery(trimmed);
+      const current =
+        typeof router.query.query === "string" ? router.query.query : "";
+      if (current === trimmed) return;
+      const nextQuery = { ...router.query };
+      if (trimmed) {
+        nextQuery.query = trimmed;
+      } else {
+        delete nextQuery.query;
+      }
+      router.replace(
+        { pathname: router.pathname, query: nextQuery },
+        undefined,
+        { shallow: true, scroll: false },
+      );
+    }, 250);
     return () => clearTimeout(id);
-  }, [inputValue]);
+  }, [inputValue, router.isReady]);
 
   const fuse = useMemo(
     () =>
@@ -201,17 +223,15 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <div className="flex flex-wrap gap-3">
                       {["dashboards", "charts", "mobile", "icons", "react", "figma"].map(
                         (suggestion) => (
-                          <button
+                          <Link
                             key={suggestion}
-                            type="button"
-                            onClick={() => {
-                              setInputValue(suggestion);
-                              setQuery(suggestion);
-                            }}
-                            className="blog_list-filters-item cursor-pointer"
+                            href={{ pathname: "/search", query: { query: suggestion } }}
+                            shallow
+                            scroll={false}
+                            className="blog_list-filters-item cursor-pointer no-underline"
                           >
                             <span className="text-size-regular">{suggestion}</span>
-                          </button>
+                          </Link>
                         ),
                       )}
                     </div>
