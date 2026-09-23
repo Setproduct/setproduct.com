@@ -19,7 +19,9 @@ import {
   type SearchableItem,
   type SearchableType,
 } from "../../lib/search/types";
-import { SEARCH_KEYS, buildFuseQuery } from "../../lib/search/synonyms";
+import { SEARCH_KEYS, buildFuseQuery, tokenizeQuery } from "../../lib/search/synonyms";
+import { SLIDER_PRODUCTS } from "../../data/slider-products";
+import { useContactModal } from "../modals/ContactModalContext";
 import {
   buildHighlightRegExp,
   buildSnippet,
@@ -37,6 +39,89 @@ const TYPE_PAGE_SIZE = 20;
 const TOP_COUNT = 3;
 const TOP_SCORE = 0.1;
 const TOP_MIN_TOTAL = 4;
+// Сколько популярных китов и свежих постов показывать на пустых экранах.
+const POPULAR_KITS_COUNT = 4;
+const FRESH_POSTS_COUNT = 3;
+
+// Ссылки «Browse by type» для стартового экрана.
+const BROWSE_LINKS: { label: string; href: string; type?: SearchableType }[] = [
+  { label: "UI kits", href: "/all", type: "product" },
+  { label: "Freebies", href: "/freebies", type: "freebie" },
+  { label: "Bundles", href: "/bundle", type: "bundle" },
+  { label: "Dashboards", href: "/dashboards", type: "dashboard" },
+  { label: "Blog", href: "/blog", type: "blog" },
+];
+
+function runSearch(fuse: Fuse<SearchableItem>, raw: string): FuseResult<SearchableItem>[] {
+  const trimmed = raw.trim();
+  if (trimmed.length < 2) return [];
+  // Пословный поиск с синонимами: все слова обязательны,
+  // каждое может совпасть в любом поле или через синоним.
+  const expression = buildFuseQuery(trimmed);
+  // Без limit: индекс небольшой, а счётчик должен быть честным.
+  return expression ? fuse.search(expression) : fuse.search(trimmed);
+}
+
+// Словарь для «Did you mean»: слова из заголовков, категорий и подсказок.
+function buildVocabulary(items: SearchableItem[]): string[] {
+  const words = new Set<string>();
+  const add = (text?: string) => {
+    if (!text) return;
+    for (const token of tokenizeQuery(text)) {
+      if (token.length >= 3 && !/^\d+$/.test(token)) words.add(token);
+    }
+  };
+  for (const item of items) {
+    add(item.title);
+    add(item.category);
+  }
+  SEARCH_SUGGESTIONS.forEach(add);
+  return Array.from(words);
+}
+
+// Популярные киты: по очереди берём лидеров из каждой подборки слайдеров.
+function pickPopularKits(items: SearchableItem[], count: number): SearchableItem[] {
+  const bySlug = new Map(
+    items.filter((i) => i.type === "product").map((i) => [i.slug, i]),
+  );
+  const lists = Object.values(SLIDER_PRODUCTS);
+  const picked: SearchableItem[] = [];
+  const seen = new Set<string>();
+  const longest = Math.max(0, ...lists.map((l) => l.length));
+  for (let i = 0; i < longest && picked.length < count; i++) {
+    for (const list of lists) {
+      const slug = list[i];
+      const item = slug ? bySlug.get(slug) : undefined;
+      if (item && !seen.has(slug) && item.image) {
+        seen.add(slug);
+        picked.push(item);
+        if (picked.length === count) break;
+      }
+    }
+  }
+  return picked;
+}
+
+function SuggestionChips({ label }: { label: string }) {
+  return (
+    <nav aria-label={label}>
+      <h2 className="subtitle-all-caps mt-0 mb-4">{label}</h2>
+      <div className="flex flex-wrap gap-3">
+        {SEARCH_SUGGESTIONS.map((suggestion) => (
+          <Link
+            key={suggestion}
+            href={{ pathname: "/search", query: { query: suggestion } }}
+            shallow
+            scroll={false}
+            className="blog_list-filters-item cursor-pointer no-underline"
+          >
+            <span className="text-size-regular">{suggestion}</span>
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
 
 type SearchTab = "all" | SearchableType;
 
@@ -83,7 +168,7 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
         href={item.url}
         className="flex gap-4 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="w-32 h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <img
               alt=""
@@ -137,7 +222,7 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
         href={item.url}
         className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
       >
-        <div className="w-32 h-24 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+        <div className="w-18 h-18 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <img
               alt=""
@@ -194,6 +279,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const meta = PAGE_META[SLUG];
   const breadcrumbs = PAGE_BREADCRUMBS[SLUG] ?? [];
   const router = useRouter();
+  const { openContactModal } = useContactModal();
 
   const initialQuery =
     typeof router.query.query === "string" ? router.query.query : "";
@@ -285,15 +371,88 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     [items],
   );
 
-  const results = useMemo<FuseResult<SearchableItem>[]>(() => {
-    const trimmed = query.trim();
-    if (trimmed.length < 2) return [];
-    // Пословный поиск с синонимами: все слова обязательны,
-    // каждое может совпасть в любом поле или через синоним.
-    const expression = buildFuseQuery(trimmed);
-    // Без limit: индекс небольшой, а счётчик должен быть честным.
-    return expression ? fuse.search(expression) : fuse.search(trimmed);
-  }, [fuse, query]);
+  const results = useMemo<FuseResult<SearchableItem>[]>(
+    () => runSearch(fuse, query),
+    [fuse, query],
+  );
+
+  // Нечёткий поиск по словарю сайта для «Did you mean».
+  const vocabFuse = useMemo(
+    () =>
+      new Fuse(buildVocabulary(items), {
+        threshold: 0.45,
+        ignoreLocation: true,
+        includeScore: true,
+      }),
+    [items],
+  );
+
+  const didYouMean = useMemo<string[]>(() => {
+    if (results.length > 0) return [];
+    const tokens = tokenizeQuery(query);
+    if (tokens.length === 0) return [];
+    const corrected = tokens.map((token) => {
+      const best = vocabFuse.search(token, { limit: 1 })[0];
+      return best ? best.item : token;
+    });
+    const candidates: string[] = [];
+    const phrase = corrected.join(" ");
+    if (phrase !== tokens.join(" ") && runSearch(fuse, phrase).length > 0) {
+      candidates.push(phrase);
+    }
+    // Если фраза целиком не находится, предлагаем отдельные слова.
+    if (tokens.length > 1) {
+      for (const word of corrected) {
+        if (candidates.length >= 3) break;
+        if (!candidates.includes(word) && runSearch(fuse, word).length > 0) {
+          candidates.push(word);
+        }
+      }
+    }
+    return candidates;
+  }, [fuse, vocabFuse, query, results.length]);
+
+  const popularKits = useMemo(
+    () => pickPopularKits(items, POPULAR_KITS_COUNT),
+    [items],
+  );
+
+  // Свежие посты: blogPosts уже отсортированы по дате, берём данные из индекса.
+  const freshPosts = useMemo(() => {
+    const bySlug = new Map(
+      items.filter((i) => i.type === "blog").map((i) => [i.slug, i]),
+    );
+    return blogPosts
+      .map((post) => bySlug.get(post.slug))
+      .filter((i): i is SearchableItem => Boolean(i))
+      .slice(0, FRESH_POSTS_COUNT);
+  }, [items, blogPosts]);
+
+  const typeCounts = useMemo(() => groupResults(items), [items]);
+
+  // Стартовое состояние: сразу ставим курсор в поле (только на десктопе,
+  // чтобы на телефоне клавиатура не закрывала подсказки).
+  useEffect(() => {
+    if (!router.isReady) return;
+    const q = typeof router.query.query === "string" ? router.query.query : "";
+    if (q) return;
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      inputRef.current?.focus();
+    }
+    // Только при первом готовом рендере.
+  }, [router.isReady]);
+
+  // Высота фиксированного хедера: к ней прилипает поле поиска на мобильных.
+  const [stickyTop, setStickyTop] = useState(64);
+  useEffect(() => {
+    const sync = () => {
+      const navbar = document.querySelector(".navbar");
+      if (navbar) setStickyTop(Math.round(navbar.getBoundingClientRect().height));
+    };
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
 
   const highlightRe = useMemo(() => buildHighlightRegExp(query), [query]);
 
@@ -409,6 +568,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
               <div className="freebies_rich-text-component">
                 <h1 className="heading-style-h1 break-words">{pageHeading}</h1>
                 <div className="spacer-40" />
+                {/* На мобильных поле прилипает под фиксированным хедером. */}
+                <div
+                  className="sticky md:static z-10 bg-(--white) -mx-4 px-4 py-3 md:m-0 md:p-0"
+                  style={{ top: stickyTop }}
+                >
                 <form
                   action="/search"
                   className="search w-form"
@@ -464,6 +628,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     />
                   </div>
                 </form>
+                </div>
                 <div className="h-5" />
 
                 {!isReady && (
@@ -473,7 +638,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <ul className="list-none p-0 m-0 grid gap-5">
                       {[0, 1, 2].map((i) => (
                         <li key={i} className="flex gap-4 items-start">
-                          <div className="w-32 h-24 rounded-lg shrink-0 bg-gray-100 animate-pulse" />
+                          <div className="w-18 h-18 md:w-32 md:h-24 rounded-lg shrink-0 bg-gray-100 animate-pulse" />
                           <div className="flex-1 min-w-0 grid gap-2">
                             <div className="h-3 w-24 rounded bg-gray-100 animate-pulse" />
                             <div className="h-5 w-3/4 rounded bg-gray-100 animate-pulse" />
@@ -488,41 +653,108 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                 {showEmptyState && (
                   <div>
                     <p className="text-size-regular is-mob-14">
-                      Type at least 2 characters to search across{" "}
-                      {items.length} items: UI kits, templates, freebies, bundles,
-                      and {items.filter((i) => i.type === "blog").length} blog posts.
+                      {query.trim().length === 1
+                        ? "Type at least 2 characters to start searching."
+                        : `Search across ${items.length} items: UI kits, templates, freebies, bundles, and ${typeCounts.blog.length} blog posts.`}
                     </p>
-                    <div className="spacer-24" />
-                    <div className="flex flex-wrap gap-3">
-                      {SEARCH_SUGGESTIONS.map(
-                        (suggestion) => (
-                          <Link
-                            key={suggestion}
-                            href={{ pathname: "/search", query: { query: suggestion } }}
-                            shallow
-                            scroll={false}
-                            className="blog_list-filters-item cursor-pointer no-underline"
-                          >
-                            <span className="text-size-regular">{suggestion}</span>
-                          </Link>
-                        ),
-                      )}
-                    </div>
+                    <div className="spacer-40" />
+                    <SuggestionChips label="Popular searches" />
+                    <div className="spacer-40" />
+                    <nav aria-label="Browse by type">
+                      <h2 className="subtitle-all-caps mt-0 mb-4">Browse by type</h2>
+                      <ul className="list-none p-0 m-0 grid grid-cols-2 md:grid-cols-5 gap-3">
+                        {BROWSE_LINKS.map((link) => (
+                          <li key={link.href}>
+                            <Link
+                              href={link.href}
+                              className="flex flex-col gap-1 h-full rounded-lg p-4 no-underline text-inherit bg-(--light-purple) border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
+                            >
+                              <span className="text-size-regular text-weight-semibold">
+                                {link.label}
+                              </span>
+                              {link.type && (
+                                <span className="text-size-tiny opacity-60">
+                                  {typeCounts[link.type].length} items
+                                </span>
+                              )}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
                   </div>
                 )}
 
                 {showNoResults && (
                   <div>
                     <p className="text-size-regular is-mob-14">
-                      No matching results for <strong>&ldquo;{query}&rdquo;</strong>.
+                      Nothing matched <strong>&ldquo;{query}&rdquo;</strong>. Check the
+                      spelling, try a shorter phrase, or pick one of the options below.
                     </p>
-                    <div className="spacer-16" />
-                    <p className="text-size-small">
-                      Try different keywords, or browse{" "}
-                      <Link href="/all">all products</Link>,{" "}
-                      <Link href="/blog">the blog</Link>, or{" "}
-                      <Link href="/freebies">freebies</Link>.
-                    </p>
+                    {didYouMean.length > 0 && (
+                      <>
+                        <div className="spacer-16" />
+                        <p className="text-size-regular">
+                          Did you mean{" "}
+                          {didYouMean.map((s, i) => (
+                            <span key={s}>
+                              {i > 0 && (i === didYouMean.length - 1 ? " or " : ", ")}
+                              <Link
+                                href={{ pathname: "/search", query: { query: s } }}
+                                shallow
+                                scroll={false}
+                                className="text-weight-semibold text-(--primary)"
+                              >
+                                {s}
+                              </Link>
+                            </span>
+                          ))}
+                          ?
+                        </p>
+                      </>
+                    )}
+                    <div className="spacer-40" />
+                    <SuggestionChips label="Popular searches" />
+                    {popularKits.length > 0 && (
+                      <>
+                        <div className="spacer-40" />
+                        <section>
+                          <h2 className="subtitle-all-caps mt-0 mb-4">Popular UI kits</h2>
+                          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
+                            {popularKits.map((item) => (
+                              <TopResultCard key={item.slug} item={item} re={null} />
+                            ))}
+                          </ul>
+                        </section>
+                      </>
+                    )}
+                    {freshPosts.length > 0 && (
+                      <>
+                        <div className="spacer-40" />
+                        <section>
+                          <h2 className="subtitle-all-caps mt-0 mb-4">Fresh from the blog</h2>
+                          <ul className="list-none p-0 m-0 grid gap-5">
+                            {freshPosts.map((item) => (
+                              <ResultRow key={item.slug} item={item} re={null} />
+                            ))}
+                          </ul>
+                        </section>
+                      </>
+                    )}
+                    <div className="spacer-40" />
+                    <div className="rounded-lg p-6 bg-(--light-purple) border border-(--light-primary) flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
+                      <p className="text-size-regular m-0">
+                        Still can&rsquo;t find it? Tell us what you need, and we&rsquo;ll point
+                        you to the right kit.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={openContactModal}
+                        className="button secondary w-inline-block cursor-pointer shrink-0"
+                      >
+                        <div className="text-size-large text-weight-bold">Contact us</div>
+                      </button>
+                    </div>
                   </div>
                 )}
 
