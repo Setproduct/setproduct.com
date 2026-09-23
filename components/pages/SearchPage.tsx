@@ -19,6 +19,8 @@ import {
   type SearchableItem,
   type SearchableType,
 } from "../../lib/search/types";
+import { SEARCH_KEYS, buildFuseQuery } from "../../lib/search/synonyms";
+import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
 import type { BlogPostPreview } from "../../types/data";
 
 const SLUG = "search";
@@ -167,12 +169,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const fuse = useMemo(
     () =>
       new Fuse(items, {
-        keys: [
-          { name: "title", weight: 3 },
-          { name: "description", weight: 1 },
-          { name: "category", weight: 2 },
-        ],
-        threshold: 0.35,
+        keys: SEARCH_KEYS.map((k) => ({ ...k })),
+        // Каждое слово ищется отдельно, поэтому порог можно держать строже.
+        threshold: 0.3,
         ignoreLocation: true,
         includeScore: true,
         minMatchCharLength: 2,
@@ -183,8 +182,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const results = useMemo<FuseResult<SearchableItem>[]>(() => {
     const trimmed = query.trim();
     if (trimmed.length < 2) return [];
+    // Пословный поиск с синонимами: все слова обязательны,
+    // каждое может совпасть в любом поле или через синоним.
+    const expression = buildFuseQuery(trimmed);
     // Без limit: индекс небольшой, а счётчик должен быть честным.
-    return fuse.search(trimmed);
+    return expression ? fuse.search(expression) : fuse.search(trimmed);
   }, [fuse, query]);
 
   const grouped = useMemo(
@@ -312,7 +314,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     </p>
                     <div className="spacer-24" />
                     <div className="flex flex-wrap gap-3">
-                      {["dashboards", "charts", "mobile", "icons", "react", "figma"].map(
+                      {SEARCH_SUGGESTIONS.map(
                         (suggestion) => (
                           <Link
                             key={suggestion}
