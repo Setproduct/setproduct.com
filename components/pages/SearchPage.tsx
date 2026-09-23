@@ -33,6 +33,10 @@ const SLUG = "search";
 const ALL_GROUP_PREVIEW = 4;
 // Во вкладке конкретного типа — плоский список, догружаемый порциями.
 const TYPE_PAGE_SIZE = 20;
+// Top results: сколько карточек, порог релевантности и минимальный размер выдачи.
+const TOP_COUNT = 3;
+const TOP_SCORE = 0.1;
+const TOP_MIN_TOTAL = 4;
 
 type SearchTab = "all" | SearchableType;
 
@@ -117,6 +121,52 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
           </p>
           <p className="text-size-small text-style-2lines mt-1 mb-0 opacity-80">
             <Highlight text={buildSnippet(item.description, re)} re={re} />
+          </p>
+        </div>
+      </Link>
+    </li>
+  );
+}
+
+// Крупная карточка для блока «Top results».
+// На десктопе превью 16:9 в три колонки, на мобильных — строка как в обычной выдаче.
+function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }) {
+  return (
+    <li className="group">
+      <Link
+        href={item.url}
+        className="flex md:flex-col gap-4 md:gap-3 items-start no-underline text-inherit rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
+      >
+        <div className="w-32 h-24 md:w-full md:h-auto md:aspect-video rounded-lg shrink-0 overflow-hidden bg-(--light-primary)">
+          {item.image ? (
+            <img
+              alt=""
+              loading="lazy"
+              src={item.image}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              className="w-full h-full flex items-center justify-center text-size-tiny text-weight-semibold uppercase tracking-wide text-(--primary)"
+            >
+              {SEARCHABLE_TYPE_BADGES[item.type]}
+            </div>
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap gap-x-2 gap-y-1 items-center mb-1">
+            <span className="text-size-tiny text-weight-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-(--light-primary) text-(--dark-primary)">
+              {SEARCHABLE_TYPE_BADGES[item.type]}
+            </span>
+            {item.isFree ? (
+              <span className="text-size-tiny text-weight-semibold text-(--primary)">Free</span>
+            ) : item.price ? (
+              <span className="text-size-tiny text-weight-semibold opacity-70">{item.price}</span>
+            ) : null}
+          </div>
+          <p className="text-xl! font-semibold! leading-6! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
+            <Highlight text={item.title} re={re} />
           </p>
         </div>
       </Link>
@@ -264,6 +314,20 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   }, [results]);
 
   const totalFound = results.length;
+
+  // Top results: до трёх почти точных совпадений (score Fuse ≤ TOP_SCORE, 0 = идеально).
+  // Показываем, только когда выдача достаточно большая, иначе блок дублирует список.
+  const topResults = useMemo(() => {
+    if (results.length <= TOP_MIN_TOTAL) return [];
+    return results
+      .filter((r) => (r.score ?? 1) <= TOP_SCORE)
+      .slice(0, TOP_COUNT)
+      .map((r) => r.item);
+  }, [results]);
+  const topKeys = useMemo(
+    () => new Set(topResults.map((i) => `${i.type}-${i.slug}`)),
+    [topResults],
+  );
 
   // Если во вкладке из URL нет результатов по новому запросу — показываем «All».
   const effectiveTab: SearchTab =
@@ -520,11 +584,31 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                       id="search-tabpanel"
                       aria-labelledby={`search-tab-${effectiveTab}`}
                     >
+                      {effectiveTab === "all" && topResults.length > 0 && (
+                        <section className="mb-12">
+                          <h2 className="subtitle-all-caps mt-0 mb-4">Top results</h2>
+                          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+                            {topResults.map((item) => (
+                              <TopResultCard
+                                key={`top-${item.type}-${item.slug}`}
+                                item={item}
+                                re={highlightRe}
+                              />
+                            ))}
+                          </ul>
+                        </section>
+                      )}
                       {effectiveTab === "all" ? (
                         groupOrder.map((type) => {
                           const group = grouped[type];
-                          const visible = group.slice(0, ALL_GROUP_PREVIEW);
-                          const hidden = group.length - visible.length;
+                          // Элементы из Top results не повторяем в превью группы,
+                          // но счётчик и «See all» остаются по полной группе.
+                          const rest = group.filter(
+                            (item) => !topKeys.has(`${item.type}-${item.slug}`),
+                          );
+                          if (rest.length === 0) return null;
+                          const visible = rest.slice(0, ALL_GROUP_PREVIEW);
+                          const hidden = rest.length - visible.length;
 
                           return (
                             <section key={type} className="mb-12">
