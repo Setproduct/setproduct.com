@@ -20,6 +20,11 @@ import {
   type SearchableType,
 } from "../../lib/search/types";
 import { SEARCH_KEYS, buildFuseQuery } from "../../lib/search/synonyms";
+import {
+  buildHighlightRegExp,
+  buildSnippet,
+  splitByMatches,
+} from "../../lib/search/highlight";
 import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
 import type { BlogPostPreview } from "../../types/data";
 
@@ -31,7 +36,26 @@ type Props = {
   blogPosts?: BlogPostPreview[];
 };
 
-function ResultRow({ item }: { item: SearchableItem }) {
+function Highlight({ text, re }: { text: string; re: RegExp | null }) {
+  return (
+    <>
+      {splitByMatches(text, re).map((seg, i) =>
+        seg.match ? (
+          <mark
+            key={i}
+            className="bg-(--light-primary) text-inherit rounded-sm px-0.5 -mx-0.5"
+          >
+            {seg.text}
+          </mark>
+        ) : (
+          <span key={i}>{seg.text}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
   const meta: string[] = [];
   if (item.category) meta.push(item.category);
   if (item.type === "blog" && item.readingTime) meta.push(item.readingTime);
@@ -77,10 +101,10 @@ function ResultRow({ item }: { item: SearchableItem }) {
             )}
           </div>
           <p className="text-xl! font-semibold! leading-5! text-style-2lines m-0 group-hover:text-(--primary) transition-colors duration-300">
-            {item.title}
+            <Highlight text={item.title} re={re} />
           </p>
           <p className="text-size-small text-style-2lines mt-1 mb-0 opacity-80">
-            {item.description}
+            <Highlight text={buildSnippet(item.description, re)} re={re} />
           </p>
         </div>
       </Link>
@@ -188,6 +212,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     // Без limit: индекс небольшой, а счётчик должен быть честным.
     return expression ? fuse.search(expression) : fuse.search(trimmed);
   }, [fuse, query]);
+
+  const highlightRe = useMemo(() => buildHighlightRegExp(query), [query]);
 
   const grouped = useMemo(
     () => groupResults(results.map((r) => r.item)),
@@ -381,7 +407,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           </h2>
                           <ul className="list-none p-0 m-0 grid gap-5">
                             {visible.map((item) => (
-                              <ResultRow key={`${item.type}-${item.slug}`} item={item} />
+                              <ResultRow
+                                key={`${item.type}-${item.slug}`}
+                                item={item}
+                                re={highlightRe}
+                              />
                             ))}
                           </ul>
                           {hidden > 0 && (

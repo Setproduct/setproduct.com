@@ -61,6 +61,11 @@ function variantsFor(token: string): string[] {
   return SYNONYMS.get(token) ?? [token];
 }
 
+/** All words worth highlighting for a query: tokens plus their synonyms. */
+export function getSearchTerms(raw: string): string[] {
+  return Array.from(new Set(tokenizeQuery(raw).flatMap(variantsFor)));
+}
+
 /**
  * Builds a Fuse logical query: every token must match (AND),
  * a token may match any field or any of its synonyms (OR).
