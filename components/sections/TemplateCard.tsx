@@ -9,10 +9,10 @@ type Props = { product: Product; imgHeight?: "default" | "480" };
 export default function TemplateCard({ product, imgHeight = "480" }: Props) {
   const imgClass =
     imgHeight === "480"
-      ? "template-list-item-img-wr is-height-480 w-inline-block"
-      : "template-list-item-img-wr w-inline-block";
+      ? "template-list-item-img-wr is-height-480 w-inline-block hover-lift-media"
+      : "template-list-item-img-wr w-inline-block hover-lift-media";
   return (
-    <div className="template-list-item">
+    <div className="template-list-item hover-lift is-large">
       <Link className={imgClass} href={`/templates/${product.slug}`}>
         <Image
           alt=""
@@ -24,7 +24,7 @@ export default function TemplateCard({ product, imgHeight = "480" }: Props) {
       </Link>
       <div className="template-list-text-wr">
         <Link className="w-inline-block" href={`/templates/${product.slug}`}>
-          <p className="heading-style-h4 text-color-dark-primary text-style-2lines">{product.title}</p>
+          <p className="hover-lift-title heading-style-h4 text-color-dark-primary text-style-2lines">{product.title}</p>
         </Link>
         <p className="text-size-medium text-style-3lines">{product.description}</p>
       </div>

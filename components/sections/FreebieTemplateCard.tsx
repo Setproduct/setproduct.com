@@ -7,8 +7,8 @@ type Props = {
 
 export default function FreebieTemplateCard({ item }: Props) {
   return (
-    <div className="template-list-item">
-      <Link className="template-list-item-img-wr w-inline-block" href={item.previewHref}>
+    <div className="template-list-item hover-lift is-large">
+      <Link className="template-list-item-img-wr w-inline-block hover-lift-media" href={item.previewHref}>
         <img
           alt={item.title}
           src={item.thumb}
@@ -20,7 +20,7 @@ export default function FreebieTemplateCard({ item }: Props) {
       </Link>
       <div className="template-list-text-wr">
         <Link className="w-inline-block" href={item.previewHref}>
-          <p className="heading-style-h5 text-color-dark-primary text-style-1line">{item.title}</p>
+          <p className="hover-lift-title heading-style-h5 text-color-dark-primary text-style-1line">{item.title}</p>
         </Link>
         <p className="text-size-regular text-style-2lines line-clamp-2">
           {item.description}

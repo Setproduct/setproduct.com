@@ -85,9 +85,10 @@ export default function FreebiesShowcase({ excludeSlug }: Props) {
               </div>
             </div>
             <div className="spacer-32" />
+            {/* overflow-x-auto also clips vertically: reserve room for the hover-lift rise and shadow */}
             <div
               ref={trackRef}
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none]"
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] pt-[16em] mt-[-16em] pb-[24em] mb-[-24em]"
             >
               {items.map((item) => (
                 <div

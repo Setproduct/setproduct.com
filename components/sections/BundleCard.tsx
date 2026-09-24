@@ -6,8 +6,8 @@ type Props = { item: BundleItem };
 
 export default function BundleCard({ item }: Props) {
   return (
-    <div className="template-list-item scroll-mt-28" id={item.slug}>
-      <div className="template-list-item-img-wr is-height-480">
+    <div className="template-list-item hover-lift is-large scroll-mt-28" id={item.slug}>
+      <div className="template-list-item-img-wr is-height-480 hover-lift-media">
         <img
           alt=""
           className="image-cover"
@@ -17,7 +17,7 @@ export default function BundleCard({ item }: Props) {
       </div>
       <div className="template-list-text-wr">
         <p className="subtitle-all-caps">{item.subtitle}</p>
-        <p className="heading-style-h4 text-color-dark-primary text-style-2lines">
+        <p className="hover-lift-title heading-style-h4 text-color-dark-primary text-style-2lines">
           {item.title}
         </p>
         <p

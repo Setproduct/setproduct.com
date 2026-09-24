@@ -42,8 +42,8 @@ export default function TemplatePricing({ title, subtitle, cards, previewLabel }
             }
           >
             {cards.map((card, index) => (
-              <div key={index} className="template-list-item">
-                <div className="template-list-item-img-wr is-height-480">
+              <div key={index} className="template-list-item hover-lift is-large">
+                <div className="template-list-item-img-wr is-height-480 hover-lift-media">
                   <img
                     alt={card.title}
                     className={
@@ -56,7 +56,7 @@ export default function TemplatePricing({ title, subtitle, cards, previewLabel }
                   />
                 </div>
                 <div className="template-list-text-wr">
-                  <p className="heading-style-h5 text-color-dark-primary">{card.title}</p>
+                  <p className="hover-lift-title heading-style-h5 text-color-dark-primary">{card.title}</p>
                   {card.descriptionHtml ? (
                     <div
                       className="text-size-regular"
