@@ -553,15 +553,17 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const effectiveTab: SearchTab =
     activeTab !== "all" && grouped[activeTab].length === 0 ? "all" : activeTab;
 
+  // Пустые табы не показываем совсем: серый «Bundles 0» только занимает место
+  // и выглядит как сломанная кнопка. «All» и активный таб видны всегда.
   const tabs: { id: SearchTab; label: string; count: number }[] = [
-    { id: "all", label: "All", count: totalFound },
+    { id: "all" as SearchTab, label: "All", count: totalFound },
     ...SEARCH_GROUP_ORDER.map((group) => ({
       id: group as SearchTab,
       label: SEARCH_GROUP_LABELS[group],
       count: grouped[group].length,
     })),
-  ];
-  const enabledTabs = tabs.filter((t) => t.count > 0).map((t) => t.id);
+  ].filter((t) => t.id === "all" || t.id === effectiveTab || t.count > 0);
+  const enabledTabs = tabs.map((t) => t.id);
 
   const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -850,7 +852,6 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     >
                       {tabs.map((tab) => {
                         const selected = tab.id === effectiveTab;
-                        const disabled = tab.count === 0;
                         return (
                           <button
                             key={tab.id}
@@ -863,10 +864,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                             aria-selected={selected}
                             aria-controls="search-tabpanel"
                             tabIndex={selected ? 0 : -1}
-                            disabled={disabled}
                             onClick={() => selectTab(tab.id)}
                             onKeyDown={onTabKeyDown}
-                            className={`blog_list-filters-item shrink-0 border-0 m-0! text-inherit outline-none focus-visible:ring-2 focus-visible:ring-(--primary) disabled:opacity-40 disabled:cursor-default disabled:hover:text-inherit${selected ? " fs-cmsfilter_active" : ""}`}
+                            className={`blog_list-filters-item shrink-0 border-0 m-0! text-inherit outline-none focus-visible:ring-2 focus-visible:ring-(--primary)${selected ? " fs-cmsfilter_active" : ""}`}
                           >
                             <span className="text-size-regular">
                               {tab.label}{" "}
