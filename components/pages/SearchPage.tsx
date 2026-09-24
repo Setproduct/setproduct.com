@@ -190,9 +190,21 @@ function Highlight({ text, re }: { text: string; re: RegExp | null }) {
   );
 }
 
-function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
+function ResultRow({
+  item,
+  re,
+  onCategoryClick,
+}: {
+  item: SearchableItem;
+  re: RegExp | null;
+  onCategoryClick?: (category: string) => void;
+}) {
+  // У записей блога категория — отдельная кнопка-фильтр, остальным типам
+  // она выводится обычным текстом в мета-строке.
+  const categoryButton =
+    item.type === "blog" && item.category && onCategoryClick ? item.category : null;
   const meta: string[] = [];
-  if (item.category) meta.push(item.category);
+  if (item.category && !categoryButton) meta.push(item.category);
   if (item.type === "blog" && item.readingTime) meta.push(item.readingTime);
   if (!item.isFree && item.price) meta.push(item.price);
 
@@ -229,8 +241,19 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
                 Free
               </span>
             )}
+            {categoryButton && (
+              <button
+                type="button"
+                onClick={() => onCategoryClick?.(categoryButton)}
+                aria-label={`Show more posts in ${formatCategoryLabel(categoryButton)}`}
+                className="relative z-10 p-0 m-0 bg-transparent border-0 cursor-pointer text-size-tiny text-weight-semibold text-inherit opacity-70 underline decoration-dotted underline-offset-2 hover:opacity-100 hover:text-(--primary) outline-none focus-visible:ring-2 focus-visible:ring-(--primary) rounded"
+              >
+                {formatCategoryLabel(categoryButton)}
+              </button>
+            )}
             {meta.length > 0 && (
               <span className="text-size-tiny text-weight-semibold opacity-70 min-w-0 truncate">
+                {categoryButton ? "· " : ""}
                 {meta.join(" · ")}
               </span>
             )}
@@ -394,6 +417,26 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
       undefined,
       { shallow: true, scroll: false },
     );
+  };
+
+  // Клик по категории в строке результата: сразу открываем таб Blog
+  // с этим фильтром. push, а не replace, чтобы «Назад» вернул прежний вид.
+  const openBlogCategory = (category: string) => {
+    if (activeTab === "blog" && activeCategory === category) return;
+    const nextQuery = { ...router.query, type: "blog", category };
+    router
+      .push({ pathname: router.pathname, query: nextQuery }, undefined, {
+        shallow: true,
+        scroll: false,
+      })
+      .then(() => {
+        // Если начало выдачи ушло выше экрана, возвращаем к нему,
+        // иначе новый отфильтрованный список окажется «за кадром».
+        const el = document.getElementById("search-results");
+        if (el && el.getBoundingClientRect().top < 0) {
+          el.scrollIntoView({ block: "start" });
+        }
+      });
   };
 
   const clearInput = () => {
@@ -1035,6 +1078,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                                     key={`${item.type}-${item.slug}`}
                                     item={item}
                                     re={highlightRe}
+                                    onCategoryClick={openBlogCategory}
                                   />
                                 ))}
                               </ul>
@@ -1074,6 +1118,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                                     key={`${item.type}-${item.slug}`}
                                     item={item}
                                     re={highlightRe}
+                                    onCategoryClick={openBlogCategory}
                                   />
                                 ))}
                               </ul>
