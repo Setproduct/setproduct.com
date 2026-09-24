@@ -2642,38 +2642,56 @@ figcaption {
 }
 
 /* Radius scale for images and cards (see AGENTS.md, «Скругления»).
-   em-based so corners scale with the layout, like spacer-*. */
+   Scales with the layout like spacer-*, but uses --em-px (the body font-size)
+   instead of em: an image inside `.rich-text-18 p` (font-size: 18em) would
+   otherwise get 24 × 18px = 432px corners and turn into a pill. */
+:root {
+  --em-px: .0694445vw;
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    --em-px: 1px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  :root {
+    --em-px: .278vw;
+  }
+}
+
 .radius-8 {
-  border-radius: 8em;
+  border-radius: calc(8 * var(--em-px));
 }
 
 .radius-12 {
-  border-radius: 12em;
+  border-radius: calc(12 * var(--em-px));
 }
 
 .radius-16 {
-  border-radius: 16em;
+  border-radius: calc(16 * var(--em-px));
 }
 
 .radius-24 {
-  border-radius: 24em;
+  border-radius: calc(24 * var(--em-px));
 }
 
 .radius-full {
-  border-radius: 100em;
+  border-radius: calc(100 * var(--em-px));
 }
 
 @media screen and (max-width: 479px) {
   .radius-12 {
-    border-radius: 8em;
+    border-radius: calc(8 * var(--em-px));
   }
 
   .radius-16 {
-    border-radius: 12em;
+    border-radius: calc(12 * var(--em-px));
   }
 
   .radius-24 {
-    border-radius: 16em;
+    border-radius: calc(16 * var(--em-px));
   }
 }
 
