@@ -4,7 +4,6 @@ import matter from "gray-matter";
 import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
 import { computeReadingTime } from "../blog/reading-time";
 import { PRODUCTS } from "../../data/products";
-import { TEMPLATE_PRODUCTS } from "../../data/templates-listing";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
 import { BUNDLES } from "../../data/bundles";
 import { DASHBOARD_TEMPLATES } from "../../data/dashboard-templates";
@@ -80,20 +79,6 @@ export function buildSearchIndex(): SearchableItem[] {
       category: product.categories.join(", "),
       image: product.image,
       price: product.price ? `$${product.price}` : undefined,
-    });
-  }
-
-  const productSlugs = new Set(PRODUCTS.map((p) => p.slug));
-  for (const tpl of TEMPLATE_PRODUCTS) {
-    if (productSlugs.has(tpl.slug)) continue;
-    items.push({
-      type: "template",
-      slug: tpl.slug,
-      title: tpl.title,
-      description: tpl.description,
-      category: tpl.category,
-      image: tpl.heroImage,
-      price: tpl.price,
     });
   }
 

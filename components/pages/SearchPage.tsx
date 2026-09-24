@@ -17,11 +17,12 @@ import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import {
   SEARCHABLE_TYPE_BADGES,
-  SEARCHABLE_TYPE_LABELS,
-  SEARCHABLE_TYPE_ORDER,
+  SEARCH_GROUP_LABELS,
+  SEARCH_GROUP_OF,
+  SEARCH_GROUP_ORDER,
   getSearchItemUrl,
+  type SearchGroup,
   type SearchableItem,
-  type SearchableType,
 } from "../../lib/search/types";
 import { SEARCH_KEYS, buildFuseQuery, tokenizeQuery } from "../../lib/search/synonyms";
 import { SLIDER_PRODUCTS } from "../../data/slider-products";
@@ -52,11 +53,11 @@ const FRESH_POSTS_COUNT = 3;
 const ANALYTICS_DELAY = 1500;
 
 // Ссылки «Browse by type» для стартового экрана.
-const BROWSE_LINKS: { label: string; href: string; type?: SearchableType }[] = [
+const BROWSE_LINKS: { label: string; href: string; type?: SearchGroup }[] = [
   { label: "UI kits", href: "/all", type: "product" },
   { label: "Freebies", href: "/freebies", type: "freebie" },
   { label: "Bundles", href: "/bundle", type: "bundle" },
-  { label: "Dashboards", href: "/dashboards", type: "dashboard" },
+  { label: "Dashboards", href: "/dashboards" },
   { label: "Blog", href: "/blog", type: "blog" },
 ];
 
@@ -134,12 +135,20 @@ function SuggestionChips({ label }: { label: string }) {
   );
 }
 
-type SearchTab = "all" | SearchableType;
+type SearchTab = "all" | SearchGroup;
+
+// Старые ссылки ?type=template и ?type=dashboard ведут в UI kits:
+// таба Templates больше нет, дашборд-страницы живут внутри UI kits.
+const LEGACY_TAB_ALIASES: Record<string, SearchGroup> = {
+  template: "product",
+  dashboard: "product",
+};
 
 function parseTab(value: unknown): SearchTab {
   if (typeof value !== "string") return "all";
-  return (SEARCHABLE_TYPE_ORDER as readonly string[]).includes(value)
-    ? (value as SearchableType)
+  if (value in LEGACY_TAB_ALIASES) return LEGACY_TAB_ALIASES[value];
+  return (SEARCH_GROUP_ORDER as readonly string[]).includes(value)
+    ? (value as SearchGroup)
     : "all";
 }
 
@@ -273,18 +282,16 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
   );
 }
 
-function groupResults(results: SearchableItem[]): Record<SearchableType, SearchableItem[]> {
-  const grouped = {
-    product: [],
-    template: [],
-    bundle: [],
-    freebie: [],
-    dashboard: [],
+function groupResults(results: SearchableItem[]): Record<SearchGroup, SearchableItem[]> {
+  const grouped: Record<SearchGroup, SearchableItem[]> = {
     blog: [],
-  } as Record<SearchableType, SearchableItem[]>;
+    freebie: [],
+    product: [],
+    bundle: [],
+  };
 
   for (const item of results) {
-    grouped[item.type].push(item);
+    grouped[SEARCH_GROUP_OF[item.type]].push(item);
   }
   return grouped;
 }
@@ -518,9 +525,10 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   // Fuse уже отдаёт результаты по возрастанию score, поэтому
   // достаточно запомнить порядок первого появления каждого типа.
   const groupOrder = useMemo(() => {
-    const order: SearchableType[] = [];
+    const order: SearchGroup[] = [];
     for (const r of results) {
-      if (!order.includes(r.item.type)) order.push(r.item.type);
+      const group = SEARCH_GROUP_OF[r.item.type];
+      if (!order.includes(group)) order.push(group);
     }
     return order;
   }, [results]);
@@ -547,10 +555,10 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
 
   const tabs: { id: SearchTab; label: string; count: number }[] = [
     { id: "all", label: "All", count: totalFound },
-    ...SEARCHABLE_TYPE_ORDER.map((type) => ({
-      id: type as SearchTab,
-      label: SEARCHABLE_TYPE_LABELS[type],
-      count: grouped[type].length,
+    ...SEARCH_GROUP_ORDER.map((group) => ({
+      id: group as SearchTab,
+      label: SEARCH_GROUP_LABELS[group],
+      count: grouped[group].length,
     })),
   ];
   const enabledTabs = tabs.filter((t) => t.count > 0).map((t) => t.id);
@@ -711,7 +719,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <p className="text-size-regular is-mob-14">
                       {query.trim().length === 1
                         ? "Type at least 2 characters to start searching."
-                        : `Search across ${items.length} items: UI kits, templates, freebies, bundles, and ${typeCounts.blog.length} blog posts.`}
+                        : `Search across ${items.length} items: ${typeCounts.blog.length} blog posts, plus UI kits, freebies and bundles.`}
                     </p>
                     <div className="spacer-40" />
                     <SuggestionChips label="Popular searches" />
@@ -914,7 +922,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                             {hasBlockAbove && <div className="spacer-40" />}
                             <section>
                               <h2 className="subtitle-all-caps flex items-baseline gap-2 mt-0">
-                                {SEARCHABLE_TYPE_LABELS[type]}
+                                {SEARCH_GROUP_LABELS[type]}
                                 <span className="font-normal opacity-60">
                                   ({group.length})
                                 </span>
@@ -937,7 +945,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                                     onClick={() => selectTab(type)}
                                     className="text-size-small text-weight-semibold p-0 bg-transparent border-0 cursor-pointer text-(--primary) hover:underline"
                                   >
-                                    See all {group.length} in {SEARCHABLE_TYPE_LABELS[type]} →
+                                    See all {group.length} in {SEARCH_GROUP_LABELS[type]} →
                                   </button>
                                 </>
                               )}
@@ -953,7 +961,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           return (
                             <section>
                               <h2 className="sr-only">
-                                {SEARCHABLE_TYPE_LABELS[effectiveTab]}
+                                {SEARCH_GROUP_LABELS[effectiveTab]}
                               </h2>
                               <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
