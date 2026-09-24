@@ -63,6 +63,14 @@ const BROWSE_LINKS: { label: string; href: string; type?: SearchGroup }[] = [
 
 type FuseCtor = typeof Fuse;
 
+// Буст блога: блог сейчас главный контент сайта, поэтому при близкой
+// релевантности пост должен стоять выше кита. Score у Fuse: 0 = идеально,
+// 1 = мимо. Множитель < 1 «подтягивает» посты вверх, но не вытаскивает
+// слабое совпадение над точным (0.5 × 0.8 = 0.4 всё равно хуже 0.1).
+const SCORE_BOOST: Partial<Record<SearchableItem["type"], number>> = {
+  blog: 0.8,
+};
+
 function runSearch(fuse: Fuse<SearchableItem> | null, raw: string): FuseResult<SearchableItem>[] {
   const trimmed = raw.trim();
   if (!fuse || trimmed.length < 2) return [];
@@ -70,7 +78,11 @@ function runSearch(fuse: Fuse<SearchableItem> | null, raw: string): FuseResult<S
   // каждое может совпасть в любом поле или через синоним.
   const expression = buildFuseQuery(trimmed);
   // Без limit: индекс небольшой, а счётчик должен быть честным.
-  return expression ? fuse.search(expression) : fuse.search(trimmed);
+  const found = expression ? fuse.search(expression) : fuse.search(trimmed);
+  // sort стабилен: при равном score сохраняется исходный порядок Fuse.
+  return found
+    .map((r) => ({ ...r, score: (r.score ?? 1) * (SCORE_BOOST[r.item.type] ?? 1) }))
+    .sort((a, b) => a.score - b.score);
 }
 
 // Словарь для «Did you mean»: слова из заголовков, категорий и подсказок.
