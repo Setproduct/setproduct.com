@@ -783,9 +783,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           <li key={link.href}>
                             <Link
                               href={link.href}
-                              className="flex flex-col gap-1 h-full radius-16 p-4 no-underline text-inherit bg-(--light-purple) border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
+                              className="group flex flex-col gap-1 h-full radius-16 p-4 no-underline text-inherit bg-(--light-purple) border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
                             >
-                              <span className="text-size-regular text-weight-semibold">
+                              <span className="text-size-regular text-weight-semibold transition-colors duration-300 group-hover:text-(--primary) group-focus-visible:text-(--primary)">
                                 {link.label}
                               </span>
                               {link.type && (
