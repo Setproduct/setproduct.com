@@ -320,6 +320,14 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const [inputValue, setInputValue] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
 
+  // Последнее значение ?query=, которое мы сами записали в URL (или увидели в нём).
+  // Нужно, чтобы отличать «эхо» своего router.replace от внешней навигации
+  // (клик по чипу, «Did you mean», кнопка «назад»).
+  const lastSyncedQueryRef = useRef(initialQuery);
+  // Свежий router для отложенного колбэка debounce (иначе замыкание видит старый query).
+  const routerRef = useRef(router);
+  routerRef.current = router;
+
   const inputRef = useRef<HTMLInputElement>(null);
   const tabRefs = useRef<Partial<Record<SearchTab, HTMLButtonElement | null>>>({});
 
@@ -339,9 +347,13 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   useEffect(() => {
     if (!router.isReady) return;
     const q = typeof router.query.query === "string" ? router.query.query : "";
-    // Не перетираем поле, если URL лишь догнал текущий ввод
-    // (иначе съедается пробел в конце при наборе фразы).
-    setInputValue((prev) => (prev.trim() === q ? prev : q));
+    // URL догнал наш собственный router.replace из debounce. Поле не трогаем:
+    // пока replace шёл, пользователь мог допечатать ещё несколько букв,
+    // и перезапись вернула бы старое значение («table» → «tble»).
+    if (q === lastSyncedQueryRef.current) return;
+    // Внешнее изменение URL: чип, «Did you mean», назад/вперёд.
+    lastSyncedQueryRef.current = q;
+    setInputValue(q);
     setQuery(q);
   }, [router.isReady, router.query.query]);
 
@@ -393,17 +405,18 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     const id = setTimeout(() => {
       const trimmed = inputValue.trim();
       setQuery(trimmed);
-      const current =
-        typeof router.query.query === "string" ? router.query.query : "";
-      if (current === trimmed) return;
-      const nextQuery = { ...router.query };
+      if (lastSyncedQueryRef.current === trimmed) return;
+      // Запоминаем ДО replace: эффект синхронизации узнает своё эхо и пропустит его.
+      lastSyncedQueryRef.current = trimmed;
+      const r = routerRef.current;
+      const nextQuery = { ...r.query };
       if (trimmed) {
         nextQuery.query = trimmed;
       } else {
         delete nextQuery.query;
       }
-      router.replace(
-        { pathname: router.pathname, query: nextQuery },
+      r.replace(
+        { pathname: r.pathname, query: nextQuery },
         undefined,
         { shallow: true, scroll: false },
       );
@@ -652,6 +665,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     event.preventDefault();
     const trimmed = inputValue.trim();
     setQuery(trimmed);
+    lastSyncedQueryRef.current = trimmed;
     const nextQuery = { ...router.query };
     if (trimmed) {
       nextQuery.query = trimmed;
