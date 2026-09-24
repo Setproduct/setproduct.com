@@ -633,6 +633,8 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
   const showNoResults = isReady && !showEmptyState && fuseReady && totalFound === 0;
   const showResults = isReady && !showEmptyState && fuseReady && !showNoResults;
 
+  // Есть запрос: крупный H1 прячем визуально, чтобы выдача поднялась выше.
+  const hasQuery = isReady && !showEmptyState;
   const trimmedQuery = query.trim();
   const pageHeading = !isReady
     ? "Search"
@@ -677,11 +679,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">
-          <div className="section-padding top-80 bottom-80">
+          <div className={`section-padding ${hasQuery ? "top-40" : "top-80"} bottom-80`}>
             <div className="container">
               <div className="freebies_rich-text-component">
-                <h1 className="heading-style-h1 break-words">{pageHeading}</h1>
-                <div className="spacer-40" />
+                <h1 className={hasQuery ? "sr-only" : "heading-style-h1 break-words"}>{pageHeading}</h1>
+                {!hasQuery && <div className="spacer-40" />}
                 {/* На мобильных поле прилипает под фиксированным хедером. */}
                 <div
                   className="sticky md:static z-10 bg-(--white) -mx-4 px-4 py-3 md:m-0 md:p-0"
