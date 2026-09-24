@@ -195,12 +195,11 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
   if (item.type === "blog" && item.readingTime) meta.push(item.readingTime);
   if (!item.isFree && item.price) meta.push(item.price);
 
+  // Строка кликабельна целиком за счёт «растянутой» ссылки: её ::after
+  // накрывает весь li. Так внутри строки можно разместить отдельные
+  // кнопки (relative z-10) без вложенных интерактивных элементов.
   return (
-    <li>
-      <Link
-        href={getSearchItemUrl(item)}
-        className="hover-lift flex gap-4 items-start no-underline text-inherit radius-12 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) focus-visible:ring-offset-4"
-      >
+    <li className="hover-lift relative flex gap-4 items-start">
         <div className="hover-lift-media relative w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
@@ -236,14 +235,18 @@ function ResultRow({ item, re }: { item: SearchableItem; re: RegExp | null }) {
             )}
           </div>
           <p className="hover-lift-title text-xl! font-semibold! leading-6! text-style-2lines m-0">
-            <Highlight text={item.title} re={re} />
+            <Link
+              href={getSearchItemUrl(item)}
+              className="no-underline text-inherit outline-none after:absolute after:inset-0 after:content-[''] after:[border-radius:calc(12*var(--em-px))] focus-visible:after:ring-2 focus-visible:after:ring-(--primary) focus-visible:after:ring-offset-4"
+            >
+              <Highlight text={item.title} re={re} />
+            </Link>
           </p>
           <div className="spacer-4" />
           <p className="text-size-small text-style-2lines mt-0 mb-0 opacity-80">
             <Highlight text={buildSnippet(item.description, re)} re={re} />
           </p>
         </div>
-      </Link>
     </li>
   );
 }
