@@ -32,6 +32,7 @@ import {
   buildSnippet,
   splitByMatches,
 } from "../../lib/search/highlight";
+import { formatCategoryLabel } from "../../lib/search/format";
 import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
 import { event as gtagEvent } from "../../lib/gtag";
 import type { BlogPostPreview } from "../../types/data";
@@ -906,11 +907,13 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                 {showResults && (
                   <div id="search-results">
                     {/* Общее число есть в табе All и в aria-live выше. */}
-                    {/* На мобильных вкладки прокручиваются по горизонтали. */}
+                    {/* На мобильных вкладки прокручиваются по горизонтали, */}
+                    {/* а список Topic переносится под них на всю ширину. */}
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
                     <div
                       role="tablist"
                       aria-label="Filter results by type"
-                      className="flex gap-2 overflow-x-auto whitespace-nowrap -mx-4 px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                      className="flex flex-1 min-w-0 basis-full sm:basis-0 gap-2 overflow-x-auto whitespace-nowrap -mx-4 px-4 pb-1 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     >
                       {tabs.map((tab) => {
                         const selected = tab.id === effectiveTab;
@@ -937,6 +940,42 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           </button>
                         );
                       })}
+                    </div>
+                    {/* Уточнение по теме внутри таба Blog: одно поле вместо */}
+                    {/* второго ряда чипов. Нативный select даёт клавиатуру */}
+                    {/* и системный список на мобильных без лишнего кода. */}
+                    {effectiveTab === "blog" && blogCategories.length > 1 && (
+                      <div className="relative w-full sm:w-auto shrink-0 pb-1">
+                        <label htmlFor="search-topic" className="sr-only">
+                          Filter blog posts by topic
+                        </label>
+                        <select
+                          id="search-topic"
+                          value={effectiveCategory ?? ""}
+                          onChange={(e) => selectCategory(e.target.value || null)}
+                          className={`appearance-none w-full sm:w-auto m-0! h-auto! text-size-regular text-weight-semibold text-inherit cursor-pointer radius-full border border-solid pl-4 pr-10 py-2 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) ${effectiveCategory ? "border-(--primary) bg-(--light-primary)" : "border-(--black-transparent) bg-(--light-purple)"}`}
+                        >
+                          <option value="">All topics ({grouped.blog.length})</option>
+                          {blogCategories.map((cat) => (
+                            <option key={cat.name} value={cat.name}>
+                              {formatCategoryLabel(cat.name)} ({cat.count})
+                            </option>
+                          ))}
+                        </select>
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 16 16"
+                          className="pointer-events-none absolute right-4 top-[calc(50%-2px)] -translate-y-1/2 w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M4 6l4 4 4-4" />
+                        </svg>
+                      </div>
+                    )}
                     </div>
                     <div className="spacer-24" />
 
@@ -1024,55 +1063,11 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                               : grouped[effectiveTab];
                           const visible = list.slice(0, visibleCount);
                           const remaining = list.length - visible.length;
-                          // Чипы нужны, только если есть из чего выбирать.
-                          const showCategoryChips = isBlog && blogCategories.length > 1;
-                          const chipClass = (active: boolean) =>
-                            `blog_list-filters-item shrink-0 border-0 m-0! text-inherit cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-(--primary)${active ? " fs-cmsfilter_active" : ""}`;
                           return (
                             <section>
                               <h2 className="sr-only">
                                 {SEARCH_GROUP_LABELS[effectiveTab]}
                               </h2>
-                              {showCategoryChips && (
-                                <>
-                                  <div
-                                    role="group"
-                                    aria-label="Filter blog posts by category"
-                                    className="flex flex-wrap gap-2"
-                                  >
-                                    <button
-                                      type="button"
-                                      aria-pressed={effectiveCategory === null}
-                                      onClick={() => selectCategory(null)}
-                                      className={chipClass(effectiveCategory === null)}
-                                    >
-                                      <span className="text-size-small">
-                                        All topics{" "}
-                                        <span className="font-normal opacity-60">
-                                          {grouped.blog.length}
-                                        </span>
-                                      </span>
-                                    </button>
-                                    {blogCategories.map((cat) => (
-                                      <button
-                                        key={cat.name}
-                                        type="button"
-                                        aria-pressed={effectiveCategory === cat.name}
-                                        onClick={() => selectCategory(cat.name)}
-                                        className={chipClass(effectiveCategory === cat.name)}
-                                      >
-                                        <span className="text-size-small">
-                                          {cat.name}{" "}
-                                          <span className="font-normal opacity-60">
-                                            {cat.count}
-                                          </span>
-                                        </span>
-                                      </button>
-                                    ))}
-                                  </div>
-                                  <div className="spacer-24" />
-                                </>
-                              )}
                               <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
                                   <ResultRow
