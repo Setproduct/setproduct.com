@@ -324,6 +324,9 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
 
   // Активная вкладка живёт в URL (?type=), чтобы ссылкой можно было поделиться.
   const activeTab = parseTab(router.query.type);
+  // Категория блога внутри таба Blog, тоже в URL (?category=).
+  const activeCategory =
+    typeof router.query.category === "string" ? router.query.category : null;
 
   // Сколько строк показано во вкладке конкретного типа.
   const [visibleCount, setVisibleCount] = useState(TYPE_PAGE_SIZE);
@@ -341,10 +344,10 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     setQuery(q);
   }, [router.isReady, router.query.query]);
 
-  // Новый запрос или другая вкладка — начинаем список сначала.
+  // Новый запрос, другая вкладка или категория — начинаем список сначала.
   useEffect(() => {
     setVisibleCount(TYPE_PAGE_SIZE);
-  }, [query, activeTab]);
+  }, [query, activeTab, activeCategory]);
 
   const selectTab = (tab: SearchTab) => {
     const nextQuery = { ...router.query };
@@ -353,7 +356,23 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     } else {
       nextQuery.type = tab;
     }
+    // Категория имеет смысл только внутри таба Blog.
+    delete nextQuery.category;
     router.push(
+      { pathname: router.pathname, query: nextQuery },
+      undefined,
+      { shallow: true, scroll: false },
+    );
+  };
+
+  const selectCategory = (category: string | null) => {
+    const nextQuery = { ...router.query };
+    if (category) {
+      nextQuery.category = category;
+    } else {
+      delete nextQuery.category;
+    }
+    router.replace(
       { pathname: router.pathname, query: nextQuery },
       undefined,
       { shallow: true, scroll: false },
@@ -532,6 +551,23 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     () => groupResults(results.map((r) => r.item)),
     [results],
   );
+
+  // Категории блога в текущей выдаче: только те, где есть результаты,
+  // от самой наполненной к самой пустой (при равенстве — по алфавиту).
+  const blogCategories = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const item of grouped.blog) {
+      if (item.category) counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
+    }
+    return Array.from(counts, ([name, count]) => ({ name, count })).sort(
+      (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+    );
+  }, [grouped]);
+  // Категория из URL, которой нет в новой выдаче, молча сбрасывается на «All».
+  const effectiveCategory =
+    activeCategory && blogCategories.some((c) => c.name === activeCategory)
+      ? activeCategory
+      : null;
 
   // Порядок групп во вкладке «All»: по лучшему score внутри группы.
   // Fuse уже отдаёт результаты по возрастанию score, поэтому
@@ -967,14 +1003,62 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                         })
                       ) : (
                         (() => {
-                          const list = grouped[effectiveTab];
+                          const isBlog = effectiveTab === "blog";
+                          const list =
+                            isBlog && effectiveCategory
+                              ? grouped.blog.filter((item) => item.category === effectiveCategory)
+                              : grouped[effectiveTab];
                           const visible = list.slice(0, visibleCount);
                           const remaining = list.length - visible.length;
+                          // Чипы нужны, только если есть из чего выбирать.
+                          const showCategoryChips = isBlog && blogCategories.length > 1;
+                          const chipClass = (active: boolean) =>
+                            `blog_list-filters-item shrink-0 border-0 m-0! text-inherit cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-(--primary)${active ? " fs-cmsfilter_active" : ""}`;
                           return (
                             <section>
                               <h2 className="sr-only">
                                 {SEARCH_GROUP_LABELS[effectiveTab]}
                               </h2>
+                              {showCategoryChips && (
+                                <>
+                                  <div
+                                    role="group"
+                                    aria-label="Filter blog posts by category"
+                                    className="flex flex-wrap gap-2"
+                                  >
+                                    <button
+                                      type="button"
+                                      aria-pressed={effectiveCategory === null}
+                                      onClick={() => selectCategory(null)}
+                                      className={chipClass(effectiveCategory === null)}
+                                    >
+                                      <span className="text-size-small">
+                                        All topics{" "}
+                                        <span className="font-normal opacity-60">
+                                          {grouped.blog.length}
+                                        </span>
+                                      </span>
+                                    </button>
+                                    {blogCategories.map((cat) => (
+                                      <button
+                                        key={cat.name}
+                                        type="button"
+                                        aria-pressed={effectiveCategory === cat.name}
+                                        onClick={() => selectCategory(cat.name)}
+                                        className={chipClass(effectiveCategory === cat.name)}
+                                      >
+                                        <span className="text-size-small">
+                                          {cat.name}{" "}
+                                          <span className="font-normal opacity-60">
+                                            {cat.count}
+                                          </span>
+                                        </span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                  <div className="spacer-24" />
+                                </>
+                              )}
                               <ul className="list-none p-0! m-0! grid gap-5">
                                 {visible.map((item) => (
                                   <ResultRow
