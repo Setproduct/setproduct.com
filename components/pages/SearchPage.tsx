@@ -52,13 +52,14 @@ const FRESH_POSTS_COUNT = 3;
 // Так в отчёт не попадают промежуточные «des», «desi», «desig».
 const ANALYTICS_DELAY = 1500;
 
-// Ссылки «Browse by type» для стартового экрана.
+// Ссылки «Browse by type» для стартового экрана. Порядок как у табов:
+// блог первым. Dashboards без счётчика: в поиске они часть UI kits.
 const BROWSE_LINKS: { label: string; href: string; type?: SearchGroup }[] = [
-  { label: "UI kits", href: "/all", type: "product" },
+  { label: "Blog", href: "/blog", type: "blog" },
   { label: "Freebies", href: "/freebies", type: "freebie" },
+  { label: "UI kits", href: "/all", type: "product" },
   { label: "Bundles", href: "/bundle", type: "bundle" },
   { label: "Dashboards", href: "/dashboards" },
-  { label: "Blog", href: "/blog", type: "blog" },
 ];
 
 type FuseCtor = typeof Fuse;
@@ -830,20 +831,6 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     )}
                     <div className="spacer-40" />
                     <SuggestionChips label="Popular searches" />
-                    {popularKits.length > 0 && (
-                      <>
-                        <div className="spacer-40" />
-                        <section>
-                          <h2 className="subtitle-all-caps mt-0">Popular UI kits</h2>
-                          <div className="spacer-16" />
-                          <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
-                            {popularKits.map((item) => (
-                              <TopResultCard key={item.slug} item={item} re={null} />
-                            ))}
-                          </ul>
-                        </section>
-                      </>
-                    )}
                     {freshPosts.length > 0 && (
                       <>
                         <div className="spacer-40" />
@@ -853,6 +840,20 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                           <ul className="list-none p-0! m-0! grid gap-5">
                             {freshPosts.map((item) => (
                               <ResultRow key={item.slug} item={item} re={null} />
+                            ))}
+                          </ul>
+                        </section>
+                      </>
+                    )}
+                    {popularKits.length > 0 && (
+                      <>
+                        <div className="spacer-40" />
+                        <section>
+                          <h2 className="subtitle-all-caps mt-0">Popular UI kits</h2>
+                          <div className="spacer-16" />
+                          <ul className="list-none p-0! m-0! grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6">
+                            {popularKits.map((item) => (
+                              <TopResultCard key={item.slug} item={item} re={null} />
                             ))}
                           </ul>
                         </section>
