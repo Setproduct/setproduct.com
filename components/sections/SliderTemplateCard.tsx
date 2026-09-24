@@ -8,8 +8,8 @@ type Props = { product: Product };
 
 export default function SliderTemplateCard({ product }: Props) {
   return (
-    <div className="template-list-item">
-      <Link className="template-list-item-img-wr w-inline-block" href={`/templates/${product.slug}`}>
+    <div className="template-list-item hover-lift is-large">
+      <Link className="template-list-item-img-wr w-inline-block hover-lift-media" href={`/templates/${product.slug}`}>
         <Image
           alt=""
           src={product.image}
@@ -20,7 +20,7 @@ export default function SliderTemplateCard({ product }: Props) {
       </Link>
       <div className="template-list-text-wr">
         <Link className="w-inline-block" href={`/templates/${product.slug}`}>
-          <p className="heading-style-h5 text-color-dark-primary text-style-1line">{product.title}</p>
+          <p className="hover-lift-title heading-style-h5 text-color-dark-primary text-style-1line">{product.title}</p>
         </Link>
         <p className="text-size-regular text-style-2lines line-clamp-2">{product.description}</p>
       </div>
