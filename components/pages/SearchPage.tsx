@@ -138,7 +138,7 @@ function SuggestionChips({ label }: { label: string }) {
             href={{ pathname: "/search", query: { query: suggestion } }}
             shallow
             scroll={false}
-            className="blog_list-filters-item cursor-pointer no-underline"
+            className="blog_list-filters-item m-0! cursor-pointer no-underline text-inherit bg-(--light-purple)! border border-(--light-primary) hover:border-(--primary) transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-(--primary)"
           >
             <span className="text-size-regular">{suggestion}</span>
           </Link>
