@@ -251,9 +251,13 @@ function ResultRow({
                 {formatCategoryLabel(categoryButton)}
               </button>
             )}
+            {categoryButton && meta.length > 0 && (
+              <span aria-hidden="true" className="text-size-tiny text-weight-semibold opacity-70">
+                ·
+              </span>
+            )}
             {meta.length > 0 && (
               <span className="text-size-tiny text-weight-semibold opacity-70 min-w-0 truncate">
-                {categoryButton ? "· " : ""}
                 {meta.join(" · ")}
               </span>
             )}
