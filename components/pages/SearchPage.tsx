@@ -888,13 +888,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
 
                 {showResults && (
                   <div id="search-results">
-                    <p className="text-size-regular is-mob-14">
-                      Found <strong>{totalFound}</strong> result
-                      {totalFound === 1 ? "" : "s"} for{" "}
-                      <strong>&ldquo;{query}&rdquo;</strong>
-                    </p>
-                    <div className="spacer-12" />
-
+                    {/* Общее число есть в табе All и в aria-live выше. */}
                     {/* На мобильных вкладки прокручиваются по горизонтали. */}
                     <div
                       role="tablist"
@@ -927,7 +921,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                         );
                       })}
                     </div>
-                    <div className="spacer-40" />
+                    <div className="spacer-24" />
 
                     <div
                       role="tabpanel"
