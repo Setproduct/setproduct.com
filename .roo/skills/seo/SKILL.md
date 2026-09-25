@@ -57,7 +57,13 @@ These apply to every post, regardless of topic:
   "Definitive" — they signal undifferentiated template content
 - Forbidden weak endings: bare "Guide" or "Tutorial" without 
   a hook
-- Forbidden to use ":" in title — it splits the title in SERP and reduces CTR
+- Forbidden to use ":" in title — it splits the title in SERP and reduces CTR.
+  HARD RULE, zero exceptions. Applies to title, metaTitle, and to any H2/H3 that
+  functions as a section title. A heading template from a brief does not override
+  this. Verify with `grep -E '^title:|^#{2,3} .*:' <file>` before submitting.
+  Use a comma, parentheses, or an en dash instead.
+- Title and description length are verified by command, not by eye:
+  `grep -E '^title:' <file> | awk -F'"' '{print length($2)}'` must read 60-65
 
 ### Description rules
 

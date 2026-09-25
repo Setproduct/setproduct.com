@@ -371,19 +371,55 @@ Workflow for refreshing old posts
 ❻ Update lastUpdated frontmatter field if it exists
 ❼ Suggest commit: "content: refresh [slug]"
 
-Self-check before showing draft
-Verify every item before submitting:
+## STEP 0 — read the rules before writing (blocking)
 
-→ Em-dash count: 0, 1, or 2 maximum across entire post
-→ Zero "Not X, but Y" patterns
-→ Zero sentences starting with "Not"
-→ Zero "Whether you're..."
-→ Zero "It's not just..."
-→ Tricolon count check: list every (X, Y, and Z) and (X, Y, Z) 
-  pattern in the draft. Report the count. If count > 2, 
-  rewrite at least three of them into other rhythms (X and Y; 
-  X, then Y; or single sentences) before submitting.
-→ No banned clichés from list
+Before drafting or editing a single line:
+
+❶ Read all three skills in full: seo, world-class-blog-writing-for-setproduct, copywriter.
+❷ Write a 5-line summary of the hard limits: em-dash budget, tricolon budget, forbidden
+   sentence patterns, title rules (no ":" allowed, 60-65 chars), description rules (130-160 chars).
+❸ Only then start the text.
+
+Skipping this step is the single root cause of mass retroactive rewrites and burned compute.
+A heading template from a brief NEVER overrides a hard limit in this skill. If a brief's format
+conflicts with a limit, adapt the format or ask the author first — do not ship the violation.
+
+## Self-check before showing draft (blocking, run the command)
+
+No attempt_completion on an MDX post is sent until this command is run and its real output
+is quoted in the report. This is a blocking step, not a recommendation:
+
+```
+F=content/blog/<slug>.mdx
+echo "BODY WORDS:"; awk 'BEGIN{c=0} /^---$/{c++; next} c>=2' $F | wc -w
+echo "EM-DASH TOTAL:"; grep -o '—' $F | wc -l
+echo "HEADING COLONS:"; grep -cE '^#{2,3} .*:' $F
+echo "TITLE LEN:"; grep -E '^title:' $F | awk -F'"' '{print length($2)}'
+echo "TRICOLONS:"; grep -noE '[A-Za-z-]+( [a-z-]+)?, [A-Za-z-]+( [a-z-]+)?,? (and|or) [A-Za-z-]+' $F
+echo "NOT-BUT:"; grep -niE "not (just|only)|not [a-z ]+, but|^Not " $F
+npm run lint 2>&1 | tail -1
+```
+
+Hard release gates — the file does NOT ship if any of these fail:
+
+→ Em-dash count over the WHOLE file (including frontmatter, title, subtitle, description,
+  headings, FAQ): must be 0, 1, or 2. 16 headings written as `### N. Name — phase` is 16
+  violations, not a brief format to preserve.
+→ Any ":" inside an H2/H3 heading, or inside title/metaTitle. The seo skill forbids ":"
+  in the title outright — it splits the SERP snippet and drops CTR.
+→ title longer than 65 chars.
+→ Tricolon count over 2. List every (X, Y, and Z) and (X, Y, Z) found and report the number.
+  If over, rewrite extras into (X and Y), (X, then Y), or separate sentences.
+→ Any "Not X, but Y", sentence starting with "Not", "It's not just...", "Whether you're...",
+  or "From X to Y" as a structural template.
+→ Banned clichés present.
+→ Dirty `npm run lint`.
+
+Report the actual numbers (em-dash, tricolons, word count, title/description length) — never
+the phrase "rules are followed".
+
+Full checklist of remaining items to verify:
+
 → Paragraph lengths: mostly 2-4 sentences
 → Sentence length variance: short plus long plus medium
 → All H1, H2, H3 in sentence case
