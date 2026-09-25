@@ -6,6 +6,13 @@ const isVercelPreview = process.env.VERCEL_ENV === "preview";
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
+  // public/ is served by the CDN, server functions never need it at runtime.
+  // Without this, fs.existsSync(path.join(PUBLIC_DIR, ...)) in lib/search/buildIndex.ts
+  // makes the file tracer pull all of public/ (~245 MB) into the /search function
+  // and Vercel rejects it for exceeding the 250 MB function size limit.
+  outputFileTracingExcludes: {
+    "*": ["public/**/*"],
+  },
   images: {
     unoptimized: isVercelPreview,
     // Сначала пробуем WebP (универсальная поддержка), AVIF — для современных браузеров.
