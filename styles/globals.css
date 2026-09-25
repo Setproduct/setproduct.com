@@ -100,6 +100,20 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Same em-multiplication bug inside blockquotes. `blockquote` sets
+ * `font-size: 22em` (~22px in the body scope), and the `<p>` markdown wraps
+ * every quote in then re-applies `font-size: 18em` — but now em is measured
+ * against the 22px parent, yielding ~396px letters. MDX blockquotes render as
+ * <blockquote><p>…</p></blockquote>, so force the paragraph back to inherit.
+ * A quote's own body copy should keep the quote's own size.
+ */
+.rich-text-18 blockquote p,
+.rich-text-18 blockquote > p {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/*
  * Brand-coloured links in the blog body.
  * Webflow already paints .w-richtext links in --primary (#7c4dff); this rule
  * only adds the hover treatment: a dashed underline instead of the default
@@ -155,6 +169,32 @@ h1[id], h2[id], h3[id], h4[id] {
  */
 .rich-text-18[data-post="notifications-ui-design"] h3 {
   clear: both;
+}
+
+/*
+ * Contains a float image locally within its own subsection so it never
+ * bleeds past its own block into the next heading, no matter how short the
+ * accompanying text is relative to the image height. Establishes a new
+ * block formatting context (overflow: hidden), which makes the wrapper's
+ * height stretch to enclose the float instead of collapsing to text height.
+ * Preferred over `clear: both` on every heading because the image stays
+ * flush with its own heading instead of getting pushed down by a taller
+ * neighboring image in the PREVIOUS subsection.
+ */
+.blog-float-clip {
+  overflow: hidden;
+}
+
+/*
+ * Inside a float-clip subsection the image markup now comes BEFORE the
+ * h3 heading, so the heading text wraps in right beside the top of the
+ * floated image instead of sitting above it. Webflow's global rich-text
+ * rule (.rich-text-18 h3 { margin-top: .8em; }) would otherwise push the
+ * heading text down below the image's top edge, breaking that alignment.
+ * Zero it out here so heading and image start flush at the same line.
+ */
+.rich-text-18 .blog-float-clip h3 {
+  margin-top: 0;
 }
 
 /* Mobile: drop the float, image spans the full column width. */
