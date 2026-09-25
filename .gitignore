@@ -3,3 +3,7 @@ node_modules
 out
 npm-debug.log*
 .env.local
+
+# OS / build artifacts
+.DS_Store
+*.tsbuildinfo
