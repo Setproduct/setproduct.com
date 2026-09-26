@@ -172,6 +172,27 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Command palette post: the first figure floats a square image and the text
+ * wraps around it. The caption that closes that block must sit full-width
+ * below the wrapped text instead of squeezing into the narrow column beside
+ * the still-floating image. Scoped by slug so other posts are untouched.
+ */
+.rich-text-18[data-post="command-palette-ui-design-guide"] p.blog-figcaption {
+  clear: both;
+}
+
+/*
+ * Command palette post: every teardown h3 subsection carries its own float
+ * image, so each heading must start on a clean line below the previous
+ * image. Without this, a short block of prose lets the next brand heading
+ * squeeze into the narrow column beside a still-floating screenshot.
+ * Same pattern as the notifications post above.
+ */
+.rich-text-18[data-post="command-palette-ui-design-guide"] h3 {
+  clear: both;
+}
+
+/*
  * Contains a float image locally within its own subsection so it never
  * bleeds past its own block into the next heading, no matter how short the
  * accompanying text is relative to the image height. Establishes a new
