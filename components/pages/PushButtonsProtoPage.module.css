@@ -4,7 +4,12 @@
 
 .proto {
   --primary-edge: #5426d1;
+  /* Secondary edge = #2B00A3 at 10% over the #EBE0FF fill, hover = the same at 16% (Figma).
+     L/M edge sits outside the button over the page, so it is baked into a solid colour. */
   --secondary-edge: #d8caf6;
+  --secondary-edge-hover: #ccbcf0;
+  --secondary-in-edge: #2b00a31a;
+  --secondary-in-edge-hover: #2b00a329;
   /* Brand purple at 30% so the edge does not look heavier than the 2px border */
   --outlined-edge: color-mix(in srgb, var(--primary) 30%, transparent);
 
@@ -73,6 +78,7 @@
 .proto :global(.button.secondary),
 .proto :global(.button-small.secondary) {
   --edge-color: var(--secondary-edge);
+  --edge-color-hover: var(--secondary-edge-hover);
   --glow-color: var(--secondary-glow);
   --shine-rest: inset 0 4em 4em 0 #ffffff26;
 }
@@ -84,10 +90,11 @@
   --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #ece4ff00;
 }
 
-/* Hover: the edge stays exactly as at rest (overrides Webflow hover shadows) */
+/* Hover: the edge keeps its size (overrides Webflow hover shadows).
+   Variants with --edge-color-hover (secondary: 10% -> 16%) darken it, the rest keep the rest colour. */
 .proto :global(.button):not(:global(.tab)):hover,
 .proto :global(.button-small):not(:global(.tab)):hover {
-  box-shadow: 0 var(--edge, 6em) 0 0 var(--edge-color, var(--primary-edge));
+  box-shadow: 0 var(--edge, 6em) 0 0 var(--edge-color-hover, var(--edge-color, var(--primary-edge)));
 }
 
 /* Pressed: the button drops onto its edge, 1em of edge stays visible */
@@ -96,7 +103,7 @@
 .proto.pressedAll :global(.button):not(:global(.tab)):not(:disabled),
 .proto.pressedAll :global(.button-small):not(:global(.tab)):not(:disabled) {
   transform: translateY(calc(var(--edge, 6em) - 1em));
-  box-shadow: 0 1em 0 0 var(--edge-color, var(--primary-edge));
+  box-shadow: 0 1em 0 0 var(--edge-color-hover, var(--edge-color, var(--primary-edge)));
   transition-duration: var(--press-in);
 }
 
@@ -116,15 +123,20 @@
 }
 
 .proto :global(.button-x-small.is-secondary) {
-  --in-edge: #2b00a31a;
+  --in-edge: var(--secondary-in-edge);
+  --in-edge-hover: var(--secondary-in-edge-hover);
   --glow-color: var(--secondary-glow);
   --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #d3bff900;
 }
 
-/* Rest and hover share one edge, so hover no longer drops the bottom edge */
-.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)),
-.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):hover {
+/* Rest and hover keep the same edge shape, so hover never drops the bottom edge.
+   Secondary darkens the edge on hover (10% -> 16%), other variants keep the rest colour. */
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)) {
   box-shadow: inset 0 -3em 1em 0 var(--in-edge);
+}
+
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):hover {
+  box-shadow: inset 0 -3em 1em 0 var(--in-edge-hover, var(--in-edge));
 }
 
 /* Text chips keep their Webflow edge colours, just with a softer hover timing */
@@ -140,7 +152,7 @@
 .proto :global(.button-x-small):not(:global(.is-text-no-pointer)):active:not(:disabled):not([aria-disabled="true"]),
 .proto.pressedAll :global(.button-x-small):not(:global(.is-text-no-pointer)):not(:disabled) {
   transform: translateY(2em);
-  box-shadow: inset 0 -1em 1em 0 var(--in-edge);
+  box-shadow: inset 0 -1em 1em 0 var(--in-edge-hover, var(--in-edge));
   transition-duration: var(--press-in);
 }
 
