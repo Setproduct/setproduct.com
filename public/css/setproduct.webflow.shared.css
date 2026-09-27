@@ -2112,6 +2112,30 @@ textarea.w-input, textarea.w-select {
   --flowui-component-library-primary-base: #642eff;
   --flowui-component-library-primary-dark: #2d0896;
   --flowui-component-library-grey-600: #393b6a;
+
+  /* Push buttons (see plans/buttons-push-effect.md). */
+  --btn-primary-edge: #5426d1;
+  /* Secondary edge = #2B00A3 at 10% over #EBE0FF, hover = 16% (Figma).
+     L/M edge sits outside the button over the page, so it is baked into a solid colour. */
+  --btn-secondary-edge: #d8caf6;
+  --btn-secondary-edge-hover: #ccbcf0;
+  --btn-secondary-in-edge: #2b00a31a;
+  --btn-secondary-in-edge-hover: #2b00a329;
+  --btn-outlined-edge: color-mix(in srgb, var(--primary) 30%, transparent);
+  /* Hover glow: one inner shadow from the top */
+  --btn-primary-glow: #f0ebff80;
+  --btn-secondary-glow: #d3bff9;
+  --btn-outlined-glow: #ece4ff;
+  /* Ripple: 728ms, drifts down by half of its spread following the press */
+  --btn-ripple-primary: #7c4dff47;
+  --btn-ripple-soft: #7c4dff33;
+  --btn-ripple-out: 728ms;
+  --btn-ripple-drop: 0.5;
+  --btn-press-in: 60ms;
+  --btn-press-out: 120ms;
+  --btn-hover-in: 240ms;
+  --btn-hover-out: 360ms;
+  --btn-hover-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .w-form-formradioinput--inputType-custom {
@@ -2616,6 +2640,207 @@ figcaption {
   background-color: var(--light-purple);
   color: var(--dark-primary);
   box-shadow: inset 0 -3px 1px #2b00a380;
+}
+
+/* ==========================================================================
+   Push buttons (approved on the /push-buttons-proto prototype).
+   Overrides the Webflow shadows and `transition: all .3s` above.
+   - L and M: outer solid edge, the button drops onto it on press.
+   - S and chips: the edge is inset, the button presses inside its box.
+   - ::before is the hover glow layer (slower timing than the press).
+   - ::after is the ripple (pure CSS, built on transitions).
+   ========================================================================== */
+
+/* Zero specificity: other classes that set position/isolation still win */
+:where(.button, .button-small, .button-x-small) {
+  position: relative;
+  isolation: isolate;
+}
+
+/* ---------- L and M: outer edge ---------- */
+
+.button:not(.tab),
+.button-small:not(.tab) {
+  --glow-y: 5em;
+  --glow-blur: 20em;
+  --glow-color: var(--btn-primary-glow);
+  --shine-rest: inset 0 5em 10em 0 #f0ebff4d;
+  --ripple-color: var(--btn-ripple-primary);
+  --ripple-size: 14em;
+  /* --btn-float: optional extra outer shadow (sticky CTA) */
+  box-shadow: var(--btn-float, 0 0 #0000), 0 var(--edge, 6em) 0 0 var(--edge-color, var(--btn-primary-edge));
+  transition:
+    transform var(--btn-press-out) ease-out,
+    box-shadow var(--btn-press-out) ease-out,
+    background-color 0.25s var(--btn-hover-ease),
+    color 0.25s var(--btn-hover-ease);
+}
+
+.button-small:not(.tab) {
+  --edge: 4em;
+  --glow-y: 4em;
+  --glow-blur: 14em;
+  --shine-rest: inset 0 4em 10em 0 #f0ebff4d;
+  --ripple-size: 11em;
+}
+
+.button.secondary,
+.button-small.secondary {
+  --edge-color: var(--btn-secondary-edge);
+  --edge-color-hover: var(--btn-secondary-edge-hover);
+  --glow-color: var(--btn-secondary-glow);
+  --shine-rest: inset 0 4em 4em 0 #ffffff26;
+  --ripple-color: var(--btn-ripple-soft);
+}
+
+.button.outlined,
+.button-small.outlined {
+  --edge-color: var(--btn-outlined-edge);
+  --glow-color: var(--btn-outlined-glow);
+  --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #ece4ff00;
+  --ripple-color: var(--btn-ripple-soft);
+}
+
+/* Hover keeps the edge size; secondary darkens it (10% -> 16%) */
+.button:not(.tab):hover,
+.button-small:not(.tab):hover {
+  box-shadow: var(--btn-float, 0 0 #0000), 0 var(--edge, 6em) 0 0 var(--edge-color-hover, var(--edge-color, var(--btn-primary-edge)));
+}
+
+/* Pressed: the button drops onto its edge, 1em of edge stays visible */
+.button:not(.tab):active:not(:disabled):not([aria-disabled="true"]),
+.button-small:not(.tab):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(calc(var(--edge, 6em) - 1em));
+  box-shadow: var(--btn-float, 0 0 #0000), 0 1em 0 0 var(--edge-color-hover, var(--edge-color, var(--btn-primary-edge)));
+  transition-duration: var(--btn-press-in);
+}
+
+/* ---------- S and chips: press inside the box ---------- */
+
+.button-x-small:not(.is-text-no-pointer) {
+  --glow-y: 3em;
+  --glow-blur: 10em;
+  --glow-color: var(--btn-primary-glow);
+  --shine-rest: inset 0 3em 10em 0 #f0ebff4d;
+  --in-edge: #2b00a380;
+  --ripple-color: var(--btn-ripple-primary);
+  --ripple-size: 8em;
+  transition:
+    transform var(--btn-press-out) ease-out,
+    box-shadow var(--btn-press-out) ease-out,
+    background-color 0.25s var(--btn-hover-ease),
+    color 0.25s var(--btn-hover-ease);
+}
+
+.button-x-small.is-secondary {
+  --in-edge: var(--btn-secondary-in-edge);
+  --in-edge-hover: var(--btn-secondary-in-edge-hover);
+  --glow-color: var(--btn-secondary-glow);
+  --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #d3bff900;
+  --ripple-color: var(--btn-ripple-soft);
+}
+
+.button-x-small:not(.is-text):not(.is-text-no-pointer) {
+  box-shadow: inset 0 -3em 1em 0 var(--in-edge);
+}
+
+.button-x-small:not(.is-text):not(.is-text-no-pointer):hover {
+  box-shadow: inset 0 -3em 1em 0 var(--in-edge-hover, var(--in-edge));
+}
+
+/* Text chips keep their Webflow edge colours, just with a softer hover timing */
+.button-x-small.is-text {
+  --in-edge: #2b00a380;
+  --ripple-color: var(--btn-ripple-soft);
+  transition:
+    transform var(--btn-press-out) ease-out,
+    box-shadow 0.25s var(--btn-hover-ease),
+    background-color 0.25s var(--btn-hover-ease),
+    color 0.25s var(--btn-hover-ease);
+}
+
+.button-x-small:not(.is-text-no-pointer):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(2em);
+  box-shadow: inset 0 -1em 1em 0 var(--in-edge-hover, var(--in-edge));
+  transition-duration: var(--btn-press-in);
+}
+
+/* ---------- Glow layer (::before), all sizes except text chips ---------- */
+
+.button:not(.tab)::before,
+.button-small:not(.tab)::before,
+.button-x-small:not(.is-text):not(.is-text-no-pointer)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--shine-rest);
+  transition: box-shadow var(--btn-hover-out) var(--btn-hover-ease);
+}
+
+.button:not(.tab):hover:not(:disabled):not([aria-disabled="true"])::before,
+.button-small:not(.tab):hover:not(:disabled):not([aria-disabled="true"])::before,
+.button-x-small:not(.is-text):not(.is-text-no-pointer):hover:not(:disabled):not([aria-disabled="true"])::before {
+  box-shadow: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
+  transition-duration: var(--btn-hover-in);
+}
+
+/* ---------- Ripple (::after) ----------
+   On press, after --btn-press-in, a tight ring appears instantly;
+   on release it spreads out, drifts down by --btn-ripple-drop of its size and fades. */
+
+.button:not(.tab)::after,
+.button-small:not(.tab)::after,
+.button-x-small:not(.is-text-no-pointer)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 calc(var(--ripple-size) * var(--btn-ripple-drop)) 0 var(--ripple-size) transparent;
+  transition: box-shadow var(--btn-ripple-out) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.button:not(.tab):active:not(:disabled):not([aria-disabled="true"])::after,
+.button-small:not(.tab):active:not(:disabled):not([aria-disabled="true"])::after,
+.button-x-small:not(.is-text-no-pointer):active:not(:disabled):not([aria-disabled="true"])::after {
+  box-shadow: 0 0 0 0 var(--ripple-color);
+  transition: box-shadow 0s linear var(--btn-press-in);
+}
+
+/* ---------- Keyboard focus and disabled ---------- */
+
+.button:focus-visible,
+.button-small:focus-visible,
+.button-x-small:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.button:disabled,
+.button-small:disabled,
+.button-x-small:disabled,
+.button[aria-disabled="true"],
+.button-small[aria-disabled="true"],
+.button-x-small[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button-small,
+  .button-x-small {
+    transform: none !important;
+  }
+
+  .button::after,
+  .button-small::after,
+  .button-x-small::after {
+    display: none;
+  }
 }
 
 .text-color-dark-primary {

@@ -1803,21 +1803,10 @@ h1[id], h2[id], h3[id], h4[id] {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  /* External "floating" drop shadow layered ON TOP of the button's native
-     3D inset shadows (dark-purple bottom inset gives the pressed 3D effect).
-     Values mirror .button in setproduct.webflow.shared.css so the look stays
-     in sync with the brand "Let's connect" button. */
-  box-shadow:
-    0 8px 28px rgba(25, 24, 27, 0.22),
-    inset 0 -6px 1px #2b00a380,
-    inset 0 5px 10px #f0ebff4d;
-}
-
-.template-sticky-cta-btn:hover {
-  box-shadow:
-    0 8px 28px rgba(25, 24, 27, 0.22),
-    inset 0 -5px 10px #f0ebff4d,
-    inset 0 5px 10px #f0ebff4d;
+  /* External "floating" drop shadow. The push edge, hover glow and ripple
+     come from the shared .button rules in setproduct.webflow.shared.css,
+     which prepend --btn-float to the edge shadow in every state. */
+  --btn-float: 0 8px 28px rgba(25, 24, 27, 0.22);
 }
 
 .template-sticky-cta-price {
