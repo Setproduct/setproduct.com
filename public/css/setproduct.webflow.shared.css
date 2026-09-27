@@ -2771,6 +2771,8 @@ figcaption {
 .button-small:not(.tab)::before,
 .button-x-small:not(.is-text):not(.is-text-no-pointer)::before {
   content: "";
+  /* block: .w-radio:before sets display: table, which collapses the layer to 0x0 */
+  display: block;
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -2795,6 +2797,9 @@ figcaption {
 .button-small:not(.tab)::after,
 .button-x-small:not(.is-text-no-pointer)::after {
   content: "";
+  /* block: .w-radio:after (category pills) sets display: table,
+     which collapses the ripple into the top-left corner */
+  display: block;
   position: absolute;
   inset: 0;
   border-radius: inherit;
