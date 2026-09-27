@@ -22,6 +22,11 @@
 
   --press-in: 60ms;
   --press-out: 120ms;
+
+  /* Hover glow lives on its own layer with slower timing than the press */
+  --hover-in: 240ms;
+  --hover-out: 360ms;
+  --hover-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Native <button> reset with zero specificity so Webflow classes win */
@@ -36,6 +41,12 @@
   opacity: 0.7;
 }
 
+/* Two independent layers:
+   - the button's own box-shadow draws only the edge and animates with the press timing;
+   - ::before draws the shine at rest and the inner glow on hover, with its own slower timing.
+   The ::before shadow is always one inset shadow of the same shape, so the browser
+   can interpolate it smoothly (inset <-> outer shadows jump without a transition). */
+
 /* ---------- L and M: outer edge ---------- */
 
 .proto :global(.button):not(:global(.tab)),
@@ -43,43 +54,40 @@
   --glow-y: 5em;
   --glow-blur: 20em;
   --glow-color: var(--primary-glow);
-  box-shadow:
-    0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
-    var(--shine, inset 0 5px 10px #f0ebff4d);
+  --shine-rest: inset 0 5em 10em 0 #f0ebff4d;
+  box-shadow: 0 var(--edge, 6em) 0 0 var(--edge-color, var(--primary-edge));
   transition:
     transform var(--press-out) ease-out,
     box-shadow var(--press-out) ease-out,
-    background-color 0.2s ease;
+    background-color 0.25s var(--hover-ease),
+    color 0.25s var(--hover-ease);
 }
 
-.proto :global(.button-small) {
+.proto :global(.button-small):not(:global(.tab)) {
   --edge: 4em;
   --glow-y: 4em;
   --glow-blur: 14em;
-  --shine: inset 0 4px 10px #f0ebff4d;
+  --shine-rest: inset 0 4em 10em 0 #f0ebff4d;
 }
 
 .proto :global(.button.secondary),
 .proto :global(.button-small.secondary) {
   --edge-color: var(--secondary-edge);
   --glow-color: var(--secondary-glow);
-  --shine: inset 0 4px 4px #ffffff26;
+  --shine-rest: inset 0 4em 4em 0 #ffffff26;
 }
 
 .proto :global(.button.outlined),
 .proto :global(.button-small.outlined) {
   --edge-color: var(--outlined-edge);
   --glow-color: var(--outlined-glow);
-  --shine: 0 0 #0000;
+  --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #ece4ff00;
 }
 
-/* Hover keeps the edge and adds the inner glow from the top */
+/* Hover: the edge stays exactly as at rest (overrides Webflow hover shadows) */
 .proto :global(.button):not(:global(.tab)):hover,
 .proto :global(.button-small):not(:global(.tab)):hover {
-  box-shadow:
-    0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
-    inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
-  transition-duration: 0.2s;
+  box-shadow: 0 var(--edge, 6em) 0 0 var(--edge-color, var(--primary-edge));
 }
 
 /* Pressed: the button drops onto its edge, 1em of edge stays visible */
@@ -88,9 +96,7 @@
 .proto.pressedAll :global(.button):not(:global(.tab)):not(:disabled),
 .proto.pressedAll :global(.button-small):not(:global(.tab)):not(:disabled) {
   transform: translateY(calc(var(--edge, 6em) - 1em));
-  box-shadow:
-    0 1em 0 var(--edge-color, var(--primary-edge)),
-    inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
+  box-shadow: 0 1em 0 0 var(--edge-color, var(--primary-edge));
   transition-duration: var(--press-in);
 }
 
@@ -100,35 +106,73 @@
   --glow-y: 3em;
   --glow-blur: 10em;
   --glow-color: var(--primary-glow);
+  --shine-rest: inset 0 3em 10em 0 #f0ebff4d;
   --in-edge: #2b00a380;
-  --in-shine: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
   transition:
     transform var(--press-out) ease-out,
     box-shadow var(--press-out) ease-out,
-    background-color 0.2s ease,
-    color 0.2s ease;
+    background-color 0.25s var(--hover-ease),
+    color 0.25s var(--hover-ease);
 }
 
 .proto :global(.button-x-small.is-secondary) {
   --in-edge: #2b00a31a;
   --glow-color: var(--secondary-glow);
+  --shine-rest: inset 0 var(--glow-y) var(--glow-blur) 0 #d3bff900;
 }
 
-/* Hover: same inner glow from the top as L and M, scaled down */
+/* Rest and hover share one edge, so hover no longer drops the bottom edge */
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)),
 .proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):hover {
-  box-shadow: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
+  box-shadow: inset 0 -3em 1em 0 var(--in-edge);
 }
 
+/* Text chips keep their Webflow edge colours, just with a softer hover timing */
 .proto :global(.button-x-small.is-text) {
   --in-edge: #2b00a380;
-  --in-shine: 0 0 #0000;
+  transition:
+    transform var(--press-out) ease-out,
+    box-shadow 0.25s var(--hover-ease),
+    background-color 0.25s var(--hover-ease),
+    color 0.25s var(--hover-ease);
 }
 
 .proto :global(.button-x-small):not(:global(.is-text-no-pointer)):active:not(:disabled):not([aria-disabled="true"]),
 .proto.pressedAll :global(.button-x-small):not(:global(.is-text-no-pointer)):not(:disabled) {
   transform: translateY(2em);
-  box-shadow: inset 0 -1px 1px var(--in-edge), var(--in-shine);
+  box-shadow: inset 0 -1em 1em 0 var(--in-edge);
   transition-duration: var(--press-in);
+}
+
+/* ---------- Glow layer (::before) for all sizes except text chips ---------- */
+
+.proto :global(.button):not(:global(.tab)),
+.proto :global(.button-small):not(:global(.tab)),
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)) {
+  isolation: isolate; /* lets ::before sit under the label but above the fill */
+}
+
+.proto :global(.button):not(:global(.tab))::before,
+.proto :global(.button-small):not(:global(.tab))::before,
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer))::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--shine-rest);
+  transition: box-shadow var(--hover-out) var(--hover-ease);
+}
+
+.proto :global(.button):not(:global(.tab)):hover::before,
+.proto :global(.button-small):not(:global(.tab)):hover::before,
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):hover::before,
+.proto.pressedAll :global(.button):not(:global(.tab)):not(:disabled)::before,
+.proto.pressedAll :global(.button-small):not(:global(.tab)):not(:disabled)::before,
+.proto.pressedAll :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):not(:disabled)::before {
+  box-shadow: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
+  transition-duration: var(--hover-in);
 }
 
 /* ---------- Ripple (pure CSS) ----------
