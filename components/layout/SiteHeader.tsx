@@ -1197,7 +1197,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             </form>
             <div className="relative inline-flex items-center">
               <a
-                className="button-small w-inline-block"
+                className="button-small outlined w-inline-block"
                 href="https://publish.setproduct.com/"
                 rel="noreferrer"
                 target="_blank"

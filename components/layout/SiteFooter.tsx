@@ -145,7 +145,7 @@ export default function SiteFooter() {
                         <input name="website" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
                         <input aria-label="Email address" className="text-input w-input" disabled={isSubmitting} maxLength={256} name="Email" placeholder="Enter your email" required type="email" />
                         <div className="button-form-wr">
-                          <button className="button w-inline-block" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }} type="submit">
+                          <button className="button outlined w-inline-block disabled:opacity-70" disabled={isSubmitting} type="submit">
                             {isSubmitting ? (
                               <svg
                                 width="20" height="20" viewBox="0 0 24 24" fill="none"
