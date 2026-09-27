@@ -5,7 +5,8 @@
 .proto {
   --primary-edge: #5426d1;
   --secondary-edge: #d8caf6;
-  --outlined-edge: var(--primary);
+  /* Brand purple at 30% so the edge does not look heavier than the 2px border */
+  --outlined-edge: color-mix(in srgb, var(--primary) 30%, transparent);
 
   /* Hover glow: inner shadow top and bottom, like the live primary button.
      Primary glows lighter, secondary and outlined get a shade darker than their fill. */
