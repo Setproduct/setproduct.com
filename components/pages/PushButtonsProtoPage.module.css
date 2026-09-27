@@ -8,9 +8,10 @@
   /* Brand purple at 30% so the edge does not look heavier than the 2px border */
   --outlined-edge: color-mix(in srgb, var(--primary) 30%, transparent);
 
-  /* Hover glow: inner shadow top and bottom, like the live primary button.
+  /* Hover glow: one inner shadow from the top (Figma spec for L primary: 0 5 20 0, #F0EBFF 50%).
+     M and S use the same shadow with a proportionally smaller offset and blur.
      Primary glows lighter, secondary and outlined get a shade darker than their fill. */
-  --primary-glow: #f0ebff4d;
+  --primary-glow: #f0ebff80;
   --secondary-glow: #d3bff9; /* a step darker than --light-primary #ebe0ff */
   --outlined-glow: #ece4ff; /* a step darker than white */
 
@@ -39,7 +40,8 @@
 
 .proto :global(.button):not(:global(.tab)),
 .proto :global(.button-small):not(:global(.tab)) {
-  --glow: 5px;
+  --glow-y: 5em;
+  --glow-blur: 20em;
   --glow-color: var(--primary-glow);
   box-shadow:
     0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
@@ -52,7 +54,8 @@
 
 .proto :global(.button-small) {
   --edge: 4em;
-  --glow: 4px;
+  --glow-y: 4em;
+  --glow-blur: 14em;
   --shine: inset 0 4px 10px #f0ebff4d;
 }
 
@@ -70,13 +73,12 @@
   --shine: 0 0 #0000;
 }
 
-/* Hover keeps the edge and adds the inner glow top and bottom */
+/* Hover keeps the edge and adds the inner glow from the top */
 .proto :global(.button):not(:global(.tab)):hover,
 .proto :global(.button-small):not(:global(.tab)):hover {
   box-shadow:
     0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
-    inset 0 calc(var(--glow) * -1) 10px var(--glow-color),
-    inset 0 var(--glow) 10px var(--glow-color);
+    inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
   transition-duration: 0.2s;
 }
 
@@ -88,16 +90,18 @@
   transform: translateY(calc(var(--edge, 6em) - 1em));
   box-shadow:
     0 1em 0 var(--edge-color, var(--primary-edge)),
-    inset 0 calc(var(--glow) * -1) 10px var(--glow-color),
-    inset 0 var(--glow) 10px var(--glow-color);
+    inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
   transition-duration: var(--press-in);
 }
 
 /* ---------- S and chips: press inside the box ---------- */
 
 .proto :global(.button-x-small):not(:global(.is-text-no-pointer)) {
+  --glow-y: 3em;
+  --glow-blur: 10em;
+  --glow-color: var(--primary-glow);
   --in-edge: #2b00a380;
-  --in-shine: inset 0 3px 10px #f0ebff4d;
+  --in-shine: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
   transition:
     transform var(--press-out) ease-out,
     box-shadow var(--press-out) ease-out,
@@ -107,13 +111,12 @@
 
 .proto :global(.button-x-small.is-secondary) {
   --in-edge: #2b00a31a;
-  --in-shine: inset 0 3px 8px var(--secondary-glow);
+  --glow-color: var(--secondary-glow);
 }
 
-.proto :global(.button-x-small.is-secondary):hover {
-  box-shadow:
-    inset 0 -3px 8px var(--secondary-glow),
-    inset 0 3px 8px var(--secondary-glow);
+/* Hover: same inner glow from the top as L and M, scaled down */
+.proto :global(.button-x-small):not(:global(.is-text)):not(:global(.is-text-no-pointer)):hover {
+  box-shadow: inset 0 var(--glow-y) var(--glow-blur) 0 var(--glow-color);
 }
 
 .proto :global(.button-x-small.is-text) {

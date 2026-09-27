@@ -150,11 +150,17 @@
 ## 7. Решения после ревью прототипа
 
 - **Кромка у outlined** — фирменный фиолетовый с прозрачностью 30%: `--outlined-edge: color-mix(in srgb, var(--primary) 30%, transparent)` (≈ `#7c4dff4d`). Рядом с primary кнопка выглядит такой же высоты, а сплошной фиолетовый снизу визуально утяжелял её. Правило для всех outlined-кнопок системы (L, M и S, если S outlined появится).
-- **Ховер.** Кромка остаётся, внутри кнопки сверху и снизу появляется мягкое внутреннее свечение (inner shadow), как у текущей primary:
-  - primary: `--primary-glow: #f0ebff4d` (светлее заливки);
-  - secondary: `--secondary-glow: #d3bff9` (на тон темнее `--light-primary`);
-  - outlined: `--outlined-glow: #ece4ff` (на тон темнее белого);
-  - сила свечения: 5px у L, 4px у M, 3px у S secondary, размытие 8–10px.
+- **Ховер.** Кромка остаётся, внутри кнопки появляется одна внутренняя тень сверху (inner shadow). Эталон из Figma для L primary: X 0, Y 5, blur 20, spread 0, `#F0EBFF` 50%.
+  - M и S повторяют ту же тень, смещение и размытие уменьшены пропорционально:
+
+    | Размер | Y | Blur | CSS |
+    |---|---|---|---|
+    | L `button` | 5em | 20em | `inset 0 5em 20em 0 var(--glow-color)` |
+    | M `button-small` | 4em | 14em | `inset 0 4em 14em 0 var(--glow-color)` |
+    | S `button-x-small` | 3em | 10em | `inset 0 3em 10em 0 var(--glow-color)` |
+
+  - цвет по варианту: primary `--primary-glow: #f0ebff80` (50%), secondary `--secondary-glow: #d3bff9` (на тон темнее `--light-primary`), outlined `--outlined-glow: #ece4ff` (на тон темнее белого);
+  - значения в `em`, чтобы тень масштабировалась вместе с кнопкой (при 1440px 1em = 1px, как в Figma).
 - **Ripple на чистом CSS.** Кольцо на `::after` через `box-shadow` и двухфазный transition:
   - кнопка дошла до нижней точки (через `--press-in`) → кольцо мгновенно появляется вплотную к ней;
   - кнопку отпустили → кольцо за `--ripple-out: 520ms` расходится наружу и тает;
