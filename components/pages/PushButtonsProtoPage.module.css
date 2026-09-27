@@ -5,7 +5,19 @@
 .proto {
   --primary-edge: #5426d1;
   --secondary-edge: #d8caf6;
-  --outlined-edge: #eae6f6;
+  --outlined-edge: var(--primary);
+
+  /* Hover glow: inner shadow top and bottom, like the live primary button.
+     Primary glows lighter, secondary and outlined get a shade darker than their fill. */
+  --primary-glow: #f0ebff4d;
+  --secondary-glow: #d3bff9; /* a step darker than --light-primary #ebe0ff */
+  --outlined-glow: #ece4ff; /* a step darker than white */
+
+  /* Ripple: soft ring that spreads out from the pressed button */
+  --ripple-primary: #7c4dff47;
+  --ripple-soft: #7c4dff33;
+  --ripple-out: 520ms;
+
   --press-in: 60ms;
   --press-out: 120ms;
 }
@@ -26,6 +38,8 @@
 
 .proto :global(.button):not(:global(.tab)),
 .proto :global(.button-small):not(:global(.tab)) {
+  --glow: 5px;
+  --glow-color: var(--primary-glow);
   box-shadow:
     0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
     var(--shine, inset 0 5px 10px #f0ebff4d);
@@ -37,34 +51,32 @@
 
 .proto :global(.button-small) {
   --edge: 4em;
+  --glow: 4px;
   --shine: inset 0 4px 10px #f0ebff4d;
-  --shine-hover: inset 0 4px 14px #f0ebff80;
 }
 
 .proto :global(.button.secondary),
 .proto :global(.button-small.secondary) {
   --edge-color: var(--secondary-edge);
+  --glow-color: var(--secondary-glow);
   --shine: inset 0 4px 4px #ffffff26;
-  --shine-hover: inset 0 4px 8px #ffffff80;
 }
 
+.proto :global(.button.outlined),
 .proto :global(.button-small.outlined) {
   --edge-color: var(--outlined-edge);
+  --glow-color: var(--outlined-glow);
   --shine: 0 0 #0000;
-  --shine-hover: 0 0 #0000;
 }
 
-/* Alternative for review: outlined with a brand-purple edge */
-.proto :global(.button-small.outlined.is-edge-primary) {
-  --edge-color: var(--primary);
-}
-
-/* Hover keeps the edge, only the top shine gets brighter */
+/* Hover keeps the edge and adds the inner glow top and bottom */
 .proto :global(.button):not(:global(.tab)):hover,
 .proto :global(.button-small):not(:global(.tab)):hover {
   box-shadow:
     0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
-    var(--shine-hover, inset 0 5px 14px #f0ebff80);
+    inset 0 calc(var(--glow) * -1) 10px var(--glow-color),
+    inset 0 var(--glow) 10px var(--glow-color);
+  transition-duration: 0.2s;
 }
 
 /* Pressed: the button drops onto its edge, 1em of edge stays visible */
@@ -75,7 +87,8 @@
   transform: translateY(calc(var(--edge, 6em) - 1em));
   box-shadow:
     0 1em 0 var(--edge-color, var(--primary-edge)),
-    var(--shine, inset 0 5px 10px #f0ebff4d);
+    inset 0 calc(var(--glow) * -1) 10px var(--glow-color),
+    inset 0 var(--glow) 10px var(--glow-color);
   transition-duration: var(--press-in);
 }
 
@@ -93,7 +106,13 @@
 
 .proto :global(.button-x-small.is-secondary) {
   --in-edge: #2b00a31a;
-  --in-shine: 0 0 #0000;
+  --in-shine: inset 0 3px 8px var(--secondary-glow);
+}
+
+.proto :global(.button-x-small.is-secondary):hover {
+  box-shadow:
+    inset 0 -3px 8px var(--secondary-glow),
+    inset 0 3px 8px var(--secondary-glow);
 }
 
 .proto :global(.button-x-small.is-text) {
@@ -108,11 +127,67 @@
   transition-duration: var(--press-in);
 }
 
+/* ---------- Ripple (pure CSS) ----------
+   CSS cannot restart an animation on every click, so the ripple is built on transitions:
+   - on press, after --press-in (the moment the button bottoms out), a tight ring appears instantly;
+   - on release, the ring spreads outwards and fades over --ripple-out.
+   On a normal click (80–150ms) this reads as one ripple from the pressed point. */
+
+.proto :global(.button):not(:global(.tab)),
+.proto :global(.button-small):not(:global(.tab)),
+.proto :global(.button-x-small):not(:global(.is-text-no-pointer)) {
+  position: relative;
+  --ripple-color: var(--ripple-primary);
+  --ripple-size: 14em;
+}
+
+.proto :global(.button-small) {
+  --ripple-size: 11em;
+}
+
+.proto :global(.button-x-small) {
+  --ripple-size: 8em;
+}
+
+.proto :global(.button.secondary),
+.proto :global(.button-small.secondary),
+.proto :global(.button.outlined),
+.proto :global(.button-small.outlined),
+.proto :global(.button-x-small.is-secondary),
+.proto :global(.button-x-small.is-text) {
+  --ripple-color: var(--ripple-soft);
+}
+
+.proto :global(.button):not(:global(.tab))::after,
+.proto :global(.button-small):not(:global(.tab))::after,
+.proto :global(.button-x-small):not(:global(.is-text-no-pointer))::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 var(--ripple-size) transparent;
+  transition: box-shadow var(--ripple-out) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proto :global(.button):not(:global(.tab)):active:not(:disabled):not([aria-disabled="true"])::after,
+.proto :global(.button-small):not(:global(.tab)):active:not(:disabled):not([aria-disabled="true"])::after,
+.proto :global(.button-x-small):not(:global(.is-text-no-pointer)):active:not(:disabled):not([aria-disabled="true"])::after {
+  box-shadow: 0 0 0 0 var(--ripple-color);
+  transition: box-shadow 0s linear var(--press-in);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .proto :global(.button),
   .proto :global(.button-small),
   .proto :global(.button-x-small) {
     transform: none !important;
+  }
+
+  .proto :global(.button)::after,
+  .proto :global(.button-small)::after,
+  .proto :global(.button-x-small)::after {
+    display: none;
   }
 }
 

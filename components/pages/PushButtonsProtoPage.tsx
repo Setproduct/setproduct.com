@@ -57,13 +57,6 @@ function ButtonSet({ row }: { row: RowId }) {
             <ArrowIcon />
           </div>
         </a>
-        <a
-          className="button-small outlined is-edge-primary w-inline-block"
-          href="#medium"
-          onClick={(e) => e.preventDefault()}
-        >
-          <div className="text-size-medium text-weight-bold">Purple edge</div>
-        </a>
         <button type="button" className="button-small outlined w-inline-block">
           <div className="text-size-medium text-weight-bold">Load more</div>
         </button>
@@ -131,8 +124,9 @@ export default function PushButtonsProtoPage({ blogPosts }: Props) {
               <h1 className="heading-style-h2">Push buttons prototype</h1>
               <div className="spacer-16" />
               <p className="text-size-large m-0">
-                Left column shows the live buttons. Right column shows the push effect in brand colours. Press
-                and hold any button on the right, or freeze every button in the pressed state.
+                Left column shows the live buttons. Right column shows the push effect in brand colours. Hover
+                to see the inner glow, press and release to see the ripple, or freeze every button in the
+                pressed state (the ripple does not play in the frozen state).
               </p>
               <div className="spacer-24" />
               <label className="text-size-regular text-weight-bold flex items-center gap-2 cursor-pointer">
