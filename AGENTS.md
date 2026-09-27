@@ -759,6 +759,57 @@ inlineCta:
 4. Некликабельные картинки (галереи скриншотов, [`TemplateCarousel`](components/sections/TemplateCarousel.tsx), картинки в теле статьи) ховер-подъём **не получают**: движение обещает клик.
 5. Нужен другой эффект? Сначала обсудить с автором и добавить модификатор в сам паттерн, а не писать локальный ховер.
 
+### Кнопки (обязательное правило)
+
+**Правило:** кнопка собирается только из классов шкалы `button` / `button-small` / `button-x-small` из [`setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css:2411). Свои кнопки на Tailwind (`rounded-*`, `bg-*`, `px-*`, `shadow-*`) **не пишем**: они в `rem`, не масштабируются с вёрсткой и теряют фирменную 3D-тень. Полный аудит и план миграции на React-компонент `<Button>` лежат в [`plans/buttons-design-system-audit.md`](plans/buttons-design-system-audit.md).
+
+**Размеры и где их использовать:**
+
+| Размер | Класс | Подпись | Иконка | Где использовать |
+|---|---|---|---|---|
+| L | `button` | `text-size-large text-weight-bold` | `button-icon` | Hero, CTA секции, «See all» в заголовке секции, сабмит форм (подписка, контакт), sticky CTA |
+| M | `button-small` | `text-size-medium text-weight-bold` | `button-icon is-small` | Кнопки в карточках (Buy, Learn more, Duplicate), Load more, мобильные CTA в меню, кнопка в навбаре |
+| S | `button-x-small` | `text-size-regular text-weight-bold` (чипы: `text-size-small text-weight-semibold`) | `button-icon is-small` | Мега-меню (View, Preview), «Read more» в карточке поста, чипы-фильтры, табы категорий |
+
+Подпись и иконка **всегда** берутся из строки своего размера. Смешивать (например, `button-small` + `text-size-large`) нельзя.
+
+**Варианты (иерархия важности):**
+
+| Вариант | L / M | S | Когда |
+|---|---|---|---|
+| Primary | без модификатора | без модификатора | Главное действие. **Одна primary-кнопка на секцию или карточку** |
+| Secondary | `secondary` | `is-secondary` | Второе действие рядом с primary; «See all» у секции; действие в мега-меню |
+| Outlined | `outlined` (только M) | — | Второе действие в карточке (Learn more рядом с Buy); Load more |
+| Text | — | `is-text` | Третий уровень: «Read more», чипы-фильтры, табы |
+
+Внимание: у L и M модификаторы без префикса (`secondary`, `outlined`), у S с префиксом `is-` (`is-secondary`, `is-text`). Это наследие Webflow, не путать. `button outlined` и `button-x-small is-outlined` в CSS есть, но не используются: новые места на них не заводим без согласования с автором.
+
+**Разметка:**
+```jsx
+// переход на другую страницу
+<Link className="button-small outlined w-inline-block" href="/templates/x">
+  <div className="text-size-medium text-weight-bold">Learn more</div>
+  <div className="button-icon is-small w-embed"><ArrowIcon /></div>
+</Link>
+
+// действие на месте
+<button type="button" className="button-small outlined w-inline-block" onClick={loadMore}>
+  <div className="text-size-medium text-weight-bold">Load more</div>
+</button>
+```
+
+**Как применять:**
+1. **Тег выбирается по смыслу.** Ведёт на другой URL → `<Link>` (внутренний) или `<a>` (внешний). Делает что-то на месте (load more, открыть модалку, переключить фильтр, отправить форму) → `<button type="button">` или `type="submit"`. `<a href="#">` и `<div onClick>` для кнопок **запрещены**: они недоступны с клавиатуры.
+2. **Внешние ссылки и Gumroad** — только через [`getGumroadLinkProps`](lib/gumroad.ts:30), руками `target`/`rel` не ставим. Класс `gumroad-button` не добавлять никогда.
+3. **Стрелка `ArrowIcon`** ставится только на кнопки, которые ведут на другую страницу или сайт. У сабмита формы, Load more, открытия модалки и чипов стрелки нет. Стрелку не рисуем inline-SVG заново, всегда [`ArrowIcon`](components/sections/ArrowIcon.tsx).
+4. **Текст кнопки** — sentence case, 1–3 слова, глагол первым: `Learn more`, `Load more`, `See all`, `Read the latest`. Title Case (`Learn More`, `See All`) запрещён (см. раздел про sentence case).
+5. **Ряд кнопок** — обёртка `buttons-row` (или уже существующая обёртка компонента, если она есть). Отступ между кнопками не задаём через `ml-*`/`mr-*`. Вертикальный отступ до ряда — `spacer-*`.
+6. **Disabled и loading:** атрибут `disabled` на `<button>` + класс `disabled:opacity-70`. Inline `style={{ opacity }}` не используем. Пока идёт отправка, подпись заменяется спиннером, ширина кнопки при этом не должна прыгать.
+7. **Некликабельное не оформляется как кнопка.** Бейдж категории, счётчик, метка «Free» — это не `button-*`.
+8. **Иконочные кнопки** (закрыть, копировать, наверх, очистить поле) обязательно получают `aria-label`. Новый вид иконочной кнопки не заводим: берём `button-small is-scroll-up` как базу и согласуем с автором.
+9. **Выбранное состояние** чипа или таба: `aria-selected` / `aria-pressed` + класс `is-active` (для `button-x-small is-text`) или `w--current` (для `button-small tab`). Новые названия активного класса не придумываем.
+10. **Нужен новый размер или вариант?** Сначала обсудить с автором и добавить модификатор в `setproduct.webflow.shared.css` рядом с остальными, **вместе с мобильным значением** и hover-состоянием. Локальные кнопки в компоненте не пишем.
+
 ---
 
 ## 4. Кастомные хуки
