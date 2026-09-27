@@ -1015,15 +1015,16 @@ h1[id], h2[id], h3[id], h4[id] {
   }
 
   /*
-   * CTA reuses the project's native button styles (`button-small` /
+   * CTA reuses the project's native button styles (`button` /
    * `button secondary`). We only nudge it to the bottom of each card so the two
-   * CTAs line up even when the body copy differs in length, and add a small
-   * top gap above it.
+   * CTAs line up even when the body copy differs in length. The gap above it
+   * comes from the flex `gap` on `.nav_info-promo-content`. Do NOT set
+   * `padding-top` here: it overrides the button's own vertical padding
+   * (9em / 11em) and pushes the label above the visual centre.
    */
   .navbar .nav_info-promo-cta {
     cursor: pointer;
     margin-top: auto;
-    padding-top: 4em;
   }
 
   /* Desktop shows the two full promo cards; the compact mobile banner is hidden. */
