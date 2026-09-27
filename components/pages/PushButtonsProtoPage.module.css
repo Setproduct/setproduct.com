@@ -1,0 +1,164 @@
+/* Push-button prototype (see plans/buttons-push-effect.md).
+   Scoped to .proto so live buttons on the site stay untouched.
+   L and M get an outer solid edge, S and chips press inside their box. */
+
+.proto {
+  --primary-edge: #5426d1;
+  --secondary-edge: #d8caf6;
+  --outlined-edge: #eae6f6;
+  --press-in: 60ms;
+  --press-out: 120ms;
+}
+
+/* Native <button> reset with zero specificity so Webflow classes win */
+:where(.proto, .current) button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+:where(.proto, .current) button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ---------- L and M: outer edge ---------- */
+
+.proto :global(.button):not(:global(.tab)),
+.proto :global(.button-small):not(:global(.tab)) {
+  box-shadow:
+    0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
+    var(--shine, inset 0 5px 10px #f0ebff4d);
+  transition:
+    transform var(--press-out) ease-out,
+    box-shadow var(--press-out) ease-out,
+    background-color 0.2s ease;
+}
+
+.proto :global(.button-small) {
+  --edge: 4em;
+  --shine: inset 0 4px 10px #f0ebff4d;
+  --shine-hover: inset 0 4px 14px #f0ebff80;
+}
+
+.proto :global(.button.secondary),
+.proto :global(.button-small.secondary) {
+  --edge-color: var(--secondary-edge);
+  --shine: inset 0 4px 4px #ffffff26;
+  --shine-hover: inset 0 4px 8px #ffffff80;
+}
+
+.proto :global(.button-small.outlined) {
+  --edge-color: var(--outlined-edge);
+  --shine: 0 0 #0000;
+  --shine-hover: 0 0 #0000;
+}
+
+/* Alternative for review: outlined with a brand-purple edge */
+.proto :global(.button-small.outlined.is-edge-primary) {
+  --edge-color: var(--primary);
+}
+
+/* Hover keeps the edge, only the top shine gets brighter */
+.proto :global(.button):not(:global(.tab)):hover,
+.proto :global(.button-small):not(:global(.tab)):hover {
+  box-shadow:
+    0 var(--edge, 6em) 0 var(--edge-color, var(--primary-edge)),
+    var(--shine-hover, inset 0 5px 14px #f0ebff80);
+}
+
+/* Pressed: the button drops onto its edge, 1em of edge stays visible */
+.proto :global(.button):not(:global(.tab)):active:not(:disabled):not([aria-disabled="true"]),
+.proto :global(.button-small):not(:global(.tab)):active:not(:disabled):not([aria-disabled="true"]),
+.proto.pressedAll :global(.button):not(:global(.tab)):not(:disabled),
+.proto.pressedAll :global(.button-small):not(:global(.tab)):not(:disabled) {
+  transform: translateY(calc(var(--edge, 6em) - 1em));
+  box-shadow:
+    0 1em 0 var(--edge-color, var(--primary-edge)),
+    var(--shine, inset 0 5px 10px #f0ebff4d);
+  transition-duration: var(--press-in);
+}
+
+/* ---------- S and chips: press inside the box ---------- */
+
+.proto :global(.button-x-small):not(:global(.is-text-no-pointer)) {
+  --in-edge: #2b00a380;
+  --in-shine: inset 0 3px 10px #f0ebff4d;
+  transition:
+    transform var(--press-out) ease-out,
+    box-shadow var(--press-out) ease-out,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.proto :global(.button-x-small.is-secondary) {
+  --in-edge: #2b00a31a;
+  --in-shine: 0 0 #0000;
+}
+
+.proto :global(.button-x-small.is-text) {
+  --in-edge: #2b00a380;
+  --in-shine: 0 0 #0000;
+}
+
+.proto :global(.button-x-small):not(:global(.is-text-no-pointer)):active:not(:disabled):not([aria-disabled="true"]),
+.proto.pressedAll :global(.button-x-small):not(:global(.is-text-no-pointer)):not(:disabled) {
+  transform: translateY(2em);
+  box-shadow: inset 0 -1px 1px var(--in-edge), var(--in-shine);
+  transition-duration: var(--press-in);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proto :global(.button),
+  .proto :global(.button-small),
+  .proto :global(.button-x-small) {
+    transform: none !important;
+  }
+}
+
+/* ---------- Page layout (prototype only) ---------- */
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24em;
+}
+
+.cell {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: 32em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24em 20em;
+}
+
+.cellLabel {
+  width: 100%;
+  margin: 0;
+  color: var(--grey);
+}
+
+.card {
+  width: 100%;
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(24 * var(--em-px));
+  padding: 16em 16em 24em;
+  display: flex;
+  flex-direction: column;
+  gap: 16em;
+  overflow: hidden;
+}
+
+.cardImage {
+  height: 180em;
+  border-radius: calc(16 * var(--em-px));
+  background: var(--light-primary);
+}
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
