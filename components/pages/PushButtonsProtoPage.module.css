@@ -20,10 +20,13 @@
   --secondary-glow: #d3bff9; /* a step darker than --light-primary #ebe0ff */
   --outlined-glow: #ece4ff; /* a step darker than white */
 
-  /* Ripple: soft ring that spreads out from the pressed button */
+  /* Ripple: soft ring that spreads out from the pressed button.
+     520ms × 1.4 = 728ms (40% slower, softer). The ring drifts down by half of its spread,
+     following the top-to-bottom press: the top of the ring grows 2× less than the bottom. */
   --ripple-primary: #7c4dff47;
   --ripple-soft: #7c4dff33;
-  --ripple-out: 520ms;
+  --ripple-out: 728ms;
+  --ripple-drop: 0.5;
 
   --press-in: 60ms;
   --press-out: 120ms;
@@ -190,8 +193,8 @@
 /* ---------- Ripple (pure CSS) ----------
    CSS cannot restart an animation on every click, so the ripple is built on transitions:
    - on press, after --press-in (the moment the button bottoms out), a tight ring appears instantly;
-   - on release, the ring spreads outwards and fades over --ripple-out.
-   On a normal click (80–150ms) this reads as one ripple from the pressed point. */
+   - on release, the ring spreads outwards, drifts down by --ripple-drop of its size and fades over --ripple-out.
+   On a normal click (80–150ms) this reads as one ripple pushed downwards by the press. */
 
 .proto :global(.button):not(:global(.tab)),
 .proto :global(.button-small):not(:global(.tab)),
@@ -226,7 +229,7 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: 0 0 0 var(--ripple-size) transparent;
+  box-shadow: 0 calc(var(--ripple-size) * var(--ripple-drop)) 0 var(--ripple-size) transparent;
   transition: box-shadow var(--ripple-out) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
