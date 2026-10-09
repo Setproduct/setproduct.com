@@ -4,9 +4,9 @@
 
 В frontmatter [`content/blog/hidden-minutes-slowing-your-business-down.mdx`](content/blog/hidden-minutes-slowing-your-business-down.mdx:1) прописаны:
 
-- `coverImage: /blog/covers/hidden-minutes-slowing-your-business-down.webp`
-- `coverImageAlt: "Woman presenting process improvements to a team in a conference room"`
-- `thumbImage: /blog/covers/thumbs/hidden-minutes-slowing-your-business-down.webp`
+- `coverImage: /blog/covers/hidden-minutes-slowing-your-business-down-v2.webp`
+- `coverImageAlt: "Colleagues in a meeting as tiny clock and hourglass fragments leak from their devices"`
+- `thumbImage: /blog/covers/thumbs/hidden-minutes-slowing-your-business-down-v2.webp`
 
 Текущая обложка извлечена из base64-картинки черновика: стоковый кадр Pexels, PNG 500×333, качество низкое. Файл нужно перегенерировать и положить поверх.
 
@@ -41,10 +41,10 @@ Keep the standing presenter and the two seated listeners inside the central seve
 
 - Aspect ratio: 16:9
 - Alt text: `Colleagues in a meeting as tiny time fragments leak from their devices`
-- Filename: `hidden-minutes-slowing-your-business-down.webp`
+- Filename: `hidden-minutes-slowing-your-business-down-v2.webp` (суффикс `-v2` нужен, чтобы сменить URL и обойти кэш браузера/CDN, который держал старую картинку под прежним именем)
 
 ## Что обновить после генерации
 
-1. Положить новый файл в [`public/blog/covers/hidden-minutes-slowing-your-business-down.webp`](public/blog/covers/hidden-minutes-slowing-your-business-down.webp).
+1. Положить новый файл в [`public/blog/covers/hidden-minutes-slowing-your-business-down-v2.webp`](public/blog/covers/hidden-minutes-slowing-your-business-down-v2.webp).
 2. Прогнать `npm run thumbs:blog` для превью в листинге.
 3. Обновить `coverImageAlt` во frontmatter на текст выше.
