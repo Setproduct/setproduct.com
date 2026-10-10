@@ -103,6 +103,17 @@ const REA_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-rea", text: "Why it belongs in your stack" },
 ];
 
+const LIQUID_GLASS_HEADINGS: ArticleHeading[] = [
+  { id: "what-liquid-glass-does", text: "What Liquid Glass actually does" },
+  { id: "why-real-refraction", text: "Why live refraction beats a CSS blur" },
+  { id: "how-it-renders", text: "How it renders glass on the web" },
+  { id: "materials-and-motion", text: "How materials and motion work" },
+  { id: "components-in-the-box", text: "What ships in the box" },
+  { id: "requirements", text: "What it needs to run" },
+  { id: "faq-liquid-glass", text: "Frequently asked questions" },
+  { id: "why-it-belongs-liquid-glass", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -112,6 +123,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "sfinterface-numbers": SFINTERFACE_NUMBERS_HEADINGS,
   fsearch: FSEARCH_HEADINGS,
   rea: REA_HEADINGS,
+  "liquid-glass": LIQUID_GLASS_HEADINGS,
 };
 
 /**
@@ -252,6 +264,242 @@ export default function FreebieArticle({ slug }: Props) {
 
             <div className="blogpost_content-column2">
               <article className="rich-text-18 w-richtext">
+                {slug === "liquid-glass" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You want the interface to feel like glass, where the surface
+                  bends what sits behind it and the controls stay legible on
+                  top. Most web glass stops at a translucent panel and a
+                  backdrop blur. Liquid Glass goes a step further and refracts
+                  the content behind every surface in real time, so a button
+                  over a photo bends the photo the way materials do on Apple
+                  platforms.
+                </p>
+
+                <h2 id="what-liquid-glass-does">
+                  What Liquid Glass actually does
+                </h2>
+                <p>
+                  Liquid Glass is an open source library that renders glass
+                  surfaces and controls for React on the web and in Electron.
+                  Each surface reads the live DOM behind it, displaces that
+                  content through a refraction value, and keeps text and icons
+                  crisp on top. Two materials cover the range: Clear for a
+                  light, transparent look, Regular for a denser frost. Both
+                  support light and dark appearances, and the{" "}
+                  <code>tint</code> prop colors the glass without changing the
+                  label.
+                </p>
+                <p>
+                  The set is not a folder of static images. Buttons, toolbars,
+                  and tabs all respond to pointer and keyboard input. Standard
+                  props and refs stay available, along with accessible names and
+                  state callbacks, so the components drop into an existing app
+                  without a rewrite.
+                </p>
+
+                <h2 id="why-real-refraction">
+                  Why live refraction beats a CSS blur
+                </h2>
+                <p>
+                  Glassmorphism on the web usually means{" "}
+                  <code>backdrop-filter: blur()</code> over a semi-transparent
+                  fill. That reads as glass until the layout moves. The blur is
+                  uniform, so it ignores the shape of the light and the depth of
+                  the content behind it. A card over an image looks the same
+                  whether that image is bright or dark.
+                </p>
+                <p>
+                  Liquid Glass samples the content behind a surface and bends
+                  it. That displacement is what gives the material its
+                  thickness. Edges pick up a soft highlight, nested surfaces
+                  limit their refraction to the parent inset, and the content
+                  under the glass stays live instead of turning into a flat
+                  panel.
+                </p>
+
+                <h2 id="how-it-renders">How it renders glass on the web</h2>
+                <p>
+                  The library splits the work between the GPU and SVG filters.
+                  WGSL shaders render material maps, and SVG filters apply those
+                  maps to live DOM content. Maps are cached and reused as
+                  surfaces move, and a geometry change prepares a new map. The
+                  library never captures a screenshot, so a video or a chart
+                  keeps animating underneath a glass surface, and so does a
+                  canvas.
+                </p>
+                <p>
+                  The same scene model works in React and outside it. In React
+                  you wrap content in <code>GlassScene</code> and{" "}
+                  <code>GlassContent</code>, then place surfaces on top. Outside
+                  React, <code>createGlassScene</code> from the{" "}
+                  <code>/dom</code> export builds the same structure by hand, so
+                  a plain page or a small Electron shell can use it too.
+                </p>
+
+                <h2 id="materials-and-motion">
+                  How materials and motion work
+                </h2>
+                <p>
+                  Defaults live on <code>GlassScene</code>, and any surface can
+                  override them. The props that shape the look are small in
+                  number:
+                </p>
+                <ul>
+                  <li>
+                    <code>material</code> → <code>"clear"</code> or{" "}
+                    <code>"regular"</code>
+                  </li>
+                  <li>
+                    <code>appearance</code> → <code>"light"</code> or{" "}
+                    <code>"dark"</code>
+                  </li>
+                  <li>
+                    <code>radius</code> → corner radius in pixels, or{" "}
+                    <code>"capsule"</code> and <code>"circle"</code>
+                  </li>
+                  <li>
+                    <code>refraction</code> → displacement in pixels, default{" "}
+                    <code>60</code>
+                  </li>
+                  <li>
+                    <code>tint</code> → a six-digit hex color for the glass
+                    alone
+                  </li>
+                </ul>
+                <p>
+                  The <code>motion</code> prop accepts <code>"full"</code> or{" "}
+                  <code>"reduced"</code>, and <code>"none"</code> for a hard
+                  stop. System reduced-motion preferences always apply. The{" "}
+                  <code>fluid</code> prop animates the outline when a layout
+                  dimension changes, and <code>morphFrom</code> lets a surface
+                  open from the shape of another element. Override styles with{" "}
+                  <code>className</code> or the <code>--lg-foreground</code>{" "}
+                  variable when text and icons need to shift.
+                </p>
+
+                <h2 id="components-in-the-box">What ships in the box</h2>
+                <p>
+                  The package covers the controls most interfaces need, all on
+                  the same material system:
+                </p>
+                <ul>
+                  <li>
+                    <code>GlassScene</code> and <code>GlassContent</code> for the
+                    scene and its live background layer
+                  </li>
+                  <li>
+                    <code>GlassSurface</code> and <code>GlassButton</code> for
+                    containers and buttons
+                  </li>
+                  <li>
+                    <code>GlassToolbar</code> with buttons and links, plus groups
+                    and a spacer
+                  </li>
+                  <li>
+                    <code>GlassTabs</code> with a moving selection indicator,
+                    plus a composable root and panel set
+                  </li>
+                  <li>
+                    <code>GlassMenu</code> with submenus, plus focus restoration
+                    and positioning
+                  </li>
+                  <li>
+                    <code>GlassSlider</code> and <code>GlassSwitch</code> for
+                    input
+                  </li>
+                  <li>
+                    <code>GlassProgressiveBlur</code> and{" "}
+                    <code>GlassScrollEdges</code> for scroll context
+                  </li>
+                </ul>
+                <p>
+                  Foreground content that should refract under a higher surface
+                  uses <code>GlassForeground</code> or the{" "}
+                  <code>useGlassForeground</code> hook. Geometry helpers like{" "}
+                  <code>GlassShape</code> and <code>GlassCorner</code> keep
+                  nested corners concentric without a scene.
+                </p>
+
+                <h2 id="requirements">What it needs to run</h2>
+                <p>
+                  The React components require React 19 or newer. Rendering the
+                  material maps needs HTTPS or localhost and an available WebGPU
+                  adapter, while progressive blur works without WebGPU. The
+                  project tests against Chromium and Firefox, with Safari and
+                  Electron on the same list, and performance differs between
+                  them. Safari can take longer to filter large content layers, so
+                  test animated menus on the devices you support.
+                </p>
+                <p>
+                  A scene holds up to <code>maxSurfaces</code>, which defaults
+                  to <code>16</code>. NodeNext TypeScript consumers need{" "}
+                  <code>skipLibCheck: true</code> for the upstream vgpu
+                  declarations. For clean refraction in Safari, give{" "}
+                  <code>GlassContent</code> an opaque background. The project is
+                  MIT licensed.
+                </p>
+
+                <h2 id="faq-liquid-glass">Frequently asked questions</h2>
+                <h3>Do I need WebGPU to use it?</h3>
+                <p>
+                  Only for the glass material maps. Progressive blur renders
+                  without WebGPU, so a scene that leans on blur alone runs on
+                  more machines. When a material map cannot be prepared, the
+                  content stays readable and <code>onDiagnostic</code> reports
+                  the error.
+                </p>
+                <h3>Does it work outside React?</h3>
+                <p>
+                  Yes. The <code>/dom</code> export exposes{" "}
+                  <code>createGlassScene</code>, and the lower-level exports
+                  give you geometry and rendering APIs for custom integrations.
+                  React is the shortest path, not the only one.
+                </p>
+                <h3>Will it look the same in every browser?</h3>
+                <p>
+                  Close, but the engines differ. Firefox draws each surface as
+                  its own filtered layer, and Safari can spend more time
+                  filtering large layers than Chromium. The materials and motion
+                  settings stay the same across browsers, so the look holds
+                  while the performance varies.
+                </p>
+                <h3>Is it free for commercial work?</h3>
+                <p>
+                  Yes. Liquid Glass is MIT licensed, so you use it in personal
+                  and commercial projects without paying anyone or asking
+                  permission.
+                </p>
+
+                <h2 id="why-it-belongs-liquid-glass">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  If you already want glass in your interface, this saves the
+                  weeks you would spend writing shaders and SVG filter graphs
+                  from scratch. You install one package, import one stylesheet,
+                  then wrap a scene. The controls arrive accessible through Base
+                  UI, the motion respects user preferences, and the material
+                  reads the live page instead of a frozen copy.
+                </p>
+                <p>
+                  It pairs with the reading on this site. The{" "}
+                  <Link href="/blog/liquid-glass-design-explained-a-practical-guide">
+                    practical guide to liquid glass
+                  </Link>{" "}
+                  covers the visual language, and the{" "}
+                  <Link href="/blog/liquid-glass-vs-glassmorphism">
+                    liquid glass vs glassmorphism
+                  </Link>{" "}
+                  comparison explains where the plain blur falls short. When you
+                  want the rest of the interface to match, the other{" "}
+                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same fast, solo workflow.
+                </p>
+                  </>
+                )}
+
                 {slug === "driver-js" && (
                   <>
                 <p className="blog_big-paragraph">

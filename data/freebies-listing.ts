@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "liquid-glass",
+    title: "Liquid Glass for React",
+    description:
+      "Glass surfaces and controls for React on the web and in Electron. Clear and Regular materials refract live content, and every control runs on Base UI behavior.",
+    thumb: "/freebies/thumbs/freebie-liquid-glass.webp",
+    image: "/freebies/freebie-liquid-glass.webp",
+    category: "Code",
+    previewHref: "/freebies/liquid-glass",
+    duplicateHref: "https://github.com/Glass-HQ/liquid-glass",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "rea",
     title: "REA — reverse engineering MCP for AI agents",
     description:

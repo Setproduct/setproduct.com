@@ -168,7 +168,7 @@ This is the table to bookmark. Five aesthetics, the axes that actually matter wh
 
 A table tells you what they are. A decision needs context. Run your project through four questions.
 
-**Which platform are you on?** If you are building for iOS, iPadOS, or macOS and want to feel native in 2026, liquid glass is the answer, because the system already speaks it. On the web, default to glassmorphism for accent surfaces, since the native refraction simply is not available in the browser yet.
+**Which platform are you on?** If you are building for iOS, iPadOS, or macOS and want to feel native in 2026, liquid glass is the answer, because the system already speaks it. On the web, default to glassmorphism for accent surfaces, or go further with a code-driven library that renders the refraction itself: the free [Liquid Glass for React](/freebies/liquid-glass) library drives a WebGPU glass surface with real edge behavior.
 
 **Is the surface content or chrome?** Chrome that floats above content (navigation, sidebars, toolbars) is where frosted UI earns its keep. Content that people read for more than a few seconds should sit on a solid, high-contrast surface, whatever the surrounding style.
 
@@ -192,7 +192,7 @@ The same handful of errors sink most glass designs. Watch for these.
 
 ✗ **Stacking blur on blur.** Every translucent layer multiplies the GPU cost and muddies legibility. Two stacked glass panels usually look worse and run slower than one.
 
-✗ **Faking liquid glass on the web with heavy filters.** Piling on blur, noise, and gradients to imitate Apple's refraction rarely lands and tanks performance. If you need true liquid glass, you need a native surface, and a disciplined set of edge and thickness cues like the ones in the [liquid glass UI playbook](https://setproduct.gumroad.com/l/liquid-glass).
+✗ **Faking liquid glass on the web with heavy filters.** Piling on blur, noise, and gradients to imitate Apple's refraction rarely lands and tanks performance. The honest path is a native surface on Apple platforms, or a GPU rendering path on the web, plus a disciplined set of edge and thickness cues like the ones in the [liquid glass UI playbook](https://setproduct.gumroad.com/l/liquid-glass).
 
 ## Glass aesthetics questions and answers (FAQ)
 
@@ -203,7 +203,7 @@ Glassmorphism blurs whatever sits behind a translucent card. Liquid glass refrac
 No, but its role shrank. It is no longer a viable foundation for full layouts because of contrast problems on uncontrolled backgrounds. As an accent on cards, badges, and navigation over controlled gradients, it is still very much alive.
 
 ❸ **Can I use liquid glass on the web today?**
-You can approximate the look with layered blur, gradients, and highlights, but you cannot reproduce the real-time refraction, which is native to Apple platforms. For web work, honest glassmorphism usually looks better than a heavy fake.
+Real-time refraction is native to Apple platforms. On the web, layered blur and gradients only approximate it, but a WebGPU rendering path can now produce genuine refraction in the browser. When no GPU path is available, honest glassmorphism still beats a heavy CSS fake.
 
 ❹ **What's the accessibility impact of glass effects?**
 The main risk is text contrast. Because translucent surfaces inherit whatever is behind them, a panel can pass [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) on one screen and fail on another. Always provide a solid fallback and respect the reduced-transparency setting.
