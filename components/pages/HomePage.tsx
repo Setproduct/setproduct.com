@@ -60,7 +60,7 @@ export default function HomePage({ blogPosts = [] }: Props) {
                     <div className="heading-style-h5">
                       Practical writing on startups, AI, growth, careers and design.
                       <br />
-                      An independent magazine, trusted by 11,000 readers a month.
+                      An independent magazine, trusted by 17,000 readers a month.
                     </div>
                   </div>
                   <div className="spacer-16" />

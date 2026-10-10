@@ -13,7 +13,7 @@ Setproduct переходит от продажи Figma-китов к роли �
 Дизайн — одна из вертикалей, а не идентичность сайта. Из hero дизайн-фрейминг
 уходит. UI kits не удаляются: остаются в навигации, футере и секции `TemplateGrid`.
 
-Доступные факты для копирайта: 11 000 читателей в месяц, DR 42, индексация в
+Доступные факты для копирайта: 17 000 читателей в месяц, DR 42, индексация в
 Google News, цитирование в Google AI Overviews, возраст домена 9 лет (с 2017),
 2 700+ ссылающихся доменов.
 
@@ -49,7 +49,7 @@ Setproduct — a tech publication for founders and builders
 ## Шаг 2 — meta description (145 символов)
 
 ```
-Setproduct covers startups, AI, growth, product and design. Nine years of archives, 11,000 monthly readers, and citations in Google AI Overviews.
+Setproduct covers startups, AI, growth, product and design. Nine years of archives, 17,000 monthly readers, and citations in Google AI Overviews.
 ```
 
 Ключ: `data/pages-meta.ts` → `PAGE_META.index.description`.
@@ -70,7 +70,7 @@ Sub-H1, две строки через `<br />`, внутри `.heading-style-h5
 
 ```
 Practical writing on startups, AI, growth, careers and design.
-An independent magazine, trusted by 11,000 readers a month.
+An independent magazine, trusted by 17,000 readers a month.
 ```
 
 ## Шаг 4 — CTA в hero

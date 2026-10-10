@@ -4,7 +4,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   index: {
     title: "Setproduct — a tech publication for founders and builders",
     description:
-      "Setproduct covers startups, AI, growth, product and design. Nine years of archives, 11,000 monthly readers, and citations in Google AI Overviews.",
+      "Setproduct covers startups, AI, growth, product and design. Nine years of archives, 17,000 monthly readers, and citations in Google AI Overviews.",
     ogImage:
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com",
