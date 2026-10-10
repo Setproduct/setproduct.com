@@ -40,19 +40,17 @@ thumbImage: /blog/covers/thumbs/slider-ui-design.webp
 
 
 
-### **Introduction: Why sliders matter**
+## Introduction: Why sliders matter
 
 ![Slider example illustrating introduction: why sliders matter](/blog/assets/slider-ui-design/img-1.webp)
 
 See full AI-made [sliders board at Pinterest](https://ru.pinterest.com/setproduct/slider-ai-design/). There is some stuff to really inspire you.
 
-Sliders are among the most versatile and expressive UI components in product interfaces. They allow users to input values across a defined range, whether that range represents brightness, volume, [price filtering](https://www.setproduct.com/blog/filter-ui-design), progress, opacity, rating, or playback.
+A slider lets a user set a value by dragging a thumb along a track. Brightness, volume, price, opacity, rating, and playback all fit the same control. Unlike a plain [input field](https://www.setproduct.com/blog/input-ui-design), a slider shows the current value the moment it changes, which is why it works for ranges where "about right" beats "exact".
 
-Unlike traditional [input fields](https://www.setproduct.com/blog/input-ui-design), sliders offer immediate visual feedback and a more intuitive interaction model.
+A slider fails for the same reason it succeeds. Because the value moves with the thumb, precision is low by design. Age, phone numbers, and prices in a checkout form belong in a field, not a slider.
 
-However, designing sliders is more complex than just placing a draggable knob on a horizontal line. Their success depends on precision, accessibility, tactility and proper contextual use. This tutorial will walk you through the complete design and implementation process, covering UX patterns, visual best practices, usability principles, and development concerns.
-
-Let’s explore how to build sliders that are not just functional, but delightful to use.
+This guide covers the slider anatomy and the single versus double thumb split. It then walks through snapping and precision, the accessibility rules that make a slider usable without a mouse, and the handoff details developers always ask for.
 
 ## **Anatomy of a slider component**
 
@@ -152,21 +150,24 @@ Avoid too many steps on small sliders: too cramped and confusing interactions. I
 
 ![Slider example illustrating accessibility and keyboard support](/blog/assets/slider-ui-design/img-6.webp)
 
-Sliders should be fully operable by keyboard and screen readers.
+A slider is a range control, and the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) treat it as one. On the surface it is a draggable thumb. Under the surface it is `role="slider"`, and that role carries a contract.
 
 **Minimum accessibility requirements:**
 
-❶ Arrow keys should increase or decrease values.
+❶ Arrow keys increase and decrease the value by one step.
 
-❷ Focus indicators should appear around the thumb.
+❷ `Home` and `End` jump to the minimum and maximum.
 
-❸ Screen readers should announce the current value and purpose of the slider.  
+❸ `Page Up` and `Page Down` move by a larger step.
+
+❹ Focus indicators wrap the thumb with a visible outline, not color alone.
+
+❺ A screen reader announces the name, current value, and range through `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`.
   
 
-Include labels (aria-label, aria-valuenow, etc.) to describe the slider’s function and state.
+Give the slider an accessible name with `aria-label` or a linked visible label. For a double-thumb range, each thumb needs its own name so the user knows which one they are moving.
 
-Make sure contrast ratios between thumb and track meet accessibility standards.  
-Provide high-contrast modes and visible focus outlines.
+Keep the contrast between thumb and track above the WCAG threshold, and test the focus ring against both the light and dark track. On touch devices, the tap target should reach 44 by 44 pixels even when the visible thumb is smaller.
 
 ## **Styling sliders with brand consistency**
 
