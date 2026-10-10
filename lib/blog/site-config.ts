@@ -1,4 +1,6 @@
-const CANONICAL_SITE_URL = "https://www.setproduct.com";
+// Absolute production origin. Use for <link rel="canonical">, which must stay
+// on the production domain even on Vercel preview deployments.
+export const CANONICAL_SITE_URL = "https://www.setproduct.com";
 
 // Vercel auto-injects VERCEL_URL per deployment; using it on preview keeps OG/schema
 // URLs on the same host that actually serves /blog/covers/<slug>.jpg.

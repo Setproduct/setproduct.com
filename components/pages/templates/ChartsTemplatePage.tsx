@@ -12,6 +12,7 @@ import FaqSection from "../../sections/FaqSection";
 import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import { chartsContent } from "../../../data/template-content/charts";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
+import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
 import type { BlogPostPreview, TemplateItem } from "../../../types/data";
 
 type Props = {
@@ -28,7 +29,7 @@ export default function ChartsTemplatePage({ item, blogPosts = [] }: Props) {
 
   const title = item.title;
   const description = item.description;
-  const canonical = `https://setproduct.com/templates/${item.slug}`;
+  const canonical = `${CANONICAL_SITE_URL}/templates/${item.slug}`;
 
   return (
     <>

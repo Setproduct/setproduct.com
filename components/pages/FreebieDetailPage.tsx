@@ -6,6 +6,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
+import { CANONICAL_SITE_URL } from "../../lib/blog/site-config";
 import type { BlogPostPreview, FreebieItem } from "../../types/data";
 
 type Props = {
@@ -28,7 +29,7 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
 
   const title = `${item.title} — ${suffixForCategory(item.category)}`;
   const description = item.description;
-  const canonical = `https://setproduct.com/freebies/${item.slug}`;
+  const canonical = `${CANONICAL_SITE_URL}/freebies/${item.slug}`;
 
   return (
     <>

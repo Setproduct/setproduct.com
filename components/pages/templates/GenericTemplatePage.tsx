@@ -12,6 +12,7 @@ import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
+import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
 import type { BlogPostPreview, TemplateItem } from "../../../types/data";
 
 type TemplateContent = {
@@ -94,7 +95,7 @@ export default function GenericTemplatePage({ item, content, blogPosts = [] }: P
 
   const title = item.title;
   const description = item.description;
-  const canonical = `https://setproduct.com/templates/${item.slug}`;
+  const canonical = `${CANONICAL_SITE_URL}/templates/${item.slug}`;
 
   return (
     <>
