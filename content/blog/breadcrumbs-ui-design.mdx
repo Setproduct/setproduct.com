@@ -30,12 +30,9 @@ thumbImage: /blog/covers/thumbs/breadcrumbs-ui-design.webp
 
 
 
-Breadcrumbs often sit quietly in the background of your app.  
-They don’t demand attention - they just do their job. But when they’re missing or poorly designed, users confused and get lost. That’s why getting breadcrumbs right is a subtle but essential part of interface design.
+Breadcrumbs often sit quietly in the background of your app. They do not demand attention, they just do their job. But when they are missing or poorly designed, users lose their place and start guessing where they are.
 
-In this **UI design tutorial**, we’ll walk through everything you need to know before designing or implementing breadcrumbs. From clickable link anatomy and separators to edge cases like truncation, badges, close icons, and mobile behavior.
-
-All illustrated with 22 visual examples, so you can stop guessing and start designing with clarity.
+This guide covers what you need before building breadcrumbs: the link anatomy, the separators, the states, and the hard cases like truncation, badges, mobile collapse, and deep hierarchies. Each rule comes with the reason behind it, so you can decide when the pattern helps and when it only adds noise.
 
 ## The anatomy of breadcrumb navigation
 
@@ -350,6 +347,23 @@ Use cases:
 -   Multi-step processes with dynamic states
 
 > Don’t overdo it: one or two signals are enough. Too many badges = stress.
+
+## Breadcrumbs vs steppers, back buttons, and tabs
+
+Breadcrumbs are one of four ways to help a user move through structure. Picking the wrong one creates two competing navigation systems on the same screen.
+
+<div class="blog-fit-table">
+
+| Pattern | Shows | Fits |
+|---|---|---|
+| Breadcrumbs | Where the user is in a tree | Deep, non-linear structures |
+| Steppers | How far along a fixed flow | Checkout, onboarding |
+| Back button | The previous screen | Any stack-based navigation |
+| Tabs | Sibling sections at one level | Flat sections of one page |
+
+</div>
+
+The rule I use: breadcrumbs describe a tree, steppers describe a sequence. If the flow is linear and has a clear finish line, use a stepper and leave breadcrumbs out. If the user can wander between branches, breadcrumbs earn their space. And never run breadcrumbs and tabs as the only two-level navigation on one page without a visible hierarchy between them.
 
 ## Usability tips to make your breadcrumbs feel effortless
 
