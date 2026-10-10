@@ -2,10 +2,10 @@
 
 **Last updated:** 28 May 2026  
 **Source:** GSC data extracted on 28 May 2026  
-**Update protocol:** When you have a new GSC export with at least 
-14 days of data after a change, manually update the benchmarks 
-in tables below. Skill `seo-content-optimization` reads this file 
-on every run.
+**Update protocol:** When you have a new GSC export with at least
+14 days of data after a change, manually update the benchmarks
+in tables below. Skill `seo` reads this file on every run.
+This is the single source of truth for category benchmarks.
 
 ## How benchmarks are used
 

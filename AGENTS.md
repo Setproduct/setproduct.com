@@ -1382,10 +1382,10 @@ const STATIC_PATHS = [
 
 | Файл | Что делает |
 |---|---|
-| [`scripts/check-site.mjs`](scripts/check-site.mjs:1) | **Полезный.** `node scripts/check-site.mjs https://preview-url` — берёт sitemap, обходит все 245 страниц, парсит `<a>`/`<img>`/`<source>`/`<script>`/`<link>`/og:image, проверяет HTTP-статусы. Пишет `scripts/report.json` + `scripts/report.md`. |
+| [`scripts/check-site.mjs`](scripts/check-site.mjs:1) | **Полезный.** `node scripts/check-site.mjs https://preview-url` — берёт sitemap, обходит все 245 страниц, парсит `<a>`/`<img>`/`<source>`/`<script>`/`<link>`/og:image, проверяет HTTP-статусы. Пишет `scripts/report.json` + `scripts/report.md` (оба в `.gitignore`, регенерируются при каждом прогоне). |
 | [`scripts/find-unused-images.js`](scripts/find-unused-images.js:1) | Ищет картинки в `public/`, которые не упоминаются ни в одном `.ts/tsx/mdx/css`. |
 | [`scripts/verify-image-link-fix.mjs`](scripts/verify-image-link-fix.mjs:1) | Проверяет результат `fix-broken-image-links.mjs` — пытается сериализовать пост через `next-mdx-remote/serialize`, считает картинки внутри ссылок. |
-| [`scripts/report.json`](scripts/report.json:1), [`scripts/report.md`](scripts/report.md:1) | **Артефакты последнего прогона** `check-site.mjs`. На момент скана: 245/245 страниц OK, 354 битых внешних ссылок (в основном codepen 403 и медленные сайты с fetch failed). |
+| `scripts/report.json`, `scripts/report.md` | **Артефакты последнего прогона** `check-site.mjs`, в репозитории не хранятся (`gitignore`, регенерируются). Последний скан: 245/245 страниц OK, 354 битых внешних ссылок (в основном codepen 403 и медленные сайты с fetch failed). |
 
 ### Что делать с `scripts/`
 
@@ -1521,7 +1521,7 @@ npx next lint  # создаст .eslintrc.json интерактивно
 | [`scripts/generate-blog-thumbs.js`](scripts/generate-blog-thumbs.js:1) | `npm run thumbs:blog` | После добавления обложек | ❌ Нужно |
 | [`scripts/convert-*.js`](scripts/convert-to-webp.js:1), [`scripts/update-references.js`](scripts/update-references.js:1) | Webflow-миграция | ❌ Деструктивно | ✅ Можно (или перенести в `legacy/`) |
 | [`scripts/fix-*.mjs`](scripts/fix-broken-image-links.mjs:1), [`scripts/verify-*.mjs`](scripts/verify-image-link-fix.mjs:1) | MDX-патчи + проверка | По необходимости (с `--dry`) | ⚠️ Сохранить для истории |
-| [`scripts/report.json`](scripts/report.json:1), [`scripts/report.md`](scripts/report.md:1) | Артефакт прогона | — | ✅ Можно (регенерируется) |
+| `scripts/report.json`, `scripts/report.md` | Артефакт прогона `check-site.mjs` (в `.gitignore`, не в репозитории) | — | ✅ Регенерируется |
 | [`test-next-redirect.js`](test-next-redirect.js:1) | Брошенный черновик | ❌ | ✅ Да |
 | [`test-redirect.js`](test-redirect.js:1) | Дебаг регекспа редиректа | ❌ | ✅ Да |
 | [`.vscode/settings.json`](.vscode/settings.json:1) | Подавление git warning | — | ❌ Оставить |
