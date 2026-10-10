@@ -144,7 +144,7 @@ rescue (низкое качество по аудиту), **4** идут под 
 ### Outline H2-разделов (14 разделов)
 
 Все заголовки — sentence case (по AGENTS.md). H1/title будет предложен в
-Фазе 2 по skill `seo-content-optimization` (60–65 симв., с хуком).
+Фазе 2 по skill `seo` (60–65 симв., с хуком).
 
 | # | H2 (sentence case) | Цель раздела | Рекрутируемый cluster-пост | Длина |
 |---|--------------------|--------------|----------------------------|-------|
@@ -251,7 +251,7 @@ rescue (низкое качество по аудиту), **4** идут под 
 - [ ] Подготовлены/выбраны обложка `coverImage` и `thumbImage` для pillar
       (`/blog/covers/dashboard-ui-design.webp` + thumb через
       `npm run thumbs:blog`).
-- [ ] Утверждён title pillar'а (Фаза 2, по skill `seo-content-optimization`:
+- [ ] Утверждён title pillar'а (Фаза 2, по skill `seo`:
       60–65 симв., sentence case, с хуком, без «complete/ultimate/guide»).
 - [ ] Явное «ОК на коммит» от тебя — до этого ни одного git-коммита.
 
