@@ -339,7 +339,7 @@ The pattern works for city pickers, assignee fields, and command menus. For a sh
 A dropdown is a listbox under the surface, and a listbox has rules. The [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) spell them out, and these are the ones that break in real builds:
 
 → The trigger carries `aria-haspopup="listbox"` and `aria-expanded`, and both update on open and close
-→ Arrow keys move through options, `Enter` and `Space` select, and `Escape` closes the list
+→ Arrow keys move through the options, and `Escape` closes the list
 → Focus stays inside the open list, and returns to the trigger when it closes
 → The current option carries `aria-selected`, so a screen reader announces it
 
