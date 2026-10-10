@@ -1530,36 +1530,38 @@ export default function FreebieArticle({ slug }: Props) {
                   bodies goes stale the moment you save, and fsearch sidesteps it
                   by storing positions and reading the bytes live.
                 </p>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>What is measured</th>
-                      <th>Result (author&rsquo;s M4 Max, 7.7M files)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Find a file by name, whole disk</td>
-                      <td>p50 1.3 ms</td>
-                    </tr>
-                    <tr>
-                      <td>Search inside files</td>
-                      <td>p50 9 ms</td>
-                    </tr>
-                    <tr>
-                      <td>A new or deleted file appears</td>
-                      <td>about 0.1 s</td>
-                    </tr>
-                    <tr>
-                      <td>First crawl of the disk</td>
-                      <td>about 20 s, once</td>
-                    </tr>
-                    <tr>
-                      <td>Daemon memory</td>
-                      <td>30 to 135 MB</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div className="blog-fit-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>What is measured</th>
+                        <th>Result (author&rsquo;s M4 Max, 7.7M files)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Find a file by name, whole disk</td>
+                        <td>p50 1.3 ms</td>
+                      </tr>
+                      <tr>
+                        <td>Search inside files</td>
+                        <td>p50 9 ms</td>
+                      </tr>
+                      <tr>
+                        <td>A new or deleted file appears</td>
+                        <td>about 0.1 s</td>
+                      </tr>
+                      <tr>
+                        <td>First crawl of the disk</td>
+                        <td>about 20 s, once</td>
+                      </tr>
+                      <tr>
+                        <td>Daemon memory</td>
+                        <td>30 to 135 MB</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
                 <h2 id="the-query-language">The query language worth learning</h2>
                 <p>
