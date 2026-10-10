@@ -46,9 +46,9 @@ thumbImage: /blog/covers/thumbs/slider-ui-design.webp
 
 See full AI-made [sliders board at Pinterest](https://ru.pinterest.com/setproduct/slider-ai-design/). There is some stuff to really inspire you.
 
-A slider lets a user set a value by dragging a thumb along a track. Brightness, volume, price, opacity, rating, and playback all fit the same control. Unlike a plain [input field](https://www.setproduct.com/blog/input-ui-design), a slider shows the current value the moment it changes, which is why it works for ranges where "about right" beats "exact".
+A slider lets a user set a value by dragging a thumb along a track. Brightness, volume, price, and opacity all fit the same control. Unlike a plain [input field](https://www.setproduct.com/blog/input-ui-design), a slider shows the current value the moment it changes, which is why it works for ranges where "about right" beats "exact".
 
-A slider fails for the same reason it succeeds. Because the value moves with the thumb, precision is low by design. Age, phone numbers, and prices in a checkout form belong in a field, not a slider.
+A slider fails for the same reason it succeeds. Because the value moves with the thumb, precision is low by design. An age or a phone number belongs in a field, not a slider.
 
 This guide covers the slider anatomy and the single versus double thumb split. It then walks through snapping and precision, the accessibility rules that make a slider usable without a mouse, and the handoff details developers always ask for.
 
@@ -162,7 +162,7 @@ A slider is a range control, and the [WAI-ARIA Authoring Practices](https://www.
 
 ❹ Focus indicators wrap the thumb with a visible outline, not color alone.
 
-❺ A screen reader announces the name, current value, and range through `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`.
+❺ A screen reader announces the name and current value through `aria-valuenow` and `aria-valuemax`.
   
 
 Give the slider an accessible name with `aria-label` or a linked visible label. For a double-thumb range, each thumb needs its own name so the user knows which one they are moving.
