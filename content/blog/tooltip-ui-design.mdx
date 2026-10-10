@@ -40,9 +40,9 @@ thumbImage: /blog/covers/thumbs/tooltip-ui-design.webp
 
 
 
-**A tooltip is a small, contextual pop-up that displays on hover, focus, or tap**. Its primary function is to provide concise, supplementary information about an interface element without cluttering the main view. Think of it as a helpful whisper, not a loud announcement. When used correctly, tooltips enhance usability, clarify ambiguity, and guide users, contributing to a seamless and intuitive experience.
+**A tooltip is a small pop-up that appears on hover, focus, or tap**. It shows one short piece of information about the element underneath it. A good tooltip goes unnoticed. A bad one fires too fast and covers the very thing it was meant to explain.
 
-In this guide, we will deconstruct the tooltip component, exploring its anatomy, various states, theming options, and the critical UX best practices that separate a good tooltip from a great one.
+This guide walks through the tooltip anatomy and the states it moves between. From there it covers timing, then the accessibility rules that keep the component usable for keyboard and screen reader users. The rules come from patterns I hit while building UI kits, and from the ARIA spec that decides how a tooltip behaves.
 
 ![A tooltip is a small, contextual pop-up that displays on hover, focus, or tap](/blog/assets/tooltip-ui-design/img-1.webp)
 
@@ -134,6 +134,47 @@ _• Function_: Essential for accessibility. The tooltip must also appear on foc
 
 _• Description_: The trigger element is inactive, often greyed out. Hovering or focusing on it does not trigger a tooltip.  
 _• Function_: Prevents user confusion by making it clear that an inactive element has no associated information or function.
+
+## Timing and placement
+
+Timing decides whether a tooltip feels helpful or twitchy. These are the numbers I ship with most often:
+
+<div class="blog-fit-table">
+
+| Event | Value | Why |
+|---|---|---|
+| Show delay | 500ms | Below this, tooltips fire while the cursor just crosses the trigger |
+| Fade in | 150 to 200ms | Fast enough to feel attached to the cursor |
+| Fade out | 75 to 100ms | Quick dismiss once the pointer leaves |
+| Touch | tap to open, tap outside to close | There is no hover on a touch screen |
+
+</div>
+
+Placement logic should check the viewport before it renders. Put the tooltip on top by default, and flip it when the trigger sits near an edge. A tooltip that runs off-screen is worse than no tooltip at all.
+
+People keep asking how a tooltip differs from a popover, and where a toast fits. Here is the split I use:
+
+<div class="blog-fit-table">
+
+| Pattern | Holds | Dismisses on | Use when |
+|---|---|---|---|
+| Tooltip | One line of text | Pointer or focus leaving | Labeling an icon |
+| Popover | Forms, buttons, links | Click outside | The user has to act |
+| Toast | A status message | A timer | The system reports back |
+
+</div>
+
+## Accessibility
+
+Every tooltip that opens on hover must also open on focus. Link the trigger to the tooltip with `aria-describedby`, and give the tooltip a unique `id`. Without that link, a screen reader reads the icon and nothing else.
+
+The W3C [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) treats the tooltip as a description, not a dialog. Keep it to one short string, never put a focusable element inside it, and let `Escape` dismiss it.
+
+Three rules cover most breakage:
+
+→ Open on both hover and focus
+→ Close on `Escape` and on blur
+→ Never hide information a user needs to finish a task
 
 ## Theming
 
@@ -233,17 +274,9 @@ Sarah was scanning her email inbox during a hectic morning, trying to triage doz
 
 Ben was reviewing his loan application online, a significant financial decision. He came across the term "APR" next to the interest rate. He knew it was important but couldn't recall the exact formula. He hovered over the info icon, and a tooltip popped up, explaining: "Annual Percentage Rate: The yearly cost of your loan, including interest and fees." This clear, on-the-spot explanation demystified the fine print. He now understood the true cost and could confidently compare this offer with others, making an informed choice.
 
-#### **Scenario ⑤: The Online Shopper**‍
+#### **Scenario ⑤: The Project Manager**‍
 
-Chloe was excitedly buying a limited-edition art poster she knew would sell out fast. She went to select the size and hovered over the "L" option, her preferred choice. A tooltip immediately appeared: "Low stock: only 1 left!". This urgent warning was a powerful psychological trigger. It prompted her to add it to her cart instantly without second-guessing. She proceeded to checkout immediately, securing the item. The tooltip created a sense of urgency that directly led to a successful conversion.
-
-#### **Scenario ⑥: The Novice Coder**‍
-
-Anna was customizing her new code editor's interface to boost her productivity. She saw an icon of a pair of glasses in the toolbar but didn't know its function. She hovered over it, and a tooltip appeared: "Format Code (Ctrl+Shift+F)". This was a revelation. Not only did she learn the icon's purpose, but she also learned the keyboard shortcut. From then on, she used the shortcut constantly, saving her clicks and seconds with each use, which accumulated into a significant speed boost for her entire workflow.
-
-#### **Scenario ⑦: The Project Manager**‍
-
-Fatima was reviewing a project board in her team's management tool, preparing for a daily stand-up meeting. She saw a task card assigned to "S. Chen" but couldn't immediately recall the full name or role of the new team member. She hovered over the small circular avatar, and a tooltip revealed: "Sarah Chen | Frontend Developer". This instant context helped her understand the task's technical implications at a glance without having to click away and search the team directory.
+Fatima was reviewing a project board in her team's management tool, preparing for a daily stand-up. She saw a task card assigned to "S. Chen" but could not recall the full name or role of the new team member. She hovered over the small circular avatar, and a tooltip revealed: "Sarah Chen | Frontend Developer". This instant context helped her understand the task's technical implications at a glance without clicking away to search the team directory.
 
 ![Tooltip UI designed by AI](/blog/assets/tooltip-ui-design/img-8.webp)
 
