@@ -1,0 +1,545 @@
+# ----------------------------------------
+# Обзор активности посетителей
+# Аккаунт: Setproduct
+# Ресурс: Setproduct - GA4
+# ----------------------------------------
+#  
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Неделя N,Среднее время взаимодействия на активного пользователя
+0000,64.45454545454545
+0001,69.12857142857143
+0002,43.72093023255814
+0003,49.82857142857143
+0004,75.15584415584415
+0005,82.8974358974359
+0006,48.45263157894737
+0007,71.34117647058824
+0008,146.75324675324674
+0009,88.43137254901961
+0010,89.24137931034483
+0011,70.03157894736842
+0012,70.4888888888889
+
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Неделя N,Сеансы с взаимодействием на активного пользователя
+0000,1.0363636363636364
+0001,1
+0002,0.9069767441860465
+0003,0.9142857142857143
+0004,0.961038961038961
+0005,0.9743589743589743
+0006,0.8421052631578947
+0007,0.9294117647058824
+0008,1.0649350649350648
+0009,0.9901960784313726
+0010,1.0114942528735633
+0011,0.8947368421052632
+0012,0.9777777777777777
+
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Неделя N,Среднее время взаимодействия на сеанс
+0000,17.904040404040405
+0001,19.91358024691358
+0002,16.56387665198238
+0003,18.357894736842105
+0004,27.297169811320753
+0005,29.660550458715598
+0006,18.412
+0007,26.596491228070175
+0008,43.46153846153846
+0009,32.68115942028985
+0010,26.865051903114185
+0011,25.29657794676806
+0012,24.589147286821706
+
+#  
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Неделя N,Просмотры
+0000,223
+0001,276
+0002,264
+0003,212
+0004,272
+0005,293
+0006,275
+0007,273
+0008,323
+0009,365
+0010,347
+0011,359
+0012,348
+
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Неделя N,Количество событий
+0000,637
+0001,800
+0002,765
+0003,600
+0004,742
+0005,812
+0006,789
+0007,771
+0008,871
+0009,964
+0010,938
+0011,909
+0012,898
+
+#  
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Название события,Количество событий
+page_view,3830
+session_start,3114
+user_engagement,2074
+scroll,665
+click,247
+search_form_on_categories_submit,128
+contact_us_link_click,110
+form_start,64
+get_started_button_gumroad_on_products_c,57
+click_get_a_quote_button,52
+view_search_results,43
+search_form_submit,39
+form_submit,37
+share_button_facebook_click_on_articles,16
+first_visit,5
+twitter_click,4
+dribble_click,3
+linkedin_click,3
+pinterest_click,2
+medium_click,1
+reddit_click,1
+share_button_linkedin_click_on_articles,1
+
+#  
+# Дата начала: 20260712
+# Дата окончания: 20261009
+Заголовок страницы и класс экрана,Просмотры
+Data table UI design reference guide for 2026 | Setproduct Blog,251
+"Setproduct: AI UI inspiration, design tutorials, and UI kits",234
+Orion UI kit - data visualization and charts templates for Figma,203
+"UI/UX Design Articles, Career Guides, Tutorials & Startup Growth Insights",196
+Setproduct — a tech publication for founders and builders,151
+Tab UI design rules: When tabs work and when they fail | Setproduct Blog,121
+"Designing AI chat interfaces: Anatomy, patterns, pitfalls | Setproduct Blog",109
+Glassmorphism vs neumorphism vs liquid glass (2026) | Setproduct Blog,106
+"Explore a Wide Range of Figma Templates, Design Systems, and UI Kits",96
+Liquid glass design explained: a practical guide | Setproduct Blog,89
+"Dropdown UI design: Standard, multi-select, searchable, and more | Setproduct Blog",88
+Settings UI design: Why users can't find what they need | Setproduct Blog,85
+"Free Figma Templates: UI Design Resources for Web, Mobile & Desktop",84
+Make impactful Figma data visualization with Hyper Charts UI kit,82
+Submit a guest post to the Setproduct blog - Setproduct | Setproduct Blog,79
+Figma Charts & Infographics UI kit,73
+Designers and AI: why resistance can be a smart signal | Setproduct Blog,70
+Button Group UI Design Guide: Tips & Best Practices - Setproduct | Setproduct Blog,55
+Search Results,55
+M3E Canvas — Material 3 Expressive UI builder — code freebie,52
+"Claymorphism UI design: recipe, examples, AI guidelines | Setproduct Blog",48
+Material X Figma design system UI kit,47
+Eclipse UI Kit. Dashboard Template for Figma,43
+Dashboard Templates & UI Kits. Figma Dashboard Templates - Setproduct,42
+Filter UI design: Sidebar vs top bar vs inline patterns | Setproduct Blog,38
+Material You UI Kit for Figma. Material You Design System,35
+"Chip UI design: How chips, tags, and badges actually differ | Setproduct Blog",33
+Dashboard UI design: From KPIs to layouts that convert | Setproduct Blog,30
+How to find guest posting opportunities in 2026 - Setproduct | Setproduct Blog,30
+"Explore Figma Mobile UI kits, Templates and Design Systems",29
+"Neumorphism UI design recipe, examples, AI guidelines | Setproduct Blog",29
+Notifications UI design: Why most apps annoy users instead | Setproduct Blog,28
+Figma React UI Kit. Design React Template & Code,27
+Breadcrumbs UI design: When they help and when they hurt UX | Setproduct Blog,26
+Calendar vs date picker UI design: When to use each | Setproduct Blog,26
+Guest posting for web development companies - Setproduct | Setproduct Blog,26
+Nocra UI kit for Figma: AI product design system,26
+"Explore Figma Chart UI kits, Templates and Design Systems",25
+"Design system UI kit foundation: tokens, theming, style guides | Setproduct Blog",24
+"Input UI design: States, anatomy, and validation patterns | Setproduct Blog",24
+Steps UI design tutorial for better multi-step UX | Setproduct Blog,24
+Button UI design: Every detail that makes a button work | Setproduct Blog,23
+"Explore Figma Web UI kits, Templates and Design Systems",22
+"Radio button UI design, from anatomy to accessible groups | Setproduct Blog",22
+Pagination UI design: Offset vs keyset vs infinite scroll | Setproduct Blog,21
+"35 guest posting opportunities (sorted by niche + DR, 2026) | Setproduct Blog",20
+Vercel aesthetic: a complete guide to Blueprint Grid design | Setproduct Blog,20
+M3E Canvas — Material 3 Expressive UI builder — Figma freebie,19
+Nucleus Plus - Figma UI kit and Design system,19
+"Checkbox UI design: Anatomy, states, and the indeterminate one | Setproduct Blog",17
+Accordion UI design: When to use it instead of tabs | Setproduct Blog,15
+Figma iOS UI kit with 240 mobile app templates,15
+Retro and brutalist UI design: a 2026 field guide | Setproduct Blog,15
+Panda UI Kit. Design System for Figma,14
+Material Design System for Figma. UI Kit,13
+"Explore Figma UI kits Bundle, Templates and Design Systems",12
+"Guest blogging benefits for SEO, traffic, and authority - Setproduct | Setproduct Blog",12
+Toggle switch UI design: When to use it and when not to | Setproduct Blog,12
+Empty state UI design: turn blank screens into next steps | Setproduct Blog,11
+Form controls reference 2026 for product designers | Setproduct Blog,11
+"How to design dialogs: Error, Delete, Settings, Update | Setproduct Blog",11
+Figma Mobile X UI kit - iOS & Android app templates,10
+How to use AI inspiration for UI design (practical workflow) | Setproduct Blog,10
+Rome UI Kit. Figma Dashboard Library,10
+Stepper input UI design: The +/− quantity control done right | Setproduct Blog,10
+Tooltip UI design: Why most tooltips quietly hurt usability | Setproduct Blog,10
+UX/UI design agencies for SaaS product redesign | Ranking 2026 | Setproduct Blog,10
+"What is looksmax AI? How the apps work, what's legit, and what to avoid | Setproduct Blog",10
+Chinese AI models in 2026 compared by cost and quality | Setproduct Blog,9
+"Claymorphism landing page template, HTML + AI-editable",9
+Guest posts vs niche edits for stronger backlinks in 2026 - Setproduct | Setproduct Blog,9
+I built a landing template an AI agent can rebrand | Setproduct Blog,9
+"Command Palette UI Design, 8 States and 10 Teardowns | Setproduct Blog",8
+LiftKit: Open source design system for Figma & React | Setproduct Blog,8
+Nav templates — Figma freebie,8
+"Slider UI design: Single, range, anatomy, and accessibility | Setproduct Blog",8
+Top 7 AI web design agencies for high-performance websites | Setproduct Blog,8
+Top Dashboard Design Examples & Ideas. Dashboard Inspiration - Setproduct | Setproduct Blog,8
+Types of Dashboards. Main Categories - Setproduct | Setproduct Blog,8
+"App bar UI design: Vs nav bar, header, and toolbar | Setproduct Blog",7
+Avatar UI design: What to show when there's no photo | Setproduct Blog,7
+"Badge UI design: Notification, count, and status patterns | Setproduct Blog",7
+Material Desktop UI Kit. Dashboard Design System for Figma,7
+Why every AI startup looks the same | Setproduct Blog,7
+Zeus UI Kit - Figma website templates & landing page design system,7
+"16 AI agent UI design patterns for plans, approvals and undo | Setproduct Blog",6
+Appka mobile UI Kit — Figma templates & iOS design components,6
+How to freelance as a design student without losing your mind | Setproduct Blog,6
+Refunds policy - Setproduct UI kits and design systems,6
+Results for “badge” | Setproduct,6
+The solo founder tech stack in 2026: Figma to Vercel | Setproduct Blog,6
+9 real benefits of guest blogging in 2026 (traffic data + AI Overview case studies) | Setproduct Blog,5
+"Date picker UI design, from anatomy to accessibility | Setproduct Blog",5
+"How to pay for Claude Pro with USDT, USDC, or SOL in 4 steps | Setproduct Blog",5
+Posts by Connor Patterson | Setproduct,5
+Progressive onboarding with contextual help to boost activation | Setproduct Blog,5
+SaaS dashboard examples: how to study UI patterns in the AI era | Setproduct Blog,5
+The UX decisions that make or break small business websites | Setproduct Blog,5
+Why founders often overestimate their financial security | Setproduct Blog,5
+iOS Datepickers — tutorial,5
+App Bar UI design templates & tips — Figma freebie,4
+Are you wasting money on SaaS subscriptions? A practical guide | Setproduct Blog,4
+Best SaaS Dashboard Examples. Dashboard Design Templates for SaaS Companies - Setproduct | Setproduct Blog,4
+Best real estate app development companies listed: Pick the right one | Setproduct Blog,4
+Carousel UI design: When carousels actually work in 2026 | Setproduct Blog,4
+Designing a High-Converting Landing Page: Tips and Tricks | Setproduct Blog,4
+"Explore Figma Code UI kits, Libraries, Templates and Design Systems",4
+Figma iOS UI kit — Figma freebie,4
+Figma landing page templates - Web design library,4
+How to get your first users from Reddit without getting banned | Setproduct Blog,4
+Hyper charts — Figma freebie,4
+Neolex UI Kit. Figma Dashboard Design System,4
+Results for “material” | Setproduct,4
+RuneIcons — open source icon set for modern UIs — Figma freebie,4
+S8 Figma Design System. Dashboard UI Kit,4
+Start a SaaS business with no money – UX tips for solo founders | Setproduct Blog,4
+UX UI designer motivation crisis and how to reclaim passion | Setproduct Blog,4
+Website Template — Figma freebie,4
+Xela UI Kit for Figma. Mobile & Desktop Dashboard Templates,4
+iOS UI Kit: Figma Design System for Mobile Applications,4
+Android UI kit — Figma freebie,3
+Appka iOS UI kit — Figma freebie,3
+Avatar UI design templates & tips — Figma freebie,3
+Bento grid layout explained with grid math and 12 real examples | Setproduct Blog,3
+Best Braze alternatives for more flexible customer engagement | Setproduct Blog,3
+Best E-Commerce Dashboard Templates & Examples - Setproduct | Setproduct Blog,3
+Boost Prototype Dynamics with 8 Easy UI Design Tricks | Setproduct Blog,3
+Calendars & Date picker templates — Figma freebie,3
+Driver.js — product tours & onboarding — Figma freebie,3
+Eclipse UI kit — Figma freebie,3
+Figma React UI kit — Figma freebie,3
+Figma website templates UI kit,3
+Free iOS UI kit — Figma freebie,3
+Free invoice template for Figma — Figma freebie,3
+How to cancel Adobe subscription without fees. Escape now! | Setproduct Blog,3
+Image upload UI design: How iterative revisions lead to optimal form | Setproduct Blog,3
+"No KYC crypto card 2026, SolCard vs PayGate vs CardUpNow | Setproduct Blog",3
+Orion dataviz templates — Figma freebie,3
+Page Not Found | Setproduct,3
+Pricing page UI design that converts more visitors | Setproduct Blog,3
+Product Hunt vs Reddit vs HN vs X for launching a startup in 2026 | Setproduct Blog,3
+Rome UI kit lite — Figma freebie,3
+Setproduct licensing agreement,3
+The apps enshittification: Consequences of ignoring UX design principles | Setproduct Blog,3
+"The freelance designer's paperwork stack, fully paperless | Setproduct Blog",3
+What AI-generated UI can teach you about real design | Setproduct Blog,3
+iOS design system for Figma - UI kit with components,3
+jaredfromsubway MEV bot hack and its $7.7M loss | Setproduct Blog,3
+pdfcn — PDF viewer component for React — code freebie,3
+@sfinterface/numbers — rolling numbers for React — code freebie,2
+Amicro — micro-interactions for any landing page — code freebie,2
+Analytics Dashboard Templates. Figma Analytics Dashboards - Setproduct,2
+Best Analytics Dashboard Examples - Setproduct | Setproduct Blog,2
+Chart cards — Figma freebie,2
+Charts widgets dark & light — Figma freebie,2
+Dark charts UI kit — Figma freebie,2
+Design system starter — Figma freebie,2
+Designing Buttons with Figma and React Styled Components | Setproduct Blog,2
+Figma email templates — Figma freebie,2
+"Google news guest posts in 2026 (verified sites, real ROI) | Setproduct Blog",2
+How much does a guest post cost in 2026 (real pricing by DR) | Setproduct Blog,2
+Learn How to Design a Table UI in Figma: Single Component Tutorial | Setproduct Blog,2
+"Marketing dashboard UI design: Campaigns, ROI, and funnels | Setproduct Blog",2
+Mobile tables several themes — Figma freebie,2
+Navigation layout 4 samples — Figma freebie,2
+OE Figma Enterprise Design System,2
+Organic growth hacks to market SaaS with no money | Setproduct Blog,2
+Orion dark templates — Figma freebie,2
+Results for “calendar” | Setproduct,2
+Results for “date” | Setproduct,2
+Results for “mobile” | Setproduct,2
+Results for “tags” | Setproduct,2
+Search inputs — Figma freebie,2
+Setproduct happy customers. Testimonials and clients feedback,2
+"Setproduct：AI UI 灵感、设计教程和 UI 工具包 --- Setproduct: AI UI inspiration, design tutorials, and UI kits",2
+Top Creative Video Ideas: Tips for Innovative Video Production - Setproduct | Setproduct Blog,2
+Translate website using AI: Don't forget your PDFs | Setproduct Blog,2
+Xela UI kit for Figma & Flutter,2
+Xela UI kit for Figma & React,2
+13 red flags that prove a guest post site will waste your money | Setproduct Blog,1
+Admin Dashboard Templates - Setproduct,1
+Application error: a client-side exception has occurred,1
+Case Study: Transforming Figma UI Kit into iOS/Android App | Setproduct Blog,1
+Choosing the right computer vision consultancy engagement model | Setproduct Blog,1
+Creating 3D Animation Effect with HTML & JS: A Step-by-Step Guide | Setproduct Blog,1
+Creating Responsive Mobile Components in Figma: A Step-by-Step Guide | Setproduct Blog,1
+"Design system UI kit foundation: tokens, theming, style guides",1
+Driver.js — product tours & onboarding — code freebie,1
+Figma Android UI kit - mobile app templates,1
+Figma Design System: React Tables UI | Setproduct Blog,1
+Figma presentation templates & 3D scene builder - Levitate UI kit,1
+Financial Dashboard Templates - Setproduct,1
+"Hidden minutes slowing your business down, how to win them back | Setproduct Blog",1
+How I built a $50K-month Figma template store — then lost it | Setproduct Blog,1
+How to Start a SaaS Company with No Money - Setproduct | Setproduct Blog,1
+How to get cited in Google AI Overviews (GEO guide with real data) | Setproduct Blog,1
+Landing page optimization: 8 rules to lift conversion | Setproduct Blog,1
+Logo Design Ideas for a Lasting Visual Identity | Setproduct Blog,1
+M3E Canvas — Creador de interfaces de usuario expresivas con Material 3 — Obsequio para Figma,1
+Material UI styled — Figma freebie,1
+Material X Starter — Figma freebie,1
+Messenger app desktop template — Figma freebie,1
+Mobile-X UI kit — Figma freebie,1
+Nocra UI kit: The AI design system with templates | Setproduct Blog,1
+Orion UI 工具包 - Figma 的数据可视化和图表模板,1
+Panda dashboard template — Figma freebie,1
+Radar Chart — Figma freebie,1
+Responsive imagery cards — Figma freebie,1
+Results for “Radiobutton” | Setproduct,1
+Results for “bento” | Setproduct,1
+Results for “chat boat” | Setproduct,1
+Results for “chat” | Setproduct,1
+Results for “date picker” | Setproduct,1
+Schedule & Events template — Figma freebie,1
+"Search UI design guide, from autocomplete to no-results screens | Setproduct Blog",1
+Segment UI kit — Figma freebie,1
+Shopping layout for web app — Figma freebie,1
+"SolCard review, USDT virtual card fees, KYC, and alternatives | Setproduct Blog",1
+"Tabs UI design: Anatomy, UX, and use cases - A comprehensive guide | Setproduct Blog",1
+The Best Digital Marketing Strategies for Online Success - Setproduct | Setproduct Blog,1
+The Future of Graphic UI Design: Designers Concerned about AI's Impact | Setproduct Blog,1
+The underrated UX power of strikethrough text | Setproduct Blog,1
+Tips for Freelancers: Dealing with Challenging Clients & Revisions | Setproduct Blog,1
+"Top 15 Free Figma Resources: Design Systems, Apps, Icons & More | Setproduct Blog",1
+"Top 20 Design Resources for Startups, Developers, and Designers | Setproduct Blog",1
+UI/UX设计文章、职业指南、教程和创业公司发展洞察,1
+Use Thorswap to swap BTC to ETH without KYC on Thorchain | Setproduct Blog,1
+Why UI Kits are Essential: Ecommerce Redesign Case Study | Setproduct Blog,1
+Xela UI kit for Figma & Android Jetpack Compose,1
+Xela UI kit starter — Figma freebie,1
+Zeus UI free website template — Figma freebie,1
+iOS Datepickers — Figma freebie,1
+
+# Тенденции среди активных пользователей
+# Дата начала: 20260712
+# Дата окончания: 20261009
+День N,30 дней,7 дней,1 день
+0000,344,77,3
+0001,346,80,13
+0002,349,73,9
+0003,344,67,10
+0004,336,63,12
+0005,326,58,9
+0006,316,55,4
+0007,307,57,5
+0008,309,63,18
+0009,309,65,14
+0010,310,67,14
+0011,301,71,16
+0012,291,73,13
+0013,280,70,4
+0014,271,72,5
+0015,288,83,26
+0016,295,86,17
+0017,295,89,17
+0018,295,88,16
+0019,289,85,11
+0020,281,86,5
+0021,279,92,10
+0022,281,75,9
+0023,288,74,16
+0024,290,71,13
+0025,282,66,10
+0026,281,69,13
+0027,272,70,6
+0028,265,63,2
+0029,269,69,15
+0030,279,69,14
+0031,284,77,22
+0032,287,82,18
+0033,288,79,11
+0034,279,77,4
+0035,277,80,5
+0036,277,71,6
+0037,288,76,20
+0038,290,75,21
+0039,298,79,19
+0040,295,77,13
+0041,287,78,4
+0042,281,78,6
+0043,296,93,22
+0044,306,92,16
+0045,298,89,19
+0046,294,79,12
+0047,297,91,22
+0048,291,95,8
+0049,289,95,6
+0050,297,89,19
+0051,302,90,18
+0052,310,86,14
+0053,313,95,20
+0054,311,86,11
+0055,307,85,6
+0056,296,80,3
+0057,309,81,19
+0058,317,76,11
+0059,318,79,18
+0060,324,76,20
+0061,313,75,11
+0062,305,77,8
+0063,301,80,6
+0064,315,78,16
+0065,327,85,20
+0066,341,88,19
+0067,345,98,26
+0068,338,103,15
+0069,328,102,8
+0070,329,104,11
+0071,334,104,17
+0072,336,97,16
+0073,339,100,21
+0074,337,91,14
+0075,333,86,10
+0076,333,87,10
+0077,322,83,6
+0078,324,79,13
+0079,333,83,20
+0080,339,86,23
+0081,337,89,19
+0082,341,97,16
+0083,331,95,6
+0084,329,98,9
+0085,336,99,15
+0086,346,98,18
+0087,347,95,22
+0088,352,91,18
+0089,355,94,21
+
+#  
+# Дата начала: 20260712
+# Дата окончания: 20261009
+День N,Активные пользователи за день/месяц,Активные пользователи за день/неделю,Активные пользователи за неделю/месяц
+0000,0.00872093023255814,0.03896103896103896,0.2238372093023256
+0001,0.03757225433526012,0.1625,0.23121387283236994
+0002,0.025787965616045846,0.1232876712328767,0.20916905444126074
+0003,0.029069767441860465,0.14925373134328357,0.19476744186046513
+0004,0.03571428571428571,0.19047619047619047,0.1875
+0005,0.027607361963190184,0.15517241379310345,0.17791411042944785
+0006,0.012658227848101266,0.07272727272727272,0.17405063291139242
+0007,0.016286644951140065,0.08771929824561403,0.18566775244299674
+0008,0.05825242718446602,0.2857142857142857,0.20388349514563106
+0009,0.045307443365695796,0.2153846153846154,0.21035598705501618
+0010,0.04516129032258064,0.208955223880597,0.2161290322580645
+0011,0.053156146179401995,0.22535211267605634,0.23588039867109634
+0012,0.044673539518900345,0.1780821917808219,0.2508591065292096
+0013,0.014285714285714285,0.05714285714285714,0.25
+0014,0.01845018450184502,0.06944444444444445,0.2656826568265683
+0015,0.09027777777777778,0.3132530120481928,0.2881944444444444
+0016,0.0576271186440678,0.19767441860465115,0.29152542372881357
+0017,0.0576271186440678,0.19101123595505617,0.3016949152542373
+0018,0.05423728813559322,0.18181818181818182,0.2983050847457627
+0019,0.03806228373702422,0.12941176470588237,0.29411764705882354
+0020,0.017793594306049824,0.05813953488372093,0.30604982206405695
+0021,0.035842293906810034,0.10869565217391304,0.32974910394265233
+0022,0.03202846975088968,0.12,0.2669039145907473
+0023,0.05555555555555555,0.21621621621621623,0.2569444444444444
+0024,0.04482758620689655,0.18309859154929578,0.24482758620689654
+0025,0.03546099290780142,0.15151515151515152,0.23404255319148937
+0026,0.046263345195729534,0.18840579710144928,0.24555160142348753
+0027,0.022058823529411766,0.08571428571428572,0.25735294117647056
+0028,0.007547169811320755,0.031746031746031744,0.23773584905660378
+0029,0.055762081784386616,0.21739130434782608,0.25650557620817843
+0030,0.05017921146953405,0.2028985507246377,0.24731182795698925
+0031,0.07746478873239436,0.2857142857142857,0.2711267605633803
+0032,0.0627177700348432,0.21951219512195122,0.2857142857142857
+0033,0.03819444444444445,0.13924050632911392,0.2743055555555556
+0034,0.014336917562724014,0.05194805194805195,0.27598566308243727
+0035,0.018050541516245487,0.0625,0.2888086642599278
+0036,0.021660649819494584,0.08450704225352113,0.2563176895306859
+0037,0.06944444444444445,0.2631578947368421,0.2638888888888889
+0038,0.07241379310344828,0.28,0.25862068965517243
+0039,0.06375838926174497,0.24050632911392406,0.2651006711409396
+0040,0.04406779661016949,0.16883116883116883,0.26101694915254237
+0041,0.013937282229965157,0.05128205128205128,0.27177700348432055
+0042,0.021352313167259787,0.07692307692307693,0.2775800711743772
+0043,0.07432432432432433,0.23655913978494625,0.3141891891891892
+0044,0.05228758169934641,0.17391304347826086,0.3006535947712418
+0045,0.06375838926174497,0.21348314606741572,0.2986577181208054
+0046,0.04081632653061224,0.1518987341772152,0.2687074829931973
+0047,0.07407407407407407,0.24175824175824176,0.3063973063973064
+0048,0.027491408934707903,0.08421052631578947,0.32646048109965636
+0049,0.020761245674740483,0.06315789473684211,0.328719723183391
+0050,0.06397306397306397,0.21348314606741572,0.2996632996632997
+0051,0.059602649006622516,0.2,0.2980132450331126
+0052,0.04516129032258064,0.16279069767441862,0.27741935483870966
+0053,0.06389776357827476,0.21052631578947367,0.3035143769968051
+0054,0.03536977491961415,0.12790697674418605,0.2765273311897106
+0055,0.019543973941368076,0.07058823529411765,0.2768729641693811
+0056,0.010135135135135136,0.0375,0.2702702702702703
+0057,0.061488673139158574,0.2345679012345679,0.2621359223300971
+0058,0.03470031545741325,0.14473684210526316,0.23974763406940064
+0059,0.05660377358490566,0.22784810126582278,0.24842767295597484
+0060,0.06172839506172839,0.2631578947368421,0.2345679012345679
+0061,0.03514376996805112,0.14666666666666667,0.23961661341853036
+0062,0.02622950819672131,0.1038961038961039,0.25245901639344265
+0063,0.019933554817275746,0.075,0.26578073089701
+0064,0.050793650793650794,0.20512820512820512,0.24761904761904763
+0065,0.06116207951070336,0.23529411764705882,0.2599388379204893
+0066,0.05571847507331378,0.2159090909090909,0.25806451612903225
+0067,0.07536231884057971,0.2653061224489796,0.28405797101449276
+0068,0.04437869822485207,0.14563106796116504,0.3047337278106509
+0069,0.024390243902439025,0.0784313725490196,0.31097560975609756
+0070,0.03343465045592705,0.10576923076923077,0.3161094224924012
+0071,0.05089820359281437,0.16346153846153846,0.31137724550898205
+0072,0.047619047619047616,0.16494845360824742,0.28869047619047616
+0073,0.061946902654867256,0.21,0.2949852507374631
+0074,0.04154302670623145,0.15384615384615385,0.27002967359050445
+0075,0.03003003003003003,0.11627906976744186,0.25825825825825827
+0076,0.03003003003003003,0.11494252873563218,0.26126126126126126
+0077,0.018633540372670808,0.07228915662650602,0.2577639751552795
+0078,0.040123456790123455,0.16455696202531644,0.24382716049382716
+0079,0.06006006006006006,0.24096385542168675,0.24924924924924924
+0080,0.06784660766961652,0.26744186046511625,0.2536873156342183
+0081,0.05637982195845697,0.21348314606741572,0.26409495548961426
+0082,0.0469208211143695,0.16494845360824742,0.2844574780058651
+0083,0.01812688821752266,0.06315789473684211,0.28700906344410876
+0084,0.02735562310030395,0.09183673469387756,0.2978723404255319
+0085,0.044642857142857144,0.15151515151515152,0.29464285714285715
+0086,0.05202312138728324,0.1836734693877551,0.2832369942196532
+0087,0.06340057636887608,0.23157894736842105,0.2737752161383285
+0088,0.05113636363636364,0.1978021978021978,0.2585227272727273
+0089,0.059154929577464786,0.22340425531914893,0.2647887323943662
