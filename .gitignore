@@ -7,3 +7,7 @@ npm-debug.log*
 # OS / build artifacts
 .DS_Store
 *.tsbuildinfo
+
+# Regenerable site health reports (scripts/check-site.mjs)
+scripts/report.json
+scripts/report.md
