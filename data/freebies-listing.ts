@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "fsearch",
+    title: "FSearch — whole-disk file search for macOS",
+    description:
+      "Find any file on your Mac in about a millisecond, typos included, and search inside text files. Whole-disk index in Rust, MIT licensed, one small daemon.",
+    thumb: "/freebies/thumbs/freebie-fsearch.webp",
+    image: "/freebies/freebie-fsearch.gif",
+    category: "Code",
+    previewHref: "/freebies/fsearch",
+    duplicateHref: "https://github.com/noahdunnagan/fsearch",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "sfinterface-numbers",
     title: "@sfinterface/numbers — rolling numbers for React",
     description:
@@ -86,20 +100,6 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     category: "Code",
     previewHref: "/freebies/driver-js",
     duplicateHref: "https://github.com/nilbuild/driver.js",
-    isFree: true,
-    ctaLabel: "View on GitHub ★",
-    menuCtaLabel: "Get the code",
-  },
-  {
-    slug: "fsearch",
-    title: "FSearch — whole-disk file search for macOS",
-    description:
-      "Find any file on your Mac in about a millisecond, typos included, and search inside text files. Whole-disk index in Rust, MIT licensed, one small daemon.",
-    thumb: "/freebies/thumbs/freebie-fsearch.webp",
-    image: "/freebies/freebie-fsearch.gif",
-    category: "Code",
-    previewHref: "/freebies/fsearch",
-    duplicateHref: "https://github.com/noahdunnagan/fsearch",
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
