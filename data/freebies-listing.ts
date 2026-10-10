@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "rea",
+    title: "REA — reverse engineering MCP for AI agents",
+    description:
+      "Give your AI agent an MCP server that reverse engineers any app: native binaries, Electron, .NET, APKs, and websites. Analysis runs locally, MIT licensed.",
+    thumb: "/freebies/thumbs/freebie-rea.webp",
+    image: "/freebies/freebie-rea.webp",
+    category: "Code",
+    previewHref: "/freebies/rea",
+    duplicateHref: "https://github.com/morluto/rea",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "fsearch",
     title: "FSearch — whole-disk file search for macOS",
     description:
