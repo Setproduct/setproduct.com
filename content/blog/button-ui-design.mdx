@@ -47,7 +47,7 @@ inlineCta:
 - Focus-visible is mandatory, and button text contrast starts at 4.5:1.
 - Every button needs the full state set: idle, hover, focus, active, loading, disabled.
 
-{/* IMAGE NEW-1: схема, button vs link vs chip vs icon button в одном ряду */}
+{/* IMAGE NEW-1: схема, button vs link vs chip vs toggle vs icon button в одном ряду */}
 
 ## Button vs link vs chip vs icon button
 
@@ -67,7 +67,7 @@ The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and 
 
 ## Buttons anatomy
 
-States matter because they tell the user what a button is doing right now. Visual cues let people read the purpose and status of a control at a glance, then act.
+A button is a container with a label and, sometimes, an icon. The states are what make it feel alive, and they tell the user what a button is doing right now. Visual cues let people read the purpose and status of a control at a glance, then act.
 
 ❶ **Default.** The idle state. Normal appearance, ready to start an action.
 
@@ -98,7 +98,7 @@ Buttons fall into four visual types, and the type signals how important the acti
 
 ![Button example illustrating button shadows](/blog/assets/button-ui-design/img-3.svg)
 
-[Live buttons](https://react.setproduct.com/components/button) from Figma React UI kit
+Live buttons from the [Figma React UI kit](https://www.setproduct.com/templates/react-ui-kit)
 
 Adding a shadow to a button when designing an app helps to create visual hierarchy and focus. It is a way to make the element stand out from the rest of the elements on the page and draw the user's attention.
 
@@ -112,9 +112,9 @@ Variants of native iOS buttons. Made with [Figma iOS kit](https://www.setproduct
 
 Icons inside of buttons can be used to help quickly communicate what action the element will take. They can be used to help users quickly and easily identify what will happen when they click on the button.
 
-For an instance: left icons are typically used to indicate a "_back_" or "_previous_" action, while right icons are utilized for moving "_forward_" or "_next_".
+For instance: left icons are typically used to indicate a "_back_" or "_previous_" action, while right icons are utilized for moving "_forward_" or "_next_".
 
-Icons can indicate a change in state when a button is clicked. For example, a "_play/pause_" icon demonstrates whether a video is in play or paused mode. Either, the icon can be changed dynamically to a "_checkbox_" to reflect the state of completion.
+Icons can indicate a change in state when a button is clicked. For example, a "_play/pause_" icon demonstrates whether a video is in play or paused mode. Or the icon can change to a _checkbox_ to reflect completion.
 
 ## Icon button
 
@@ -138,12 +138,10 @@ Buttons types included in [Figma React UI kit](https://www.setproduct.com/templa
 
 ### Corner radius
 
-By varying a radius from **0px** to **99px** you can go from a Square Button up to a Pill Button.
-
-The corner radius of a button in UI design affects the visual appearance of the element, as well as the user's perception of the interface. By varying a radius from _0px_ to _99px_ you can go from _Square Button_ up to _Pill Button:  
+The corner radius of a button in UI design affects the visual appearance of the element, as well as the user's perception of the interface. By varying a radius from _0px_ to _99px_ you can go from _Square Button_ up to _Pill Button:
 _
 
--   **0px** radius will create a sharp, angular look that is more suitable for an enterprise interface. This will help create a clean, minimal design that is easy to percept.
+-   **0px** radius will create a sharp, angular look that is more suitable for an enterprise interface. This will help create a clean, minimal design that is easy to perceive.
 
 -   **8px** radius adds a bit of visual interest to the button and allows it to stand out from the other components. Thus, for users it's easier to find and interact with the button.  
     
@@ -158,7 +156,7 @@ _
 
 [Cool buttons](https://www.figma.com/file/c4iGv9XKGaMyLWWB80D8sT/Mobile-X-design-system-preview?node-id=507%3A59048&t=VNmkZVZ3gqMUMjxL-1) from Mobile-X UI kit
 
-By adding a subtle inner shadow to a button, it can make the component appear to be more 3-dimensional and tactile. This can make the element more visually engaging and interactive to a the user.
+By adding a subtle inner shadow to a button, it can make the component appear to be more 3-dimensional and tactile. This can make the element more visually engaging and interactive to the user.
 
 Inner shadow is a great way to add depth and dimension especially in dark themes, making the whole product experience smooth and enjoyable.
 
@@ -168,7 +166,7 @@ Such a visual trick embedded into a button provides a subtle visual cue to the u
 
 Gradients are often used to create visual continuity with important elements in the UI, providing cohesion. By adding a gradient to the button background, a designer can help create a sense of movement and direction in an app, maintain a visual cue to the user.
 
-Used properly and consistently, gradients can help create a visually pleasing and brandy theme for a button UI design.
+Used properly and consistently, gradients can help create a visually pleasing and branded theme for a button UI design.
 
   
 
@@ -211,7 +209,7 @@ The size of a button in UI design is important because it affects its usability 
 
 -   **Large buttons** to emphasize the importance of an action. They are more visible and eye-catching; great for drawing attention to a key activity.
 
--   **XL buttons** to draw max attention. They are the most visually prominent and are great for guiding users' sight and focus on what's matter most for a business.
+-   **XL buttons** to draw max attention. They are the most visually prominent and are great for guiding users' sight and focus on what matters most for a business.
 
 ## Loading state
 
@@ -223,7 +221,7 @@ Using a loading icon for a **Button in UI design** is a convenient way to indica
 
 Loading state provides an indication that the app is working in response to the user's click and can prevent confusion. The user knows not to take any further action until the loading icon disappears.
 
-Furthermore, it is a great way to add a sense of progress and assurance that the user's request is executed.  
+It also adds a sense of progress and assurance that the request is being handled.
 
 ## Split button
 
@@ -233,7 +231,7 @@ Furthermore, it is a great way to add a sense of progress and assurance that the
 
 Split button is the UI control utilized to offer two or more distinct actions within a single item. It combines the functionality of a button and a drop-down menu.  
   
-Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits will when there are multiple actions that can be taken within a single control. When the menu opens a full panel instead, that is a [dialog pattern](/blog/how-to-design-dialogs), not a menu.
+Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits well when there are multiple actions that can be taken within a single control. When the menu opens a full panel instead, that is a [dialog pattern](/blog/how-to-design-dialogs), not a menu.
 
 ## Button with [Badge](/blog/badge-ui-design)
 
@@ -333,3 +331,7 @@ Raise the target to 44×44, keep the primary action away from the screen edge, a
 A button looks simple and carries a lot of weight. Get the control choice right, cover the full state set, and respect the WCAG minimums, and the rest of the interface feels calmer. Start with the decision table above, then run the checklist before you ship.
 
 ## Button inspiration
+
+Looking at how other teams solve the same problem is the fastest way to find what you are missing. A strong gallery shows the full range of button style. It covers filled and ghost buttons, plus icon-only controls. It also shows how states read in both themes. Collect ten you like before you draw your own, then note what each one does that yours does not.
+
+{/* IMAGE NEW-5: полоса из 4 разных кнопок, светлая и тёмная тема, разные типы */}
