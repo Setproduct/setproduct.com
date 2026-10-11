@@ -15,14 +15,15 @@
 
 ## Итог одной строкой
 
-Каннибализация подтверждена не «тремя постами на один интент», а точнее:
-**два разных интента смешаны в одной выдаче**. `button-group-guide` держит
-интент «button group» (группа кнопок), `button-ui-design` держит интент
-«button ui design / анатомия кнопки». Третий «конкурент»,
-`radio-button-ui-design`, к кнопке-действию отношения не имеет, это radio
-как form control, и он уже ушёл в form-controls кластер. Четвёртый пост,
-`figma-to-react-buttons`, дублирует пиллар по теме «кнопки в Figma и React»
-и подлежит 301.
+**Обновлено 2026-10-11 по��ле данных «запрос → страница» из GSC:**
+каннибализация между пилларом и сателлитом **НЕ подтвердилась** (см.
+раздел 12). Интенты разделены чисто: `button-group-guide` единолично
+держит «group» (5 660 показов против 1 у пиллара), `button-ui-design`
+держит «button ui / типы кнопок», `radio-button-ui-design` держит только
+«radio» (в «button»-запросах без radio всего 10 осмысленных показов).
+Четвёртый пост, `figma-to-react-buttons`, дублировал пиллар и ушёл в 301.
+Реальная проблема кластера — не борьба страниц, а нулевой CTR на
+собственных топ-запросах (потолок сниппета).
 
 Изменения этой задачи: роли страниц, заголовки, перелинковка, 301.
 Переписывание тел�� пиллара в reference-style выносится отдельным шагом
@@ -266,7 +267,10 @@ FAQ, нет чек-листа. Чтобы кластер реально конс
 - Чек-лист «before you ship».
 - Снять выдуманные/несогласованные усилители, оставить проверяемые ссылки.
 
-Это отдельная задача на отдельном OK. В текущий заход не входит.
+**План Фазы B готов отдельным файлом:** [`plans/button-pillar-phase-b-2026-10.md`](button-pillar-phase-b-2026-10.md)
+(структура, лид, TL;DR, decision-таблица, WCAG 2.2, FAQ, чек-лист, снятие
+дефектов, image-плейсхолдеры). Ждёт отдельного OK. Секция `## Button Group`
+по итогам раздела 12 сохраняется (каннибализация не подтвердилась).
 
 ---
 
@@ -357,7 +361,170 @@ Baseline (6 мес., зафиксировать до правок):
   трафика не имел (в GSC не фигурировал), восстановление не требуется.
 - Редирект `permanent: true` в Next.js отдаёт 308, для Google это
   эквивалент 301, менять не нужно.
-- Данные «запрос → страница» из GSC не получены; ждём выгрузку по трём
-  URL (`button-ui-design`, `button-group-guide`, `radio-button-ui-design`).
+- Данные «запрос → страница» получены 2026-10-11 и разобраны (раздел 12).
 
 Пункты 1–3 раздела 10 закрыты владельцем.
+
+---
+
+## 12. Анализ GSC «запрос → страница» (2026-10-11)
+
+Источники (окно 6 месяцев, выгрузки по каждой странице отдельно):
+`plans/button-ui-design-setproduct.com-Performance-on-Search-2026-10-11/button ui Запросы.csv`,
+`plans/button-group-setproduct.com-Performance-on-Search-2026-10-11/btn group Запросы.csv`,
+`plans/radio-button-setproduct.com-Performance-on-Search-2026-10-11/radio Запросы.csv`.
+
+### 12.1. Топ-15 запросов по показам (a)
+
+`button-ui-design` (578 строк):
+
+| Запрос | Клики | Показы | CTR | Позиция |
+|---|---|---|---|---|
+| button ui templates | 0 | 620 | 0% | 14.33 |
+| ui buttons | 0 | 266 | 0% | 15.58 |
+| button ui | 0 | 265 | 0% | 17.90 |
+| ui button | 0 | 177 | 0% | 17.41 |
+| icon button ui | 0 | 141 | 0% | 2.70 |
+| button ui design | 4 | 124 | 3.23% | 16.23 |
+| buttons ui | 2 | 120 | 1.67% | 17.51 |
+| button types ui | 0 | 119 | 0% | 2.05 |
+| types of buttons ui | 0 | 118 | 0% | 9.25 |
+| what are ui buttons | 0 | 109 | 0% | 9.59 |
+| ui buttons meaning | 0 | 105 | 0% | 9.75 |
+| ui button design | 0 | 95 | 0% | 21.24 |
+| button design best practices ui ux | 0 | 92 | 0% | 15.57 |
+| user interface buttons | 0 | 76 | 0% | 16.36 |
+| ui interface with interactable buttons | 0 | 72 | 0% | 5.39 |
+
+`button-group-guide` (365 строк):
+
+| Запрос | Клики | Показы | CTR | Позиция |
+|---|---|---|---|---|
+| button group | 2 | 741 | 0.27% | 10.55 |
+| button group ui | 7 | 531 | 1.32% | 5.97 |
+| button group component | 0 | 168 | 0% | 14.15 |
+| group button | 0 | 162 | 0% | 5.70 |
+| button groups | 2 | 142 | 1.41% | 8.07 |
+| fast angular button group | 0 | 129 | 0% | 19.02 |
+| button group design | 8 | 121 | 6.61% | 6.83 |
+| best terminology for buttons moz | 0 | 114 | 0% | 17.84 |
+| group ui | 0 | 105 | 0% | 8.10 |
+| javascript button group with rich ui | 0 | 99 | 0% | 7.53 |
+| javascript button group design | 0 | 97 | 0% | 7.51 |
+| high performance angular button group | 0 | 88 | 0% | 13.17 |
+| angular button group with rich ui | 0 | 86 | 0% | 10.98 |
+| multiple buttons ui design | 2 | 79 | 2.53% | 5.04 |
+| best javascript button group | 0 | 78 | 0% | 15.12 |
+
+`radio-button-ui-design` (252 строки):
+
+| Запрос | Клики | Показы | CTR | Позиция |
+|---|---|---|---|---|
+| radio button ui | 0 | 704 | 0% | 7.69 |
+| radio button design inspiration | 0 | 227 | 0% | 8.12 |
+| radio button ui design | 0 | 171 | 0% | 6.80 |
+| ui radio button | 0 | 166 | 0% | 8.14 |
+| radio card ui | 0 | 153 | 0% | 5.27 |
+| radio buttons ui | 0 | 152 | 0% | 7.62 |
+| radio button design | 1 | 128 | 0.78% | 9.74 |
+| radio button states | 0 | 97 | 0% | 5.00 |
+| radio cards ui | 3 | 89 | 3.37% | 5.09 |
+| radio button cards | 1 | 88 | 1.14% | 6.90 |
+| radio ui design | 0 | 67 | 0% | 5.78 |
+| radio group ui | 0 | 65 | 0% | 5.12 |
+| radio button card | 1 | 51 | 1.96% | 7.45 |
+| radio box ui | 0 | 51 | 0% | 7.76 |
+| what does a radio button look like | 0 | 48 | 0% | 8.62 |
+
+### 12.2. Пересечения запросов между страницами (b)
+
+В сырых данных 87 пересечений (запрос показан двум и более страницам),
+53 из них с заметным объёмом. Ключевые (формат: показы/клики/позиц��я):
+
+| Запрос | button-ui-design | button-group-guide | radio-button-ui-design |
+|---|---|---|---|
+| button group | — | 741 / 2 / 10.55 | 1 / 0 / 10 |
+| button ui templates | 620 / 0 / 14.33 | — | 3 / 0 / 9 |
+| ui buttons | 266 / 0 / 15.58 | 1 / 0 / 3 | — |
+| ui radio button | 1 / 0 / 5 | — | 166 / 0 / 8.14 |
+| button types ui | 119 / 0 / 2.05 | 3 / 0 / 1 | — |
+| types of buttons ui | 118 / 0 / 9.25 | 1 / 0 / 50 | — |
+| ui buttons meaning | 105 / 0 / 9.75 | 1 / 0 / 2 | — |
+| button design best practices ui ux | 92 / 0 / 15.57 | 3 / 0 / 11 | — |
+| multiple buttons ui design | 2 / 0 / 41 | 79 / 2 / 5.04 | — |
+| button | 64 / 0 / 1.80 | 14 / 0 / 39.14 | — |
+| ui button types | 51 / 0 / 13.55 | 5 / 0 / 37 | — |
+| button design | 46 / 0 / 43.02 | 1 / 0 / 13 | — |
+| type of button ui | 45 / 0 / 13.07 | 4 / 0 / 48 | — |
+| button ui ux choices | 44 / 0 / 18.18 | 22 / 0 / 14.77 | 2 / 0 / 4.5 |
+| button hierarchy ui | 3 / 0 / 30.67 | 42 / 0 / 3.55 | — |
+| type of buttons ui | 40 / 0 / 7.12 | 3 / 0 / 42.33 | — |
+| best practices for designing effective ui buttons ux design | 4 / 0 / 15.5 | 39 / 0 / 8.9 | — |
+| javascript split button with rich ui | 1 / 0 / 97 | 34 / 0 / 29.38 | — |
+| best javascript split button in the market | 1 / 0 / 90 | 29 / 0 / 39.86 | — |
+| multiple button ui | 1 / 0 / 39 | 21 / 0 / 9 | — |
+| multi action button ui | 1 / 0 / 39 | 13 / 0 / 8.31 | — |
+| how to design effective ui buttons best practices | 5 / 0 / 15 | 11 / 0 / 8.82 | — |
+| multiple action buttons ux | 3 / 0 / 42 | 10 / 0 / 12.6 | — |
+| select button ui | 9 / 0 / 23.89 | 6 / 0 / 14.83 | — |
+| double button ui | 1 / 0 / 16 | 8 / 0 / 11.62 | — |
+| button guide | 6 / 0 / 9.33 | 2 / 0 / 5.5 | — |
+| button selection | 1 / 0 / 3 | 6 / 0 / 13.33 | — |
+| button hierarchy | 1 / 0 / 75 | 6 / 0 / 14.33 | — |
+
+Строгое «плечо к плечу» (обе страницы ≥5 показов по одному запросу) —
+всего 5 запросов:
+
+| Запрос | button-ui-design | button-group-guide | Выше |
+|---|---|---|---|
+| button | 64 / 1.80 | 14 / 39.14 | пиллар |
+| ui button types | 51 / 13.55 | 5 / 37 | пиллар |
+| button ui ux choices | 44 / 18.18 | 22 / 14.77 | сателлит |
+| select button ui | 9 / 23.89 | 6 / 14.83 | сателлит |
+| how to design effective ui buttons best practices | 5 / 15 | 11 / 8.82 | сателлит |
+
+### 12.3. Ответы J1 и J2 (c)
+
+**J1. Показы `button-ui-design` по запросам со словом «group»:** практически
+нет. Единственное совпадение — `swiftui button group` (показ 1, клики 0,
+позиция 2). Суммарные показы по всем «group»-запросам: пиллар **1**,
+сателлит **5 660**, radio **101**. Интент «button group» полностью у сателлита.
+
+**J2. Показы `radio-button-ui-design` по «button…» без «radio»:** практически
+нет. Суммарно 43 показа по 14 запросам, и это в основном омонимы «radio»:
+`radial buttons` (15), `radial button` (9), `radial button ui`, `radial dial
+button`, `radial selection button`, `stereo buttons`. Собственно кнопочных
+без radio всего четыре и все микроскопические: `option button ui` (4, поз. 1.75),
+`button ui templates` (3, поз. 9), `button ui ux choices` (2, поз. 4.5),
+`accessible buttons` (1, поз. 1). Конкуренции пиллару нет.
+
+### 12.4. Вывод (d)
+
+**Каннибализация НЕ подтверждена.** Интенты разделены чисто:
+`button-group-guide` единолично держит «group» (5 660 против 1 показа у
+пиллара), `button-ui-design` держит «button ui / типы кнопок» (по `button`,
+`ui buttons`, `button types ui`, `ui button types` он первый с позициями
+1.8–9.25 против провальных 37–50 у сателлита), `radio-button-ui-design`
+держит только «radio». Пересечение ограничено 5 запросами, где у каждой
+страницы свой набор сильных запросов. Канонический владелец спорных
+запросов: `button` и `ui button types` — пиллар `button-ui-design`;
+`button ui ux choices`, `select button ui`, `how to design effective ui
+buttons best practices` — сателлит `button-group-guide`. Реальная проблема
+кластера — нулевой CTR на собственных топ-запросах (`button ui templates`
+620 показов / 0 кликов; `radio button ui` 704 / 0; `button group` 741 / 2),
+то есть потолок сниппета, а не борьба страниц.
+
+### 12.5. Что меняем
+
+Каннибализация не подтвердилась, поэтому секцию `## Button Group` в
+пилларе **не сокращаем** — по «group»-запросам пиллар не показывается,
+вреда нет. Предложение (жду OK, без правок MDX):
+
+1. **Усилить перелинковку** (список D3 аудита): по одной контекстной ссылке
+   на пиллар из `how-to-design-dialogs`, `pricing-ui-design`,
+   `chip-ui-design`, `toggle-switch-ui-design`. Отдельный коммит `content:`.
+2. **Сниппет-фикс в рамках Фазы B**: answer-first лид, TL;DR и
+   decision-таблица бьют ровно в нулевой CTR по `button ui templates` /
+   `ui buttons` (позиции 14–17 при 0 кликов).
+3. **Сателлиту** `button-group-guide` — отдельная задача по сниппету под
+   `button group` (741 показ, позиция 10.55, CTR 0.27%) вне объёма Фазы B.
