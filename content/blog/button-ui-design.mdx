@@ -1,8 +1,8 @@
 ---
 title: 'Button UI design guide from anatomy to every interactive state'
 description: >-
-  A button is small, but a bad one breaks the flow. Learn the anatomy, the
-  states, and the theming rules behind buttons that feel right.
+  What are UI buttons and what types of buttons exist? Anatomy and theming for
+  icon buttons and every state, plus a WCAG 2.2 accessibility checklist.
 slug: button-ui-design
 date: '2023-01-31'
 author: Roman Kamushken
@@ -24,13 +24,20 @@ relatedSlugs:
   - how-to-get-better-at-ui-design-by-studying-ai-generated-examples
   - how-to-use-ai-ui-inspiration-to-design-faster-without-copying-blindly
 thumbImage: /blog/covers/thumbs/button-ui-design.webp
+inlineCta:
+  title: Start from ready-made buttons, not from scratch
+  description: >-
+    The Figma React UI kit ships production-grade buttons with every state wired
+    up, so you can skip the pixel routine and ship faster.
+  buttonText: Browse the kit
+  buttonLink: 'https://setproduct.gumroad.com/l/figma2react'
 ---
 
 
 
 
 
-<span class="blog\_big-paragraph">A button is the most-used control in any interface, and a weak one breaks the whole flow. This guide covers button anatomy and the state set every button must handle. It walks through sizing and theming, plus the priority rules for actions. A decision table at the end tells you when to use a button instead of a link or an icon button. Use it as a reference when you design or review button UI.</span>
+<span class="blog\_big-paragraph">A button is the most-used control in any interface, and a weak one breaks the whole flow. This guide covers button anatomy, plus the states every button must handle. It also covers sizing and theming. A decision table tells you when to use a button instead of a link or an icon button.</span>
 
 ## TL;DR
 
@@ -51,9 +58,10 @@ The fastest way to get buttons right is to pick the correct control first. A but
 | Button | Action in place: submit, save, open a modal | Navigation to another URL |
 | Link | Move to a page or an anchor | Trigger an action without navigation |
 | Chip | Pick from a set or apply a filter | The main action of a form |
+| Toggle | Switch one setting on or off | Picking from several options |
 | Icon button | A familiar action with no room for a label | An action that is unclear without a name |
 
-The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and the [button group guide](/blog/button-group-guide) covers grouped actions.
+The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and the [button group guide](/blog/button-group-guide) covers grouped actions. Chips and [toggle switches](/blog/toggle-switch-ui-design) are the controls most often confused with buttons, so check the label before you pick the element.
 
 {/* IMAGE NEW-2: раскладка четырёх контролов с подписями ролей */}
 
@@ -75,6 +83,17 @@ States matter because they tell the user what a button is doing right now. Visua
 
 ![Button states in UI design](/blog/assets/button-ui-design/img-2.svg)
 
+States matter most inside forms, where a button sits next to other controls. The [form controls reference](/blog/form-controls-reference-2026) maps how buttons behave alongside inputs and checkboxes.
+
+## Types of buttons
+
+Buttons fall into four visual types, and the type signals how important the action is.
+
+- **Text or link button.** No fill or border, just a label. Use it for quiet actions like Cancel or Done.
+- **Contained or filled button.** A solid background. Use it for the one main action on a screen, such as Save or Submit.
+- **Outlined or ghost button.** A border with a transparent fill. Use it for a secondary action next to a filled one.
+- **Shaded or tinted button.** A half-transparent overlay. Use it for a low-priority action that sits beside a contained button.
+
 ## Button shadows
 
 ![Button example illustrating button shadows](/blog/assets/button-ui-design/img-3.svg)
@@ -85,9 +104,7 @@ Adding a shadow to a button when designing an app helps to create visual hierarc
 
 In [Material Design](https://www.setproduct.com/templates/material), shadows are used to indicate the elevation levels of the different components. Higher button elevation levels mean a stronger shadow, while lower elevation levels have a weaker shadow. This helps to indicate which element is the most important one.  
 
-### **Buttons inspiration**
-
-## Icons usage
+## Icon usage
 
 ![Button usage example showing icons usage](/blog/assets/button-ui-design/img-4.webp)
 
@@ -111,26 +128,15 @@ Round buttons & FABs extracted from [Material-X UI kit](https://www.setproduct.c
 
 ## Buttons Theming
 
-### **Styles**
+### Styles
 
-By using different styles of buttons, UI designers can communicate different messages to in-app users and create an intuitive flow through the user interface. There are four different kinds of buttons that you should know about:  
-
-1.  **Text Only or Link Button**: Is simply text-based, without any visual elements. Use for actions that don't require full attention, such as "Cancel" or "Done".  
-      
-    
-2.  **Contained or Filled Button**: Is typically filled in with a solid color and can hold a text label or an icon. They usually indicate an important action, such as "Submit" or "Save".
-      
-    
-3.  **Outlined or Ghost Button**: is similar to contained BTN, but is outlined with a color or a border. Utilize it to indicate a lower-priority action or a secondary option.  
-      
-    
-4.  **Shaded or Tint Button**: has a half-transparent color overlay. This type is used to indicate a less important action when placed together with Contained Button.
+The four types above already split buttons by visual weight (see [types of buttons](#types-of-buttons)). Theming decides how each one reads across light and dark mode.
 
 ![Button UI design styles colors CSS](/blog/assets/button-ui-design/img-6.svg)
 
 Buttons types included in [Figma React UI kit](https://www.setproduct.com/templates/react-ui-kit)
 
-## Corner radius
+### Corner radius
 
 By varying a radius from **0px** to **99px** you can go from a Square Button up to a Pill Button.
 
@@ -146,7 +152,7 @@ _
 
 -   **99px**\+ radius creates a very rounded, circular look that is often used for buttons that are meant to be eye-catching. Such a Pill button highlights among the other UI bits and encourages users to interact.
 
-## Inner shadow
+### Inner shadow
 
 ![Button example illustrating inner shadow](/blog/assets/button-ui-design/img-7.webp)
 
@@ -158,7 +164,7 @@ Inner shadow is a great way to add depth and dimension especially in dark themes
 
 Such a visual trick embedded into a button provides a subtle visual cue to the user, indicating that this UI element is clickable.
 
-## Gradients
+### Gradients
 
 Gradients are often used to create visual continuity with important elements in the UI, providing cohesion. By adding a gradient to the button background, a designer can help create a sense of movement and direction in an app, maintain a visual cue to the user.
 
@@ -170,7 +176,7 @@ Used properly and consistently, gradients can help create a visually pleasing an
 
 Trading template by [Eclipse UI kit](https://www.setproduct.com/templates/eclipse)
 
-## Buttons Inspiration
+Ready-made button sets ship inside the [Figma React UI kit](/templates/react-ui-kit) and [Material X](/templates/material-x), if you would rather start from templates than from scratch. If you are defining these tokens from zero, the [UI kit foundation guide](/blog/how-to-design-a-ui-kit-foundation) shows how to structure them.
 
 ## UX & Usability
 
@@ -227,7 +233,7 @@ Furthermore, it is a great way to add a sense of progress and assurance that the
 
 Split button is the UI control utilized to offer two or more distinct actions within a single item. It combines the functionality of a button and a drop-down menu.  
   
-Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits will when there are multiple actions that can be taken within a single control.  
+Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits will when there are multiple actions that can be taken within a single control. When the menu opens a full panel instead, that is a [dialog pattern](/blog/how-to-design-dialogs), not a menu.
 
 ## Button with [Badge](/blog/badge-ui-design)
 
@@ -326,4 +332,4 @@ Raise the target to 44×44, keep the primary action away from the screen edge, a
 
 A button looks simple and carries a lot of weight. Get the control choice right, cover the full state set, and respect the WCAG minimums, and the rest of the interface feels calmer. Start with the decision table above, then run the checklist before you ship.
 
-## Buttons inspiration
+## Button inspiration
