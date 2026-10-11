@@ -33,6 +33,8 @@ Before trusting any aggregate, it helps to see the per-task structure. The avera
 
 The table below maps each workload to its Western baseline and the Chinese model that lands closest on quality, with the approximate quality gap and cost multiple reported in mid-2026 benchmark data.
 
+<div class="blog-fit-table">
+
 | Task type | Western baseline | Chinese alternative | Provider | Quality gap | Cost saving |
 |---|---|---|---|---|---|
 | Reasoning | Claude Opus 4.8 | Kimi K2.7 | Moonshot AI | ~8% | ~11x cheaper |
@@ -41,6 +43,8 @@ The table below maps each workload to its Western baseline and the Chinese model
 | Bulk generation | GPT-5.5 mini | MiMo V2.5 | Xiaomi | ~6% | ~12x cheaper |
 | Image | GPT-Image-2 | Wan 2.5 | Alibaba | ~5% | ~8x cheaper |
 | Video | Sora 2 | Kling 3.0 | Kuaishou | roughly equal | ~6x cheaper |
+
+</div>
 
 A few patterns deserve attention. Agent loops show the smallest gap at around 3%, which matters because agentic orchestration is where token spend balloons fastest. A 5x saving on the highest-volume task type compounds quickly across a month of automated runs. Bulk generation tells a similar story, with MiMo V2.5 trailing by about 6% while costing roughly a twelfth of its baseline. Several of these alternatives, including Qwen and GLM, are open-weight and reachable through a single access point like [Venice.ai](https://venice.ai/chat?ref=ybiJ6R), which makes a hands-on check feasible before any of these numbers are taken on faith.
 
