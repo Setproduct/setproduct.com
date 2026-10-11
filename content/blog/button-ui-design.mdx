@@ -47,7 +47,7 @@ inlineCta:
 - Focus-visible is mandatory, and button text contrast starts at 4.5:1.
 - Every button needs the full state set: idle, hover, focus, active, loading, disabled.
 
-{/* IMAGE NEW-1: схема, button vs link vs chip vs toggle vs icon button в одном ряду */}
+![Five controls side by side: button, link, chip, toggle, icon button](/blog/assets/button-ui-design/NEW-1.webp)
 
 ## Button vs link vs chip vs icon button
 
@@ -63,7 +63,7 @@ The fastest way to get buttons right is to pick the correct control first. A but
 
 The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and the [button group guide](/blog/button-group-guide) covers grouped actions. Chips and [toggle switches](/blog/toggle-switch-ui-design) are the controls most often confused with buttons, so check the label before you pick the element.
 
-{/* IMAGE NEW-2: раскладка пяти контролов с подписями ролей */}
+![The five controls laid out with a label for the role of each one](/blog/assets/button-ui-design/NEW-2.webp)
 
 ## Buttons anatomy
 
@@ -192,7 +192,7 @@ A button must work for everyone, including people who navigate by keyboard or us
 
 - **Disabled state.** When a button must stay focusable for context, use `aria-disabled` instead of the `disabled` attribute.
 
-{/* IMAGE NEW-3: пример focus-visible обводки на светлой и тёмной кнопке */}
+![A focus-visible outline shown on the same button in light and dark themes](/blog/assets/button-ui-design/NEW-3.webp)
 
 ## Buttons size
 
@@ -313,6 +313,8 @@ Raise the target to 44×44, keep the primary action away from the screen edge, a
 
 ## Checklist before you ship
 
+![Checklist of ten rules to review before shipping a button](/blog/assets/button-ui-design/NEW-4.webp "float-right")
+
 → One primary button per section, the rest secondary or tertiary
 → Tag chosen by meaning: `<button>` for actions, `<a>` for navigation
 → Full state set present: idle, hover, focus, active, loading, disabled
@@ -324,13 +326,11 @@ Raise the target to 44×44, keep the primary action away from the screen edge, a
 → Icon-only buttons carry an `aria-label`
 → A disabled button, if any, explains the reason
 
-{/* IMAGE NEW-4: чек-лист из десяти пунктов как визуальный блок */}
-
 ## Button inspiration
 
 Looking at how other teams solve the same problem is the fastest way to find what you are missing. Collect ten buttons you like before you draw your own, and note what each one does that yours does not. A strong gallery spans the types you just read about, in both themes. Use it as a reference, not a mood board.
 
-{/* IMAGE NEW-5: полоса из 4 разных кнопок, светлая и тёмная тема, разные типы */}
+![Four button styles in a row, shown in light and dark themes](/blog/assets/button-ui-design/NEW-5.webp)
 
 ## Closing thought
 
