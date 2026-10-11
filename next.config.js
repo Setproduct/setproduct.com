@@ -85,6 +85,13 @@ const nextConfig = {
         destination: "/blog/marketing-dashboard-ui-design-guide",
         permanent: true,
       },
+
+      // Thin legacy Figma-to-React buttons post merged into the button pillar.
+      {
+        source: "/blog/figma-to-react-buttons",
+        destination: "/blog/button-ui-design",
+        permanent: true,
+      },
     ];
   },
   async headers() {
