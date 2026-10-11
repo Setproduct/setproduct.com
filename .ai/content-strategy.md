@@ -252,42 +252,88 @@ AI-инструменты (Claude, ChatGPT, Perplexity, Google AI Overviews) с�
 - Streaming text UI design
 - Sidebar / Navigation drawer
 
-## 6. Posts requiring urgent content rescue
+## 6. Engagement check по постам (сверено 2026-10-10)
 
-Посты, которые получат больше кликов после Wave 1 (CTR fix), но будут терять позиции из-за низкого engagement если не починить содержимое:
+**Старая заметка о «2 сек engagement» у `effective-dashboard-design-principles`
+опровергнута.** GA4 за окно 2026-07-12 → 2026-10-09 даёт 29.6 секунды
+среднего времени, 195 просмотров, 685 событий. Технического сбоя нет.
 
-1. **effective-dashboard-design-principles** — 2 сек engagement, подозрение на технический сбой. **Проверить руками**.
-2. **avatar-ui-design** — 9 сек
-3. **stepper-ui-design** — 13 сек
-4. **empty-state-ui-design** — 13 сек
-5. **badge-ui-design** — 14 сек
-6. **dashboard-design-best-practices-top-dashboard-ui-design-tips** — CTR 0.022%
+Сверка всех постов, что раньше стояли в списке «urgent rescue», по GA4:
 
-Что делать:
-- Переписать первый параграф (answer-first)
-- Добавить TL;DR блок
-- Сократить введение
-- Добавить FAQ-блок
-- Применить формулу Steps
+| Пост | Старая заметка | Факт (GA4) | Вывод |
+|---|---|---|---|
+| effective-dashboard-design-principles | 2 сек | 29.6 сек | заметка устарела, снять |
+| avatar-ui-design | 9 сек | 18.4 сек | заметка устарела, снять |
+| stepper-ui-design | 13 сек | 14.6 сек | норма для гайда |
+| empty-state-ui-design | 13 сек | 24.5 сек | норма |
+| badge-ui-design | 14 сек | 24.8 сек | норма |
+| dashboard-design-best-practices-… | CTR 0.022% | URL удалён (301 → dashboard-ui-design) | поста нет |
 
-## 7. Content cannibalization map
+Итог: **списка «urgent rescue» больше нет**. Все шесть постов либо имеют
+нормальный engagement, либо уже не существуют. Единственная метрика, что
+осталась низкой у части постов, — CTR, и она разобрана в разделе 10 и в
+[`plans/empty-state-anomaly-analysis.md`](../plans/empty-state-anomaly-analysis.md).
+
+Что делать (не срочно):
+- Не переписывать посты из-за engagement: причины нет.
+- Правки тела вести только по триггерам из разделов 10 и 18–19 (когда есть
+  данные page-level GSC).
+
+## 7. Content cannibalization map (сверено 2026-10-10)
+
+Все цифры ниже — окно 3 месяца (июл–окт 2026), источник
+`plans/Страницы.csv`, плюс `plans/compare 6 months - Страницы.csv`.
 
 ### Уже решено
-- Dashboard cluster (8 постов) → решено через pillar page
+- Dashboard cluster (8 постов) → pillar page. Старые D-посты 301-редиректят
+  в `/blog/dashboard-ui-design` (см. [`next.config.js`](../next.config.js:68)).
 
-### Кандидаты на pillar+cluster
+### Подтверждённая каннибализация: button cluster
 
-**Form controls cluster:**
-- Связать: input, checkbox, dropdown, slider, toggle, stepper, chip, button, radio (если есть)
-- Pillar: "Form controls UI reference 2026"
+Три поста конкурируют за один интент. Данные 6-месячного сравнения:
 
-**Feedback patterns cluster:**
-- Связать: notifications, tooltip, badge, empty state, toast, alert, banner (если есть)
-- Pillar: "Feedback and notification patterns UI reference"
+| Пост | Клики | Показы | CTR | Позиция |
+|---|---|---|---|---|
+| button-group-guide | 270 (было 347) | 29 285 | 0.92% | 12.35 (было 9.27) |
+| button-ui-design | 71 (было 233) | 33 399 | 0.21% | 14.31 (было 10.22) |
+| radio-button-ui-design | 110 (новый) | 24 648 | 0.45% | 8.52 |
 
-**Navigation patterns cluster:**
-- Связать: tabs, breadcrumbs, pagination, dropdown, sidebar (если есть), appbar
-- Pillar: "Navigation patterns UI reference"
+`button-ui-design` держит больше показов, но худшую позицию и CTR в 4.4 раза
+ниже, чем `button-group-guide`. `radio-button-ui-design` забрал часть показов
+при появлении. Похожий паттерн у запросов: `button ui design` (125 показов),
+`ui button group` (67), `group button ui` (44) — три URL на один запрос.
+
+**Решение:** button cluster требует pillar-page, как было у dashboard.
+Порядок: пиллар «Button patterns UI reference» → компонентные посты
+превращаются в кластер, `radio-button` получает свою нишу.
+
+### Кластеры, где каннибализации НЕТ (проверено)
+
+**Form controls** (разные интенты, каждый ранжируется по своему компоненту):
+input 151 клик / поз. 10.75; checkbox 122 / 9.6; dropdown 472 / 10.93;
+slider 84 / 10.94; toggle-switch 232 / 8.9; stepper 69 / 12.72;
+chip 245 / 8.08. Пиллар нужен для перелинковки, не для разведения.
+
+**Feedback patterns** (не конкурируют): notifications 235 кликов / поз. 10.05;
+tooltip 78 / 9.2; badge 138 / 8.1; empty-state 69 / 7.61. Общая проблема —
+низкий CTR при нормальной позиции, а не каннибализация. Разбор — в
+[`plans/empty-state-anomaly-analysis.md`](../plans/empty-state-anomaly-analysis.md).
+
+**Navigation patterns** (не конкурируют): tabs 1 211 кликов / поз. 8.51;
+breadcrumbs 149 / 12; pagination 400 / 11; dropdown 472 / 10.93;
+appbar 31 / 14.91.
+
+### Кандидаты на pillar+cluster (обновлено)
+
+| Кластер | Pillar | Статус |
+|---|---|---|
+| Button | «Button patterns UI reference» | конкуренция подтверждена, делать первым |
+| Form controls | «Form controls UI reference 2026» | конкуренции нет, пиллар для перелинковки |
+| Feedback | «Feedback patterns UI reference» | конкуренции нет, приоритет ниже |
+| Navigation | «Navigation patterns UI reference» | конкуренции нет, приоритет ниже |
+
+Замечание: `form-controls-reference-2026.mdx` уже существует как пост —
+проверить перед созданием Form-пиллара, возможно, он и есть пиллар.
 
 ## 8. Roadmap волн оптимизации
 
