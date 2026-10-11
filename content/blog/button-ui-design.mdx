@@ -51,9 +51,10 @@ The fastest way to get buttons right is to pick the correct control first. A but
 | Button | Action in place: submit, save, open a modal | Navigation to another URL |
 | Link | Move to a page or an anchor | Trigger an action without navigation |
 | Chip | Pick from a set or apply a filter | The main action of a form |
+| Toggle | Switch one setting on or off | Picking from several options |
 | Icon button | A familiar action with no room for a label | An action that is unclear without a name |
 
-The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and the [button group guide](/blog/button-group-guide) covers grouped actions.
+The [chip UI design guide](/blog/chip-ui-design) covers selection patterns, and the [button group guide](/blog/button-group-guide) covers grouped actions. Chips and [toggle switches](/blog/toggle-switch-ui-design) are the controls most often confused with buttons, so check the label before you pick the element.
 
 {/* IMAGE NEW-2: раскладка четырёх контролов с подписями ролей */}
 
@@ -74,6 +75,8 @@ States matter because they tell the user what a button is doing right now. Visua
 ❻ **Loading.** The button is processing an action, shown with a spinner so the user knows to wait.
 
 ![Button states in UI design](/blog/assets/button-ui-design/img-2.svg)
+
+States matter most inside forms, where a button sits next to other controls. The [form controls reference](/blog/form-controls-reference-2026) maps how buttons behave alongside inputs and checkboxes.
 
 ## Types of buttons
 
@@ -166,6 +169,8 @@ Used properly and consistently, gradients can help create a visually pleasing an
 
 Trading template by [Eclipse UI kit](https://www.setproduct.com/templates/eclipse)
 
+Ready-made button sets ship inside the [Figma React UI kit](/templates/react-ui-kit) and [Material X](/templates/material-x), if you would rather start from templates than from scratch. If you are defining these tokens from zero, the [UI kit foundation guide](/blog/how-to-design-a-ui-kit-foundation) shows how to structure them.
+
 ## UX & Usability
 
 ### Accessibility
@@ -221,7 +226,7 @@ Furthermore, it is a great way to add a sense of progress and assurance that the
 
 Split button is the UI control utilized to offer two or more distinct actions within a single item. It combines the functionality of a button and a drop-down menu.  
   
-Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits will when there are multiple actions that can be taken within a single control.  
+Split buttons are used in situations where a user needs to perform two, or more distinct tasks related to a single action, for example opening a file and then editing it. This type of component fits will when there are multiple actions that can be taken within a single control. When the menu opens a full panel instead, that is a [dialog pattern](/blog/how-to-design-dialogs), not a menu.
 
 ## Button with [Badge](/blog/badge-ui-design)
 
