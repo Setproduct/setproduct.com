@@ -483,6 +483,18 @@ Most tab sets fall into a few families. Horizontal tabs run across the top. Vert
 
 Each tab needs default, hover, active, focus, and disabled states, plus a loading state when a panel fetches data after a switch. The active state must read without color alone, so pair the indicator with a heavier label or a filled surface. Keep one indicator style across the app and check it in both light and dark mode.
 
+### What is tabbed content, and when should you use it?
+
+Tabbed content splits one page into several panels and shows a single panel at a time instead of stacking everything down a long scroll. Use it when the sections are peers, each fits the same space, and people switch between them often. Skip it when a reader needs to see every section at once, like a comparison or a spec sheet.
+
+### How should a website use tabs for navigation?
+
+On a website, tabs usually organize a product page, a pricing table, or a docs section, keeping related panels in one place. Use them for same-page views rather than top-level site navigation, where a nav bar or sidebar works better because each destination needs its own URL. Keep labels short and hold the row to one line.
+
+### Where can I find good tabs UI design examples?
+
+Study products you already use. Google Analytics 4, Amazon filters, Instagram stories, and Slack settings each solve a different tab problem. The use cases above walk through five real products, and the [Setproduct component gallery](https://app.setproduct.com/components/tabs) shows AI-generated tab patterns you can borrow.
+
 ## A last word on tabs
 
 Tabs are one of those components everyone thinks they understand until they ship one. The visual part is easy. The hard part is everything around the switch: the keyboard order, the focus ring nobody styled, the panel that jumps two pixels every time you change sections. Get those right and a tab bar disappears into the background, which is exactly what it should do. My advice: build the boring version first, the one that works with a keyboard and reads without color, then add the polish. A tab that quietly does its job beats a beautiful one that loses people on the second click.
