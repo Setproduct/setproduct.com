@@ -27,17 +27,18 @@
 ## Батч 4r — 26 картинок
 - [x] why-designers-are-loosing-motivation img-1,2 — img-1 FIX (многорукий дизайнер), img-2 OK (развилка дорог)
 - [x] venice-ai-tool-private-uncensored img-1,2 — все FIX (таблица токеномики, сравнение API)
-- [ ] top-tips-for-new-businesses... img-1,2
+- [x] top-tips-for-new-businesses... img-1,2 — img-1 OK (иллюстрация «дверь»), img-2 FIX (дерево из UI-карточек)
 - [x] strikethrough-text-deserves-more-love-in-ui img-4,5 — все FIX (to-do со зачёркиванием, слово done)
 - [x] state-of-crypto-2025 img-1,2 — img-1 OK (маска + свинья CENTRALIZATION), img-2 FIX (регулирование)
 - [x] pagination-ui-design img-5,11 — img-5 OK (disabled/hover), img-11 FIX (цветовые варианты)
 - [x] optimizing-digital-marketing img-2,4 — все FIX (Patagonia Core Values, инфографика SEO)
-- [ ] how-to-cancel-adobe-subscription-without-fees img-1,2
-- [ ] how-to-3d-animate-scroll img-1,2
-- [ ] genius-ux-design-inventions img-1,3
-- [ ] freelance-hourly-rate img-1,2
-- [ ] choosing-right-design-team img-1,2
-- [ ] how-to-use-ai-ui-inspiration... img-4,5
+- [x] how-to-cancel-adobe-subscription-without-fees img-1,2 — все FIX (экран отмены, мужчина с бумагой)
+- [x] how-to-3d-animate-scroll img-1,2 — img-1 FIX (страница AirPods Pro), img-2 OK (чёрный кадр)
+- [x] genius-ux-design-inventions img-1,3 — img-1 OK (телефон с портрет��ми), img-3 OK (платёжная экосистема)
+- [x] freelance-hourly-rate img-1,2 — все FIX (фрилансер за столом, интерфейс на iMac)
+- [x] choosing-right-design-team img-1,2 — img-1 OK (экран с макетами), img-2 OK (скетчи вайрфреймов)
+- [x] how-to-use-ai-ui-inspiration... img-4,5 — img-4 OK (центр уведомлений), img-5 OK (кнопка Send)
+- Батч 4r ЗАКРЫТ (commit 40bea9b часть A)
 
 ## Батч 4s — 12 картинок (liquid-glass img-12 уже проверена)
 - [ ] why-some-designers-dislike-ai img-1
