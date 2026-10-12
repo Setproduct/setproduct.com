@@ -39,15 +39,9 @@ thumbImage: /blog/covers/thumbs/tabs-ui-design.webp
 
 
 
-This documentation provides an exhaustive guide to designing effective Tabs UI components. It explores anatomical elements, interaction states, theming strategies, and real-world applications - all while prioritizing usability and accessibility.
+A tab is a control that swaps related views in place, so people move between peer sections without losing context or reloading the page. Use tabs when two to six equal sections fit on one row and only one shows at a time. Reach for a segmented control for a quick view toggle, a nav for top-level destinations, or an accordion when horizontal room runs out.
 
-Designers and developers will learn to create tab systems that balance visual appeal with functional precision.
-
-**Tabs** – are navigation elements that organize content into separate views without reloading the page. They allow users to switch between related contexts while maintaining mental context.
-
-They solve spatial constraints by vertically/horizontally stacking contextual sections while maintaining rapid navigational access.
-
-Unlike [dropdowns](https://www.setproduct.com/blog/dropdown-ui-design), tabs persistently expose available categories, reducing cognitive load through constant visual hierarchy.
+{/* IMAGE: hero */}
 
 **TL;DR.** A tab lets people switch between related views in the same space without losing their place. Use a tabbed interface when sections are peers, fit on one row, and only one is visible at a time — not for sequential steps (use [steps](https://www.setproduct.com/blog/steps-ui-design)) or rarely-used options (use a [dropdown](https://www.setproduct.com/blog/dropdown-ui-design)). Below: tab anatomy, every interaction state, theming, accessible keyboard patterns, and real examples you can copy.
 
@@ -135,16 +129,19 @@ Dynamic tabs are the browser model: people open and close them on the fly. Give 
 
 Before you reach for tabs, check that the pattern actually fits. The four controls below all switch between sections, but they answer different constraints: how many options you have, whether one or many can be open, and how much room you have on screen.
 
-| | Tabs | Dropdown | Accordion | Segmented control |
-|---|---|---|---|---|
-| **Best for** | 2–6 peer sections | 7+ options or rare actions | Stacked sections on narrow screens | 2–4 mutually exclusive options |
-| **Visible options** | All at once | Hidden until opened | All headers, one body open | All at once |
-| **Screen space** | One horizontal/vertical strip | Almost none until opened | Grows as sections expand | Compact pill |
-| **One open at a time** | Yes | Yes | Optional (single or multi) | Yes |
-| **When to use** | Options fit on one row, only one view shown at a time, sections are equal peers | Too many options to show inline, or the choice is occasional | Vertical space is cheap, horizontal is not, users scan top to bottom | A short, fixed set of exclusive choices (view toggles, light/dark) |
-| **Mobile friendliness** | Good if scrollable; risky if they wrap | Good (saves space) | Good (vertical by nature) | Good (thumb-sized) |
+| | Tabs | Nav | Dropdown | Accordion | Segmented control |
+|---|---|---|---|---|---|
+| **Best for** | 2–6 peer sections | 3–7 top-level destinations | 7+ options or rare actions | Stacked sections on narrow screens | 2–4 mutually exclusive options |
+| **Visible options** | All at once | All at once | Hidden until opened | All headers, one body open | All at once |
+| **Screen space** | One horizontal/vertical strip | A persistent bar or sidebar | Almost none until opened | Grows as sections expand | Compact pill |
+| **One open at a time** | Yes | No, it changes the page | Yes | Optional (single or multi) | Yes |
+| **Changes the URL** | No | Yes | No | No | No |
+| **When to use** | Options fit on one row, only one view shown at a time, sections are equal peers | Each section is its own page and should be linkable | Too many options to show inline, or the choice is occasional | Vertical space is cheap, horizontal is not, users scan top to bottom | A short, fixed set of exclusive choices (view toggles, light/dark) |
+| **Mobile friendliness** | Good if scrollable; risky if they wrap | Bottom bar on mobile | Good (saves space) | Good (vertical by nature) | Good (thumb-sized) |
 
-If your options do not fit on one row and only one view is ever visible, tabs are the right call. Once you pass six, or the choice is rare, move to a [dropdown](https://www.setproduct.com/blog/dropdown-ui-design); when vertical space is the only space you have, reach for an accordion.
+If your options do not fit on one row and only one view is ever visible, tabs are the right call. Once you pass six, or the choice is rare, move to a [dropdown](https://www.setproduct.com/blog/dropdown-ui-design); when vertical space is the only space you have, reach for an accordion. If those sections hold rows of records, a [data table with tabbed views](/blog/data-table-ui-design) is often the stronger fit.
+
+{/* IMAGE: диаграмма-развилка выбора компонента */}
 
 ## Tabs states
 
@@ -362,7 +359,7 @@ Learn how to design the ideal dashboard navigation by applying [Tabs nested into
 -   Hover: Animated expansion with name + watch progress
 -   The expand-on-hover delay gives people a beat to confirm the right profile before committing
 
-## Before you ship: tabs checklist
+## Before you ship, tabs checklist
 
 Run through this before you call a tab component done. Most tab bugs are not visual, they show up in keyboard, focus, and what happens the moment someone switches.
 
@@ -452,6 +449,8 @@ Variation of a Tooltip popping out after onHover. [Check this dashboard template
 
 Use tabs when you have a small set of peer sections (roughly two to six) that fit on one row and only one is visible at a time. A [dropdown](https://www.setproduct.com/blog/dropdown-ui-design) is better when options are many or rarely used, because hiding them keeps the interface calm. An accordion wins when vertical space is plentiful but horizontal space is tight, like a long mobile form. The quick test: if a person needs to compare or jump between sections often, tabs keep that switching fast and visible.
 
+{/* IMAGE: иллюстрация частого кейса */}
+
 ### What is a tab view, and how is it different from web tabs?
 
 "Tab view" is the term iOS and SwiftUI use for the bottom tab bar that switches between top-level app sections. It is the same mental model as web tabs, with two differences: it usually lives at the bottom for thumb reach, and each tab represents a whole destination rather than a panel inside one page. On the web, tabs more often sit inside a page and swap a content pane. Same pattern, different placement and scope.
@@ -475,6 +474,14 @@ Scroll, do not wrap. Wrapping tabs into a second row breaks the one-line mental 
 ### Where should the active tab indicator go?
 
 Put it on the edge that touches the content. For top horizontal tabs that means an underline along the bottom of the active tab, sitting right above its panel, so the eye connects tab to content. Vertical tabs take the indicator on the inner edge facing the pane. Keep it consistent, animate it sliding between tabs rather than blinking, and make sure it is not the only signal of selection.
+
+### What are the main types of tabs?
+
+Most tab sets fall into a few families. Horizontal tabs run across the top. Vertical tabs stack down a side rail for settings screens. Icon-only and labeled variants trade space for clarity. Scrollable tabs absorb overflow on narrow screens, while segmented-control tabs act like a compact toggle. Match the family to your available space and the number of options, and avoid mixing two families in one view.
+
+### What states do tabs need, and how should I theme them?
+
+Each tab needs default, hover, active, focus, and disabled states, plus a loading state when a panel fetches data after a switch. The active state must read without color alone, so pair the indicator with a heavier label or a filled surface. Keep one indicator style across the app and check it in both light and dark mode.
 
 ## A last word on tabs
 
