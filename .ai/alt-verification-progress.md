@@ -38,7 +38,7 @@
 - [x] freelance-hourly-rate img-1,2 — все FIX (фрилансер за столом, интерфейс на iMac)
 - [x] choosing-right-design-team img-1,2 — img-1 OK (экран с макетами), img-2 OK (скетчи вайрфреймов)
 - [x] how-to-use-ai-ui-inspiration... img-4,5 — img-4 OK (центр уведомлений), img-5 OK (кнопка Send)
-- Батч 4r ЗАКРЫТ (commit 40bea9b часть A)
+- Батч 4r ЗАКРЫТ (commit 40bea9b часть A, 8be32b9 часть B)
 
 ## Батч 4s — 12 картинок (liquid-glass img-12 уже проверена)
 - [x] why-some-designers-dislike-ai img-1 — OK (проверена ранее, см. журнал)
@@ -53,7 +53,9 @@
 - [x] difficult-design-clients img-1 — FIX (улыбающийся человек с ноутбуком)
 - [x] avatar-ui-design img-19 — FIX (панель Collaboration с аватарами)
 - [x] ais-impact-on-graphic-design img-1 — FIX (силуэт с рукой среди фигур)
-- Батч 4s ЗАКРЫТ (commit)
+- Батч 4s ЗАКРЫТ (commit 7c4e528)
+
+Все батчи 4p–4s перепроверены чтением картинок. Итог: 78 картинок, из них FIX — 48, OK — 30.
 
 ## Журнал
 - figma-tutorial-instances-management img-1 FIX (Row of userpic states...), img-2 FIX (Figma local styles panel...), img-3 FIX (Layers panel of the Userpic master...) — commit 99cd6c8
