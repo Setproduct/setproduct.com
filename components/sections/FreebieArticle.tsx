@@ -114,6 +114,17 @@ const LIQUID_GLASS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-liquid-glass", text: "Why it belongs in your stack" },
 ];
 
+const MAILCHEAP_HEADINGS: ArticleHeading[] = [
+  { id: "what-mailcheap-does", text: "What Mailcheap actually does" },
+  { id: "why-subscriber-pricing-hurts", text: "Why subscriber pricing hurts as your list grows" },
+  { id: "how-sending-works", text: "How sending works under the hood" },
+  { id: "what-ships-in-the-box", text: "What ships in the box" },
+  { id: "health-checks", text: "The health checks that keep you out of the spam folder" },
+  { id: "setup", text: "Setting it up in an afternoon" },
+  { id: "faq-mailcheap", text: "Frequently asked questions" },
+  { id: "why-it-belongs-mailcheap", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -124,6 +135,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   fsearch: FSEARCH_HEADINGS,
   rea: REA_HEADINGS,
   "liquid-glass": LIQUID_GLASS_HEADINGS,
+  mailcheap: MAILCHEAP_HEADINGS,
 };
 
 /**
@@ -661,6 +673,255 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo-founder workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "mailcheap" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You write an issue. You hit send. Somewhere between the draft
+                  and the reader, a newsletter platform bills you for every
+                  subscriber on your list, whether or not that subscriber opens
+                  anything. Mailcheap moves the whole newsletter onto your own
+                  Amazon SES account, so you pay for the emails you send and keep
+                  the list in your own database.
+                </p>
+
+                <h2 id="what-mailcheap-does">What Mailcheap actually does</h2>
+                <p>
+                  Mailcheap is a self-hosted newsletter app you deploy once. It
+                  holds an editor, a contact list, signup forms, unsubscribe
+                  handling and a public archive. You write a campaign, send it to
+                  your contacts through SES, and publish the same issue as a web
+                  page. One admin runs the whole thing. No teams, no seat
+                  upgrades, no plans that scale with your subscriber count.
+                </p>
+                <p>
+                  It is a one-time open source release by Marc Lou, MIT licensed.
+                  The README is direct about the trade: issues are closed and
+                  setup questions go unanswered. You fork it and deploy it, then
+                  make it yours. That fits a builder who prefers to own the stack
+                  and read the code instead of filing a ticket.
+                </p>
+
+                <h2 id="why-subscriber-pricing-hurts">
+                  Why subscriber pricing hurts as your list grows
+                </h2>
+                <p>
+                  Managed platforms price on how many subscribers you keep. A
+                  10,000-name list costs the same on the first of the month
+                  whether you sent one issue or four. Your bill grows with your
+                  audience, and your audience is the whole point of the work.
+                </p>
+                <p>
+                  Amazon SES prices on what you send. The README runs the numbers
+                  plainly: 10,000 readers and four issues a month is 40,000
+                  emails, which lands near $4 at about $0.10 per 1,000 emails.
+                  The rest of the stack has free tiers for a newsletter that size,
+                  MongoDB Atlas for storage and Upstash QStash for scheduling.
+                  The saving is not because the software is worse, it is because
+                  the pricing follows usage instead of headcount.
+                </p>
+                <p>
+                  ☞ The saving comes from the billing model. You pay for the
+                  emails you send, so a quiet month costs less than a busy one.
+                </p>
+
+                <h2 id="how-sending-works">How sending works under the hood</h2>
+                <p>
+                  A send picks the audience first. Active contacts go out,
+                  suppressions stay in, and the most engaged readers are ordered
+                  to the front so a fresh domain warms up on people who actually
+                  open. The app turns that list into one message per reader and
+                  queues a QStash job for each batch of 50.
+                </p>
+                <p>
+                  Each job hands the batch to the SES v2 API at the rate you set,
+                  between 1 and 14 emails a second, and 10 by default. If bounces
+                  pass 2% or complaints pass 0.08%, the job pauses the campaign on
+                  its own before the next batch goes out. SES publishes its events
+                  to an SNS topic, which posts them to the app. The app checks the
+                  SNS signature, updates the message and the campaign stats, plus
+                  the contact, then adds bounced and complaining addresses to a
+                  suppression list shared by every newsletter on the install.
+                </p>
+
+                <h2 id="what-ships-in-the-box">What ships in the box</h2>
+                <p>
+                  The package covers the jobs a newsletter actually needs:
+                </p>
+                <ul>
+                  <li>
+                    ❶ An editor with a live email preview and slash commands, plus
+                    image uploads, with Markdown and raw HTML when you want them
+                  </li>
+                  <li>
+                    ❷ Checks before every send: subject, preview text, unsubscribe
+                    link, size under Gmail&rsquo;s 100 KB clip, postal address and
+                    a verified domain
+                  </li>
+                  <li>
+                    ❸ Test emails and scheduling, plus sending in steps that start
+                    with your most engaged readers
+                  </li>
+                  <li>
+                    ❹ Several newsletters in one install, each with its own from
+                    address, reply-to and postal address
+                  </li>
+                  <li>
+                    ❺ A signup form on each archive, plus a signup API with API
+                    keys
+                  </li>
+                  <li>
+                    ❻ Confirmed opt-in per newsletter, a welcome email, and rate
+                    limits on signups and the API
+                  </li>
+                  <li>
+                    ❼ A public archive per newsletter with issue pages and a
+                    sitemap, plus an author page and share images
+                  </li>
+                  <li>
+                    ❽ A contacts view with search and status filters, plus CSV
+                    import from any platform
+                  </li>
+                  <li>
+                    ❾ A domains page that shows each SES identity&rsquo;s DKIM and
+                    MAIL FROM status with the DNS records to add
+                  </li>
+                </ul>
+                <p>
+                  One Next.js app wired to MongoDB and SES runs all of it. The
+                  dashboard has a single login, and the contact list never leaves
+                  your database.
+                </p>
+
+                <h2 id="health-checks">
+                  The health checks that keep you out of the spam folder
+                </h2>
+                <p>
+                  Deliverability is where most self-hosted senders get burned, so
+                  Mailcheap builds the guardrails in. SES publishes deliveries and
+                  complaints to an SNS topic; Mailcheap verifies the SNS signature
+                  before it trusts any of it.
+                </p>
+                <p>The guardrails worth knowing about:</p>
+                <p>
+                  → Suppression is shared across every newsletter, so one bad
+                  address cannot be emailed twice
+                </p>
+                <p>
+                  → A send pauses itself once complaints pass 0.08% or bounces
+                  pass 2%
+                </p>
+                <p>
+                  → Every email carries one-click unsubscribe headers per RFC 8058
+                  with signed links, which Gmail and Yahoo expect from bulk
+                  senders
+                </p>
+                <p>
+                  → List cleanup is off by default and can ask readers who ignored
+                  several issues whether they still want the list, then stop
+                </p>
+                <p>
+                  Open and click tracking runs on your own domain. Clicks within
+                  30 seconds of the send, or from known link scanners, do not
+                  count.
+                </p>
+
+                <h2 id="setup">Setting it up in an afternoon</h2>
+                <p>
+                  Setup takes about an hour, and most of that hour is waiting for
+                  DNS and for AWS to approve production access. Four moving parts:
+                </p>
+                <ul>
+                  <li>❶ A MongoDB cluster holding your contacts and campaigns</li>
+                  <li>
+                    ❷ An SES sending domain with DKIM and a custom MAIL FROM
+                    domain
+                  </li>
+                  <li>❸ A QStash token for background sending</li>
+                  <li>❹ A host, on Vercel or any Node.js server</li>
+                </ul>
+                <p>
+                  From there it is four values in Vercel, a verified domain in SES
+                  and a QStash token. The README walks through the DNS records
+                  line by line. Sending stays off until you flip{" "}
+                  <code>SENDING_ENABLED</code> to <code>true</code>, so nothing
+                  can leak out during setup. If you would rather not manage any of
+                  it, the{" "}
+                  <Link href="/blog/solo-founder-tech-stack-2026">
+                    solo founder tech stack
+                  </Link>{" "}
+                  is a good place to see which pieces a small team runs on
+                  purpose.
+                </p>
+
+                <h2 id="faq-mailcheap">Frequently asked questions</h2>
+                <h3>Do I need to code to run it?</h3>
+                <p>
+                  No. You need to paste four values into Vercel and copy some DNS
+                  records, and the README labels each one. If you can follow a
+                  hosting tutorial, you can ship this. Reading code only helps
+                  when you want to change how it works.
+                </p>
+                <h3>What does it actually cost to run?</h3>
+                <p>
+                  SES charges about $0.10 per 1,000 emails. MongoDB and QStash
+                  have free tiers that cover a list of a few thousand readers,
+                  and Vercel&rsquo;s free tier does too. The costs grow with how
+                  much you send, not with how
+                  many people are on your list.
+                </p>
+                <h3>Is my subscriber list safe?</h3>
+                <p>
+                  The list lives in your own MongoDB database, not on a
+                  newsletter platform you do not control. Sessions and email links
+                  are signed with a secret you generate, and the app ships its own
+                  security document. Export the whole list to CSV whenever you
+                  want.
+                </p>
+                <h3>Can I use Mailcheap for commercial newsletters?</h3>
+                <p>
+                  Yes. It is MIT licensed, so you use it for personal and
+                  commercial work without paying anyone or asking permission. You
+                  supply your own SES account and domain.
+                </p>
+
+                <h2 id="why-it-belongs-mailcheap">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  When your list is the asset, owning the list matters. Mailcheap
+                  gives you a newsletter that keeps contacts in your database,
+                  sends on a price that tracks usage, and publishes an archive you
+                  control. You trade a managed platform for a little setup and a
+                  clear bill.
+                </p>
+                <p>
+                  ☛ Everything runs as a single Next.js app. There is no per-seat
+                  bill to watch, and the contact list exports to CSV on any day
+                  you decide to leave.
+                </p>
+                <p>
+                  It pairs with the reading on this site. The guide on{" "}
+                  <Link href="/blog/how-to-enhance-email-security">
+                    enhancing email security
+                  </Link>{" "}
+                  covers the authentication side, and{" "}
+                  <Link href="/blog/visual-elements-in-email-marketing">
+                    visual elements in email marketing
+                  </Link>{" "}
+                  covers the design side of the issues you will send. When you
+                  have a list and no signups yet, the note on{" "}
+                  <Link href="/blog/getting-your-first-startup-users">
+                    getting your first startup users
+                  </Link>{" "}
+                  rounds out the funnel. When you want the rest of the interface
+                  to match the app you send from, the other{" "}
+                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for the
+                  same fast, solo workflow.
                 </p>
                   </>
                 )}
@@ -2205,6 +2466,7 @@ export default function FreebieArticle({ slug }: Props) {
                 </p>
                   </>
                 )}
+
               </article>
             </div>
           </div>

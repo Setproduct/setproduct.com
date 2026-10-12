@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "mailcheap",
+    title: "Mailcheap, self-hosted newsletter on Amazon SES",
+    description:
+      "Self-hosted newsletter on Amazon SES. Write an issue, send it to your list, publish an archive, and pay about $0.10 per 1,000 emails with no per-subscriber fee.",
+    thumb: "/freebies/thumbs/freebie-mailcheap-contacts.webp",
+    image: "/freebies/freebie-mailcheap.webp",
+    category: "Code",
+    previewHref: "/freebies/mailcheap",
+    duplicateHref: "https://github.com/marclou/mailcheap",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "liquid-glass",
     title: "Liquid Glass for React",
     description:
