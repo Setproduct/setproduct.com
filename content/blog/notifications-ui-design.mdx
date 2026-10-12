@@ -34,11 +34,9 @@ relatedSlugs:
 thumbImage: /blog/covers/thumbs/notifications-ui-design.webp
 ---
 
-<span className="blog_big-paragraph">**App notifications** are interactive messages that are delivered within the context of an application. They serve to inform, update, or engage users by providing timely and relevant information, alerts, or calls to action.</span>
+A notification is a timely message that informs, confirms, or prompts action without making the user go looking for it. Use in-app notifications for contextual updates while the app is open. Reserve email and push for messages genuinely worth pulling someone back, and decide not to send when the update can wait.
 
-**Notifications UI design** typically includes a combination of textual content, icons, imagery, and sometimes even sound or vibration effects. They are designed to grab the user's attention and provide valuable and timely information.
-
-Notifications can vary in purpose, such as delivering personalized messages, notifying about new content, indicating system status or updates, requesting user actions, or providing reminders.
+{/* IMAGE: hero */}
 
 **TL;DR.** A notification is a timely message that informs, confirms, or prompts action without making the user go looking for it. Good notification UI design comes down to choosing the right component for the job and timing it so it helps instead of interrupts. Below you'll find every notification component and type, UX best practices, a channel-by-channel comparison, settings patterns, real product examples, and a ship-ready checklist.
 
@@ -445,11 +443,16 @@ The same message behaves very differently depending on where it lands. Picking t
 | Channel | Where it appears | Needs opt-in? | Best for | Watch out for |
 |---|---|---|---|---|
 | In-app | Inside your app while it's open | No | Contextual updates, confirmations, activity feeds | Easy to miss if the user isn't looking |
+| Email | The user's inbox, outside the app | Usually opt-in | Receipts and digests worth returning to | Slow, easy to ignore, and hard to undo once sent |
 | Push (mobile) | Device lock screen and tray | Yes (OS permission) | Re-engagement, time-sensitive alerts | One bad batch and people disable it for good |
 | Web push | Browser, even when the tab is closed | Yes (per-site) | Bringing visitors back, breaking updates | High opt-out; intrusive if over-used |
 | Desktop | OS notification center | Yes (per-app) | Workflow apps, chat, calendar reminders | Competes with every other app's noise |
 
 The rule of thumb: keep low-stakes, contextual messages in-app, and reserve push and web push for things genuinely worth pulling someone back. A notification that interrupts had better be worth the interruption.
+
+{/* IMAGE: диаграмма-развилка выбора компонента */}
+
+When should you hold back? Skip the notification when the user is already looking at the thing that changed, when the update carries no action and no new decision, or when the same fact already shipped through another channel. A message that repeats what the screen already says spends attention and buys nothing.
 
 ## Real-world notification design examples
 
@@ -467,7 +470,7 @@ The thread connecting all five is control and clarity: each gives users a way to
 
 If you're building on Android or any Material-based system, lean on the patterns already defined in Material Design rather than inventing your own. Material draws a sharp line between snackbars (brief, auto-dismissing feedback at the bottom of the screen), banners (a persistent, dismissible message for a single important update), and dialogs (modal interruptions reserved for decisions that must happen now). It also specifies system notification anatomy: small icon, title, text, timestamp, and actions. Following these conventions means users get behavior they already understand, and you get accessibility and motion handled for free. The official [Material Design components docs](https://m3.material.io/components) lay out the full spec.
 
-## Before you ship: notification checklist
+## Before you ship, notification checklist
 
 Run any new notification through this list before it goes live:
 
@@ -504,6 +507,12 @@ Never rely on color alone to convey meaning, keep contrast high, provide screen-
 
 **What are Material Design's notification patterns?**
 Material Design separates snackbars (brief auto-dismissing feedback), banners (persistent single messages), and dialogs (modal decisions), plus a defined anatomy for system notifications. Following the spec gives users familiar behavior and handles much of the accessibility for you.
+
+### When should you not send a notification?
+
+Skip it when someone is already looking at the change, when the message carries no action, or when the fact already shipped through another channel. Repeating what the screen already shows spends attention without adding information. Default to quiet, and the rare message that is genuinely useful stands out instead of blending into noise.
+
+{/* IMAGE: иллюстрация частого кейса */}
 
 ## A last word on notifications
 
