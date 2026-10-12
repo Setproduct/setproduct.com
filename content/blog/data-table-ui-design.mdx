@@ -52,6 +52,15 @@ I have shipped tables inside dashboard UI kits for years, and the same five mist
 
 → Hover-only actions, missing total counts, and sort arrows with no clear direction are the three anti-patterns I flag most. Each one quietly breaks trust.
 
+| Pattern | Best for | Weak at | Watch out for |
+|---|---|---|---|
+| Table | Comparing records across the same attributes | Rich per-item visuals and mobile | Horizontal scroll once columns outgrow the viewport |
+| List | Shallow, one-line items such as settings or a feed | Cross-record comparison | Losing alignment when rows vary in height |
+| Cards | Visually rich, self-contained items | Scanning many records at speed | Wasting vertical space at scale |
+| Grid | Image-led sets like galleries or media | Dense text values | No sortable columns; each cell carries one idea |
+
+{/* IMAGE: диаграмма-развилка выбора компонента */}
+
 ## When to use a table vs cards or a list
 
 Reach for a table when the core task is comparison across a consistent set of attributes. If a user needs to ask "which row has the highest value in this column," a table answers instantly. Cards and lists answer slowly, because the eye has to jump around instead of running down a column.
@@ -363,6 +372,12 @@ Start with semantic markup. A real `table` with `thead`, `tbody`, and `th` cells
 
 The authoritative reference is the [W3C ARIA Authoring Practices Grid pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/), which documents the exact keyboard model and roles for a data grid. Read it before building a custom grid, because it will save you from reinventing an interaction model that screen-reader users already expect.
 
+## When to virtualize a table
+
+Virtualization renders only the rows in view, so a ten-thousand-row table scrolls like a hundred-row one. Reach for it when the whole dataset must live in one continuous scroll, when row height stays fixed, and once rows pass the low thousands. Skip it when people navigate by page number, when rows expand and collapse, or when the table is short, because paging is simpler and gives a sense of place that virtualization removes.
+
+{/* IMAGE: диаграмма-развилка выбора компонента */}
+
 ## Performance considerations
 
 Performance in tables is mostly a rendering problem. The browser slows down when it has to keep thousands of DOM nodes alive at once, and a table is a node factory.
@@ -422,6 +437,8 @@ There is no fixed number, but you have too many once horizontal scrolling become
 ### ❸ Should I paginate, infinite scroll, or virtualize?
 
 Match the tool to the task. Use pagination for sets people navigate deliberately, because page numbers and a total count give a sense of place. Use infinite scroll for browsing feeds where no one needs a specific row by number. Use virtualization when the entire dataset must live in one continuous scroll, which I reach for once rows pass the low thousands. Pagination and virtualization both also cap how many DOM nodes the browser holds, so they protect performance, not only UX.
+
+{/* IMAGE: иллюстрация частого кейса */}
 
 ### ❹ Should I use fixed pixel widths or fluid columns?
 
