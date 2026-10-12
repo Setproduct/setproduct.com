@@ -42,7 +42,7 @@ This guide covers what you need before building breadcrumbs: the link anatomy, t
 
 Every breadcrumb path is made up of individual clickable items. Each one acts as a navigational step backward in the app’s hierarchy. But designing them goes beyond text links, they need to be wrapped in containers to allow for consistent spacing, hover feedback, keyboard focus, and state styling.
 
-![Breadcrumbs example illustrating links and wrappers](/blog/assets/breadcrumbs-ui-design/img-1.webp)
+![Breadcrumb trail showing links and their wrappers](/blog/assets/breadcrumbs-ui-design/img-1.webp)
 
 The container makes each item feel like a tactile UI element, ready to be clicked. This improves both usability and accessibility. Without the wrapper, you are limited in how you show states like hover, focus, and pressed.
 
@@ -52,7 +52,7 @@ The container makes each item feel like a tactile UI element, ready to be clicke
 
 Separators help visually break up each breadcrumb level and guide the eye along the path. While they don’t carry data or interactivity, they have a surprising impact on scannability.
 
-![Breadcrumbs example illustrating separators: tiny but mighty](/blog/assets/breadcrumbs-ui-design/img-2.webp)
+![Breadcrumb separators shown as chevrons and slashes between links](/blog/assets/breadcrumbs-ui-design/img-2.webp)
 
 Common options:
 
@@ -68,7 +68,7 @@ Choose a separator that matches the tone of your app. Chevrons feel familiar, sl
 
 Breadcrumbs are primarily text-based, but icons can subtly improve usability, especially when the path includes abstract or frequently used objects. Imagine a user navigating a file system, switching teams in a dashboard, or adjusting app-level settings. In each case, a tiny icon helps users orient themselves faster.
 
-![Breadcrumbs example illustrating icons inside breadcrumbs](/blog/assets/breadcrumbs-ui-design/img-3.webp)
+![Breadcrumb trail with a small icon next to each link](/blog/assets/breadcrumbs-ui-design/img-3.webp)
 
 In this example, the breadcrumb path includes icons for:
 
@@ -90,7 +90,7 @@ Breadcrumbs may be minimal in appearance, but their behavior is complex. Each st
 
 The active breadcrumb shows where the user currently is. It’s usually the last item in the trail, and it should **not be a link**. Instead, it becomes a visual anchor: bolded, darkened, or otherwise styled differently from the others.
 
-![Breadcrumbs active state shown in example](/blog/assets/breadcrumbs-ui-design/img-4.webp)
+![Breadcrumb link in the active state](/blog/assets/breadcrumbs-ui-design/img-4.webp)
 
 The UI in this example dims the surrounding items and places visual emphasis on the “Active” label. This reinforces the user’s location and discourages unnecessary interaction.
 
@@ -100,7 +100,7 @@ The UI in this example dims the surrounding items and places visual emphasis on 
 
 Hover feedback signals interactivity. In breadcrumbs, it's essential because the items often look similar to plain text.
 
-![Breadcrumbs hover state shown in example](/blog/assets/breadcrumbs-ui-design/img-5.webp)
+![Breadcrumb link highlighted on hover](/blog/assets/breadcrumbs-ui-design/img-5.webp)
 
 Good hover states:
 
@@ -120,7 +120,7 @@ Hover is a hint that says _you can click here_, not just a visual effect.
 
 Sometimes a breadcrumb path may contain items that look like links but aren’t actionable in context — such as when a user lacks permission or a step is temporarily locked.
 
-![Breadcrumbs disabled state shown in example](/blog/assets/breadcrumbs-ui-design/img-6.webp)
+![Breadcrumb link greyed out in the disabled state](/blog/assets/breadcrumbs-ui-design/img-6.webp)
 
 A good disabled state includes:
 
@@ -134,7 +134,7 @@ Disabled breadcrumbs should be rare. When you do use them, make it obvious that 
 
 Not every user clicks. Some tab through the interface, especially power users or those relying on assistive technologies. Focus states ensure that breadcrumb items can be clearly selected via keyboard.
 
-![Breadcrumbs focus state (keyboard navigation) shown in example](/blog/assets/breadcrumbs-ui-design/img-7.webp)
+![Breadcrumb link with a focus ring for keyboard navigation](/blog/assets/breadcrumbs-ui-design/img-7.webp)
 
 The best practice: apply a clear outline (stroke or box-shadow) that wraps the entire link container. Avoid relying solely on color.
 
@@ -144,7 +144,7 @@ If your app follows WCAG, keyboard focus is mandatory, not optional.
 
 Some design systems prefer to highlight interactive breadcrumb items using soft background fills. This is especially common in admin panels, tables, and areas with strong layout grids. A filled breadcrumb draws the eye and reinforces actionability, while still maintaining hierarchy.
 
-![Breadcrumbs example illustrating filled backgrounds for interaction states](/blog/assets/breadcrumbs-ui-design/img-8.webp)
+![Breadcrumb links with filled backgrounds for interaction states](/blog/assets/breadcrumbs-ui-design/img-8.webp)
 
 In the example above, breadcrumbs like "_Account_" or "_Settings_" are styled with a subtle _Blue-100_ background on hover or focus. This makes the link stand out without overwhelming the rest of the navigation.
 
@@ -154,7 +154,7 @@ Background fills work best used selectively. They reinforce interactivity, yet t
 
 For a more lightweight touch, strokes can replace solid backgrounds. They provide similar clarity without adding weight. This works especially well in flat or light UI themes where fills might feel too heavy.
 
-![Breadcrumbs example illustrating stroke instead of fill (alternative approach)](/blog/assets/breadcrumbs-ui-design/img-9.webp)
+![Breadcrumb links using a stroke instead of a fill](/blog/assets/breadcrumbs-ui-design/img-9.webp)
 
 In this case, the hovered or selected item uses a soft stroke (border) with rounded corners and additional spacing, giving it room to stand out cleanly.
 
@@ -164,7 +164,7 @@ A thin stroke offers just enough emphasis without breaking the flow. It lands be
 
 Subtle changes to border-radius can dramatically affect the overall vibe of your breadcrumbs. Rounded breadcrumbs feel friendlier and more modern; square ones suggest a utilitarian, data-heavy interface.
 
-![Breadcrumbs example illustrating corner radius matters more than you think](/blog/assets/breadcrumbs-ui-design/img-10.webp)
+![Breadcrumb links with rounded corners at different radii](/blog/assets/breadcrumbs-ui-design/img-10.webp)
 
 The same path, shown with varying radius settings (from sharp to soft), instantly feels more tailored to the rest of the UI.
 
@@ -176,7 +176,7 @@ Match the breadcrumb shape to the tone of your product. A soft product gets roun
 
 Every breadcrumb path begins somewhere, and in 90% of cases, it begins with “Home”. But this element plays a deeper role than just showing the top level. It acts as an anchor, a reset point, and a fallback when users want to escape nested depth.
 
-![Breadcrumbs example illustrating the “home” link is more than just tradition](/blog/assets/breadcrumbs-ui-design/img-11.webp)
+![Breadcrumb trail starting with a home link](/blog/assets/breadcrumbs-ui-design/img-11.webp)
 
 You’ll notice a few patterns here:
 
@@ -194,7 +194,7 @@ Breadcrumb navigation is all about orientation. And nothing anchors that orienta
 
 Breadcrumbs can offer more than just navigation. In some cases, they double as dropdown triggers, opening menus with options or additional paths. This is common in collaborative tools, where a breadcrumb might represent an entity (like a project, user, or folder) and clicking it shows a context-specific menu.
 
-![Breadcrumbs example illustrating breadcrumbs with popovers: actions on click](/blog/assets/breadcrumbs-ui-design/img-12.webp)
+![Breadcrumb with a popover opening actions on click](/blog/assets/breadcrumbs-ui-design/img-12.webp)
 
 In this example, the "Jason Leung" breadcrumb opens a menu with teammate avatars. The breadcrumb serves as both location and interaction trigger.
 
@@ -210,7 +210,7 @@ If a breadcrumb acts like a dropdown, style it like one. Add a chevron or a hove
 
 Some systems allow breadcrumbs to open menus on hover (especially in dashboards or internal tools). This can speed up navigation when users revisit deep sections repeatedly.
 
-![Breadcrumbs hover-triggered submenus shown in example](/blog/assets/breadcrumbs-ui-design/img-13.webp)
+![Breadcrumb with a submenu opening on hover](/blog/assets/breadcrumbs-ui-design/img-13.webp)
 
 In this view, hovering over the "Users" item opens a menu with all available user-related pages. It’s fast, frictionless, and works well with pointer devices.
 
@@ -228,7 +228,7 @@ Hover popovers serve power users. Keep them discoverable but optional, and never
 
 In complex apps with deep navigation trees, you can’t always show the full breadcrumb path (especially on smaller screens). In such cases, you can collapse the middle items into a dropdown (commonly represented as “...” or an ellipsis).
 
-![Breadcrumbs example illustrating truncated breadcrumbs with ellipsis popover](/blog/assets/breadcrumbs-ui-design/img-14.webp)
+![Truncated breadcrumb with an ellipsis popover for hidden items](/blog/assets/breadcrumbs-ui-design/img-14.webp)
 
 Clicking the ellipsis opens a menu with the skipped levels. This keeps the layout clean while still offering full navigation when needed.
 
@@ -240,7 +240,7 @@ Sometimes the issue isn’t depth, but label length.
 
 Long names: like project titles, file names, or organization names - break layout or wrap awkwardly.
 
-![Breadcrumbs example illustrating long breadcrumb labels with hard truncation](/blog/assets/breadcrumbs-ui-design/img-15.webp)
+![Breadcrumb with long labels cut off by hard truncation](/blog/assets/breadcrumbs-ui-design/img-15.webp)
 
 This example shows truncated text like “National Grocery Vault” with ellipsis. It looks clean, but it’s critical to include:
 
@@ -254,7 +254,7 @@ Do not sacrifice clarity for clean lines. If a user cannot tell where “Nat…�
 
 Advanced implementations may show full hierarchy in a dropdown, allowing users to jump between sibling or parent levels quickly.
 
-![Breadcrumbs anatomy diagram with key parts labeled](/blog/assets/breadcrumbs-ui-design/img-16.webp)
+![Breadcrumb hierarchy shown as a diagram with labelled parts](/blog/assets/breadcrumbs-ui-design/img-16.webp)
 
 This layout mimics a file system: clicking a breadcrumb opens a structured menu with nested folders or options. It’s especially useful for content-heavy platforms.
 
@@ -264,7 +264,7 @@ Use indentation and section headers to express hierarchy. Without structure, the
 
 On mobile, space is precious. Breadcrumbs often collapse into a single button or icon, opening a vertically stacked list.
 
-![Breadcrumbs mobile-friendly collapsed breadcrumbs shown in example](/blog/assets/breadcrumbs-ui-design/img-17.webp)
+![Breadcrumb collapsed into a compact form for mobile](/blog/assets/breadcrumbs-ui-design/img-17.webp)
 
 This solution preserves clarity without taking up horizontal space. But beware:
 
@@ -280,7 +280,7 @@ Breadcrumbs on mobile should act like a backstack. The goal is a quick escape ro
 
 Modern design systems rely on tokens, semantic labels for colors like _primary-600_, _gray-100_, or accent-background. Applying tokens to breadcrumbs makes them easy to theme, update, and scale across different contexts.
 
-![Breadcrumbs example illustrating tokens for color consistency](/blog/assets/breadcrumbs-ui-design/img-18.webp)
+![Breadcrumb styling driven by design tokens for color consistency](/blog/assets/breadcrumbs-ui-design/img-18.webp)
 
 This visual showcases a full breadcrumb path styled with Indigo tokens:
 
@@ -300,7 +300,7 @@ Tokens are powerful, but they shine brightest when applied consistently across t
 
 For example: SaaS dashboards in green, analytics tools in blue, creative spaces in purple - all with breadcrumbs following the brand tone.
 
-![Breadcrumbs example illustrating theme application across ui systems](/blog/assets/breadcrumbs-ui-design/img-19.webp)
+![Breadcrumb theme applied across several UI systems](/blog/assets/breadcrumbs-ui-design/img-19.webp)
 
 Each variation uses the same component structure but swaps token values to match the overall app palette.
 
@@ -310,7 +310,7 @@ Color carries more than decoration. It signals familiarity, so breadcrumbs shoul
 
 A simple grid of color combinations, like in this example, can help developers and designers align quickly on styling rules.
 
-![Breadcrumbs example illustrating token palettes as visual references](/blog/assets/breadcrumbs-ui-design/img-20.webp)
+![Breadcrumb token palettes shown as visual references](/blog/assets/breadcrumbs-ui-design/img-20.webp)
 
 Tokens here include **Green-100**, **Green-400**, **Green-800,** etc. Having a token sheet improves collaboration, especially when breadcrumbs must match buttons, tabs, or page headers.
 
@@ -322,7 +322,7 @@ Include breadcrumb tokens in your system docs. It saves the whole team time on t
 
 Breadcrumbs sometimes reflect applied filters or search context and in such cases, being able to remove a level manually enhances control.
 
-![Breadcrumbs example illustrating breadcrumbs with dismiss buttons](/blog/assets/breadcrumbs-ui-design/img-21.webp)
+![Breadcrumb trail with dismiss buttons on each crumb](/blog/assets/breadcrumbs-ui-design/img-21.webp)
 
 Here we see an “X” (close icon) next to each breadcrumb item, allowing the user to cancel that filter or tag. This is especially useful in:
 
@@ -336,7 +336,7 @@ Give the user full control, so they can remove what they added.
 
 Breadcrumbs don’t just show location - they can also communicate state. Adding badges for new items, notifications, or alerts makes navigation more informative.
 
-![Breadcrumbs example illustrating breadcrumbs with status indicators (badges)](/blog/assets/breadcrumbs-ui-design/img-22.webp)
+![Breadcrumb trail with status indicator badges on each step](/blog/assets/breadcrumbs-ui-design/img-22.webp)
 
 This layout shows small counters or colored dots indicating updates, unread items, or pending actions inside each breadcrumb segment.
 
