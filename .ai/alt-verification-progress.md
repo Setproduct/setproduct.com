@@ -41,18 +41,19 @@
 - Батч 4r ЗАКРЫТ (commit 40bea9b часть A)
 
 ## Батч 4s — 12 картинок (liquid-glass img-12 уже проверена)
-- [ ] why-some-designers-dislike-ai img-1
-- [ ] why-apps-ux-is-getting-worse img-1
-- [ ] using-quickbooks-to-calculate-saas-growth img-1
-- [ ] start-a-saas-business-with-no-money img-2
-- [ ] launching-saas-with-zero-investments img-1
-- [ ] how-to-swap-btc-to-eth-with-thorswap img-3
-- [ ] how-to-enhance-email-security img-2
-- [ ] how-to-design-a-ui-kit-foundation img-8
-- [ ] empty-state-ui-design img-9
-- [ ] difficult-design-clients img-1
-- [ ] avatar-ui-design img-19
-- [ ] ais-impact-on-graphic-design img-1
+- [x] why-some-designers-dislike-ai img-1 — OK (проверена ранее, см. журнал)
+- [x] why-apps-ux-is-getting-worse img-1 — FIX (треснувший экран iPhone)
+- [x] using-quickbooks-to-calculate-saas-growth img-1 — FIX (лейка Organic Growth)
+- [x] start-a-saas-business-with-no-money img-2 — FIX (основатель с мыслями)
+- [x] launching-saas-with-zero-investments img-1 — FIX (человек у борда Startup growth)
+- [x] how-to-swap-btc-to-eth-with-thorswap img-3 — OK (логотип Thorchain)
+- [x] how-to-enhance-email-security img-2 — FIX (фишинг с крючком)
+- [x] how-to-design-a-ui-kit-foundation img-8 — OK (DO/DON'T layout scaffolding)
+- [x] empty-state-ui-design img-9 — FIX (кот в гамаке, zero emails)
+- [x] difficult-design-clients img-1 — FIX (улыбающийся человек с ноутбуком)
+- [x] avatar-ui-design img-19 — FIX (панель Collaboration с аватарами)
+- [x] ais-impact-on-graphic-design img-1 — FIX (силуэт с рукой среди фигур)
+- Батч 4s ЗАКРЫТ (commit)
 
 ## Журнал
 - figma-tutorial-instances-management img-1 FIX (Row of userpic states...), img-2 FIX (Figma local styles panel...), img-3 FIX (Layers panel of the Userpic master...) — commit 99cd6c8
