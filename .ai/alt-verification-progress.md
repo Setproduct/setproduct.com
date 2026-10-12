@@ -9,28 +9,29 @@
 - FIX — альт не соответствует, исправлено
 - MISS — картинка не найдена/битая
 
-## Батч 4p — 16 картинок
-- [ ] remote-productivity img-1..9 (9)
-- [ ] ai-infographics-for-marketing-teams img-1..7 (7)
+## Батч 4p — 16 картинок — ЗАКРЫТ (commit 84ad3e2)
+- [x] remote-productivity img-1..9 (9) — FIX 2,3,4,7; OK 1,5,6,8,9
+- [x] ai-infographics-for-marketing-teams img-1..7 (7) — FIX 1,3,4,6; OK 2,5,7
 
 ## Батч 4q — 24 картинки (figma-instances img-1..3 уже проверены)
-- [ ] tabs-ui-design img-7,16,17
-- [ ] real-ux-work-in-tech-companies img-1,2,3
-- [ ] pricing-ui-design img-3,4,5
-- [ ] material-nextjs-ui-kit img-1,2,3
-- [ ] landing-page-design-tips-for-startups img-2,3,4
-- [ ] choosing-right-ios-kit img-1,2,3
-- [ ] case-study-journeyapp img-1,2,3
-- [ ] calendar-ui-design img-1,4,5
+- [x] tabs-ui-design img-7,16,17 — img-7 OK, img-16 FIX (unread dot + count badge), img-17 OK
+- [x] real-ux-work-in-tech-companies img-1,2,3 — все FIX (мультирукий UX, твит про кнопку, уницикл с Jira)
+- [x] pricing-ui-design img-3,4,5 — img-3 OK, img-4 FIX (тёмные карточки, Purple Lift), img-5 OK
+- [x] material-nextjs-ui-kit img-1,2,3 — img-1 FIX (bar chart), img-2 FIX (donut 8900/34.95 процента), img-3 FIX (search component + код)
+- [x] landing-page-design-tips-for-startups img-2,3,4 — все FIX
+- [x] choosing-right-ios-kit img-1,2,3 — все FIX (grid screens, phone mockup + pencil, hands on tablet)
+- [x] case-study-journeyapp img-1,2,3 — все OK
+- [x] calendar-ui-design img-1,4,5 — img-1 OK, img-4 FIX, img-5 FIX
+- Батч 4q ЗАКРЫТ (commit 1baafd0 часть A, a4fa51c часть B)
 
 ## Батч 4r — 26 картинок
-- [ ] why-designers-are-loosing-motivation img-1,2
-- [ ] venice-ai-tool-private-uncensored img-1,2
+- [x] why-designers-are-loosing-motivation img-1,2 — img-1 FIX (многорукий дизайнер), img-2 OK (развилка дорог)
+- [x] venice-ai-tool-private-uncensored img-1,2 — все FIX (таблица токеномики, сравнение API)
 - [ ] top-tips-for-new-businesses... img-1,2
-- [ ] strikethrough-text-deserves-more-love-in-ui img-4,5
-- [ ] state-of-crypto-2025 img-1,2
-- [ ] pagination-ui-design img-5,11
-- [ ] optimizing-digital-marketing img-2,4
+- [x] strikethrough-text-deserves-more-love-in-ui img-4,5 — все FIX (to-do со зачёркиванием, слово done)
+- [x] state-of-crypto-2025 img-1,2 — img-1 OK (маска + свинья CENTRALIZATION), img-2 FIX (регулирование)
+- [x] pagination-ui-design img-5,11 — img-5 OK (disabled/hover), img-11 FIX (цветовые варианты)
+- [x] optimizing-digital-marketing img-2,4 — все FIX (Patagonia Core Values, инфографика SEO)
 - [ ] how-to-cancel-adobe-subscription-without-fees img-1,2
 - [ ] how-to-3d-animate-scroll img-1,2
 - [ ] genius-ux-design-inventions img-1,3
