@@ -125,6 +125,17 @@ const MAILCHEAP_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-mailcheap", text: "Why it belongs in your stack" },
 ];
 
+const COMPOSITOR_HEADINGS: ArticleHeading[] = [
+  { id: "comp-what-it-does", text: "What Compositor actually does" },
+  { id: "comp-photoshop-habit", text: "Why the Photoshop habit is hard to break" },
+  { id: "comp-psd-and-shortcuts", text: "Photoshop files and shortcuts still work" },
+  { id: "comp-agent-format", text: "A project format AI agents can write" },
+  { id: "comp-what-ships", text: "What ships in the box" },
+  { id: "comp-limits", text: "Limits to weigh before you install" },
+  { id: "comp-faq", text: "Frequently asked questions" },
+  { id: "comp-why-it-belongs", text: "Why it belongs on your Mac" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -136,6 +147,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   rea: REA_HEADINGS,
   "liquid-glass": LIQUID_GLASS_HEADINGS,
   mailcheap: MAILCHEAP_HEADINGS,
+  compositor: COMPOSITOR_HEADINGS,
 };
 
 /**
@@ -2467,6 +2479,239 @@ export default function FreebieArticle({ slug }: Props) {
                   </>
                 )}
 
+                {slug === "compositor" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  Photoshop costs more than a side project deserves, and GIMP
+                  never quite feels like home once your hands learned Photoshop
+                  first. Robbie Tilton built Compositor to close that gap for
+                  himself, then opened the source. It is a full image editor for
+                  macOS, built around the compositing and retouching work a
+                  designer actually does, and the license costs nothing.
+                </p>
+
+                <h2 id="comp-what-it-does">What Compositor actually does</h2>
+                <p>
+                  Compositor is a native macOS app, not a web wrapper and not an
+                  Electron shell. It needs macOS 26 or later on an Apple silicon
+                  Mac, and it ships as a signed, notarized build that updates
+                  itself. Inside is the editor you would expect from a
+                  Photoshop replacement: layers and folders, masks, adjustment
+                  layers, layer effects, a full selection toolset, retouching
+                  brushes, a Camera Raw panel, and a filter stack.
+                </p>
+                <p>
+                  The README is blunt about why it exists. The author used
+                  Photoshop for compositing and post-processing, wanted to keep
+                  that workflow, and did not want to keep paying for it.
+                  Compositor answers that specific complaint. Keep the muscle
+                  memory, drop the subscription, and let anyone who wants more
+                  open the Xcode project and change it.
+                </p>
+
+                <h2 id="comp-photoshop-habit">
+                  Why the Photoshop habit is hard to break
+                </h2>
+                <p>
+                  Free editors rarely fail on features. They fail on feel. The
+                  blend mode list sits in a different order, the shortcuts live
+                  somewhere else, and every small difference pulls you out of
+                  flow. That friction is why so many designers keep the paid app
+                  and complain about it instead of switching.
+                </p>
+                <p>
+                  Compositor leans into the habit instead of fighting it. Blend
+                  modes follow Photoshop&rsquo;s order, so a folder&rsquo;s
+                  opacity dims everything inside it the way you remember.
+                  Keyboard shortcuts match Photoshop across the board, and the
+                  Keyboard Shortcuts panel in the Edit menu remaps any of them.
+                  Even the small things carry over. You can drag a
+                  number&rsquo;s label to scrub its value, exactly as in
+                  Photoshop.
+                </p>
+                <p>
+                  ☞ The switch is cheap because the interface follows the
+                  conventions your hands already know.
+                </p>
+
+                <h2 id="comp-psd-and-shortcuts">
+                  Photoshop files and shortcuts still work
+                </h2>
+                <p>
+                  Compositor opens Photoshop PSD and PSB files at 8-bit RGB.
+                  Layers and folders stay editable, along with masks and blend
+                  modes. Fill shapes hold up too, along with simple horizontal
+                  text. Other vectors and vertical text come in as pixels. The
+                  app shows a conversion report before anything applies, so you
+                  see what will flatten before you commit to it.
+                </p>
+                <p>
+                  CMYK is not supported, which rules Compositor out for print
+                  production. For screen work and image composites, the import
+                  path covers the files you get handed.
+                </p>
+
+                <h2 id="comp-agent-format">A project format AI agents can write</h2>
+                <p>
+                  This is the part that matters most to anyone building with AI
+                  right now. A Compositor project, a <code>.comp</code>, is not a
+                  binary blob. It is a folder with a <code>manifest.json</code>{" "}
+                  and an <code>images</code> directory of PNG layer files plus
+                  optional mask PNGs. Anything that can write a file can build or
+                  edit that project, with no plugin layer standing between the
+                  agent and your layers.
+                </p>
+                <p>
+                  Point an agent at the open project and it writes layers while
+                  you watch. Compositor reloads the canvas as the files change,
+                  usually within half a second. What comes back is a set of
+                  ordinary layers you can blend and mask, then paint on, not a
+                  frozen render. The README names Claude Code and Codex as the
+                  tools to try first, which tells you who it was built for.
+                </p>
+                <p>
+                  That design turns an image editor into a target for an AI
+                  workflow. You generate a moody scene, a product composite, or a
+                  batch of variations without opening a dialog, then finish the
+                  details by hand. The interface that surrounds those images is
+                  its own job, and these{" "}
+                  <Link href="/blog/ai-agent-ui-design-patterns">
+                    AI agent UI design patterns
+                  </Link>{" "}
+                  cover that side.
+                </p>
+
+                <h2 id="comp-what-ships">What ships in the box</h2>
+                <p>The feature list is long, so here is the short version:</p>
+                <ul>
+                  <li>
+                    ❶ Layers and folders with the full set of Photoshop blend
+                    modes, masks included on both
+                  </li>
+                  <li>
+                    ❷ Adjustment layers for curves and levels, along with
+                    exposure and color balance, all editable at any time
+                  </li>
+                  <li>
+                    ❸ GPU-rendered layer effects for strokes and drop shadows,
+                    color overlays and glows, all editable later
+                  </li>
+                  <li>
+                    ❹ Non-destructive transform for moving, scaling, rotating or
+                    flipping a layer, with snapping to edges and centers
+                  </li>
+                  <li>
+                    ❺ Selections from marquee, lasso, a Magic Wand that samples
+                    color, and an Object tool that traces what you click
+                  </li>
+                  <li>
+                    ❻ Select Subject, plus Content-Aware Fill that can extend an
+                    image past its own edges
+                  </li>
+                  <li>
+                    ❼ Retouching brushes (Brush, Spot Healing, Clone Stamp) and
+                    shape tools (Gradient, Rectangle, Ellipse, Type), with text
+                    that stays editable
+                  </li>
+                  <li>
+                    ❽ A Camera Raw panel and a filter stack with live previews
+                    limited to the current selection
+                  </li>
+                  <li>
+                    ❾ Multiple projects in tabs, Search Commands on ⌘F, and a
+                    fullscreen mode that leaves the canvas alone on black
+                  </li>
+                </ul>
+                <p>
+                  Import covers raster formats (JPEG, PNG, HEIC, TIFF, WebP),
+                  vector input (SVG), camera RAW and Photoshop files. Export
+                  gives you PNG or JPEG, or a one-page PDF at print size.
+                  Install takes one Homebrew command, and updates arrive on
+                  their own.
+                </p>
+
+                <h2 id="comp-limits">Limits to weigh before you install</h2>
+                <p>
+                  Compositor is one person&rsquo;s project, and the constraints
+                  are worth knowing before you move a real workflow onto it. It
+                  runs only on macOS 26 and newer, on Apple silicon. Intel Macs
+                  and Windows are out, and there is no CMYK path for print.
+                </p>
+                <p>
+                  The app is English only, and the author is not accepting
+                  translation pull requests right now. He explains why in the
+                  README. One person maintaining it, every new string needing
+                  translation forever, and languages he cannot review. It is an
+                  honest answer, and it also tells you the scale of the project.
+                </p>
+                <p>
+                  Photoshop and GIMP still have deeper ecosystems. Plugins and
+                  brushes, along with tutorials for those apps, run into the
+                  millions.
+                  Compositor gives you the core editor and the source code, and
+                  it expects you to bring your own learning curve.
+                </p>
+
+                <h2 id="comp-faq">Frequently asked questions</h2>
+                <h3>Is Compositor really free?</h3>
+                <p>
+                  Yes. It is MIT licensed, so you can read and fork it, then
+                  ship it in personal and commercial work without paying a
+                  license fee. The source lives on GitHub, and the author takes
+                  new features as pull requests rather than as a subscription.
+                </p>
+                <h3>Can I open Photoshop files in it?</h3>
+                <p>
+                  Yes, for 8-bit RGB documents. Layers and folders stay
+                  editable. So do masks and blend modes, along with fill shapes
+                  and simple horizontal text. Vertical text and complex vectors
+                  rasterize on import, and CMYK files do not open. A report
+                  shows the conversion before it applies.
+                </p>
+                <h3>Does it run on Intel Macs or Windows?</h3>
+                <p>
+                  No on both. Compositor targets macOS 26 and later on Apple
+                  silicon. That limit buys a native build with direct access to
+                  the GPU for layer effects and live previews. If you are on
+                  Intel or Windows, this one is not for you yet.
+                </p>
+                <h3>What is a comp file?</h3>
+                <p>
+                  A <code>.comp</code> is a project folder, not a single file. It
+                  holds a <code>manifest.json</code> describing the document and
+                  its layers, and an <code>images</code> folder with one PNG per
+                  layer plus optional mask PNGs. Open one in Compositor and the
+                  canvas updates live as those files change, which is what makes
+                  the format work for scripts and AI agents.
+                </p>
+
+                <h2 id="comp-why-it-belongs">Why it belongs on your Mac</h2>
+                <p>
+                  You want a compositing tool that respects your budget and your
+                  habits. Compositor gives you Photoshop-shaped layers and
+                  effects, plus the masks and the shortcuts, for free, in a
+                  native macOS build that keeps working while it saves. If the
+                  monthly bill on creative software has been on your mind, this
+                  is the same instinct behind{" "}
+                  <Link href="/blog/figma-stop-taking-my-money">
+                    dropping paid design tools
+                  </Link>
+                  .
+                </p>
+                <p>
+                  The agent-readable project format is the piece that makes it
+                  more than a cheaper clone. It turns the editor into something
+                  an AI workflow can drive directly, which is rare in a category
+                  that still treats project files as black boxes. Grab the build
+                  from GitHub, point an agent at a <code>.comp</code>, and watch
+                  the layers arrive. When you want the interface around those
+                  images to match, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same fast, solo workflow.
+                </p>
+                  </>
+                )}
               </article>
             </div>
           </div>

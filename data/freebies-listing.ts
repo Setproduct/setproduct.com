@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "compositor",
+    title: "Compositor — free Photoshop alternative for macOS",
+    description:
+      "Free and open source Photoshop alternative for macOS. Layers, masks, PSD import, and a project format any AI agent can read and write.",
+    thumb: "/freebies/thumbs/freebie-compositor.webp",
+    image: "/freebies/freebie-compositor.webp",
+    category: "Code",
+    previewHref: "/freebies/compositor",
+    duplicateHref: "https://github.com/robbietilton/Compositor",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "mailcheap",
     title: "Mailcheap, self-hosted newsletter on Amazon SES",
     description:
