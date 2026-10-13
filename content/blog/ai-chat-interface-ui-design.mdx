@@ -11,8 +11,8 @@ category: UI Design
 coverImage: /blog/covers/ai-chat-interface-ui-design.webp
 coverImageAlt: "Anatomy of a modern AI chat interface with streaming response"
 subtitle: >-
-  AI chat is not a messaging app and not a chatbot. It needs its own anatomy,
-  its own states, and its own honesty about uncertainty. Here is the field guide.
+  AI chat sits apart from both messaging apps and chatbots. It needs its own
+  anatomy, its own states and its own honesty about uncertainty. Here is the field guide.
 cardDescription: >-
   An AI chat interface needs its own anatomy and its own states. The guide
   covers streaming and the composer, plus the anti-patterns that erode trust.
@@ -54,6 +54,16 @@ faq:
       dropped. Never silently truncate. Offer a start-new-conversation option
       before the user runs into degraded replies. Claude.ai and ChatGPT both
       handle this by showing context indicators and prompting new threads.
+  - question: What is the biggest mistake teams make when adding AI chat?
+    answer: >-
+      Bolting chat on as a floating widget without rethinking the surrounding
+      flows. Chat that ignores what the user is doing elsewhere is a worse
+      ChatGPT in a sidebar. Give it real context, then the answers land.
+  - question: Should AI chat replace forms in my product?
+    answer: >-
+      Almost never. Forms collect structured input fast and without ambiguity.
+      Chat is slow and prone to misreading intent. Use chat for open-ended and
+      exploratory work, and forms for anything with a clear data shape.
   - question: How do I design AI chat for mobile?
     answer: >-
       Dock the composer, give the message stream bottom padding equal to the
@@ -65,13 +75,13 @@ faq:
 
 An **AI chat interface** is a conversational UI where the second participant is a language model, not a person. It streams token by token and fails in ways a messenger never does. This guide covers the anatomy of the surface and the states every message passes through. It also covers layout rules and accessibility, plus the anti-patterns that erode trust.
 
-I have spent the last two years using Claude.ai, ChatGPT, Cursor, Cline, Perplexity, and Venice almost daily. Some of them feel like tools. Some feel like toys. The difference is rarely the model. It is the interface around the model. This guide is what I wish I had read before I started shipping AI features into my own products.
+I have spent the last two years in Claude.ai and ChatGPT daily, with Cursor handling code and Perplexity handling research. Some of them feel like tools. Some feel like toys. The difference is rarely the model. It is the interface around the model. This guide is what I wish I had read before I started shipping AI features into my own products.
 
 **TL;DR.** AI chat behaves more like a tool than a messenger, so it needs its own anatomy. Messages pass through states a messenger never has, from queued to error. Stream the first token fast and keep a caret so the reply feels alive. Dock the composer rather than floating it. When a reply fails, say what happened and how to fix it.
 
 ## What is an AI chat interface
 
-An AI chat interface is a UI surface where a person types a request in natural language and a language model replies, usually with streamed text, often with attachments, tool calls, citations, and follow-up suggestions. It sits between a search box, a code editor, and a messenger. None of those metaphors fit perfectly, which is why so many products get the design wrong by copying the wrong reference.
+An AI chat interface is a UI surface where a person types a request in natural language and a language model replies, usually with streamed text and often with attachments, citations, or follow-up suggestions. It sits between a search box and a code editor, with a hint of messenger. None of those metaphors fit perfectly, which is why so many products get the design wrong by copying the wrong reference.
 
 Three things make AI chat its own category:
 
@@ -123,7 +133,7 @@ Right-aligned or visually distinct from the model reply. Editable, because users
 
 ### ❺ Assistant message
 
-The model reply. Rendered as rich Markdown: headings, lists, code blocks with a copy button, tables, math, and sometimes diagrams. This is where most of your design work lives. The reply has its own substates (streaming, complete, error, regenerating) which I cover in the next section.
+The model reply. Rendered as rich Markdown: headings, lists, code blocks with a copy button, plus tables and math. This is where most of your design work lives. The reply has its own substates (streaming, complete, error, regenerating) which I cover in the next section.
 
 ### ❻ Input composer
 
@@ -159,7 +169,7 @@ Some models (Claude.ai with extended thinking, ChatGPT o-series, Cursor with age
 
 ### Streaming
 
-Tokens are arriving and rendering in real time. This is the signature AI chat state and deserves its own deep dive (next section). The cursor blinks, the layout reflows, and the user reads as the answer writes itself.
+Tokens are arriving and rendering in real time. This is the signature AI chat state and deserves its own deep dive (next section). The cursor blinks and the layout reflows as the user reads the answer writing itself.
 
 ### Complete
 
@@ -167,7 +177,7 @@ Generation finished. Show the full reply, render the final Markdown pass, reveal
 
 ### Error
 
-Network drop, rate limit, content filter, context window exceeded, or model timeout. Each has a different message and a different recovery action. ☞ Never collapse all errors into a generic "Something went wrong". That is the laziest possible failure UX and forces users to guess. Show: what happened, why it happened (one short line), and the single action that resolves it (`Try again`, `Switch model`, `Shorten prompt`).
+A dropped network. A rate limit. A content filter. An exceeded context window. A model timeout. Each has a different message and a different recovery action. ☞ Never collapse all errors into a generic "Something went wrong". That is the laziest possible failure UX and forces users to guess. Show: what happened, why it happened (one short line), and the single action that resolves it (`Try again`, `Switch model`, `Shorten prompt`).
 
 ### Regenerating
 
@@ -175,11 +185,11 @@ The user asked for a new attempt. The old reply either disappears, gets pushed i
 
 ### Stopped
 
-The user pressed `Stop generating` mid-stream. Show the partial reply, mark it as interrupted, and offer `Continue` and `Regenerate` as the two clear next moves. Do not delete the partial output. It may already be useful.
+The user pressed `Stop generating` mid-stream. Show the partial reply and mark it as interrupted. Offer `Continue` and `Regenerate` as the two clear next moves. Do not delete the partial output. It may already be useful.
 
 ## The streaming text pattern, deep dive
 
-![Close-up of a streaming response with caret, partial Markdown, and stop control highlighted](/blog/assets/ai-chat-interface-ui-design/img-streaming.webp)
+![Close-up of a streaming response with a caret and partial Markdown](/blog/assets/ai-chat-interface-ui-design/img-streaming.webp)
 
 Streaming is what separates AI chat from every UI pattern that came before. Done well, it makes a 20-second response feel instant. Done badly, it makes a fast response feel broken. Most teams underestimate how much engineering and design care this single pattern deserves.
 
@@ -219,7 +229,7 @@ AI chat does not have one canonical layout. It has three or four, and each has a
 
 ### Desktop, the two-pane standard
 
-A left rail with conversation history, a center column with the message stream capped at about 720–768 pixels, and an optional right panel for artifacts (code preview, document, citations). Claude.ai, ChatGPT, and Perplexity all converge on this. The rail collapses to icons under about 1200px wide. The artifact panel slides in only when there is something to show. Keeping it persistent wastes space and forces the reader to scan a narrower column.
+A left rail with conversation history, a center column with the message stream capped at about 720–768 pixels, and an optional right panel for artifacts (code preview, document, citations). Claude.ai and ChatGPT converge on this, and Perplexity does too. The rail collapses to icons under about 1200px wide. The artifact panel slides in only when there is something to show. Keeping it persistent wastes space and forces the reader to scan a narrower column.
 
 ### Desktop, the IDE embed
 
@@ -231,7 +241,7 @@ The conversation list becomes a slide-in drawer behind a hamburger or a top-left
 
 ### Mobile, the input-first pattern
 
-Notion AI, Linear AI, and most in-app assistants open with a centered input and a few suggestion chips, no message history visible until the user has sent something. This pattern works when the assistant is task-scoped (summarize this, write that) rather than a long-running conversation. It feels lighter and avoids the "empty chat" intimidation.
+Notion AI and Linear AI, like most in-app assistants, open with a centered input and a few suggestion chips, no message history visible until the user has sent something. This pattern works when the assistant is task-scoped (summarize this, write that) rather than a long-running conversation. It feels lighter and avoids the "empty chat" intimidation.
 
 ### Sticky composer, never floating
 
@@ -245,7 +255,7 @@ Desktop and mobile versions of these layouts are inside [Nocra](https://www.setp
 
 ## When to use AI chat instead of alternatives
 
-AI chat is the loudest pattern of 2026 and the most over-applied. Not every AI feature wants to be a chat. Sometimes a button, an inline action, or a single-shot prompt is better. This table is the decision tree I run through before defaulting to a chat surface.
+AI chat is the loudest pattern of 2026 and the most over-applied. Not every AI feature wants to be a chat. Sometimes a button or an inline action is better. This table is the decision tree I run through before defaulting to a chat surface.
 
 | User goal | Best pattern | Why |
 |---|---|---|
@@ -263,7 +273,7 @@ AI chat is the loudest pattern of 2026 and the most over-applied. Not every AI f
 
 ## Real-world use cases
 
-![Five real AI chat surfaces side by side: general assistant, coding, research, in-app, and customer support](/blog/assets/ai-chat-interface-ui-design/img-use-cases.webp)
+![Five real AI chat surfaces side by side: general assistant, coding, research and support](/blog/assets/ai-chat-interface-ui-design/img-use-cases.webp)
 
 The pattern bends differently depending on the job. Here are the five surfaces I study most often, with what each one teaches.
 
@@ -281,7 +291,7 @@ Every reply has citations as numbered footnotes that link to sources. The reply 
 
 ### In-app assistant (Notion AI, Linear AI)
 
-Scoped to the document, project, or workspace the user is already in. Opens as a sidebar or floating panel. Knows the context without being told. The lesson: the smaller the context, the lighter the chat UI can be. A Notion AI chat does not need conversation history because each invocation is task-scoped. Less UI is the right answer.
+Scoped to the document or workspace the user is already in. Opens as a sidebar or floating panel. Knows the context without being told. The lesson: the smaller the context, the lighter the chat UI can be. A Notion AI chat does not need conversation history because each invocation is task-scoped. Less UI is the right answer.
 
 ### Customer support hybrid
 
@@ -289,7 +299,7 @@ AI handles tier-one questions, hands off to a human when it detects frustration 
 
 ## Accessibility, critical and often skipped
 
-![Accessibility annotations on an AI chat interface showing focus order, ARIA roles, and live regions](/blog/assets/ai-chat-interface-ui-design/img-accessibility.webp)
+![Accessibility annotations on an AI chat interface showing focus order and ARIA live regions](/blog/assets/ai-chat-interface-ui-design/img-accessibility.webp)
 
 AI chat is harder to make accessible than most components because the content changes constantly. Tokens stream in, layouts reflow, new buttons appear. Screen reader users get a confusing experience by default, and most teams ship that default. Here is what actually matters.
 
@@ -319,7 +329,7 @@ Per-message actions (copy, regenerate) should come after the message text in the
 
 ## Anti-patterns that kill AI chat UX
 
-![Common anti-patterns illustrated: fake typing, missing stop button, hidden errors, and intrusive disclaimers](/blog/assets/ai-chat-interface-ui-design/img-anti-patterns.webp)
+![Common anti-patterns illustrated: fake typing and missing stop buttons](/blog/assets/ai-chat-interface-ui-design/img-anti-patterns.webp)
 
 These are the mistakes I see over and over. Some are lazy, some are well-intentioned, all of them quietly damage the product. Audit your AI chat against this list before shipping.
 
@@ -341,7 +351,7 @@ These are the mistakes I see over and over. Some are lazy, some are well-intenti
 
 ☞ **No way to copy code**. Code blocks without a one-click copy button force users to triple-click and pray. Add a copy button. Show a transient checkmark on click. Cursor and Claude.ai both nail this.
 
-☞ **Modal-locking the chat during streaming**. Disabling navigation, edits, or other UI while a reply streams. Users want to start composing the next prompt while reading the current one. Let them.
+☞ **Modal-locking the chat during streaming**. Disabling navigation or edits while a reply streams. Users want to start composing the next prompt while reading the current one. Let them.
 
 ☞ **Silent context truncation**. The conversation gets too long, the model loses the earlier turns, the replies start contradicting things from earlier in the thread. Either show a clear "Earlier messages summarized" marker or warn the user when they approach the context window.
 
@@ -415,7 +425,7 @@ Run your AI chat against this list before you ship it. If you cannot tick a box,
 
 **❶ Should I use bubbles or full-width messages for AI chat?**
 
-Full-width is the current best practice for serious AI chat. Bubbles signal "messenger" and undermine the tool framing users now expect from products like Claude.ai, ChatGPT, and Cursor. Use subtle background shading or alignment to separate user and assistant messages instead. Bubbles are fine for narrow in-app assistants where the chat is clearly a small widget, not the main surface.
+Full-width is the current best practice for serious AI chat. Bubbles signal "messenger" and undermine the tool framing users now expect from products like Claude.ai and ChatGPT. Use subtle background shading or alignment to separate user and assistant messages instead. Bubbles are fine for narrow in-app assistants where the chat is clearly a small widget, not the main surface.
 
 **❷ How fast does my AI chat need to feel?**
 
@@ -431,7 +441,7 @@ Show a clear marker in the thread when earlier messages get summarized or droppe
 
 **❺ Should AI chat replace forms in my product?**
 
-Almost never. Forms collect structured input fast, with validation, and without ambiguity. Chat is conversational, slow, and prone to misunderstanding. Use chat for open-ended, exploratory tasks and forms for everything that has a clear data shape. The current overuse of AI chat in 2026 is a pendulum swing that will correct itself within a year.
+Almost never. Forms collect structured input fast, with validation and no ambiguity. Chat is conversational and slow, and it is prone to misunderstanding. Use chat for open-ended and exploratory work. Use forms for anything with a clear data shape. The current overuse of AI chat in 2026 is a pendulum swing that will correct itself within a year.
 
 **❻ How do I design AI chat for mobile when the keyboard takes half the screen?**
 
