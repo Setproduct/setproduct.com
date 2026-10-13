@@ -26,11 +26,48 @@ inlineCta:
   description: "Nocra is a Figma UI kit for AI products: streaming message variants, prompt inputs, generation states, error fallbacks."
   buttonText: "Get Nocra"
   buttonLink: "https://www.setproduct.com/templates/nocra"
+faq:
+  - question: Should AI chat use bubbles or full-width messages?
+    answer: >-
+      Full-width is the current best practice for serious AI chat. Bubbles
+      signal messaging and undermine the tool framing users now expect from
+      products like Claude.ai and ChatGPT. Use subtle background shading or
+      alignment to separate user and assistant messages instead. Bubbles are
+      fine for narrow in-app assistants where the chat is a small widget.
+  - question: How fast does my AI chat need to feel?
+    answer: >-
+      Aim for first-token latency under 800ms. The total response can take 10 to
+      30 seconds for long replies, which is fine as long as streaming starts
+      quickly and the caret signals progress. What kills perceived performance
+      is a blank screen for two seconds before anything happens, not the total
+      duration.
+  - question: Do I need to show citations in AI chat?
+    answer: >-
+      If the model answers factual questions and you use retrieval-augmented
+      generation, yes. Citations are non-negotiable for trust, and Perplexity
+      proved this is the new baseline. If the chat is purely creative or
+      transformational, like rewriting or brainstorming, citations do not
+      apply. Do not fake them.
+  - question: How do I handle conversations that exceed the context window?
+    answer: >-
+      Show a clear marker in the thread when earlier messages get summarized or
+      dropped. Never silently truncate. Offer a start-new-conversation option
+      before the user runs into degraded replies. Claude.ai and ChatGPT both
+      handle this by showing context indicators and prompting new threads.
+  - question: How do I design AI chat for mobile?
+    answer: >-
+      Dock the composer, give the message stream bottom padding equal to the
+      composer plus the safe area, and let the keyboard animation push the
+      layout without jumping. Show only the last two or three messages above the
+      keyboard. Make the send and stop buttons at least 44 pixels tall for thumb
+      reach.
 ---
 
-<span class="blog_big-paragraph">An **AI chat interface** is a conversational UI where the second participant is a language model, not a person. It looks like a messenger but behaves nothing like one. Responses stream token by token, fail in unique ways, and carry uncertainty the user has to read between the lines. Designing it well means accepting that text alone is the product, and every pixel around it either helps the user trust the answer or quietly erodes that trust.</span>
+An **AI chat interface** is a conversational UI where the second participant is a language model, not a person. It streams token by token and fails in ways a messenger never does. This guide covers the anatomy of the surface and the states every message passes through. It also covers layout rules and accessibility, plus the anti-patterns that erode trust.
 
 I have spent the last two years using Claude.ai, ChatGPT, Cursor, Cline, Perplexity, and Venice almost daily. Some of them feel like tools. Some feel like toys. The difference is rarely the model. It is the interface around the model. This guide is what I wish I had read before I started shipping AI features into my own products.
+
+**TL;DR.** AI chat behaves more like a tool than a messenger, so it needs its own anatomy. Messages pass through states a messenger never has, from queued to error. Stream the first token fast and keep a caret so the reply feels alive. Dock the composer rather than floating it. When a reply fails, say what happened and how to fix it.
 
 ## What is an AI chat interface
 
