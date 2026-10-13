@@ -211,25 +211,25 @@ The `Stop generating` button needs to be exactly where the user expects it: at t
 
 ☛ The streaming pattern is the one place where good engineering and good design are inseparable. You cannot polish your way out of a slow first-token time, and you cannot engineer around a bad layout that reflows on every chunk. Treat it as a joint problem from day one.
 
-## Layout patterns: desktop vs mobile
+## Layout patterns for desktop and mobile
 
 ![Side-by-side comparison of desktop two-pane and mobile single-column AI chat layouts](/blog/assets/ai-chat-interface-ui-design/img-layouts.webp)
 
 AI chat does not have one canonical layout. It has three or four, and each has a job. Picking the wrong one for your context is the most common structural mistake I see.
 
-### Desktop: the two-pane standard
+### Desktop, the two-pane standard
 
 A left rail with conversation history, a center column with the message stream capped at about 720–768 pixels, and an optional right panel for artifacts (code preview, document, citations). Claude.ai, ChatGPT, and Perplexity all converge on this. The rail collapses to icons under about 1200px wide. The artifact panel slides in only when there is something to show — keeping it persistent wastes space and forces the reader to scan a narrower column.
 
-### Desktop: the IDE embed
+### Desktop, the IDE embed
 
 Cursor and Cline put chat next to code. The chat panel is a vertical strip on the right or left, 400–520 pixels wide, with the editor taking the rest. The composer sits at the bottom of the panel and grows upward. ☛ Inside an IDE, do not give chat a full-page layout — users want to see code and chat at the same time, and a tabbed mode breaks that.
 
-### Mobile: single column, full bleed
+### Mobile, single column and full bleed
 
 The conversation list becomes a slide-in drawer behind a hamburger or a top-left avatar. The message stream takes the full viewport width with 16px side padding. The composer pins to the bottom and rises with the keyboard. Send and stop are large, thumb-reachable, high-contrast. Avoid floating action buttons that overlap message content during streaming.
 
-### Mobile: the input-first pattern
+### Mobile, the input-first pattern
 
 Notion AI, Linear AI, and most in-app assistants open with a centered input and a few suggestion chips, no message history visible until the user has sent something. This pattern works when the assistant is task-scoped (summarize this, write that) rather than a long-running conversation. It feels lighter and avoids the "empty chat" intimidation.
 
@@ -243,7 +243,7 @@ Long-form replies need a generous line-height (around 1.6) and a max content wid
 
 Desktop and mobile versions of these layouts are inside [Nocra](https://www.setproduct.com/templates/nocra), with Figma auto-layout grids that adapt between breakpoints.
 
-## When to use what: AI chat vs alternatives
+## When to use AI chat instead of alternatives
 
 AI chat is the loudest pattern of 2026 and the most over-applied. Not every AI feature wants to be a chat. Sometimes a button, an inline action, or a single-shot prompt is better. This table is the decision tree I run through before defaulting to a chat surface.
 
@@ -287,7 +287,7 @@ Scoped to the document, project, or workspace the user is already in. Opens as a
 
 AI handles tier-one questions, hands off to a human when it detects frustration or the question is out of scope. The handoff must be visible — a banner that says "Connecting you to a person" with an ETA. ☞ The worst pattern here is silent handoff where the user keeps talking to "the bot" and only realizes much later that the tone changed because a human took over. Be honest about who is on the other end.
 
-## Accessibility: critical and often skipped
+## Accessibility, critical and often skipped
 
 ![Accessibility annotations on an AI chat interface showing focus order, ARIA roles, and live regions](/blog/assets/ai-chat-interface-ui-design/img-accessibility.webp)
 
@@ -317,7 +317,7 @@ The blinking caret, the slide-in suggestions, the auto-scroll — all of it need
 
 Per-message actions (copy, regenerate) should come after the message text in the DOM, not before. If they come before, the screen reader announces "copy, regenerate, edit" before the user has heard a single word of the actual reply. Order matters even when it is visually invisible.
 
-## Anti-patterns: what kills AI chat UX
+## Anti-patterns that kill AI chat UX
 
 ![Common anti-patterns illustrated: fake typing, missing stop button, hidden errors, and intrusive disclaimers](/blog/assets/ai-chat-interface-ui-design/img-anti-patterns.webp)
 
