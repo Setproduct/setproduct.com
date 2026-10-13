@@ -33,15 +33,45 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/tabs-ui-design.webp
+faq:
+  - question: When should I use tabs instead of a dropdown or accordion?
+    answer: >-
+      Use tabs when you have a small set of peer sections, roughly two to six,
+      that fit on one row and only one is visible at a time. A dropdown is
+      better when options are many or rarely used, because hiding them keeps the
+      interface calm. An accordion wins when vertical space is plentiful and
+      horizontal space is tight, like a long mobile form.
+  - question: How many tabs are too many?
+    answer: >-
+      On desktop, more than six equal tabs in one row starts to crowd and the
+      labels fight for space. On mobile, four to five is a practical ceiling
+      before targets get cramped. Past that, make the row scrollable with a peek
+      of the next tab, or move some sections into a dropdown or a separate page.
+  - question: How do I make tabs accessible for keyboard and screen readers?
+    answer: >-
+      Give the tab list role="tablist", each tab role="tab", and each panel
+      role="tabpanel" tied back with aria-controls. The active tab gets
+      aria-selected="true". Arrow keys move between tabs, Home and End jump to
+      the ends, and the focus ring must be clearly visible at WCAG 3:1 non-text
+      contrast. Never signal the active tab with color alone.
+  - question: Should tabs be scrollable or wrap on mobile?
+    answer: >-
+      Scroll, do not wrap. Wrapping tabs into a second row breaks the one-line
+      mental model and makes the active row ambiguous. A single scrollable strip
+      with a hint of the next tab peeking in keeps the pattern intact and tells
+      people there is more. Add momentum scrolling and snap points so a tab
+      never gets stranded half-cut at the edge.
+  - question: Where should the active tab indicator go?
+    answer: >-
+      Put it on the edge that touches the content. For top horizontal tabs that
+      means an underline along the bottom of the active tab, sitting right above
+      its panel, so the eye connects tab to content. Vertical tabs take the
+      indicator on the inner edge facing the pane. Animate it sliding between
+      tabs rather than blinking, and keep it as one of several selection
+      signals.
 ---
 
-
-
-
-
 A tab is a control that swaps related views in place, so people move between peer sections without losing context or reloading the page. Use tabs when two to six equal sections fit on one row and only one shows at a time. Reach for a segmented control for a quick view toggle, a nav for top-level destinations, or an accordion when horizontal room runs out.
-
-{/* IMAGE: hero */}
 
 **TL;DR.** A tab lets people switch between related views in the same space without losing their place. Use a tabbed interface when sections are peers, fit on one row, and only one is visible at a time — not for sequential steps (use [steps](https://www.setproduct.com/blog/steps-ui-design)) or rarely-used options (use a [dropdown](https://www.setproduct.com/blog/dropdown-ui-design)). Below: tab anatomy, every interaction state, theming, accessible keyboard patterns, and real examples you can copy.
 
@@ -140,8 +170,6 @@ Before you reach for tabs, check that the pattern actually fits. The four contro
 | **Mobile friendliness** | Good if scrollable; risky if they wrap | Bottom bar on mobile | Good (saves space) | Good (vertical by nature) | Good (thumb-sized) |
 
 If your options do not fit on one row and only one view is ever visible, tabs are the right call. Once you pass six, or the choice is rare, move to a [dropdown](https://www.setproduct.com/blog/dropdown-ui-design); when vertical space is the only space you have, reach for an accordion. If those sections hold rows of records, a [data table with tabbed views](/blog/data-table-ui-design) is often the stronger fit.
-
-{/* IMAGE: диаграмма-развилка выбора компонента */}
 
 ## Tabs states
 
@@ -448,8 +476,6 @@ Variation of a Tooltip popping out after onHover. [Check this dashboard template
 ### When should I use tabs instead of a dropdown or accordion?
 
 Use tabs when you have a small set of peer sections (roughly two to six) that fit on one row and only one is visible at a time. A [dropdown](https://www.setproduct.com/blog/dropdown-ui-design) is better when options are many or rarely used, because hiding them keeps the interface calm. An accordion wins when vertical space is plentiful but horizontal space is tight, like a long mobile form. The quick test: if a person needs to compare or jump between sections often, tabs keep that switching fast and visible.
-
-{/* IMAGE: иллюстрация частого кейса */}
 
 ### What is a tab view, and how is it different from web tabs?
 
