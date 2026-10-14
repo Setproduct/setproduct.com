@@ -27,6 +27,46 @@ inlineCta:
   description: "React UI Kit pairs 3700+ Figma components with styled Blueprint.js code, so your inputs, selects, and validation states match in design and production."
   buttonText: "Get React UI Kit"
   buttonLink: "https://www.setproduct.com/templates/react-ui-kit"
+faq:
+  - question: What is the difference between a checkbox and a toggle switch?
+    answer: >-
+      A checkbox collects a value that applies when the form submits, such as
+      agreeing to terms. A toggle switch applies its change instantly, such as
+      turning on dark mode. If your toggle needs a separate Save button to take
+      effect, it should have been a checkbox.
+  - question: When should I use radio buttons instead of a dropdown?
+    answer: >-
+      Use radios or a segmented control when there are roughly two to five
+      options and they matter to the decision, because keeping them visible
+      removes a click and the memory load of hidden choices. Switch to a
+      dropdown at six or more options, or when the options are familiar enough
+      that the user does not need to see them all at once.
+  - question: How many fields should a form have?
+    answer: >-
+      As few as the task genuinely requires. Every field you remove lifts
+      completion. If a form runs long because the data is genuinely needed,
+      split it into a multi-step wizard with a progress indicator rather than a
+      single wall, and never collect data you cannot explain a clear use for.
+  - question: When should validation errors appear?
+    answer: >-
+      Validate format when the user leaves a field, not on every keystroke
+      before they have finished. Once a field has shown an error, validate it
+      live so the message clears the instant it is fixed. Always run a final
+      pass on submit: confirm success eagerly and flag failure patiently.
+  - question: Are native HTML form controls good enough in 2026?
+    answer: >-
+      Often, yes. Native date inputs, inputmode hints and color inputs have
+      matured to the point where a custom widget is frequently the wrong call.
+      Start native, and only replace a control when the native version genuinely
+      cannot meet a real requirement such as multi-date ranges. You inherit
+      accessibility and platform behavior for free.
+  - question: What is the best library for building forms?
+    answer: >-
+      There is no single best, because the job splits in three. For state, React
+      Hook Form is the safe default and TanStack Form the type-safe newcomer.
+      For validation, Zod is the standard with Valibot as the lighter option.
+      For accessible controls, Radix, React Aria or Headless UI. Pick one from
+      each layer and most of the hard problems are already solved.
 ---
 
 <span class="blog_big-paragraph">A **form control** is the widget a user touches to hand structured data to your product: a text field, a checkbox, a slider, a date picker. There are around forty of them in common use, but they collapse into six families defined by the shape of the answer they collect. Picking the right control is the single decision that makes a form feel effortless or exhausting, and most form bugs trace back to that choice, not to the CSS.</span>
