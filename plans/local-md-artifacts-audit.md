@@ -25,7 +25,7 @@ baseline-файлов запрещает править таблицы задн�
 |---|---|---|---|
 | `seo-benchmarks.md` | 28.05.2026 | Бенчмарк | Лучшие перформеры по 14 категориям, много TBD |
 | `content-strategy.md` | июнь 2026 | Стратегия | Мастер-документ: baseline, 12 принципов, паттерны A-E, вейв-роадмап |
-| `seo-baseline-2026-05-28.md` | 28.05.2026 | Снимок | Старт Wave 1: Top-28 постов, запросы, ��ритерии успеха |
+| `seo-baseline-2026-05-28.md` | 28.05.2026 | Снимок | Старт Wave 1: Top-28 постов, запросы, критерии успеха |
 | `seo-baseline-pillar-launch-2026-06-05.md` | 05.06.2026 | Снимок | Чекпойнт запуска dashboard-пиллара, HEAD 8e083a0 |
 | `seo-category-audit.md` | 30.05.2026 | Аудит | Разбор 9 постов категории SEO |
 | `ai-citation-audit.md` | 01.07.2026 | Аудит | Цитируемость лид-абзацев Top-20 для AI-поиска |
@@ -35,10 +35,10 @@ baseline-файлов запрещает править таблицы задн�
 | `image-alt-proposals-summary.md` | 19.06.2026 | Сводка | 158 high, 577 medium, 1 low, 3 на ручную проверку |
 | `authors-audit.md` | 18.06.2026 | Аудит | 155 постов = 10 авторов, сирот нет |
 | `csv-redirect-audit.md` | 08.06.2026 | Аудит | 226 строк редиректов, 1 дубль, 1 битый таргет, конфликт порядка |
-| `affiliate-integration-plan.md` | 01.07.2026 | План | 20 ��остов, партнёры ещё не подтверждены (блокер) |
+| `affiliate-integration-plan.md` | 01.07.2026 | План | 20 постов, партнёры ещё не подтверждены (блокер) |
 | `form-controls-pillar-inventory.md` | 19.06.2026 | План | Инвентарь будущего пиллара, ждёт OK на Фазу 2 |
 | `guest-posts-rescue-plan.md` | 01.07.2026 | План | Спасение 5 постов-гостевых, вопрос по бенчмарку открыт |
-| `notifications-rescue-plan.md` | июль 2026 | ��лан | Спасение notifications-ui-design (131k показов, 0.4% CTR) |
+| `notifications-rescue-plan.md` | июль 2026 | план | Спасение notifications-ui-design (131k показов, 0.4% CTR) |
 | `tabs-rescue-plan.md` | июль 2026 | План | Спасение tabs-ui-design (107k показов, 0.6% CTR) |
 | `pillar-dashboards-plan.md` | 03.06.2026 | План | План dashboard-пиллара, 14 постов, фазы |
 | `pillar-dashboards-progress.md` | 05.06.2026 | Отчёт | Пиллар запущен, 11 коммитов, 4 поста удалены |
@@ -53,7 +53,7 @@ baseline-файлов запрещает править таблицы задн�
 
 | Файл | Статус по файлу | Тип |
 |---|---|---|
-| `homepage-editorial-pivot.md` | шаги 0-6 закрыты, шаг 7 (реализация) не начат | Репозиционирование гл��вной |
+| `homepage-editorial-pivot.md` | шаги 0-6 закрыты, шаг 7 (реализация) не начат | Репозиционирование главной |
 | `buttons-design-system-audit.md` | аудит + 3 варианта миграции | Рефакторинг кнопок |
 | `buttons-push-effect.md` | предложение, не реализовано | Дизайн-решение |
 | `search-page-ux-audit.md` | варианты A/B/C, политика табов помечена «реализовано» | UX-аудит поиска |
@@ -67,7 +67,7 @@ baseline-файлов запрещает править таблицы задн�
 | `where-to-launch-startup-2026-hardest-moment-visuals.md` | Визуализация сложного блока со scorecard |
 | `why-every-ai-startup-looks-the-same-visuals.md` | Визуальные промпты (3 варианта) |
 
-**Обложки и визуальные брифы (р��сходники, исчезают после генерации картинки):**
+**Обложки и визуальные брифы (расходники, исчезают после генерации картинки):**
 `ai-agent-ui-design-patterns-cover.md`, `bento-grid-layout-design-guide-image-prompts.md`,
 `computer-vision-consultancy-engagement-model-cover.md`,
 `computer-vision-consultancy-engagement-model-visuals.md`,
@@ -113,7 +113,7 @@ baseline-файлов запрещает править таблицы задн�
 | `seo-baseline-pillar-launch-2026-06-05.md` | Исторический чекпойнт | Оставить как историю |
 | `why-every-ai-startup-looks-the-same-skill-audit.md` | QA после применения правок | Удалить |
 | `why-every-ai-startup-looks-the-same-air.md` | Разбивка абзацев после применения | Удалить |
-| Все обложки/визуальные брифы для уже опубликованных с обложкой постов | Расходник | Уд��лить или перенести в `plans/archive/` |
+| Все обложки/визуальные брифы для уже опубликованных с обложкой постов | Расходник | Удалить или перенести в `plans/archive/` |
 | `components/seo-benchmark.md` | Дубликат + мёртвый скилл | Удалить |
 | `scripts/report.md`, `scripts/report.json` | Регенерируемый артефакт | Удалить |
 
@@ -125,7 +125,7 @@ baseline-файлов запрещает править таблицы задн�
 | `seo-benchmarks.md` | Заполнить TBD-категории, обновить лучшие CTR/показы по свежему GSC. Skill читает файл на каждом запуске | S |
 | Новый `.ai/seo-baseline-2026-10-XX.md` | Снимок текущего состояния по протоколу | S |
 | `ai-citation-audit.md` | Новые посты и лид-абзацы | B |
-| `image-alt-proposals.csv` | Не обновить, а исполнить (739 предложений). Пров��рить, сколько уже внедрено | B |
+| `image-alt-proposals.csv` | Не обновить, а исполнить (739 предложений). Проверить, сколько уже внедрено | B |
 | `guest-posts-rescue-plan.md` | Проверить статус, закрыть открытый вопрос по бенчмарку | A |
 | `tabs-rescue-plan.md` | Проверить статус внедрения | A |
 | `notifications-rescue-plan.md` | Проверить статус внедрения | A |
