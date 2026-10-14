@@ -26,6 +26,33 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/how-to-design-dialogs.webp
+faq:
+  - question: Should every action be confirmed via a dialog?
+    answer: >-
+      No. Only irreversible or sensitive actions deserve confirmation. Avoid
+      dialog fatigue.
+  - question: Where should the primary button be placed?
+    answer: >-
+      On the right for LTR languages. On top and stacked in mobile, or for
+      multi-line dialogs.
+  - question: Can dialogs be dismissed by clicking outside?
+    answer: >-
+      Only non-critical dialogs. For destructive actions, require explicit
+      dismissal.
+  - question: What if the user loses connection during a progress dialog?
+    answer: >-
+      Fall back to an error dialog with recovery options, such as Try again or
+      Offline mode.
+  - question: How large should dialogs be?
+    answer: >-
+      Small, around 320px, for mobile. Medium, around 480 to 600px, for most
+      tasks. Larger dialogs need scroll or segmentation.
+  - question: What if multiple dialogs stack up?
+    answer: >-
+      Avoid it. Collapse into a single dialog with states, or queue them.
+  - question: Should I use modals or drawers for settings?
+    answer: >-
+      Use drawers for large forms and dialogs for short single-task settings.
 ---
 
 
