@@ -24,6 +24,43 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/strikethrough-text-deserves-more-love-in-ui.webp
+faq:
+  - question: "Why not just delete the element completely?"
+    answer: >-
+      Because deletion erases context. Users may forget what was removed or
+      question whether the action succeeded. Strikethrough preserves the
+      original element while clarifying that it is no longer valid.
+  - question: "Isn't strikethrough old-fashioned?"
+    answer: >-
+      It may feel retro, but that is exactly why it works. The convention is
+      instantly recognizable across generations and cultures. Familiarity makes
+      it powerful.
+  - question: "How do users with visual impairments handle it?"
+    answer: >-
+      Strikethrough alone is not sufficient. Screen readers may ignore the
+      visual line. Designers should add semantic cues, such as labels or aria
+      attributes, so that the meaning is accessible.
+  - question: "Should strikethrough always be paired with a fade effect?"
+    answer: >-
+      Not necessarily. Fading can add clarity, but in some contexts the line
+      itself is enough. The decision depends on the density of the interface
+      and the importance of the state change.
+  - question: "Does it work equally well on mobile and desktop?"
+    answer: >-
+      Yes, though mobile screens require extra care. Smaller text sizes mean
+      the line must be adjusted for clarity. Testing on high-resolution
+      displays ensures the effect remains sharp.
+  - question: "Can it be animated without distracting users?"
+    answer: >-
+      Yes. A brief cross-out animation can be elegant, but it should be
+      restrained. Overly dramatic motion can feel theatrical rather than
+      functional.
+  - question: "What alternatives exist if strikethrough doesn't fit the brand style?"
+    answer: >-
+      Alternatives include dimming, blurring or a disabled style. Yet none
+      communicate invalidation as directly as strikethrough. If the brand
+      avoids it, designers should still seek a comparable cue that preserves
+      visibility while signaling change.
 ---
 
 
