@@ -33,6 +33,29 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/chip-ui-design.webp
+faq:
+  - question: What is the difference between a chip and a badge?
+    answer: >-
+      A chip is interactive and carries one value or one action. A badge is a
+      small status marker, usually attached to an icon or label, and rarely
+      clickable. If the element changes state when you click it, it is a chip.
+      If it only reports a number or status, it is a badge.
+  - question: How many chips should a filter show before collapsing?
+    answer: >-
+      Show the first one or two rows, then a "Show more" control. Past roughly
+      twenty options, switch to a search field inside the filter. A wall of
+      chips forces scanning and hides the ones users actually want.
+  - question: Should a chip have a close icon?
+    answer: >-
+      Only when the chip is removable. Selected filters and added recipients
+      need one. A chip that stands for a fixed category should not pretend to be
+      removable, or users click the X and lose trust when nothing happens.
+  - question: Do chips work on mobile?
+    answer: >-
+      Yes, when the touch target is at least 44 by 44 pixels. Chips suit mobile
+      filters because they wrap into rows and show the applied state on one
+      line. Keep the label short, and check that the close icon is large enough
+      to tap.
 ---
 
 
