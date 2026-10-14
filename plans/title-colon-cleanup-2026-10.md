@@ -193,12 +193,39 @@ frontmatter, поэтому по решению владельца не чист
   `U+200B` во frontmatter нет.
 - `content/blog` — рабочая копия чистая, всё закоммичено.
 
-## Остаток после батча 5
+### Батч 6 — старые кейсы, ресурсы, технологии (коммиты `6ec3b3a` … `85bee22`)
+
+Файлы: `adobe-stealing-designs` (metaTitle), `ais-impact-on-graphic-design`
+(title + metaTitle), `black-friday-2023` (title + metaTitle),
+`case-study-gtrendz` (title + metaTitle), `case-study-journeyapp` (metaTitle).
+
+Попутно: `black-friday-2023` title был в Title Case, `case-study-gtrendz`
+title 80 символов (сокращён до 54). Суффикс `- Setproduct` не встречался.
+
+### Батч 7 — ресурсы, дизайн-системы, фриланс, Figma (коммиты `5700b86` … `85bee22`)
+
+Файлы: `design-resources-feb-2021` (metaTitle), `design-system-for-business`
+(metaTitle), `difficult-design-clients` (metaTitle), `figma-auto-layout-debate`
+(metaTitle), `figma-plugins-productivity-boost` (metaTitle).
+
+Попутно: в `figma-auto-layout-debate` из metaTitle убран запрещённый суффикс
+`- Setproduct`.
+
+### Валидация после 37 файлов
+
+- `npm run lint` (`tsc --noEmit`) — exit 0.
+- Все 37 файлов: двоеточий в `title`/`metaTitle` нет, длины ≤ 65,
+  `U+FFFD` = 0, `U+200B` во frontmatter нет, суффикса `- Setproduct` нет.
+- Найден предсуществующий долг, не входивший в задачу: у
+  `figma-plugins-productivity-boost` title = 78 символов (правился только
+  metaTitle). Зафиксирован, не чинился.
+
+## Остаток после батча 7
 
 | Группа | Постов | Комментарий |
 |---|---|---|
-| Двоеточие в `title` или `metaTitle` | 43 | низкий приоритет (кейсы, ресурсы, крипта, старые посты) |
-| Двоеточия в H2/H3 тела | 24 | `carousel` (3), `pagination` (5), `liquid-glass-explained` (5), `liquid-glass-vs-glassmorphism` (6), `how-to-design-dialogs` (5), `stepper-ui-design` (1) — не трогали по решению владельца |
+| Двоеточие в `title` или `metaTitle` | 33 | низкий приоритет (крипта, старые ресурсы, личные посты) |
+| Двоеточия в H2/H3 тела | 0 | ЗАКРЫТО 2026-10-14 (21 двоеточие в 6 файлах, коммиты `c3c565d`…`c607419`) |
 | `U+200B` в теле | 35 строк | `innovative-ideas-for-video-creation`, `mastering-javascript`, `streamlining-website-development` |
 
 ## Что НЕ делать
