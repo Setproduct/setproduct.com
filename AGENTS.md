@@ -375,7 +375,7 @@ MDX-файлы лежат в [`content/blog/*.mdx`](content/blog) — один �
 | `readingTimeText` | Ручное переопределение времени чтения; иначе считается автоматически в [`lib/blog/reading-time.ts`](lib/blog/reading-time.ts) |
 | `relatedSlugs` | Массив slug'ов для блока "Related posts" (3 шт); если не указан — подбираются по `category` |
 
-Пример из [`content/blog/badge-ui-design.mdx`](content/blog/badge-ui-design.mdx:1) — полный набор полей �� `inlineCta` и `relatedSlugs`.
+Пример из [`content/blog/badge-ui-design.mdx`](content/blog/badge-ui-design.mdx:1) — полный набор полей с `inlineCta` и `relatedSlugs`.
 
 ⚠️ Категория должна **точно совпадать** со значением из массива `BLOG_CATEGORIES`, иначе статья не попадёт в фильтры.
 
@@ -646,7 +646,7 @@ inlineCta:
 
 ## 3. Где определены цвета, типографика, отступы
 
-Дизайн-токены разнесены по **трём с��оям**:
+Дизайн-токены разнесены по **трём слоям**:
 
 ### Слой 1: CSS-переменные в [`public/css/setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css:2092)
 **Главный источник цветов**:
@@ -859,7 +859,7 @@ inlineCta:
 
 Используется в [`CtaSubscribe`](components/sections/CtaSubscribe.tsx:4) и в футере.
 
-❌ **Хуков для модалок, табов, аккордеонов, lightbox — нет**. Их со��тояние локально внутри компонентов через `useState` ([`FaqSection`](components/sections/FaqSection.tsx:29), [`HomePage`](components/pages/HomePage.tsx:28)).
+❌ **Хуков для модалок, табов, аккордеонов, lightbox — нет**. Их состояние локально внутри компонентов через `useState` ([`FaqSection`](components/sections/FaqSection.tsx:29), [`HomePage`](components/pages/HomePage.tsx:28)).
 
 ---
 
