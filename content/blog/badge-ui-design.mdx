@@ -32,6 +32,45 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/badge-ui-design.webp
+faq:
+  - question: What is the difference between a badge and a chip?
+    answer: >-
+      A badge annotates a parent element and is passive, so you cannot click it.
+      A chip is a standalone, often interactive object, such as a filter, a
+      selected token or an input tag, that lives on its own. If the element
+      needs an action, it is a chip. If it just flags a status or count on top
+      of something else, it is a badge.
+  - question: When should I use a dot-only badge instead of a number?
+    answer: >-
+      Use a dot when the fact that something changed matters more than how much.
+      A dot says there is something new here without the noise of an exact
+      count, so it suits unread activity or presence, and any section with fresh
+      updates. Switch to a number only when the precise quantity drives the
+      user's next action, such as an unread message count.
+  - question: What is the maximum number a badge should show?
+    answer: >-
+      Cap it at two digits and abbreviate beyond that: 99+ for high counts, 1k
+      for thousands. A raw three- or four-digit number stretches the badge and
+      shoves neighbouring elements around for little extra meaning beyond a lot.
+  - question: Where should a badge be positioned on its parent?
+    answer: >-
+      Top-right of the parent is the established convention for overlay badges,
+      and it should stay consistent across every screen. The badge sits just
+      over the edge of the icon or control so it reads as attached to it without
+      fully covering the parent glyph.
+  - question: How do I make a badge accessible for screen readers?
+    answer: >-
+      Never rely on color or a bare dot alone, since that information is
+      invisible to assistive tech and fails the WCAG use-of-color rule. Pair the
+      visual badge with a text or aria-label equivalent, for example "3 unread
+      messages" or "online", so the same meaning reaches screen-reader users.
+  - question: What colors should I use for status badges?
+    answer: >-
+      Match color to priority and meaning. Solid, high-contrast colors, commonly
+      red, signal urgent or unread states. Shaded badges at 15 to 20 percent
+      opacity suit passive labels such as categories or tags. Keep the palette
+      consistent with your design system's semantic colors so red always means
+      the same thing across the product.
 ---
 
 
