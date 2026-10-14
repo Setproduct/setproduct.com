@@ -11,11 +11,10 @@
 же кластер, который в Wave 1 терял позиции.
 
 Первичная оценка «47 из 184» считала только `title` и не видела `metaTitle`.
-После исправления 20 постов (см. «Прогресс») остаётся 50: 30 — двоеточие в
-`title`, 20 из них плюс в `metaTitle`, и ещё 20 — двоеточие только в
-`metaTitle`.
+После исправления 27 постов (см. «Прогресс») остаётся 43 поста с двоеточием
+в `title` или `metaTitle`.
 
-## Распределение по длине (у 47 постов)
+## Распределение по длине (первичный снимок, 47 постов)
 
 | Длина title | Постов | Комментарий |
 |---|---|---|
@@ -93,8 +92,10 @@ done
 
 ## Прогресс (2026-10-14)
 
-Закрыто 20 файлов, по одному коммиту на файл (`seo: remove colon from title
-in [slug]`), без push.
+Закрыто 27 файлов, по одному коммиту на файл, без push.
+
+Первые 22 коммита отправлены в `origin/main` 2026-10-14
+(`ee20dcd..57b32ed`).
 
 ### Батч 1 — компонентные гайды (коммиты `3d939dc` … `2bce528`)
 
@@ -149,20 +150,56 @@ in [slug]`), без push.
 - `how-to-design-dialogs`: в исходном title было запрещённое слово «complete»
   из списка скилла SEO, заменено в рамках той же правки.
 
-### Валидация после 20 файлов
+### Батч 5 — Title Case (коммиты `a0a537e` … `991568f`)
+
+Здесь правился не только регистр, но и двоеточие, а также найдены
+дополнительные дефекты.
+
+| Slug | Было → стало (title) | metaTitle и прочее |
+|---|---|---|
+| `innovative-ideas-for-video-creation` | `Innovative Ideas For Video Creation: From Editing To Animation` (64) → `Innovative video creation ideas, from editing to animation` | убран суффикс `- Setproduct` (77 → 45) |
+| `streamlining-website-development` | `Streamlining Website Development: Essential Tools For Agency Management` (73) → `Streamlining web development with agency management tools` | убран суффикс `- Setproduct` (67 → 58) |
+| `mastering-javascript` | `Mastering JavaScript: Essential JavaScript Tricks and Tips For Web Developers` (79) → `JavaScript tricks and tips for web developers` | убран суффикс `- Setproduct` (62 → 44) |
+| `know-before-designing-your-website` | `Conducting Market Research: What to Know Before Designing Your Website` (72) → `Market research before designing your website` | регистр (45 → 49) |
+| `the-art-of-logo-design` | `The Art of logo design: Strategies for crafting a lasting visual identity` (75) → `Logo design strategies for a lasting visual identity` | регистр (47) |
+| `most-stressful-design-phrases` | `Stressed out: Managing demands from unreasonable clients in graphic design` (76) → `Managing unreasonable client demands in graphic design` | `Hated Graphic Design Client Phrases: Dealing with Stress` → `Stressful client phrases in graphic design` (42) |
+| `overcome-middle-age-burnout` | `Life after 40: finding new energy and motivation` → `Life after 40, finding new energy and motivation` | удалены два символа `U+200B` (zero-width space) из начала metaTitle |
+
+В четырёх файлах (`innovative-ideas-for-video-creation`,
+`streamlining-website-development`, `mastering-javascript`,
+`know-before-designing-your-website`) синхронизированы `coverImageAlt`:
+они дублировали старый Title Case заголовок и нарушали правило sentence
+case из [`AGENTS.md`](../AGENTS.md:93).
+
+Исключён из батча: `how-to-get-graphic-design-clients` — на момент проверки
+уже имел корректный title и metaTitle (sentence case, без двоеточия) и был
+почищен в предыдущем заходе, хотя в исходном списке плана значился.
+
+### Найденный долг, не входивший в задачу
+
+В теле трёх постов `innovative-ideas-for-video-creation` (15 строк),
+`mastering-javascript` (19 строк, преимущественно блок ссылок) и
+`streamlining-website-development` (1 строка) обнаружены символы
+`U+200B` в тексте. Это унаследованный мусор копипаста из Webflow, вне
+frontmatter, поэтому по решению владельца не чистился в этом батче.
+Кандидат на отдельный заход.
+
+### Валидация после 27 файлов
 
 - `npm run lint` (`tsc --noEmit`) — exit 0.
-- Все 20 файлов: двоеточий в `title`/`metaTitle` нет, длины ≤ 65,
-  U+FFFD = 0.
-- `content/blog` — рабочая копия чистая, всё закоммичено, push не делался.
+- `npm run build` — exit 0.
+- Все 27 файлов: двоеточий в `title`/`metaTitle` нет, длины ≤ 65,
+  `U+FFFD` = 0, запрещённого суффикса `- Setproduct` нет,
+  `U+200B` во frontmatter нет.
+- `content/blog` — рабочая копия чистая, всё закоммичено.
 
-## Остаток после батча 4
+## Остаток после батча 5
 
 | Группа | Постов | Комментарий |
 |---|---|---|
-| Кластер 2 — Title Case в `title` | 8 | `how-to-get-graphic-design-clients`, `innovative-ideas-for-video-creation`, `streamlining-website-development`, `mastering-javascript`, `know-before-designing-your-website`, `the-art-of-logo-design`, `most-stressful-design-phrases`, `overcome-middle-age-burnout` |
-| Остальные (низкий приоритет) | ~30 | часть имеет двоеточие только в `metaTitle` |
+| Двоеточие в `title` или `metaTitle` | 43 | низкий приоритет (кейсы, ресурсы, крипта, старые посты) |
 | Двоеточия в H2/H3 тела | 24 | `carousel` (3), `pagination` (5), `liquid-glass-explained` (5), `liquid-glass-vs-glassmorphism` (6), `how-to-design-dialogs` (5), `stepper-ui-design` (1) — не трогали по решению владельца |
+| `U+200B` в теле | 35 строк | `innovative-ideas-for-video-creation`, `mastering-javascript`, `streamlining-website-development` |
 
 ## Что НЕ делать
 
