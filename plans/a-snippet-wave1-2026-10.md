@@ -39,7 +39,7 @@ Python, cp437 в cp866, семь CSV на архив). Фильтр отбора
 
 **toggle-switch-ui-design**
 - `toggle switch ui` — 1543 показа, CTR 0%
-- `toggle ui` — 1427 по��азов, CTR 0%
+- `toggle ui` — 1427 показов, CTR 0%
 - `toggle button ui` — 788 показов, CTR 0%
 - `ui toggle switch` — 703 показа, CTR 0%
 - `toggle ui design` — 438 показов, CTR 0%
@@ -52,7 +52,7 @@ Python, cp437 в cp866, семь CSV на архив). Фильтр отбора
 - `industrial brutalist ui` — 324 показа, CTR 0.31%, позиция 6.98
 
 **empty-state-ui-design** — целей нет. Показы страницы формируют запросы
-AI-ко��текста и чужого бренда (Nielsen Norman Group), без токена «empty».
+AI-контекста и чужого бренда (Nielsen Norman Group), без токена «empty».
 Значительная часть — нулевые клики (около 88.8% показов).
 Подтверждает `plans/empty-state-anomaly-analysis.md`: примерно 20 757 из 21 208
 показов (3 мес) приходят не от «empty»-запросов.
@@ -86,7 +86,7 @@ AI-ко��текста и чужого бренда (Nielsen Norman Group), �
 Изменены только `title`, `description` и `metaTitle`. Все три поля теперь
 синхронизированы на новое значение title. Особые случаи:
 - у `complete-guide-to-blueprint-grid-design` поля `metaTitle` в HEAD не было —
-  до��авлено;
+  добавлено;
 - у `claymorphism-design-guide` старый `metaTitle` отличался от title
   (`Claymorphism UI design: recipe, examples, AI guidelines`, 55) — заменён на новый.
 
