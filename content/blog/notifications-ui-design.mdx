@@ -32,6 +32,56 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/notifications-ui-design.webp
+faq:
+  - question: What makes a good notification design?
+    answer: >-
+      A good notification is timely and relevant, and it respects attention. It
+      uses the right component for the stakes, says what happened in one read, and
+      offers a clear action when one is needed. It can always be controlled or
+      muted by the user. The best ones feel like help rather than interruption.
+  - question: What's the difference between in-app and push notifications?
+    answer: >-
+      In-app notifications appear while your app is open and need no permission,
+      so they suit contextual, low-stakes updates. Push notifications reach the
+      device even when the app is closed and require OS permission, so reserve
+      them for messages genuinely worth pulling someone back.
+  - question: How do I design notification settings users won't disable?
+    answer: >-
+      Group preferences by topic, let users toggle categories and channels
+      independently, and default to restraint, especially for marketing. When
+      people feel in control of what they receive, they leave far more of it
+      switched on.
+  - question: Toast vs banner vs dialog, which should I use?
+    answer: >-
+      Use a toast for transient, non-critical feedback that auto-dismisses. Use a
+      banner for a persistent status that stays true until resolved, like an
+      outage. Use a dialog only for decisions that must be made right now, since
+      it blocks everything else.
+  - question: How many notifications are too many?
+    answer: >-
+      There's no fixed number, but the moment a user starts swiping notifications
+      away unread, you've crossed the line. Cap the frequency, and batch
+      low-priority updates into digests. Watch your opt-out rate as the real
+      signal.
+  - question: How do I make notifications accessible?
+    answer: >-
+      Never rely on color alone to convey meaning. Keep contrast high. Provide
+      screen-reader text for icons and status. Make sure transient messages like
+      toasts stay on screen long enough to be read, or mirror them somewhere
+      persistent.
+  - question: What are Material Design's notification patterns?
+    answer: >-
+      Material Design separates snackbars (brief auto-dismissing feedback),
+      banners (persistent single messages), and dialogs (modal decisions), plus a
+      defined anatomy for system notifications. Following the spec gives users
+      familiar behavior and handles much of the accessibility for you.
+  - question: When should you not send a notification?
+    answer: >-
+      Skip it when someone is already looking at the change. Skip it when the
+      message carries no action, or when the fact already shipped through another
+      channel. Repeating what the screen already shows spends attention without
+      adding information. Default to quiet, and the rare message that is genuinely
+      useful stands out instead of blending into noise.
 ---
 
 A notification is a timely message that informs, confirms, or prompts action without making the user go looking for it. Use in-app notifications for contextual updates while the app is open. Reserve email and push for messages genuinely worth pulling someone back, and decide not to send when the update can wait.
