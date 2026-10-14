@@ -25,6 +25,34 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/stepper-ui-design.webp
+faq:
+  - question: Is it mandatory to allow typing into the Stepper value?
+    answer: >-
+      No, but it is recommended when the range is large or precision is needed.
+  - question: What is the difference between disabled and hidden buttons?
+    answer: >-
+      Disabled buttons remain visible but inactive. Hiding creates layout shifts
+      and must be avoided.
+  - question: How are decimals and precision handled?
+    answer: >-
+      Use consistent step values and round outputs to a fixed number of digits.
+      Prevent overflow or rounding errors.
+  - question: Should a Stepper support keyboard-only navigation?
+    answer: >-
+      Yes. All interactive parts must be focusable. Arrow keys can optionally
+      control value changes.
+  - question: What ARIA roles improve accessibility?
+    answer: >-
+      Use role="spinbutton", and keep the current value in aria-valuenow with
+      matching aria-valuemin and aria-valuemax.
+  - question: Can the Stepper loop from max to min?
+    answer: >-
+      Not by default. Looping is a custom behavior, and only use it if it
+      reflects the mental model, such as a day-of-week selector.
+  - question: What is the best default state for an empty Stepper?
+    answer: >-
+      Initialize with the minimum value or a logical default. Avoid null states
+      that force the user to act before they can interact.
 ---
 
 
