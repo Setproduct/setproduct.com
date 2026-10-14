@@ -220,12 +220,57 @@ title 80 символов (сокращён до 54). Суффикс `- Setprodu
   `figma-plugins-productivity-boost` title = 78 символов (правился только
   metaTitle). Зафиксирован, не чинился.
 
-## Остаток после батча 7
+### Батч 8 — старые ресурсы, Figma, фриланс, продуктовые гайды (коммиты `a6ae971` … `0a1356b`)
+
+10 файлов, правился `metaTitle` (в `how-to-design-a-ui-kit-foundation` — ещё и `title`):
+`figma-resources-review-1`, `figma-responsive-mobile-components`,
+`figma-summer-top-15`, `freelance-hourly-rate`, `getgradients-review`,
+`getting-your-first-startup-users`, `how-to-3d-animate-scroll`,
+`how-to-design-a-ui-kit-foundation`, `how-to-design-landing`, `how-to-sell-design-system`.
+
+### Батч 9 — дизайн-системы, карьера, инструменты (коммиты `ef901a9` … `ad2ecf0`)
+
+10 файлов: `how-to-study-saas-dashboard-in-the-ai-era`, `ios-lock-screen-feature`,
+`liftkit-open-source-design-system-for-figma-react` (title + metaTitle),
+`material-design-redesigned`, `monetizing-the-design-one-year` (title + metaTitle),
+`navigating-the-job-market-storm`, `nocra-ui-kit-the-ai-design-system-with-templates`
+(title + metaTitle), `quality-control-and-assurance-difference`, `remote-productivity`,
+`side-income-for-designers-and-developers`.
+
+### Батч 10 — последние 13 постов (коммиты `6a50964` … `b34322d`)
+
+13 файлов: `solo-founder-tech-stack-2026` (title + metaTitle), `tables-design-system`,
+`top-design-releases-2020`, `top-design-resources-jan-2021`,
+`top-real-estate-app-development-companies-compared` (title),
+`translate-website-using-ai-dont-forget-pdfs` (title + metaTitle), `unpaid-design-work`,
+`useful-design-resources-fall-2020`, `user-profile-templates`,
+`visual-elements-in-email-marketing` (title + metaTitle), `what-gets-designers-to-300k`,
+`why-apps-ux-is-getting-worse`, `why-some-designers-dislike-ai`.
+
+Особенность: у `visual-elements-in-email-marketing` title хранился как YAML folded
+scalar (`>-`); первый `apply_diff` не совпал, применён повторно, попутно синхронизирован
+дублирующий `coverImageAlt`.
+
+### Валидация после 70 файлов
+
+- `npm run lint` (`tsc --noEmit`) — exit 0.
+- Все 70 файлов (батчи 1–10): двоеточий в `title`/`metaTitle` нет, `U+FFFD` = 0,
+  суффикса `- Setproduct` в правленых полях нет.
+- Новый скан всех 186 постов блога: двоеточие в `title`/`metaTitle` осталось в
+  **1 посте** — `8-designers-developers-success` (Title Case, 81 символ, двоеточие).
+  Он не входил ни в один выданный батч, не правился, зафиксирован отдельно.
+- Предсуществующий долг длины (не создан этими правками): `title`/`metaTitle`
+  длиннее 65 символов примерно в 30 постах, часть с суффиксом `- Setproduct`.
+  В батчах 8–10 таких полей не создано: правленые `metaTitle` ≤ 65.
+
+## Остаток после батчей 1–10
 
 | Группа | Постов | Комментарий |
 |---|---|---|
-| Двоеточие в `title` или `metaTitle` | 33 | низкий приоритет (крипта, старые ресурсы, личные посты) |
+| Двоеточие в `title`/`metaTitle` | 1 | `8-designers-developers-success` (Title Case, вне батчей) |
 | Двоеточия в H2/H3 тела | 0 | ЗАКРЫТО 2026-10-14 (21 двоеточие в 6 файлах, коммиты `c3c565d`…`c607419`) |
+| `title`/`metaTitle` длиннее 65 | ~30 | предсуществующий долг, отдельный заход |
+| Запрещённый суффикс `- Setproduct` | несколько | в старых `title`/`metaTitle` |
 | `U+200B` в теле | 35 строк | `innovative-ideas-for-video-creation`, `mastering-javascript`, `streamlining-website-development` |
 
 ## Что НЕ делать
