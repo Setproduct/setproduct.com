@@ -34,6 +34,52 @@ relatedSlugs:
   - steps-ui-design
   - slider-ui-design
 thumbImage: /blog/covers/thumbs/tooltip-ui-design.webp
+faq:
+  - question: What is the difference between a tooltip and a popover?
+    answer: >-
+      The key difference is complexity. A tooltip is for non-essential, concise
+      information and disappears on disengagement. A popover can hold richer
+      content and interactive elements, and it often requires a click to open.
+      If your content needs a button or more than two sentences, use a popover.
+  - question: Should a tooltip appear on click or on hover?
+    answer: >-
+      For desktop, hover is the standard. Support both hover and focus events,
+      so the component works for mouse users and stays fully accessible for
+      keyboard users.
+  - question: How long should a tooltip stay on screen?
+    answer: >-
+      It should remain visible as long as the user hovers over the trigger
+      element, and disappear almost immediately once the cursor moves away. A
+      fixed timer is frustrating; the user's interaction should dictate the
+      lifespan.
+  - question: Are tooltips accessible for screen readers?
+    answer: >-
+      They can be, with proper ARIA. Give the tooltip a unique id and add
+      aria-describedby="tooltip-id" to the trigger element, so the screen reader
+      announces the tooltip content when the trigger receives focus.
+  - question: What is the ideal maximum width for a tooltip?
+    answer: >-
+      A tooltip should be narrow to stay readable. Set a max-width of around 200
+      to 250 pixels. This prevents long, hard-to-read lines. If your content
+      consistently exceeds that, use a popover instead.
+  - question: Is it okay to have a tooltip without an arrow?
+    answer: >-
+      It is generally not recommended. The arrow is a critical visual cue that
+      links the tooltip to its trigger. Without it, users may have to guess
+      which element the tooltip refers to. Only omit the arrow when its origin
+      is unmistakably obvious.
+  - question: Can I include links or other interactive elements inside a tooltip?
+    answer: >-
+      Avoid it. A tooltip is for passive, read-only information. An interactive
+      element creates a usability problem, because the tooltip disappears when
+      the user moves the cursor toward the link. For actions, use a popover or a
+      modal dialog.
+  - question: How do I use tooltips on mobile devices?
+    answer: >-
+      The hover event does not exist on touch screens. On mobile, a tooltip
+      should appear on a tap of the trigger element and disappear when the user
+      taps anywhere else. For accessibility, ensure it also appears on focus
+      when the user navigates with keyboard-like controls.
 ---
 
 
