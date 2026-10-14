@@ -28,7 +28,7 @@ UI design!` и `So let's get started!`, секция `## Button of the Month`.
 | № | Секция | Что делает | Источник |
 |---|---|---|---|
 | 0 | Лид answer-first (40–80 слов) | заменяет «Welcome…» и «So let's get started!» | новый текст |
-| 1 | TL;DR (4–5 строк) | быст��ый ответ под сниппет | новый текст |
+| 1 | TL;DR (4–5 строк) | быстрый ответ под сниппет | новый текст |
 | 2 | Что такое кнопка и какой это интент | определение + место среди контролов | из текущих `Buttons Anatomy` |
 | 3 | Decision-таблица «кнопка vs ссылка vs чип vs иконка» | закрывает запросы `button types ui`, `types of buttons ui` | новый |
 | 4 | Anatomy (состояния, размеры, тени) | сохранить текущую анатомию | текущие секции |
@@ -38,7 +38,7 @@ UI design!` и `So let's get started!`, секция `## Button of the Month`.
 | 8 | Accessibility по WCAG 2.2 | новый раздел | новый текст |
 | 9 | Anti-patterns | новый | новый текст |
 | 10 | FAQ (5–6 вопросов) | новый | новый текст |
-| 11 | Checklist before you ship | н��вый | новый текст |
+| 11 | Checklist before you ship | новый | новый текст |
 | 12 | Closing thought | замена «Final words» | новый текст |
 
 Удаляется: `## Button of the Month` и `### Tactile controls improve usability`,
@@ -152,7 +152,7 @@ UI design!` и `So let's get started!`, секция `## Button of the Month`.
 | Blockquote (K1) | строка 139, `> By varying a radius…` | заменить обычным абзацем |
 | 19 унаследованных триколонов | строки 5, 10, 20, 35, 37, 47, 51×3, 61×2, 63×2, 125, 189, 240, 254, 278×2 | переписать в пары или «X, затем Y» |
 | `## Button of the Month` + 3 подсекции | строки 43–66 | удалить целиком |
-| Выдуманн��е усилители | `### Proven by real study`, `### Users like fancy buttons` | удалить |
+| Выдуманные усилители | `### Proven by real study`, `### Users like fancy buttons` | удалить |
 | `Welcome to the world…` / `So let's get started!` | строки ~35, 40 | заменить лидом answer-first |
 
 После снятия триколонов счётчик должен быть не больше 2 на статью. Цель —
