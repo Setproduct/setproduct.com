@@ -34,6 +34,41 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/slider-ui-design.webp
+faq:
+  - question: What is the optimal thumb size for touch interfaces?
+    answer: >-
+      Minimum 44×44pt. This follows Apple and Google guidelines. Anything
+      smaller risks mistaps, and anything bigger eats layout space. Stick to a
+      balance, especially in dense UI.
+  - question: Can the track be visually distorted or curved?
+    answer: >-
+      Yes, but only visually. Internally, values should still map to a linear
+      scale unless the use case demands non-linearity, such as volume control.
+      Skewed visuals must be justified.
+  - question: Can I use icons instead of numbers for slider steps?
+    answer: >-
+      Only when each icon is instantly recognizable, the sequence is obvious
+      without labels, and the user does not need to guess meaning. When in
+      doubt, go numeric. Icons are riskier.
+  - question: Is showing the current value optional?
+    answer: >-
+      Never, it is essential. Even when the value floats near the thumb,
+      consider duplicating it statically below the track if range clarity is
+      critical.
+  - question: Should the track be clickable outside the thumb?
+    answer: >-
+      Yes. Users expect to tap anywhere and have the thumb jump there. Dragging
+      is just one input mode, not the only one.
+  - question: Is keyboard navigation required?
+    answer: >-
+      Yes. A slider must support arrows, Page Up/Down, and Home/End. Designers
+      should care too: accessibility starts at the layout stage.
+  - question: How do I keep a custom slider from looking overdesigned?
+    answer: >-
+      Avoid visual clutter. Skip shadows on the thumb if it already has a glow,
+      use contrast in shape and size rather than color alone, and do not show
+      ticks unless they are truly helpful. The UI should guide input, not show
+      off.
 ---
 
 
