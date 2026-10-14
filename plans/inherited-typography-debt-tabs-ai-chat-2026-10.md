@@ -142,7 +142,7 @@
 
 ## 7. Что НЕ делаем
 
-- Не трогаем `title`, `description`, `metaTitle`, `cardDescription` — они закрыты в Час��и 2 (коммиты `2a22df4`, `e61e1f8`).
+- Не трогаем `title`, `description`, `metaTitle`, `cardDescription` — они закрыты в Части 2 (коммиты `2a22df4`, `e61e1f8`).
 - Не меняем `slug` и `coverImage` — это ломает URL и карточки.
 - Не удаляем видимый FAQ-блок ai-chat: он даёт E-E-A-T и длинный хвост. Речь только о синхронизации с `faq:` во frontmatter.
 - Не переписываем текст ради стиля за пределами перечисленных дефектов.
@@ -172,6 +172,6 @@ npm run lint 2>&1 | tail -1
 - `.ai/seo-benchmarks.md` — лимиты и бенчмарк UI design (лучший CTR 1.37%, цель 1.5%)
 - `AGENTS.md`, разделы «КАТЕГОРИЧЕСКИЕ ЗАПРЕТЫ» и «ОБЯЗАТЕЛЬНАЯ САМОПРОВЕРКА»
 - `.roo/skills/world-class-blog-writing-for-setproduct/SKILL.md` — бюджеты em-dash и трихолонов, список банклише
-- `content/blog/tabs-ui-design.mdx`, `content/blog/ai-chat-interface-ui-design.mdx` — по состоя��ию на `e61e1f8`
+- `content/blog/tabs-ui-design.mdx`, `content/blog/ai-chat-interface-ui-design.mdx` — по состоянию на `e61e1f8`
 - `plans/anchor-url-investigation.md` — оценка риска смены якорей
 - `plans/tabs-ai-chat-pillar-2026-10.md` — контекст Части 1 и Части 2
