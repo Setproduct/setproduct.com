@@ -35,6 +35,52 @@ inlineCta:
     cell.
   buttonText: See Eclipse date pickers
   buttonLink: https://www.setproduct.com/templates/eclipse
+faq:
+  - question: What is the difference between a date picker and a calendar?
+    answer: >-
+      A date picker is a form control for selecting one date or a range to
+      submit as a value, usually hidden in a popover until needed. A calendar is
+      a persistent view for browsing and managing events over time, like a month
+      grid full of meetings. The picker answers which date, the calendar answers
+      what is happening.
+  - question: Should I let users type a date or only pick it?
+    answer: >-
+      Offer both whenever you can. Typing is faster for anyone who knows the
+      date, especially distant ones like a birth date, while the calendar helps
+      when the surrounding days matter, like choosing a weekend. A typed input
+      with a calendar fallback serves more people than either alone.
+  - question: How do I make a date picker accessible?
+    answer: >-
+      Follow the W3C ARIA date picker pattern: full keyboard navigation, managed
+      focus that moves into the grid on open and returns to the trigger on close,
+      and day cells with accessible names that read the whole date. A live
+      region announces selections, and target sizes must meet WCAG 2.2.
+  - question: What is the best way to handle date ranges?
+    answer: >-
+      Two clicks in a single popover that stays open: the first click sets the
+      start, hover previews the span, the second click sets the end. On desktop,
+      show two months side by side so a range crossing a month boundary needs no
+      navigation. Add a preset column for common spans.
+  - question: Should I use the native date picker or build my own?
+    answer: >-
+      Use native for single dates, especially on mobile, where it is free,
+      accessible and familiar. Build a custom picker only when you need ranges,
+      presets or multi-month views that the native control cannot deliver. The
+      flexibility is real, but so is the accessibility and maintenance cost.
+  - question: How do I handle different date formats across countries?
+    answer: >-
+      Never hard-code one numeric order. Display the month as a word where
+      possible, use ISO 8601 in technical contexts, and let Intl.DateTimeFormat
+      localize the output. Derive the first day of the week from the locale, and
+      store dates in an unambiguous, timezone-safe form. Test the layout in
+      right-to-left languages.
+  - question: Where should the date picker open, and what about small screens?
+    answer: >-
+      On desktop, anchor the popover to the input and flip it above when there
+      is no room below, so it never clips off-screen. On mobile, prefer the
+      native control or a full-screen sheet over a cramped floating grid,
+      because a month squeezed into 375 pixels produces tap targets too small to
+      hit reliably.
 ---
 
 A date picker is a control that lets someone choose a date, or a span of dates, from a calendar surface instead of typing raw characters into a field. This guide is the long version. It covers anatomy, every type, states, range selection, accessibility, internationalization, and the mobile trade-offs that decide whether picking a date feels effortless or like a small fight.
