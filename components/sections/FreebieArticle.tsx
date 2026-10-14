@@ -136,6 +136,16 @@ const COMPOSITOR_HEADINGS: ArticleHeading[] = [
   { id: "comp-why-it-belongs", text: "Why it belongs on your Mac" },
 ];
 
+const SPECTRUM_UI_HEADINGS: ArticleHeading[] = [
+  { id: "what-spectrum-ui-does", text: "What Spectrum UI actually does" },
+  { id: "why-copy-paste-components", text: "Why copy-paste components change the workflow" },
+  { id: "what-ships-spectrum-ui", text: "What ships in the box" },
+  { id: "how-the-cli-adds-a-component", text: "How the CLI adds a component" },
+  { id: "motion-on-top-of-tailwind", text: "Motion on top of Tailwind" },
+  { id: "faq-spectrum-ui", text: "Frequently asked questions" },
+  { id: "why-it-belongs-spectrum-ui", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -148,6 +158,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "liquid-glass": LIQUID_GLASS_HEADINGS,
   mailcheap: MAILCHEAP_HEADINGS,
   compositor: COMPOSITOR_HEADINGS,
+  "spectrum-ui": SPECTRUM_UI_HEADINGS,
 };
 
 /**
@@ -2709,6 +2720,201 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "spectrum-ui" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You find a component you want on the page: a button with a
+                  soft glow, a card that lifts on hover, a loader that looks
+                  alive while the data arrives. You copy the JSX, paste it into
+                  your project, then discover it depends on a package you do not
+                  use and a styling system you will never adopt. Spectrum UI
+                  takes the opposite path. The component arrives as plain files
+                  in your own repo, and you own every line.
+                </p>
+
+                <h2 id="what-spectrum-ui-does">
+                  What Spectrum UI actually does
+                </h2>
+                <p>
+                  Spectrum UI is an open source component library for React and
+                  Next.js, styled with Tailwind CSS. It collects animated
+                  interface pieces: buttons, cards, text effects, loaders, and
+                  background elements. Instead of installing a runtime package,
+                  you add each component with a CLI command, and the source
+                  lands in your components folder as a file you can read and
+                  edit.
+                </p>
+                <p>
+                  The set is built by Arihant Jain, and the code lives on{" "}
+                  <a
+                    href="https://github.com/arihantcodes/spectrum-ui"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  . You can browse the full catalog at{" "}
+                  <a
+                    href="https://ui.spectrumhq.in/"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    ui.spectrumhq.in
+                  </a>
+                  , where each component has a live preview, its props, and the
+                  install command. The license is MIT, so the files you pull are
+                  yours to change in personal and commercial work.
+                </p>
+
+                <h2 id="why-copy-paste-components">
+                  Why copy-paste components change the workflow
+                </h2>
+                <p>
+                  A library that ships as a dependency asks you to trust its
+                  future. When the maintainer renames a prop or drops a version,
+                  your build breaks and you wait for a fix you did not schedule.
+                  A component that ships as source carries no such contract. You
+                  add the file, then treat it as your own code.
+                </p>
+                <p>
+                  That difference matters most when you build with an AI
+                  assistant. A source file is the format the model reads best.
+                  It sees the props and the styles, then writes an integration
+                  that matches your project instead of guessing at an API hidden
+                  inside a package. You paste the component, describe where it
+                  belongs, and the assistant wires it in without a dependency to
+                  fight.
+                </p>
+
+                <h2 id="what-ships-spectrum-ui">What ships in the box</h2>
+                <p>The catalog is grouped by what each piece does on the page:</p>
+                <ul>
+                  <li>❶ Buttons with animated glow and hover states</li>
+                  <li>❷ Cards that lift or tilt when the cursor reaches them</li>
+                  <li>❸ Text effects that animate on load or on scroll</li>
+                  <li>❹ Loaders and spinners for waiting states</li>
+                  <li>
+                    ❺ Background elements such as gradients and animated
+                    surfaces
+                  </li>
+                </ul>
+                <p>
+                  Every component is built on Tailwind utilities, so it picks up
+                  the theme you already set. Colour and spacing come from your
+                  tokens rather than from a stylesheet you have to override. The
+                  pieces are independent, which means you keep the ones you add
+                  and ignore the rest of the catalog.
+                </p>
+
+                <h2 id="how-the-cli-adds-a-component">
+                  How the CLI adds a component
+                </h2>
+                <p>The path from the catalog to your codebase is short:</p>
+                <ul>
+                  <li>
+                    ❶ Open the catalog and find the component that fits the
+                    section you have in mind
+                  </li>
+                  <li>❷ Copy the install command from the component page</li>
+                  <li>
+                    ❸ Run it, and the file appears inside your components folder
+                  </li>
+                  <li>
+                    ❹ Import it and render it, then adjust the props to match
+                    your layout
+                  </li>
+                </ul>
+                <p>
+                  Several animated pieces lean on a small motion library, and
+                  the CLI installs it alongside the file, so you do not hunt for
+                  the dependency by hand. If you build with an AI assistant, the
+                  same flow runs in chat. Paste the component into the
+                  conversation, describe the element it should wrap, and let the
+                  model handle the import.
+                </p>
+
+                <h2 id="motion-on-top-of-tailwind">
+                  Motion on top of Tailwind
+                </h2>
+                <p>
+                  Tailwind on its own stops at transitions and keyframes.
+                  Complex motion, the kind that reacts to a cursor or springs
+                  into place, needs a motion library underneath. Spectrum UI
+                  pairs the two, so the utility classes handle the static look
+                  and the motion library carries the movement.
+                </p>
+                <p>
+                  Motion is not welcome for everyone. Some people feel dizzy
+                  from large movement, and their system already tells your page
+                  to tone it down. The components respect{" "}
+                  <code>prefers-reduced-motion</code>, so a visitor who asked
+                  for less movement gets the static version of each piece. If
+                  you want to apply the same rule to your own components, the{" "}
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    MDN reference on prefers-reduced-motion
+                  </a>{" "}
+                  explains the media query.
+                </p>
+
+                <h2 id="faq-spectrum-ui">Frequently asked questions</h2>
+                <h3>Is Spectrum UI free to use?</h3>
+                <p>
+                  Yes. It is MIT licensed, so you can use the components in
+                  personal and commercial work without paying a fee. The source
+                  lives on GitHub, and once a component is in your repo, the
+                  license travels with the file you own.
+                </p>
+                <h3>Do I need Tailwind to use it?</h3>
+                <p>
+                  Yes. The components are written with Tailwind classes, so a
+                  project already on Tailwind is the shortest path. If you are
+                  not on Tailwind yet, the files are still readable, and you can
+                  port the classes to your own styling system once the component
+                  is in your hands.
+                </p>
+                <h3>Does it work with Next.js?</h3>
+                <p>
+                  It does. The components are plain React files with TypeScript
+                  types, so they drop into a Next.js app the same way any local
+                  component does. Animated pieces carry a small motion library,
+                  which the CLI installs for you.
+                </p>
+                <h3>Can I change a component after I add it?</h3>
+                <p>
+                  That is the point of the copy-paste model. The file sits in
+                  your project, so you edit the styles and the timing directly.
+                  Nothing updates behind your back, and nothing breaks when the
+                  maintainer ships a new version.
+                </p>
+
+                <h2 id="why-it-belongs-spectrum-ui">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  You want the interface to move without adopting a design
+                  system you did not choose. Spectrum UI gives you animated
+                  pieces as source, one command each, and the freedom to reshape
+                  them once they land. The parts you keep are the parts you
+                  changed yourself.
+                </p>
+                <p>
+                  For a solo builder shipping fast with AI, the trade is clean:
+                  real motion, no runtime package, and code the assistant can
+                  read. Grab the component that fits the section you are
+                  building, run the command, and let the page stop feeling
+                  static. When you want the screens around that motion to hold
+                  up, our{" "}
+                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same ship-it-yourself workflow.
                 </p>
                   </>
                 )}

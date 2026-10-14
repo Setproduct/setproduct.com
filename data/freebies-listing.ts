@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "spectrum-ui",
+    title: "Spectrum UI — animated React components you copy and own",
+    description:
+      "Open source React and Tailwind component library for animated interfaces. Buttons, cards, loaders, and text effects arrive through one CLI command and land in your own repo as editable files.",
+    thumb: "/freebies/thumbs/freebie-spectrum-ui.webp",
+    image: "/freebies/freebie-spectrum-ui.webp",
+    category: "Components",
+    previewHref: "/freebies/spectrum-ui",
+    duplicateHref: "https://github.com/arihantcodes/spectrum-ui",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "compositor",
     title: "Compositor — free Photoshop alternative for macOS",
     description:
