@@ -8,7 +8,7 @@
 
 | Страница | Gap | Было | Добавлено |
 |---|---|---|---|
-| tabs-ui-design | 4627 | TL;DR, decision-таблица, FAQ (7 вопросов) | Answer-first лид, колонка `Nav` в decision-таблицу, 2 FAQ-вопроса (types, states/theming), 3 метки IMAGE, 1 перелинков��а на data-table |
+| tabs-ui-design | 4627 | TL;DR, decision-таблица, FAQ (7 вопросов) | Answer-first лид, колонка `Nav` в decision-таблицу, 2 FAQ-вопроса (types, states/theming), 3 метки IMAGE, 1 перелинковка на data-table |
 | data-table-ui-design | 1927 | Answer-first лид, TL;DR, FAQ (8 вопросов) | Строка `Grid` в decision-таблицу (table vs list vs cards vs grid), раздел «When to virtualize a table», 3 метки IMAGE, перелинковка tabs/pagination/filter |
 | notifications-ui-design | 1653 | Answer-first лид, TL;DR, channel-таблица, FAQ (7 вопросов) | Строка `Email` в channel-таблицу, блок «когда НЕ уведомлять», 1 FAQ-вопрос, 3 метки IMAGE, перелинковка empty-state/badge |
 
@@ -18,7 +18,7 @@
 - FAQ уже был на всех трёх — новые вопросы добавлялись только там, где запроса страницы не было в существующих вопросах.
 - Decision-таблица уже была у tabs и notifications — не переписывал, а достраивал недостающие колонку/строку.
 
-## Что именно доб��влено в тело
+## Что именно добавлено в тело
 
 ### tabs-ui-design
 - Лид заменён на answer-first (≈60 слов), без «в современном мире».
@@ -45,7 +45,7 @@
 ## Метки IMAGE (владелец генерит отдельно)
 
 После лида: `{/* IMAGE: hero */}` — на всех трёх страницах.
-После decision-таблицы: `{/* IMAGE: диаграмма-развил��а выбора компонента */}` — tabs (1), data-table (2), notifications (1).
+После decision-таблицы: `{/* IMAGE: диаграмма-развилка выбора компонента */}` — tabs (1), data-table (2), notifications (1).
 В FAQ: `{/* IMAGE: иллюстрация частого кейса */}` — на всех трёх страницах.
 
 ## Перелинковка (не более 3 на страницу)
