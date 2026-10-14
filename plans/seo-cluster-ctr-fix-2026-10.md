@@ -62,7 +62,7 @@ seo-tools-compared были поправлены раньше, а §15.2.3 оп�
 | choosing-right-ios-kit | title | Countdown to launch: How Figma iOS kits can help design your next mobile app faster | двоеточие, len 83 |
 | choosing-right-ios-kit | metaTitle | Expert Tips for Selecting the Best Figma UI Kit for iOS App Design | Title Case, len 66 |
 | choosing-right-ios-kit | description | … | len 161 |
-| how-to-get-graphic-design-clients | title | How To Get More Graphic Design Clients: A Step-by-step Guide for Freelancers | двоет��чие, len 76, Title Case |
+| how-to-get-graphic-design-clients | title | How To Get More Graphic Design Clients: A Step-by-step Guide for Freelancers | двоеточие, len 76, Title Case |
 | how-to-get-graphic-design-clients | metaTitle | How to Get Graphic Design Clients: A Freelancer's Guide - Setproduct | двоеточие, len 69, Title Case, суффикс |
 | how-to-get-graphic-design-clients | description | … | len 168 |
 
