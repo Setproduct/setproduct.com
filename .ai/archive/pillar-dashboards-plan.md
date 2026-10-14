@@ -46,7 +46,7 @@ rescue (низкое качество по аудиту), **4** идут под 
 | 3 | types-of-dashboards-main-categories | Resources | 2024-06-13 | 3568 | (no data) | Классификация типов дашбордов (операционные, аналитические, стратегические). |
 | 4 | why-are-dashboards-important | SEO (мискатег.) | 2024-06-14 | 3730 | (no data) | «Зачем нужны дашборды + цели + типы» — дубль темы #6. |
 | 5 | marketing-dashboard-examples-templates | Inspiration | 2024-06-24 | 3448 | (no data) | Listicle: что такое marketing dashboard, типы, топ-5 шаблонов, best practices. |
-| 6 | benefits-of-dashboards | SEO (мискатег.) | 2024-05-30 | 2327 | (no data) | «Польза дашбордов для б��знеса» — дубль темы #4, низкое качество по аудиту. |
+| 6 | benefits-of-dashboards | SEO (мискатег.) | 2024-05-30 | 2327 | (no data) | «Польза дашбордов для бизнеса» — дубль темы #4, низкое качество по аудиту. |
 | 7 | e-commerce-dashboard-examples | Inspiration | 2024-06-27 | 2376 | (no data) | Listicle: e-commerce метрики, топ-5 примеров, best practices. |
 | 8 | best-analytics-dashboard-examples | Inspiration | 2024-06-24 | 2323 | (no data) | Listicle: что такое аналитический дашборд, топ-5 примеров, best practices. |
 | 9 | how-to-study-saas-dashboard-in-the-ai-era | Inspiration | 2026-03-24 | 2101 | (no data, свежий) | Как изучать паттерны SaaS-дашбордов в эпоху AI — сильный editorial-голос. |
