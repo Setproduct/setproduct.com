@@ -35,6 +35,29 @@ relatedSlugs:
   - steps-ui-design
   - tooltip-ui-design
 thumbImage: /blog/covers/thumbs/filter-ui-design.webp
+faq:
+  - question: What is the best layout for filters?
+    answer: >-
+      It depends on how many filters the page has and how wide the content needs
+      to be. Sidebars suit many filters on wide screens. A top bar suits a few
+      quick refinements. Inline filters suit cases where the control sits directly
+      next to the data it changes. Nielsen Norman Group covers the trade-offs in
+      more depth.
+  - question: How many filter options should I show?
+    answer: >-
+      Show the most used filters first, then hide the long tail behind Show more.
+      Past roughly twenty options in one group, add a search field inside the
+      group. Every option you show before the useful one costs the user a scan.
+  - question: Should filters apply on change or after a button press?
+    answer: >-
+      Apply on change for cheap queries, so the list updates the moment a box is
+      ticked. Use an apply button when each request is slow or costly, and show a
+      count of pending filters so the user knows the state is not live yet.
+  - question: How do I handle a filter that returns no results?
+    answer: >-
+      Say why the list is empty and offer a one-tap way out. Name the narrowest
+      active filter and let the user remove it. Keep the total count in view.
+      Never leave a blank list with no explanation and no reset.
 ---
 
 
