@@ -35,6 +35,53 @@ inlineCta:
     screenshot.
   buttonText: Open the radio button gallery
   buttonLink: https://app.setproduct.com/components/radio
+faq:
+  - question: What is the difference between a radio button and a checkbox?
+    answer: >-
+      A radio button lets users pick exactly one option from a group, where
+      choosing one clears the others, while a checkbox lets users pick any
+      number of options independently, including none. Use radios for mutually
+      exclusive choices such as shipping speed, and checkboxes for multiple
+      selections such as notification types.
+  - question: When should I use a radio button instead of a dropdown?
+    answer: >-
+      Use radio buttons when there are roughly two to six options and seeing all
+      of them at once helps the decision, such as a pricing tier or a shipping
+      method. Switch to a dropdown when there are seven or more options, or when
+      the choices are familiar enough that hiding them saves space, like a
+      country selector.
+  - question: Should radio buttons have a default option selected?
+    answer: >-
+      Usually yes. Preselecting a sensible default, like the most common choice,
+      reduces effort and prevents empty submissions. The exception is
+      consequential or opinion-based questions, such as consent or survey
+      answers, where a preselected option would bias the result.
+  - question: How do I make a radio group accessible?
+    answer: >-
+      Wrap the options in a fieldset with a legend that states the question,
+      give every option the same name, and use native radio inputs so the
+      browser handles grouping and keyboard navigation. The group should be a
+      single tab stop with arrow keys moving between options, and each option
+      needs a visible focus ring.
+  - question: Can radio buttons be displayed horizontally?
+    answer: >-
+      Yes, but default to a vertical stack. Horizontal layouts save vertical
+      space and suit short, fixed labels like a 1-to-5 scale, but they break
+      when labels wrap on narrow screens. Reserve horizontal arrangements for
+      segmented controls and short rating rows.
+  - question: How many radio buttons should a group have?
+    answer: >-
+      A radio group works best with two to six options. Below two, there is no
+      real choice to make, and a single setting is a toggle switch instead.
+      Above six or seven, the list grows tall and slow to scan, so a dropdown
+      becomes the better pattern.
+  - question: What is a card-based radio button?
+    answer: >-
+      A card-based radio button presents each option as a full clickable card,
+      often with a title, description, icon and price, instead of a plain circle
+      and label. It is standard for pricing tiers and plan pickers. Underneath,
+      it is still a radio group, so each card must wrap a real input and take
+      keyboard focus.
 ---
 
 A radio button is a control that lets someone pick exactly one option from a small, fixed set, where choosing one clears the rest. This guide is the long version. It covers anatomy, every state, the card-based patterns that dominate modern SaaS, accessibility, and the quiet mistakes that turn a simple choice into a frustrating form.
