@@ -34,7 +34,7 @@
 - [x] optimizing-digital-marketing img-2,4 — все FIX (Patagonia Core Values, инфографика SEO)
 - [x] how-to-cancel-adobe-subscription-without-fees img-1,2 — все FIX (экран отмены, мужчина с бумагой)
 - [x] how-to-3d-animate-scroll img-1,2 — img-1 FIX (страница AirPods Pro), img-2 OK (чёрный кадр)
-- [x] genius-ux-design-inventions img-1,3 — img-1 OK (телефон с портрет��ми), img-3 OK (платёжная экосистема)
+- [x] genius-ux-design-inventions img-1,3 — img-1 OK (телефон с портретами), img-3 OK (платёжная экосистема)
 - [x] freelance-hourly-rate img-1,2 — все FIX (фрилансер за столом, интерфейс на iMac)
 - [x] choosing-right-design-team img-1,2 — img-1 OK (экран с макетами), img-2 OK (скетчи вайрфреймов)
 - [x] how-to-use-ai-ui-inspiration... img-4,5 — img-4 OK (центр уведомлений), img-5 OK (кнопка Send)
