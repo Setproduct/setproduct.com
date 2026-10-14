@@ -273,6 +273,39 @@ scalar (`>-`); первый `apply_diff` не совпал, применён п�
 | Запрещённый суффикс `- Setproduct` | несколько | в старых `title`/`metaTitle` |
 | `U+200B` в теле | 35 строк | `innovative-ideas-for-video-creation`, `mastering-javascript`, `streamlining-website-development` |
 
+## Закрытие долга (2026-10-14)
+
+Все строки таблицы выше закрыты в тот же день:
+
+| Группа | Статус | Коммиты |
+|---|---|---|
+| Двоеточие в `title`/`metaTitle` | ЗАКРЫТО (0 из 186) | `a5d6642` — `8-designers-developers-success` |
+| Двоеточия в H2/H3 тела | ЗАКРЫТО ранее | `c3c565d`…`c607419` |
+| `title`/`metaTitle` длиннее 65 | ЗАКРЫТО (0 из 186) | до 65 сокращены 14 постов + 11 с суффиксом, см. ниже |
+| Запрещённый суффикс `- Setproduct` | ЗАКРЫТО (0 из 186) | 11 постов, коммит на файл |
+| `U+200B` в теле | ЗАКРЫТО раньше | Мера D1 (85 файлов, `d70b7fc`…`01ed0d1`) — скан даёт 0 |
+
+**Батч «длина + суффикс» (2 группы, 21 файл, коммит на файл):**
+
+- Группа 1 — 11 постов с суффиксом `- Setproduct` в `metaTitle`
+  (у `saas-dashboard-examples` — в `title` и folded-`metaTitle`), коммиты
+  `972fc76`…`449c1c5`. Суффикс удалён, поля приведены к sentence case.
+- Группа 2 — 9 постов с SERP-заголовком 66–76 символов без суффикса,
+  коммиты `517bf62`…`f8677c0`. Заголовки сокращены до ≤65 и переведены в
+  sentence case.
+
+Точный скан после правок (команда, 186 постов): `SERP >65 = 0`,
+`суффикс - Setproduct = 0`, `двоеточие в title/metaTitle = 0`,
+невидимые символы (`U+200B`/ZWJ/`U+2063`) = 0, `U+FFFD` = 0.
+
+**Что осталось как флаг (не дефект длины):** 5 постов без `metaTitle`
+(`computer-vision-consultancy-…`, `dashboard-ui-design`,
+`pay-for-claude-pro-with-usdt`, `the-ux-decisions-…`, `top-real-estate-…`) —
+у них SERP-заголовок берётся из `title`, и все `title` ≤ 65. Отдельно:
+`coverImageAlt` у `saas-dashboard-examples` дублировал старый Title Case
+`title` (`Best SaaS Dashboard Examples. Dashboard Design Templates for SaaS
+Companies`) — поле не входит в SERP и в батч не бралось.
+
 ## Что НЕ делать
 
 - Не менять title вслепую, без процедуры скилла `seo` (3 варианта + выбор
