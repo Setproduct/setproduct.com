@@ -31,6 +31,42 @@ inlineCta:
     up, so you can skip the pixel routine and ship faster.
   buttonText: Browse the kit
   buttonLink: 'https://setproduct.gumroad.com/l/figma2react'
+faq:
+  - question: What is the difference between a button and a link?
+    answer: >-
+      A button triggers an action on the current page, while a link moves the
+      user to another URL or an anchor. The semantics differ, a button element
+      versus an anchor element, and that changes keyboard behavior and screen
+      reader output. Pick the element by meaning, not by how it looks.
+  - question: How many buttons should be on one screen?
+    answer: >-
+      One primary button per section, with everything else secondary or
+      tertiary. Several competing primary buttons dilute the hierarchy and slow
+      the decision down. When actions multiply, group them or push the extra
+      ones into a menu.
+  - question: What button size is accessible?
+    answer: >-
+      WCAG 2.2 sets a 24×24 CSS px minimum, and 44×44 is comfortable on touch
+      screens. Button text needs at least 4.5:1 contrast. Small icon buttons
+      need a larger hit area around the visible icon so the target still passes.
+  - question: Should disabled buttons be used at all?
+    answer: >-
+      Less often than most teams do. A blocked button does not explain the
+      cause. It is usually better to keep the button active and show the error
+      on press, or state what is missing next to it. When you must disable it,
+      add a hint that says why.
+  - question: What states must every button have?
+    answer: >-
+      Idle, hover, focus, active, loading and disabled. Focus-visible is
+      mandatory for keyboard users, and loading replaces the label with a
+      spinner without shifting the width. A button missing any of these states
+      feels unfinished.
+  - question: How do I handle buttons on mobile?
+    answer: >-
+      Raise the target to 44×44, keep the primary action away from the screen
+      edge, and avoid hover-only hints. On narrow screens the primary action
+      often moves into a sticky bar at the bottom, while secondary actions fold
+      into a menu.
 ---
 
 
