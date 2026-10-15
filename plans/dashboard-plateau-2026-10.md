@@ -187,6 +187,29 @@ npm run lint 2>&1 | tail -1
 Пороги: двоеточий в H2/H3 — 0 (кроме URL внутри ссылок), em-dash ≤ 2,
 FFFD = 0, `npm run lint` чист. YAML дополнительно через `gray-matter`.
 
+## 10. Прогресс: шаг 1 (sentence case), 2026-10-15
+
+| Файл | Заголовков исправлено | Коммит |
+|---|---|---|
+| best-analytics-dashboard-examples | 15 | `448a74e` |
+| types-of-dashboards-main-categories | 44 (включая H4 Definition/Key/Use) | `b030fe7` |
+| e-commerce-dashboard-examples | 15 | `dabae74` |
+| top-dashboard-design-examples-ideas | 11 (включая снятие двоеточия) | `fe84c2c` |
+| saas-dashboard-examples | 5 | `ce5c3a3` |
+
+Проверено после каждого файла: двоеточий в H2/H3 вне URL — 0,
+em-dash не вырос ни в одном файле, U+FFFD = 0, `npm run lint` чист.
+
+Не тронуто (легитимные исключения): названия продуктов в H3-ссылках —
+React UI Kit, Material Design System, Neolex Dashboard UI Kit,
+Material Desktop UI Kit, Panda Design System, Eclipse UI Kit, Xela,
+Material-X, Material-You, Rome UI Kit. Это имена брендов и продуктов.
+
+Найден унаследованный дефект (не входил в задачу, не правился):
+в `types-of-dashboards-main-categories` заголовки `1\. Operational`
+(строка 74) и `10\. Operational` (строка 324) дублируются по смыслу.
+Было и до правки. Кандидат на отдельный разбор.
+
 ## 9. Источники этого файла
 
 - [`plans/Страницы.csv`](Страницы.csv) — показы и CTR, окно 3 мес.
