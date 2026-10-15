@@ -124,11 +124,22 @@ heavy dashboard patterns` и десятки вариаций), все с нул�
 | top-dashboard-design-examples-ideas | `title`: `Top Dashboard Design Examples & Ideas. Dashboard Inspiration` — Title Case, дубль слова dashboard | title |
 | e-commerce-dashboard-examples | `title`: `Best E-Commerce Dashboard Templates with Examples` — Title Case | title |
 | types-of-dashboards-main-categories | `title`: `Types of Dashboards. Main Categories Explained` — Title Case | title |
-| marketing-dashboard-ui-design-guide | `metaTitle` Title Case (2 слова) | metaTitle |
+| marketing-dashboard-ui-design-guide | проверено 2026-10-15: дефекта нет, `metaTitle` уже sentence case, SERP 76 | — |
 
 Порядок выбора: сначала sentence case в заголовках тела (чисто механически),
 потом title/metaTitle через процедуру скилла `seo` (3 варианта + выбор
-владельца, длина 60–65, без двоеточия).
+владельца, без двоеточия).
+
+**Поправка к длине (проверено командой 2026-10-15).** Скилл называет 60–65
+символов, но это длина **строки в SERP**, а не поля. В `<title>` уходит
+`metaTitle` (или `title`, если `metaTitle` пуст) плюс суффикс
+` | Setproduct Blog` — 18 символов, см.
+[`BlogPostLayout.tsx`](../components/blog/BlogPostLayout.tsx:40). Замер по всем
+187 постам: `metaTitle` 46–55 у 82 постов, 60–65 у 39, длиннее 65 — ни одного.
+Лучшие по CTR держат `metaTitle` 45–58 (полная строка 63–76):
+`data-table-ui-design` 45, `tabs-ui-design` 48. Поэтому цель для поля —
+**46–58 символов**, то есть строка в SERP 64–76. Правило «60–65» переводится
+в него один в один.
 
 ## 5. Что нужно от владельца (блокирует шаг 2)
 
@@ -218,3 +229,56 @@ Material-X, Material-You, Rome UI Kit. Это имена брендов и пр�
 - [`.ai/content-strategy.md`](../.ai/content-strategy.md:539) — §12 (saasframe), §13 (каталог).
 - [`.ai/seo-benchmarks.md`](../.ai/seo-benchmarks.md:22) — бенчмарк UI design.
 - [`AGENTS.md`](../AGENTS.md:93) — sentence case и запрет двоеточий.
+
+## 11. Шаг 2: варианты сниппетов (зафиксированы, НЕ применены)
+
+Решение владельца 2026-10-15: набор «рекомендованный» был выбран, но следом
+отменён в пользу §7 — сниппеты не правим до page-level выгрузок запросов.
+Варианты ниже сохранены, чтобы работа не потерялась. Все прошли прогон:
+длина в норме, двоеточий нет, лишних трихолонов нет. `title` и `metaTitle`
+предполагается ставить одинаковыми, как у `data-table`, `tabs`, `button`,
+`liquid-glass`.
+
+Рекомендованный набор: best-analytics T2 + D1, top-dashboard T1 + D1,
+e-commerce T1 + D1, types-of-dashboards T1 + D1, marketing T1 + D1.
+
+| Файл | metaTitle (len / SERP) | description (len) |
+|---|---|---|
+| best-analytics-dashboard-examples | Best analytics dashboard examples for cleaner KPI screens (57 / 75) | See how the best analytics dashboards turn raw metrics into decisions. Compare real examples and the design practices that keep KPI screens readable. (149) |
+| top-dashboard-design-examples-ideas | Dashboard design examples and layout ideas worth copying (56 / 74) | Get inspired by dashboard design examples that actually ship. See the layout ideas and chart choices that keep dense data readable. (131) |
+| e-commerce-dashboard-examples | E-commerce dashboard examples to track sales at a glance (56 / 74) | See how the best e-commerce dashboards present sales and orders at a glance. Compare templates and the metrics worth surfacing first. (133) |
+| types-of-dashboards-main-categories | Types of dashboards and how to pick the right one for a team (60 / 78) | Learn the difference between operational and strategic dashboards, then pick the type that fits the decisions your team actually makes. (135) |
+| marketing-dashboard-ui-design-guide | Marketing dashboard UI design that shows ROI at a glance (56 / 74) | Build marketing dashboards that show ROI at a glance. See which campaign metrics to surface and the layouts that survive dev handoff. (133) |
+
+Полные наборы альтернатив (по 3 заголовка и 3 описания на файл) собраны
+в сессии; при возврате к шагу 2 (после page-level выгрузок) их нужно
+воспроизвести заново.
+
+### 11.1. Механические дефекты, найденные при подготовке шага 2
+
+Не зависят от состава запросов, но попали под запрет §7, поэтому отложены:
+
+- `best-analytics-dashboard-examples`: `metaTitle` 33 символа (строка 51) —
+  самый короткий в пласте, при 30 544 показах.
+- `types-of-dashboards-main-categories`: `metaTitle` 36 символов (строка 54).
+- Четыре описания содержат мусорные глифы `✔` (`U+2714`) и `➤` (`U+27A4`):
+  best-analytics, top-dashboard, e-commerce, types-of-dashboards. Это символы
+  чек-листов Webflow, для сниппета бессмысленные.
+
+### 11.2. Отдельный долг, найденный тем же прогоном
+
+Глифы `✔` / `➤` в frontmatter найдены ещё в 18 постах блога вне
+dashboard-пласта (`button-group-guide`, `data-table-ui-design`,
+`slider-ui-design`, `tooltip-ui-design`, `pricing-ui-design`,
+`radio-button-ui-design`, `toggle-switch-ui-design`, `steps-ui-design`,
+`ai-chat-interface-ui-design`, `form-controls-reference-2026`,
+`liquid-glass-design-explained-a-practical-guide`, `user-profile-templates`,
+`genius-ux-design-inventions` и другие). Мера — снять глифы из описаний,
+отдельным заходом. В этот план не входит.
+
+### 11.3. Уточнение к §4
+
+Строка §4 «`marketing-dashboard-ui-design-guide`: `metaTitle` Title Case
+(2 слова)» не подтвердилась: `metaTitle` уже sentence case, двоеточия нет,
+описание 150 символов и без мусора. Правка нужна только если владелец
+захочет усилить хук (сейчас строка 76 — в норме).
