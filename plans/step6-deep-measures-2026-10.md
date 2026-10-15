@@ -341,6 +341,43 @@ canonical, сокращение индексируемых страниц. Эт�
 
 ---
 
+## 9a. Статус мер (2026-10-15)
+
+**Мера C — ЗАКРЫТА диагностикой.** Разбор в
+[`plans/guest-posting-cannibalization-diagnosis-2026-10.md`](guest-posting-cannibalization-diagnosis-2026-10.md).
+Каннибализация не подтвердилась: головные сравнительные запросы держит базовый
+URL `guest-posts-vs-niche-edits` на позициях 3.1-4.2, а на соседних страницах те
+же запросы на позициях 34-57. Причина нуля кликов — AI Overview или сниппет.
+Фикс (answer-first лид, TL;DR, decision-таблица) применён 2026-10-12, то есть
+после закрытия окна выгрузки. Правок не требуется, merge не нужен. Осталось
+пересобрать выгрузку после 2026-10-26 и сравнить CTR ядра сравнения с 0.19%.
+
+**Wave 4 (чистка выдуманной статистики) — батч A выполнен 2026-10-15.**
+Искали по всем 187 постам: процентные и кратные заявления без источника.
+`tabs-ui-design` оказался уже чистым (ложные цифры удалены ранее, оставшиеся
+проценты — дизайн-ориентиры). Убраны четыре выдуманные цифры:
+
+| Файл | Что убрано | Коммит |
+|---|---|---|
+| innovative-ideas-for-video-creation | «82.5% of all web traffic» | `0650d43` |
+| figma-plugins-review-2020 | «up to 90% better» про плагин | `4305a87` |
+| visual-elements-in-email-marketing | «27% increase in CTR» без источника | `4015cc1` |
+| how-to-market-your-saas-with-zero-budget | Canva: «33% of demo users», «CAC −70%» | `ffbf17c` |
+
+Формулировки заменены на честные без потери тезиса. Em-dash 0, двоеточий в
+заголовках 0, `npm run lint` чистый. Проверено и НЕ тронуто (цифры
+атрибутированы ссылкой или это факт из ToS): `remote-productivity`,
+`how-to-design-landing`, `streamlining-website-development`,
+`chinese-ai-models-vs-american-2026`, `how-to-cancel-adobe`,
+`how-much-does-guest-post-cost-2026`.
+
+Остаток Wave 4 (батч B, требует решения владельца): `why-landing-page-optimization-is-essential`
+(смягчить формулировку форм до отраслевого ориентира), `user-profile-templates`
+(subtitle «3x faster»), `top-real-estate-app-development-companies-compared`
+(цифры подрядчиков — сначала проверить источник).
+
+---
+
 ## 10. Что НЕ делаем в этом заходе
 
 - Не трогаем `how-to-study-saas-dashboard-in-the-ai-era` (шум чужого бренда).
