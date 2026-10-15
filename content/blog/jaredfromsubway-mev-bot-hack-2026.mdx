@@ -16,6 +16,43 @@ relatedSlugs:
   - state-of-crypto-2025
   - how-to-swap-btc-to-eth-with-thorswap
   - liquid-glass-design-explained-a-practical-guide
+faq:
+  - question: What is jaredfromsubway.eth?
+    answer: >-
+      It is one of the best-known MEV bots on Ethereum, specialized in sandwich attacks. By
+      most estimates it ran up to 70 percent of sandwich activity on the network and
+      extracted around $60M a year from traders.
+  - question: How much did the jaredfromsubway bot lose?
+    answer: >-
+      Approximately $7.7M, roughly 1,583.5 ETH plus $2.87M in USDC and $2.09M in USDT. The
+      funds were swapped into about 4,427 ETH and laundered through Tornado Cash.
+  - question: Can the stolen funds be recovered?
+    answer: >-
+      Realistically no. The proceeds were routed through Tornado Cash, a mixer designed to
+      break the on-chain link between source and destination. On-chain theft of this kind is
+      almost never reversed.
+  - question: What is a dangling approval?
+    answer: >-
+      It is a token-spending permission you granted to a contract and never revoked. As long
+      as it stays live, that contract can move the approved tokens. The downfall of the bot
+      was leaving 66 of them open to attacker-controlled contracts.
+  - question: How do I protect my own swaps from sandwich attacks?
+    answer: >-
+      Switch your wallet RPC to a private one like Flashbots Protect or MEV Blocker, route
+      larger swaps through intent-based venues like CoW Swap or UniswapX, keep slippage
+      tight, and clear stale approvals monthly on revoke.cash.
+  - question: Is a counter-MEV honeypot legal?
+    answer: >-
+      It sits in a deep gray zone. No contract was hacked in the traditional sense. The bot
+      voluntarily approved the contracts of the attacker. But sweeping the funds is still
+      unauthorized in intent, which is why the proceeds were laundered rather than claimed
+      openly.
+  - question: Does this mean MEV bots are finished?
+    answer: >-
+      They are cornered rather than finished. The incident makes sandwich bots add defensive
+      checks that reduce their profitability, while the ecosystem moves toward encrypted
+      mempools and intent-based execution that remove the exposed information sandwiching
+      depends on.
 ---
 
 For years, jaredfromsubway.eth was the thing you feared on every Uniswap swap. The most notorious MEV bot on Ethereum, it quietly skimmed value from thousands of traders. Then, in a single transaction, it lost around $7.7M to a trap built entirely from its own logic. The hunter became the meal. Here is what actually happened, and why it matters more than the money.
