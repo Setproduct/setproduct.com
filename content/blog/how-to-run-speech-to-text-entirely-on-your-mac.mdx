@@ -1,0 +1,233 @@
+---
+title: "How to run offline speech-to-text on your Mac in 2026"
+description: "Run offline speech-to-text on an Apple Silicon Mac: install the app, transcribe a file, fix punctuation, dictate into any app, with honest numbers."
+slug: how-to-run-speech-to-text-entirely-on-your-mac
+date: "2026-10-15"
+author: Roman Kamushken
+coverImage: /blog/covers/how-to-run-speech-to-text-entirely-on-your-mac.webp
+coverImageAlt: The Embedding Gemma Transcribe window on a Mac with a dropped audio file
+tags: ["Speech to text", "On-device AI", "Mac", "Local AI"]
+canonical: "https://www.setproduct.com/blog/how-to-run-speech-to-text-entirely-on-your-mac"
+category: Technology
+subtitle: "From an empty machine to a working transcript in about twenty minutes, with no cloud and no API bill"
+metaTitle: "How to run speech-to-text on your Mac without the cloud"
+cardDescription: "From an empty Mac to a working transcript in about twenty minutes, with no cloud and no API bill."
+readingTimeText: 9 min read
+relatedSlugs:
+  - venice-ai-tool-private-uncensored
+  - chinese-ai-models-vs-american-2026
+  - translate-website-using-ai-dont-forget-pdfs
+thumbImage: /blog/covers/thumbs/how-to-run-speech-to-text-entirely-on-your-mac.webp
+inlineCta:
+  title: "☞ Got a product, app or service? Promote it in our blog"
+  description: >-
+    Paid placements on Setproduct reach 11,000 designers and founders every
+    month. We write research and case studies, so your product lands in front of
+    readers who are already looking for it.
+  buttonText: See guest post plans
+  buttonLink: 'https://publish.setproduct.com/'
+faq:
+  - question: "Does offline speech to text work without internet?"
+    answer: "Yes, for the transcription itself, once the models have downloaded. The first launch needs a connection to fetch about 715 MB of model files. After that the app runs air-gapped, and nothing you transcribe is sent anywhere."
+  - question: "Why does it mangle names and numbers?"
+    answer: "The reader picks from about 229,000 English words, so unusual names and abbreviations, or figures outside that set, get swapped for the nearest common word. Treat it as a known ceiling of the method. Spell critical names yourself and check every number by hand."
+  - question: "Is Whisper more accurate than this?"
+    answer: "On English benchmarks the gap is real. This tool sits near 5% word error rate while leading speech models reach 2 to 3%. Whisper closes part of that on some audio, especially non-English, at the cost of a slower run and a command-line setup."
+  - question: "Does it work on Intel Macs or Windows?"
+    answer: "No. The app needs macOS 14 or later on Apple Silicon, because it runs on the Neural Engine. Intel Macs and Windows machines have no native version. On those systems the Whisper and faster-whisper route from the model comparison works, and its speed depends on your hardware."
+  - question: "How long does setup take?"
+    answer: "About twenty minutes end to end. Roughly seven minutes go to the download and the first transcription step, ten minutes to cleaning up a first file, and three minutes to dictation. The model download is the slowest single part, and it happens once."
+---
+
+An hour of recorded meeting sits on your drive, and you need it as text. The obvious move is to upload it to a cloud service and pay a subscription for the privilege. There is a second option: run the transcription on the Mac in front of you.
+
+This tutorial walks from an empty machine to a working transcript in about twenty minutes, and it asks for no payment method at any point.
+
+In October 2026 a developer published an unusual trick: an embedding model that reads speech. The fastest free path below is built on that trick. The <a href="https://x.com/TslShahir/status/2109660368381395414" target="_blank" rel="nofollow noopener noreferrer">developer's post</a> picked up about 3,300 likes.
+
+## What you need for offline speech-to-text on a Mac
+
+Everything here is free and runs on the machine on your desk. There is no account to create and no key to paste. Work through the list first, because two of the four items block the install.
+
+→ A Mac with Apple Silicon, M1 or newer
+
+→ macOS 14 or later
+
+→ About one gigabyte of free disk space
+
+→ Any audio file to test on (m4a, mp3, or wav)
+
+On an Intel Mac or a Windows PC there is no native app. The Whisper route in the model comparison below covers those machines, and it costs more setup time than this one.
+
+The sequence is short. The install and first transcript take about seven minutes, most of it waiting for models. Cleaning up a first file runs about ten minutes, and dictation takes three.
+
+## Step 1. Install and transcribe your first file
+
+This is the part that produces a transcript. Five steps, and most of them are waiting. When it finishes you have a text file you can paste into any editor.
+
+❶ Open <a href="https://eg2.haku.sh" target="_blank" rel="nofollow noopener noreferrer">eg2.haku.sh</a> and download Embedding Gemma Transcribe, currently version 1.6, from the <a href="https://eg2.haku.sh/download" target="_blank" rel="nofollow noopener noreferrer">download page</a>. Expected: a disk image lands in your Downloads folder.
+
+❷ Drag the app into Applications, then open it. Expected: the app opens, or macOS asks you to allow an app from an unidentified developer in System Settings.
+
+❸ Let the app fetch its models on first launch, about 715 MB. Expected: a progress bar fills, then the main window opens.
+
+![The app on first launch, downloading 715 MB of models, with the macOS 14 and Apple Silicon requirements line underneath.](/blog/assets/how-to-run-speech-to-text-entirely-on-your-mac/img-1.webp)
+
+❹ Drop your audio file onto the window. Expected: the filename appears in the drop area.
+
+![The main window with an audio file dropped in, showing the file name, its duration, a waveform strip and an orange Transcribe button.](/blog/assets/how-to-run-speech-to-text-entirely-on-your-mac/img-2.webp)
+
+❺ Wait for the run to finish. Expected: a full transcript with punctuation and capital letters appears in the window.
+
+Two facts about this run matter. The app computes on the Neural Engine, the dedicated AI silicon in every Apple chip. Audio never leaves the machine, which is the whole point of the exercise.
+
+To repeat the measurement yourself, take a file with a known duration, time the run, then divide the audio length by the wall-clock time. A one-hour file that finishes in 12.6 seconds is 288 times real time. That is the ratio the developer reports on a base M3 MacBook Air with 8 GB. Write down your own chip and file length beside the number, because the ratio shifts with both.
+
+## Which model for which job
+
+Different jobs want different models. The table below maps five options to the work they suit and the trade each one asks for.
+
+| Model | Runs on | Best for | What you give up |
+|---|---|---|---|
+| Embedding Gemma Transcribe | Neural Engine | Meetings, quick notes | 5% error rate, English only |
+| Whisper and faster-whisper | CPU or GPU | Non-English, long files | CLI setup, slower on CPU |
+| IBM Granite Speech 5.0 TurboCTC | GPU through MLX | Subtitle drafts | Needs the MLX stack |
+| NVIDIA Parakeet TDT 0.6B v3 through FluidAudio | Neural Engine | Podcasts | Benchmark figure, not your machine |
+| Phonon-2, a Parakeet v3 fine-tune through FluidAudio | Neural Engine | Batch podcasts | Benchmark figure, not your machine |
+
+Match the model to the task. Meetings usually want the fastest read and a clean transcript, so Embedding Gemma Transcribe fits. Subtitles need tighter timing and often a non-English source, where <a href="https://github.com/openai/whisper" target="_blank" rel="nofollow noopener noreferrer">Whisper</a> or <a href="https://github.com/SYSTRAN/faster-whisper" target="_blank" rel="nofollow noopener noreferrer">faster-whisper</a> stays the safer pick. Podcasts run for hours, so a tool that accepts a whole season at once saves real time.
+
+The wider question of choosing between model families is the subject of our [comparison of Chinese and American AI models](/blog/chinese-ai-models-vs-american-2026). This blog tests tools like these on a regular schedule, the way it did with [design tools](/blog/top-design-tools).
+
+The bare command shape for the Whisper route looks like this, and the names move between releases:
+
+```bash
+pip install -U faster-whisper   # check the current version on PyPI first
+faster-whisper audio.mp3 --model large-v3
+```
+
+Check the version notes in the repository before you paste anything, and confirm whether the command-line entry point ships with the library or as a separate package. Flag names and required arguments change often.
+
+## Where an embedding model does the transcribing
+
+![Two ways to transcribe speech. The classic stack trains a speech model on many hours of audio, while the embedding trick leaves the base model untouched and trains only a small reader](/blog/assets/how-to-run-speech-to-text-entirely-on-your-mac/two-ways-to-transcribe-speech.webp "float-right")
+
+Most transcription tools add a speech model on top of a text pipeline. This one goes the other way, and that explains both its speed and its limits.
+
+EmbeddingGemma 2 is multimodal. Text and images sit beside audio and video in one shared space, so a spoken word lands close to the same word written down. The developer exploits that single property.
+
+The mechanism has three moving parts.
+
+❶ The audio encoder of the base model was never changed. It already knew how to represent sound.
+
+❷ A small reader pushes each short audio slice into the model's text space.
+
+❸ The app takes the nearest of roughly 229,000 English words and stacks the slices into a transcript. A separate, tiny model adds punctuation and capital letters.
+
+Only the reader was trained. Training the reader took under two hours on eight H100 GPUs, on openly licensed English speech. The base model stayed untouched and never trained on speech, which the developer states directly.
+
+EmbeddingGemma 2 ships under Apache 2.0 from Google, and the app is an independent project with no affiliation.
+
+In replies, the developer confirmed the model already identifies parts of speech, and pointed to <a href="https://ai.google.dev/gemma" target="_blank" rel="nofollow noopener noreferrer">Google's fine-tuning guide for EmbeddingGemma 2 through Sentence Transformers</a> as the next step to try. The link goes to the model family page rather than the exact guide.
+
+## How to read speech-to-text benchmarks without being fooled
+
+Search for a speech model and you find a table of multipliers. Bigger is better, the table implies, and the top number wins. The table rarely says which machine produced the number or which audio it ran on.
+
+Three traps hide in almost every such table.
+
+❶ The machines differ. A multiplier measured on an M5 Pro says little about a base M3 Air.
+
+❷ The audio differs. A clean studio read scores better than a noisy phone call.
+
+❸ The accuracy differs. A model that trades precision for speed can post a high multiplier and still return a poor transcript.
+
+Here is the developer's table as published.
+
+<div class="blog-fit-table">
+
+| Model | Where it computes | Machine | Speed |
+|---|---|---|---|
+| Embedding Gemma Transcribe | Neural Engine | base M3 MacBook Air, 8 GB | 288× (an hour in 12.6 s) |
+| IBM Granite Speech 5.0 TurboCTC | GPU through MLX | base M3 MacBook Air, 8 GB | about 150× (an hour in 25.7 s) |
+| NVIDIA Parakeet TDT 0.6B v3 through FluidAudio | Neural Engine | M4 Pro | 156× |
+| NVIDIA Parakeet TDT 0.6B v3 through FluidAudio | Neural Engine | M5 Pro | 335× |
+| Phonon-2, a Parakeet v3 fine-tune through FluidAudio | Neural Engine | M5 Pro | 480× |
+
+</div>
+
+Read it carefully. Rows one and two are the developer's own measurements on the same base M3 MacBook Air. Rows three to five come from published FluidAudio benchmarks on newer, faster Macs and on different audio. The two groups are not a fair comparison, and the developer says so.
+
+The honest rule is simple. Compare models on your own file, on your own machine, with your own audio. Treat every published number as an orientation point, not a verdict. The borrowed figures live on the <a href="https://github.com/FluidInference/FluidAudio/blob/main/Documentation/Benchmarks.md" target="_blank" rel="nofollow noopener noreferrer">FluidAudio benchmark page</a>.
+
+## Step 2. Fix the output
+
+The raw transcript is usable but rough. This step brings it closer to what you would type yourself. Ten minutes on a first file is normal.
+
+❶ Skim for punctuation and capitals first. The tiny model handles most of them, so you fix the stragglers by hand. Expected: the obvious gaps are closed and the text reads as sentences.
+
+❷ As a rule of thumb, split anything past about 30 minutes before you run it, so one failure stays contained. Expected: a bad stretch only ruins its own chunk.
+
+❸ Scan proper nouns and figures. Names and abbreviations drift first, and anything outside English drifts with them. Expected: a short list of names and figures to verify against the audio.
+
+❹ Check any odd sentence against the audio. Doubtful spots usually sit near a hard word, not in the middle of a plain one. Expected: those spots resolved against the recording.
+
+The reader picks from roughly 229,000 English words. That ceiling is why names and non-English words come back wrong. This is expected behavior, not a defect, and it follows from how the trick works.
+
+Reach for Whisper when the audio is not English, when names matter more than speed, or when a file runs past an hour and you need steadier output. Stay with Embedding Gemma Transcribe when speed and privacy matter more than a five percent error rate on plain English.
+
+![A finished transcript with punctuation, the source file name, a 12.6 second timing stat and Copy and Save buttons.](/blog/assets/how-to-run-speech-to-text-entirely-on-your-mac/img-3.webp)
+
+## Step 3. Dictate offline into any app
+
+Transcription is batch work. Dictation is the live version, and it works in any text field on the system. Setup takes about three minutes.
+
+❶ Turn on dictation mode in the app. Expected: the app shows a listening state.
+
+❷ Hold the Right Option key and speak. Expected: the level meter moves with your voice.
+
+❸ Release the key. Expected: the app stops listening.
+
+❹ Watch the text land in whatever app has focus. Expected: the recognized words appear in the focused field a moment later.
+
+It fits short notes and chat replies. It fights you on code and terminal commands, where one typo costs more than the typing it saved.
+
+![A floating dictation panel reading Right Option hold to dictate, sitting above a notes window filling with text.](/blog/assets/how-to-run-speech-to-text-entirely-on-your-mac/img-4.webp)
+
+## Privacy and the cost math against cloud
+
+Cloud transcription bills per minute and keeps a copy. Local transcription bills nothing and keeps nothing. That difference is the whole argument for this setup.
+
+Run the math. An hour of audio on a cloud service costs a fraction of a dollar at list price, and the total climbs with volume. Fifty hours a month turns into a recurring line item.
+
+The local path costs one download and the power to run a laptop. Audio never leaves the Mac, which for meeting recordings is the part that matters.
+
+That idea sits inside a larger shift toward pipelines that run [on the device instead of a server](/blog/translate-website-using-ai-dont-forget-pdfs), and toward assistants that keep the conversation local, the same reason I moved my own work to [a private, uncensored AI tool](/blog/venice-ai-tool-private-uncensored).
+
+Nothing here is free in every sense. You pay for privacy and a zero bill with accuracy, about five percent word error rate against two to three percent for the best cloud models. You also pay with setup time that a subscription hides.
+
+## FAQ
+
+Five questions cover the parts that surprise new users. The internet question comes first, because it is the one people ask before they download anything.
+
+### ❶ Does offline speech to text work without internet?
+
+Yes, for the transcription itself, once the models have downloaded. The first launch needs a connection to fetch about 715 MB of model files. After that the app runs air-gapped, and nothing you transcribe is sent anywhere.
+
+### ❷ Why does it mangle names and numbers?
+
+The reader picks from about 229,000 English words, so unusual names and abbreviations, or figures outside that set, get swapped for the nearest common word. Treat it as a known ceiling of the method. Spell critical names yourself and check every number by hand.
+
+### ❸ Is Whisper more accurate than this?
+
+On English benchmarks the gap is real. This tool sits near 5% word error rate while leading speech models reach 2 to 3%. Whisper closes part of that on some audio, especially non-English, at the cost of a slower run and a command-line setup.
+
+### ❹ Does it work on Intel Macs or Windows?
+
+No. The app needs macOS 14 or later on Apple Silicon, because it runs on the Neural Engine. Intel Macs and Windows machines have no native version. On those systems the Whisper and faster-whisper route from the model comparison works, and its speed depends on your hardware.
+
+### ❺ How long does setup take?
+
+About twenty minutes end to end. Roughly seven minutes go to the download and the first transcription step, ten minutes to cleaning up a first file, and three minutes to dictation. The model download is the slowest single part, and it happens once.
+
+You now have a free, private speech-to-text path on your own Mac, from install through dictation. The cost is a five percent error rate on plain English and a hard ceiling on names. That is a fair trade for anyone who would rather own the pipeline than rent it.
