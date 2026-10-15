@@ -24,6 +24,28 @@ relatedSlugs:
   - checkbox-react-component
   - material-nextjs-ui-kit
 thumbImage: /blog/covers/thumbs/how-to-design-a-ui-kit-foundation.webp
+faq:
+  - question: What is the practical difference between a style guide and a UI kit?
+    answer: >-
+      A style guide defines the visual rules and the design tokens model. A UI kit converts those rules into reusable UI components with variants, states, and contracts. A component library becomes reliable only when contracts specify behavior, sizing, and edge cases.
+  - question: What is the best design tokens strategy for theming and dark mode?
+    answer: >-
+      Use layered design tokens: primitives for raw ramps, semantic tokens for roles, component tokens only under strict thresholds. Dark mode becomes semantic mapping across themes. This approach scales for enterprise UI and multi-brand products.
+  - question: Which UI component states should be mandatory in a component library?
+    answer: >-
+      For most SaaS UI kits: default, hover, pressed, focus, disabled, loading. Inputs also require error. Selection controls require open, highlighted, selected, empty results, and loading for options. A shared state matrix prevents inconsistent implementation.
+  - question: When do component tokens make sense?
+    answer: >-
+      Component tokens are justified when semantic roles cannot express a repeated requirement and the exception repeats across key screens or across multiple components. Define a threshold and document usage. This prevents token sprawl and keeps theming stable.
+  - question: How do you keep dense enterprise UI consistent without redesigning everything?
+    answer: >-
+      Define density presets as tokens and map control heights, paddings, and line heights to presets. Ensure core components can switch density via tokens. This keeps layouts consistent and reduces per-screen overrides.
+  - question: What makes a component contract "dev-ready"?
+    answer: >-
+      A dev-ready contract includes anatomy and slots, props and variants, state coverage, layout stability rules, content constraints, keyboard interactions, accessibility notes, token dependencies, and edge-case test strings. This reduces guesswork and speeds delivery.
+  - question: How can a product manager evaluate UI kit maturity quickly?
+    answer: >-
+      Look for stable design tokens naming, consistent UI component states across core controls, explicit component contracts, predictable density presets, and a basic versioning approach for the component library and tokens. These indicators correlate with fewer regressions and faster iteration.
 ---
 
 
