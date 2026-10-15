@@ -16,6 +16,43 @@ relatedSlugs:
   - claymorphism-design-guide
   - liquid-glass-design-explained-a-practical-guide
   - retro-brutalist-ui-design-2026
+faq:
+  - question: Is neumorphism still used in 2026?
+    answer: >-
+      In its niche, yes. Neumorphism never became a default like flat design, and the
+      accessibility backlash cooled the 2020 hype fast. As of 2026 it stays popular for
+      single-purpose instruments like players, smart-home remotes, and calculators, plus
+      concept shots on Dribbble. It works as a deliberate stylistic choice for calm,
+      tactile widgets rather than a general-purpose system.
+  - question: What is the difference between neumorphism and claymorphism?
+    answer: >-
+      Neumorphism keeps surfaces the same color as the page and extrudes them with one
+      light and one dark shadow, which crushes contrast. Claymorphism floats a saturated
+      pastel surface above the page with a colored drop shadow and a bright inner
+      highlight, so it stays readable. Neumorphism looks embossed and monochrome;
+      claymorphism looks puffy and colorful.
+  - question: Why is neumorphism considered bad for accessibility?
+    answer: >-
+      Because the look depends on low contrast. Text on a background-matching surface
+      often falls below the WCAG AA minimum of 4.5:1, buttons look identical to
+      non-interactive surfaces, focus states are weak, and screen readers get no cue from
+      shadows. You can adapt the style by adding an accent color and a visible border,
+      then pushing text contrast higher, but the default version fails common
+      accessibility checks.
+  - question: How do I create the neumorphism shadow in CSS?
+    answer: >-
+      Stack two shadows on one box-shadow: a light shadow on the top-left and a dark
+      shadow on the bottom-right, on a surface that matches the page color. For the
+      pressed state, swap both shadows to inset so the element looks dented in. Keep the
+      light source on the top-left for every element on the screen, and use a border
+      radius around 12-20px.
+  - question: Which fonts pair well with neumorphism?
+    answer: >-
+      Clean, neutral sans-serifs match the calm monochrome look. Inter, SF Pro, Manrope,
+      and Nunito Sans all work at medium to bold weight. Avoid decorative or sharp display
+      faces, which fight the soft, instrument-panel mood. Whatever font you pick, push its
+      contrast against the surface to at least 7:1 so the type stays readable despite the
+      soft palette.
 ---
 
 <span class="blog_big-paragraph">Neumorphism is a UI style where buttons, cards, and toggles look pressed out of the background instead of placed on top of it. The surface keeps the same color as the page, and a pair of soft shadows, one light and one dark, fakes a gentle extrusion. The result is calm and tactile, like molded plastic. It is also one of the most accessibility-hostile looks ever to go viral, which is exactly why it is worth understanding in 2026.</span>
