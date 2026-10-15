@@ -33,7 +33,7 @@ thumbImage: /blog/covers/thumbs/liquid-glass-design-explained-a-practical-guide.
 
 
 
-## **1\. What “liquid glass” means in UI**
+## 1\. What “liquid glass” means in UI
 
 **Liquid glass** is not a visual UI trick. It is a material system. If you treat it as “blur + transparency”, you will get one impressive hero screen and a pile of broken states the moment you add real text, real backgrounds, and real density.
 
@@ -45,7 +45,7 @@ A practical definition that survives product UI:
 
 That sentence matters because it forces discipline. “Perceptible” means the background is still there, not erased into fog. “Stable” means text does not depend on whatever sits behind it. “Predictable” means the same recipe produces the same result across the system.
 
-### **The material cues that define the look**
+### The material cues that define the look
 
 **Transparency with control  
 **The background should remain recognizable. If it turns into a milky wash, you are no longer communicating glass. You are communicating a soft overlay. Good glass keeps clarity while still separating layers. That separation comes from how you handle edges, not from cranking blur.
@@ -77,7 +77,7 @@ The stabilized plate can be subtle. Sometimes it is just a slightly denser patch
 **State deltas you can spot instantly  
 **Glass does not get a free pass on interaction. Hover, pressed, focus, disabled, error, loading must remain obvious. The safe approach is to make state changes affect the recipe, not just the color. Focus is a crisp ring that ignores the background. Pressed compresses shadow and shifts highlight. Disabled loses edge sparkle and contrast. Error adds structure: border, icon, helper line, spacing.
 
-### **What liquid glass is not**
+### What liquid glass is not
 
 Two common traps:
 
@@ -87,7 +87,7 @@ Two common traps:
 **☛ Trap 2: More transparency is always better.  
 **Extreme transparency can look premium and still fail under stress. In a system, transparency is tiered. You decide where you can afford it.
 
-### **Where glass works best in product UI**
+### Where glass works best in product UI
 
 Glass shines where it behaves like an overlay material:
 
@@ -109,7 +109,7 @@ This does not mean “never use glass there”. It means these zones should defa
 
 _“Works vs risk” is the fastest way to stop glass from spreading everywhere._ Overlays and lightweight surfaces benefit, dense data and long copy punish you. The full playbook expands this into tier defaults and decision checks in [**the full UI design guide**](https://setproduct.gumroad.com/l/liquid-glass).
 
-### **A mental model that keeps you honest**
+### A mental model that keeps you honest
 
 Liquid glass is a controlled stack: outer shell for material, inner plate for content.
 
@@ -122,13 +122,13 @@ Once you treat it as a stack, decisions get simpler:
 
 Next we stress-test this model. Not with opinions, but with checks that either pass or force a recipe change.
 
-## **2\. The non negotiables, readability and states**
+## 2\. The non negotiables, readability and states
 
 If liquid glass is a material system, then it has to survive the same things any UI system survives: arbitrary backgrounds, real copy, real density, and real interaction states. This is where most “glass” examples quietly fail. They look great in a single controlled mock, then collapse when you move them into production constraints.
 
 This section is intentionally strict. It is not about taste. It is about failure modes you can predict and prevent.
 
-### **Why blur is not a readability guarantee**
+### Why blur is not a readability guarantee
 
 Designers often reach for blur as if it is a universal contrast solution. It is not. Blur removes detail, but it does not remove brightness, macro shapes, or high-contrast blobs. In other words, blur can erase texture while preserving the exact signals that destroy legibility.
 
@@ -158,7 +158,7 @@ A stabilized plate is not a heavy opaque slab. It can be subtle. The important p
 
 Also note a second trap: “just increase opacity”. It works, but it erodes the style. If your solution is to keep raising opacity until readability returns, you are gradually replacing glass with a normal card. The goal is to keep glass cues while keeping content stable. That is why tiers exist later in the guide.
 
-### **The four stress tests every glass system must pass**
+### The four stress tests every glass system must pass
 
 A real system is defined by what it can endure. For liquid glass, durability can be reduced to four stress tests. If your style passes these, most other decisions become easier. If it fails any of them, you should change the recipe, not patch the screen.
 
@@ -168,7 +168,7 @@ The point is not to prove that glass is “hard”. The point is to stop arguing
 
 _States must read instantly, even when the surface is reactive._ Focus, pressed, disabled, error, loading should be structural deltas, not tiny tint shifts that vanish on real backgrounds. I document state rules and a review checklist in [**the complete playbook**](https://setproduct.gumroad.com/l/liquid-glass)**.**
 
-#### **Stress test 1: Background stress**
+#### Stress test 1, background stress
 
 Take one identical component and place it on multiple backgrounds that represent real product conditions. You are not trying to make every background look equally pretty. You are checking whether the content layer remains stable without per-screen hacks.
 
@@ -188,7 +188,7 @@ If the only way to restore readability is to raise opacity until the card become
 
 **✔ Fix direction:** start with the stack, not blur. Strengthen the stabilized plate before raising whole-surface opacity. Improve edge separation by tuning border and inner stroke. If blur creates fog, reduce blur tier rather than increasing it. If tint muddies the scene, lower saturation and let edge cues carry the material.
 
-#### **Stress test 2: State stress**
+#### Stress test 2, state stress
 
 Glass surfaces are already reactive, so many designers become timid with interaction signals. The result is predictable: hover, pressed, focus, and disabled collapse into small variations of shine.
 
@@ -214,7 +214,7 @@ Test the states that fail first:
 
 One hard rule: **states must not depend on finding a calmer background.**
 
-#### **Stress test 3: Density stress**
+#### Stress test 3, density stress
 
 Most glass inspiration avoids density because density makes readability become work. Real products cannot avoid it.
 
@@ -232,7 +232,7 @@ Pick one dense scenario and push it until it feels uncomfortable. Forms with hel
 
 **✔ Fix direction:** dense zones default to the most readable tier. Strengthen the stabilized plate under text blocks, not only under titles. Use honest, consistent separators. Reduce decorative highlights in dense zones to protect hierarchy.
 
-#### **Stress test 4: Fallback stress**
+#### Stress test 4, fallback stress
 
 Blur and transparency are not guaranteed across browsers, devices, performance budgets, and user preferences. If your system collapses without blur, it was never a system.
 
@@ -252,7 +252,7 @@ When fallback is disciplined, you gain freedom. You can push glass aesthetics in
 
 If you want to see this material rendered in code rather than described, the free [Liquid Glass for React](/freebies/liquid-glass) library implements a WebGPU glass surface with its own fallback path for browsers and devices that cannot run the full effect.
 
-## **3\. Do and Don’t rules that make liquid glass shippable**
+## 3\. Do and Don’t rules that make liquid glass shippable
 
 This section is not a style gallery. It is a set of constraints that keep the material honest under stress.
 
@@ -261,7 +261,7 @@ If you break them, your glass will still look impressive, but only in staged her
 
 This free article includes 3 sample Do and Don’t rules to show the method. [The full playbook](https://setproduct.gumroad.com/l/liquid-glass) includes the complete set, plus stress boards, tier mapping, state deltas, density checks, and a fallback system.
 
-### **⒈ Build the stack first, then tune the blur**
+### ⒈ Build the stack first, then tune the blur
 
 ![Do and Don’t rules that make liquid glass shippable](/blog/assets/liquid-glass-design-explained-a-practical-guide/img-9.webp)
 
@@ -281,7 +281,7 @@ It can actually enlarge bright hotspots and keep big shapes readable enough to c
 **✔ Fix cue:** If text becomes background-dependent, your inner plate is too weak.  
 Touch the plate first. Blur is a secondary control.
 
-### **⒉ Stabilize text and icons with a dedicated plate**
+### ⒉ Stabilize text and icons with a dedicated plate
 
 ![Stabilize text and icons with a dedicated plate in liquid glass UI](/blog/assets/liquid-glass-design-explained-a-practical-guide/img-10.webp)
 
@@ -301,7 +301,7 @@ It passes on calm gradients and fails on real content, which is how a system qui
 **✔ Fix cue:** Stabilize the content region, not the entire surface.  
 The goal is not opacity. The goal is stable contrast.
 
-### **⒊ Make thickness visible with edge discipline**
+### ⒊ Make thickness visible with edge discipline
 
 ![Make thickness visible with edge discipline in liquid glass UI design](/blog/assets/liquid-glass-design-explained-a-practical-guide/img-11.webp)
 
@@ -320,7 +320,7 @@ If they are inconsistent, the UI reads like stitched renders.
 
 **✔ Fix cue:** Lock one baseline for border thickness and highlight behavior.Scale intensity via tiers, not improvisation.
 
-### **⒋ Lock one light model across the system**
+### ⒋ Lock one light model across the system
 
 **Do:** Choose one light direction and keep it stable across components.  
 Your highlights should feel like the same material under the same light, not like random reflections per card.
@@ -335,10 +335,10 @@ They make it look like CGI, because the viewer reads inconsistency as rendering 
 
 **Fix:** If components feel like they live in different rooms, your light model is not locked.Fix the rule, not the screen.
 
-## **4\. Get the Liquid Glass UI Playbook**
+## 4\. Get the Liquid Glass UI Playbook
 
 [![The Liquid Glass UI playbook cover with the full component system](/blog/assets/liquid-glass-design-explained-a-practical-guide/img-12.webp)](https://setproduct.gumroad.com/l/liquid-glass)
 
-#### **If you want the full system, not just the first three chapters, the complete “Liquid glass UI playbook” goes deeper into tiers, stress tests, and repeatable Do and Don’t rules you can apply to real component libraries. It is a paid release, because the value is in the full checklist and the production-grade visual boards.**
+#### If you want the full system, not just the first three chapters, the complete “Liquid glass UI playbook” goes deeper into tiers, stress tests, and repeatable Do and Don’t rules you can apply to real component libraries. It is a paid release, because the value is in the full checklist and the production-grade visual boards.
 
 Purchase (direct checkout): [https://setproduct.gumroad.com/l/liquid-glass?wanted=true](https://setproduct.gumroad.com/l/liquid-glass?wanted=true)
