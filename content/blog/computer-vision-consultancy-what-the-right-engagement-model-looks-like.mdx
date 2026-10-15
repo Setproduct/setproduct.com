@@ -29,7 +29,7 @@ These questions determine whether the engagement produces a capability or a depe
 
 [Computer vision consultancy](https://www.instinctools.com/computer-vision-consulting/) engagements take meaningfully different forms. The right model depends on what you're trying to build: a one-time system, an ongoing capability, or something in between.
 
-### Model 1: Project-based delivery
+### Model 1, project-based delivery
 
 The consultancy scopes a defined project, delivers it, and exits. You get a working CV system. The consultancy gets paid. The engagement ends.
 
@@ -39,7 +39,7 @@ When it fails: when the problem is more complex than initially understood. When 
 
 What to build into project-based contracts: a post-delivery support window, typically 60-90 days, where the consultancy remains available for questions, bug fixes, and unexpected production issues. Documentation requirements that make the system maintainable by someone who didn't build it. Performance SLAs that define what happens if accuracy falls below the promised threshold post-delivery.
 
-### Model 2: Retainer-based advisory
+### Model 2, retainer-based advisory
 
 The consultancy provides ongoing guidance, architecture reviews, data strategy, evaluation framework design, and production troubleshooting, while your internal team handles most of the implementation.
 
@@ -49,7 +49,7 @@ When it fails: when the internal team doesn't have sufficient ML foundation to a
 
 What to build into retainer contracts: a clear definition of what the retainer includes, hours per month, response time commitments, and what types of questions and reviews are covered. A review cadence that prevents the relationship from becoming inactive. Clear escalation paths from advisory to implementation support if the internal team hits a wall.
 
-### Model 3: Embedded team engagement
+### Model 3, embedded team engagement
 
 The consultancy places experienced CV engineers within your team for a defined period, working alongside internal staff on the production system while explicitly building internal capability.
 
@@ -85,7 +85,7 @@ Preventing this requires designing knowledge transfer into the engagement from t
 
 What effective knowledge transfer includes:
 
-Internal engineers participating in architecture decisions, not just receiving architecture documentation. Participation in model evaluation sessions where the consultancy explains what the results mean and what would be done to improve specific failure modes. Codebase walkthroughs that explain why things are structured the way they are, not just what the code does. Documentation of architectural decision records: the reasoning behind choices, the alternatives considered, the tradeoffs accepted.
+Internal engineers participating in architecture decisions rather than receiving architecture documentation after the fact. Participation in model evaluation sessions where the consultancy explains what the results mean and what would be done to improve specific failure modes. Codebase walkthroughs that explain why things are structured the way they are rather than only what the code does. Documentation of architectural decision records: the reasoning behind choices, the alternatives considered, the tradeoffs accepted.
 
 What it doesn't include:
 
@@ -105,7 +105,7 @@ A computer vision consultancy that delivers a model without monitoring infrastru
 
 What to require before delivery:
 
-Monitoring dashboards that track model performance metrics: not just infrastructure metrics like CPU and latency, but accuracy indicators such as confidence score distributions, prediction class distributions, and flagging rates for cases sent to human review. Alert thresholds configured to fire when performance metrics change significantly. A documented retraining process that specifies what triggers retraining, how new training data is collected and labeled, and how the updated model is validated and deployed.
+Monitoring dashboards that track model performance metrics, including both infrastructure metrics like CPU and latency and accuracy indicators such as confidence score distributions, prediction class distributions, and flagging rates for cases sent to human review. Alert thresholds configured to fire when performance metrics change significantly. A documented retraining process that specifies what triggers retraining, how new training data is collected and labeled, and how the updated model is validated and deployed.
 
 The right computer vision consultancy engagement model is the one that produces a capability your organization can own and improve — not a deliverable your organization depends on the consultancy to maintain.
 
