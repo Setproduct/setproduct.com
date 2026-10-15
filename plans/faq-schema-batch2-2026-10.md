@@ -185,7 +185,7 @@ U+FFFD во всех восьми файлах = 0, em-dash не вырос ни
   it». Смысл сохранён, тело не тронуто.
 - `what-is-looksmax-ai`: в схеме добавлено «No, not objectively» вместо «Not
   objectively», чтобы ответ начинался с полного предложения.
-- `submit-a-guest-post`: em-dash в ответе п��о темы заменён на запятую
+- `submit-a-guest-post`: em-dash в ответе про темы заменён на запятую
   («declined, see the accept and reject list above»), тело не тронуто.
 - `retro-brutalist-ui-design-2026`: HTML-ссылка `<a href="...WCAG22...">WCAG</a>`
   в схеме сведена к тексту `WCAG`, маркеры ❶–❻ сняты.
