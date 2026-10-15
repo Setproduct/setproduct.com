@@ -150,6 +150,46 @@ dashboard-постах. При проверке оказалось, что 15 и
 `top-dashboard-design-examples-ideas`. Считать нужно регуляркой, которая
 исключает URL: `grep -E '^#{2,3} [^:]*:'`.
 
+## Прогресс (2026-10-15)
+
+| Батч | Статус | Файлы | Вопросы | Коммиты |
+|---|---|---|---|---|
+| план | закрыт | 1 | — | `c58d2bb` |
+| 1 | закрыт | 8 | 43 | `a817814` … `87e4794` |
+| 2 | — | 9 | 56 | |
+| 3 | — | 8 | 47 | |
+| 4 | — | 1 | 7 | |
+
+Батч 1, коммиты по файлам:
+
+| slug | коммит | faq items |
+|---|---|---|
+| guest-posting-opportunities | a817814 | 6 |
+| claymorphism-design-guide | eaa9172 | 5 |
+| what-is-looksmax-ai | 1ee97b6 | 6 |
+| guest-posts-vs-niche-edits | 7734eb2 | 4 |
+| benefits-of-guest-blogging | e4f3b20 | 5 |
+| neumorphism-design-guide | f6109ea | 5 |
+| retro-brutalist-ui-design-2026 | 85aa338 | 6 |
+| submit-a-guest-post | 87e4794 | 6 |
+
+Счётчик постов с `faq:`: 40 → 48. `npm run lint` (`tsc --noEmit`) чистый.
+U+FFFD во всех восьми файлах = 0, em-dash не вырос ни в одном,
+двоеточий в H2/H3 не добавлено, диффы — только добавления (0 удалённых строк).
+
+### Отклонения от плана (зафиксировано)
+
+- `guest-posting-opportunities`: в ответе про стоимость фраза «Free's editorial
+  gate stays separate from the price tier above it» читалась как опечатка, в схеме
+  переписана как «Free editorial access stays separate from the price tier above
+  it». Смысл сохранён, тело не тронуто.
+- `what-is-looksmax-ai`: в схеме добавлено «No, not objectively» вместо «Not
+  objectively», чтобы ответ начинался с полного предложения.
+- `submit-a-guest-post`: em-dash в ответе п��о темы заменён на запятую
+  («declined, see the accept and reject list above»), тело не тронуто.
+- `retro-brutalist-ui-design-2026`: HTML-ссылка `<a href="...WCAG22...">WCAG</a>`
+  в схеме сведена к тексту `WCAG`, маркеры ❶–❻ сняты.
+
 ## Коммиты (без push)
 
 Один коммит на файл, сообщение `content: add faq schema to <slug>`
