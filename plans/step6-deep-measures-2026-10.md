@@ -246,7 +246,7 @@ notifications, checkbox, badge, tooltip, input, radio, button.
 - Двоеточия в `title`/`metaTitle` — 47 постов (`plans/title-colon-cleanup-2026-10.md`)
 - Двоеточия в H2/H3 — tooltip, breadcrumbs, badge
 - Триколоны-наследие — tooltip 14, chip 25, dropdown 14, filter 48, slider 17, breadcrumbs 23
-- 22 blockquote в breadcrumbs (прямой запрет AGENTS.md)
+- Блокквоты: опровергнуто 2026-10-15. В breadcrumbs их 0, цифра 22 была ошибкой подсчёта. Ревизия всех 17 файлов с blockquote — только легитимные врезки, правок не требуется
 - Артефакты `_‍_` в dropdown, chip, filter
 - coverImageAlt с двоеточием и триколоном в white-label
 - 8 двоеточий и 4 триколона в старых альтах quickbooks и avatar
