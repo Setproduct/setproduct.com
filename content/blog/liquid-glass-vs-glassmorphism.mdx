@@ -21,6 +21,31 @@ inlineCta:
   description: "The Liquid Glass UI Playbook covers tiers, states, stress boards, and the production checklist for shipping it well across a real component library."
   buttonText: "Get the playbook"
   buttonLink: "https://setproduct.gumroad.com/l/liquid-glass"
+faq:
+  - question: What's the difference between liquid glass and glassmorphism?
+    answer: >-
+      Glassmorphism blurs whatever sits behind a translucent card. Liquid glass refracts it, bending light and adapting its tint in real time. Glassmorphism is a CSS effect you can ship on the web today. Liquid glass is a native Apple material introduced at WWDC 2025, and the full effect lives in the OS rendering stack.
+  - question: Is glassmorphism dead in 2026?
+    answer: >-
+      No, but its role shrank. It is no longer a viable foundation for full layouts because of contrast problems on uncontrolled backgrounds. As an accent on cards, badges, and navigation over controlled gradients, it is still very much alive.
+  - question: Can I use liquid glass on the web today?
+    answer: >-
+      Real-time refraction is native to Apple platforms. On the web, layered blur and gradients only approximate it, but a WebGPU rendering path can now produce genuine refraction in the browser. When no GPU path is available, honest glassmorphism still beats a heavy CSS fake.
+  - question: What's the accessibility impact of glass effects?
+    answer: >-
+      The main risk is text contrast. Because translucent surfaces inherit whatever is behind them, a panel can pass WCAG on one screen and fail on another. Always provide a solid fallback and respect the reduced-transparency setting.
+  - question: Why did neumorphism fail when glassmorphism survived?
+    answer: >-
+      Neumorphism removed contrast on purpose by making controls the same color as their background. Glassmorphism at least keeps a visible boundary and a blurred backdrop, so it degrades less severely. One broke a core usability rule, the other only bends it.
+  - question: Will liquid glass replace flat design?
+    answer: >-
+      Not entirely. Flat design is the efficient default for dense, content-heavy screens, and that will not change. Liquid glass adds an expressive material layer on top, especially for chrome and hero moments on Apple platforms. Expect a hybrid, flat foundations with glass surfaces where they earn attention.
+  - question: What's the easiest glass style to implement?
+    answer: >-
+      Glassmorphism, by a wide margin. A backdrop-filter blur with a translucent background and a thin border gets you most of the way in a few CSS lines. The hard part is not the code, it is keeping contrast safe.
+  - question: Which glass aesthetic should a SaaS dashboard use?
+    answer: >-
+      Mostly none on the content itself. Dense data needs solid, high-contrast surfaces. Reserve frosted UI for the navigation chrome and a touch of glassmorphism for elevated panels like modals or notification toasts.
 ---
 
 <span class="blog_big-paragraph">The short answer: glassmorphism is a frosted card with a blur behind it, neumorphism is a soft embossed shape with no real transparency, and liquid glass is Apple's 2025 material that bends and refracts light in real time. They look related, but they solve different problems and fail in different ways.</span>
