@@ -107,13 +107,22 @@ sentence case, перелинковка замкнута, плюс создан�
 `submit-a-guest-post` 433 → 678 кликов, `guest-posting-opportunities`
 258 → 634.
 
-Остались только остатки (раздел 15.3 стратегии):
+Остатки (раздел 15.3 стратегии) — сверено с кодом 2026-10-15:
+
 - Title Case в H2/H3 у `guest-posts-vs-niche-edits` и
-  `guest-article-for-web-development` — нарушение sentence case.
-- `guest-article-for-web-development` всё ещё 3 min read, план требовал
-  нишевого углубления.
-- Три соседних SEO-поста устарели (`link-building-for-startups` с «2025»,
-  `white-label-seo-reseller-platforms`, `seo-strategies-...`).
+  `guest-article-for-web-development` — **ЗАКРЫТО**. Оба файла в sentence
+  case, проверено grep'ом по `^#{2,4} `.
+- `guest-article-for-web-development` всё ещё 3 min read при 1 648 словах
+  в теле. План требовал нишевого углубления — **ОТКРЫТО**, но это контент,
+  а не косметика.
+- Три соседних SEO-поста устарели. `link-building-for-startups` с «2025» —
+  **ОТКРЫТО** (единственное упоминание «2025» это `date: '2025-01-08'` в
+  frontmatter). Два других (`white-label-seo-reseller-platforms`,
+  `seo-strategies-...`) проверялись в других заходах, здесь не дублируем.
+
+Отдельно: трихолоны в этих двух постах — `guest-posts-vs-niche-edits` 30,
+`guest-article-for-web-development` 18 при лимите 2. Нарушение есть, но
+стилистическое. Кандидат на отдельный батч.
 
 ## Шаг 5. Rescue-планы — ЗАКРЫТ
 
@@ -130,10 +139,22 @@ sentence case, перелинковка замкнута, плюс создан�
 
 ## Шаг 6. Неконвертированные пулы показов (точечный CTR-fix)
 
-- `how-to-cancel-adobe-subscription-without-fees` — 51 863 показа, CTR 0.16%
-- `white-label-seo-reseller-platforms` — 44 964 показа, CTR 0.01%, позиция 29
-- `dashboard-ui-design` (пиллар) — 42 411 показов, CTR 0.20%, позиция 9.03
-- `why-landing-page-optimization-is-essential` — 14 272 показа, 0 кликов, но позиция 31
+Цифры обновлены 2026-10-15 по [`plans/Страницы.csv`](Страницы.csv)
+(окно 3 мес, 2026-07-07 → 2026-10-06). Прежние числа в этом блоке были
+из более старого снимка и частично устарели.
+
+| Страница | Показы | Клики | CTR | Позиция | Δ к прежнему |
+|---|---|---|---|---|---|
+| how-to-cancel-adobe-subscription-without-fees | 51 863 | 84 | 0.16% | 9.36 | без изменений |
+| dashboard-ui-design (пиллар) | 21 499 | 66 | 0.31% | 8.89 | было 42 411 / 0.20% |
+| why-landing-page-optimization-is-essential | 5 942 | 0 | 0% | 24.65 | было 14 272 / позиция 31 |
+| white-label-seo-reseller-platforms | 3 967 | 1 | 0.03% | 29.65 | было 44 964 / CTR 0.01% |
+
+Блокер: цифра «44 964 показа» для `white-label-seo-reseller-platforms`
+**не подтверждается** текущей выгрузкой (реально 3 967). Прежде чем строить
+план на этом посты, нужно понять источник расхождения. Возможные причины:
+прежняя цифра складывала якорные URL этого поста, либо бралась из другого
+окна. Пока не выяснено — приоритет этого поста сомнителен.
 
 Снят с приоритета: `how-to-study-saas-dashboard-in-the-ai-era`. Проверка
 запросов показала, что показы идут по чужому бренду `saasframe`, а не по
@@ -178,10 +199,18 @@ FreebieDetailPage) — конфликт со всем остальным сай�
 использует www. Затронуто ~84 страницы.
 
 Приоритеты:
-1. Починить canonical без www (код, `fix:`).
-2. Запросить у GSC URL-списки по noindex / canonical / 4xx.
-3. Решить судьбу `push-buttons-proto`.
-4. Дописать `NEXT_PUBLIC_SITE_URL` в `.env.example`.
+1. Починить canonical без www (код, `fix:`) — **ЗАКРЫТО**. Проверено
+   2026-10-15: все четыре компонента берут canonical из
+   [`CANONICAL_SITE_URL`](../lib/blog/site-config.ts:3), а он равен
+   `https://www.setproduct.com` (с www).
+2. Запросить у GSC URL-списки по noindex / canonical / 4xx — **ОТКРЫТО**,
+   нужен владелец.
+3. Решить судьбу `push-buttons-proto` — **ОТКРЫТО**. Страница помечена
+   `noindex` в теле и не в sitemap; ждёт решения владельца (Шаг 8 п.3).
+4. Дописать `NEXT_PUBLIC_SITE_URL` в `.env.example` — **ОТКРЫТО**. В
+   [`site-config.ts`](../lib/blog/site-config.ts:12) переменная читается, но
+   в [`.env.example`](../.env.example:1) её нет (там только `RESEND_API_KEY`
+   и `NEXT_PUBLIC_GA_ID`). Это мелкая гигиена, можно закрыть сразу.
 
 ## Что НЕ делать сейчас
 
