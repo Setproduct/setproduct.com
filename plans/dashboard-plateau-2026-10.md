@@ -1,0 +1,197 @@
+# Dashboard-пласт: диагностика и план (октябрь 2026)
+
+Источник задачи: решение владельца от 2026-10-15 — завершить FAQPage-заход
+и перейти к dashboard-пласту. План построен на фактах из
+[`plans/Страницы.csv`](Страницы.csv) (окно 3 мес, 2026-07-07 → 2026-10-06),
+[`plans/Запросы.csv`](Запросы.csv), [`plans/dashboard-pillar-analysis.md`](dashboard-pillar-analysis.md)
+и [`.ai/content-strategy.md`](../.ai/content-strategy.md:539) (§12, «Аномальные показы»).
+
+## 0. Итог одной строкой
+
+Восемь dashboard-страниц держат **122 143 показа (8.9% всего блога) при 205
+кликах (CTR 0.168%)**. Это второй по объёму пласт после якорных URL и первый
+по объёму среди кластеров с реальным интентом. Но он **не однороден**: часть
+страниц — настоящая CTR-проблема, часть — шум чужого бренда, часть — класс D
+(позиция за пределами сниппета), где сниппет не поможет. Прежде чем что-то
+править, нужно разделить их по трём разным диагнозам.
+
+## 1. Фактические цифры (3 мес, [`plans/Страницы.csv`](Страницы.csv))
+
+| Страница | Показы | Клики | CTR | Позиция |
+|---|---|---|---|---|
+| best-analytics-dashboard-examples | 30 544 | 9 | 0.03% | 15.19 |
+| dashboard-ui-design (пиллар) | 21 499 | 66 | 0.31% | 8.89 |
+| top-dashboard-design-examples-ideas | 17 984 | 45 | 0.25% | 17.27 |
+| how-to-study-saas-dashboard-in-the-ai-era | 16 209 | 7 | 0.04% | 7.37 |
+| e-commerce-dashboard-examples | 10 628 | 11 | 0.10% | 31.40 |
+| saas-dashboard-examples | 9 788 | 29 | 0.30% | 26.93 |
+| types-of-dashboards-main-categories | 8 786 | 12 | 0.14% | 30.76 |
+| effective-dashboard-design-principles | 4 232 | 10 | 0.24% | 12.78 |
+| **Итого 8 страниц** | **122 143** | **205** | **0.168%** | — |
+
+Для сравнения: лучший CTR в блоге — 3.33% (`submit-a-guest-post`), цель для
+UI design по [`.ai/seo-benchmarks.md`](../.ai/seo-benchmarks.md:30) — 1.5%.
+Пласт даёт 0.168%, то есть **в 9 раз ниже цели категории**.
+
+## 2. Три разных диагноза внутри одного пласта
+
+Это главный вывод: единой меры «почини сниппет у dashboard-постов» не
+существует. Разделение по §12.5 content-strategy («смотреть вкладку запросы»)
+и по позиции.
+
+### Диагноз A. Шум чужого бренда (не резерв, не трогать)
+
+`how-to-study-saas-dashboard-in-the-ai-era` — 16 209 показов, 7 кликов,
+CTR 0.04%, позиция 7.37. Выглядит как крупнейший резерв, но это **не так**.
+
+В §12.2–12.3 content-strategy зафиксировано: вкладка «Запросы» страницы почти
+целиком состоит из фраз с чужим брендом **saasframe** (`saasframe dashboard
+best practices`, `saasframe education dashboard patterns`, `saasframe data
+heavy dashboard patterns` и десятки вариаций), все с нулём кликов. Страница
+случайно ранжируется по чужому бренду, поэтому показы есть, а кликов нет.
+Правка сниппета бессмысленна: пользователь ищет другую компанию.
+
+Вывод: пост **снят** с приоритета CTR-fix (это уже решение §12.3). Действий
+не требует. Если владелец захочет вернуться, сначала нужен ответ на вопрос
+«кто такой Saasframe» (вариант B из §12.4).
+
+### Диагноз B. Позиция за пределами сниппета (класс D, сниппет не поможет)
+
+Три страницы на позициях 26–31:
+
+| Страница | Показы | CTR | Позиция |
+|---|---|---|---|
+| e-commerce-dashboard-examples | 10 628 | 0.10% | 31.40 |
+| saas-dashboard-examples | 9 788 | 0.30% | 26.93 |
+| types-of-dashboards-main-categories | 8 786 | 0.14% | 30.76 |
+
+Правило §13.4: при плохой позиции правка заголовка почти не помогает.
+Здесь нужен либо контент/авторитет (поднять позицию), либо принять как есть.
+Это отдельный разговор и больший объём, чем сниппет-правка.
+
+### Диагноз C. Настоящая CTR-проблема (сниппет + структура)
+
+Страницы в зоне сниппета с низким CTR — вот где правка оправдана:
+
+| Страница | Показы | CTR | Позиция | Что не так в теле |
+|---|---|---|---|---|
+| best-analytics-dashboard-examples | 30 544 | 0.03% | 15.19 | 20 Title Case заголовков, faq=0, нет TL;DR, нет таблицы, 2 216 слов |
+| top-dashboard-design-examples-ideas | 17 984 | 0.25% | 17.27 | 6 Title Case заголовков, 1 реальное двоеточие в H2, faq=0 |
+| effective-dashboard-design-principles | 4 232 | 0.24% | 12.78 | заголовки чистые, TL;DR + checklist есть, faq=5 — тело в порядке |
+| dashboard-ui-design (пиллар) | 21 499 | 0.31% | 8.89 | заголовки чистые, faq=7, таблица есть — тело в порядке, вопрос в сниппете |
+
+Важная оговорка для `best-analytics-dashboard-examples`: по общему
+[`plans/Запросы.csv`](Запросы.csv) запросы `analytics dashboard` (1 685
+показов, позиция 44.67) и `analytics dashboards` (549, 37.59) стоят далеко
+за пределами сниппета, а средняя позиция страницы 15.19. Это признак
+смешанного состава запросов. **Прежде чем править сниппет, нужна page-level
+выгрузка запросов** — иначе есть риск повторить ошибку §12.3 и починить
+не то.
+
+## 3. Что подтверждено фактами (не гипотеза)
+
+- Механические нарушения правил проекта найдены и перечислены ниже
+  (§4). Они не зависят от состава запросов и правятся в любом случае.
+- `how-to-study-saas-dashboard` — шум, зафиксировано в §12.3. Повторно
+  в приоритеты не ставить.
+- Три страницы класса D (позиции 26–31) сниппетом не лечатся.
+- У `dashboard-ui-design` и `effective-dashboard-design-principles` тело
+  уже соответствует стандарту (faq, таблица/TL;DR/checklist). Их CTR —
+  вопрос сниппета и состава запросов, а не структуры.
+
+### Ложные срабатывания grep, которые НЕ являются дефектами
+
+Проверка двоеточий в H2/H3 дала 5 попаданий в `best-analytics`, 5 в
+`e-commerce`, 5 в `saas-dashboard-examples`. Все они — **не заголовки-тайтлы**,
+а markdown-ссылки вида `### [Rome UI Kit](https://www.setproduct.com/...)`,
+где двоеточие сидит внутри `https://`. Реальное двоеточие в заголовке —
+**одно во всём пласте**: `## Key Features Across Types:` в
+`top-dashboard-design-examples-ideas` (строка 137).
+
+## 4. Механические правки (низкий риск, делаем первыми)
+
+Это нарушения sentence case и запрета двоеточий из [`AGENTS.md`](../AGENTS.md:93).
+Не зависят от GSC-данных.
+
+| Файл | Проблема | Сколько |
+|---|---|---|
+| best-analytics-dashboard-examples | Title Case в H2/H3 | 20 заголовков |
+| types-of-dashboards-main-categories | Title Case в H2/H3 | 26 заголовков |
+| e-commerce-dashboard-examples | Title Case в H2/H3 | 15 заголовков |
+| top-dashboard-design-examples-ideas | Title Case в H2/H3 + двоеточие в H2 | 6 + 1 |
+| saas-dashboard-examples | Title Case в H2/H3 | 6 заголовков |
+| best-analytics-dashboard-examples | `title`: `Best Analytics Dashboard Examples & Best Practices` — Title Case + амперсанд, 50 символов | title |
+| top-dashboard-design-examples-ideas | `title`: `Top Dashboard Design Examples & Ideas. Dashboard Inspiration` — Title Case, дубль слова dashboard | title |
+| e-commerce-dashboard-examples | `title`: `Best E-Commerce Dashboard Templates with Examples` — Title Case | title |
+| types-of-dashboards-main-categories | `title`: `Types of Dashboards. Main Categories Explained` — Title Case | title |
+| marketing-dashboard-ui-design-guide | `metaTitle` Title Case (2 слова) | metaTitle |
+
+Порядок выбора: сначала sentence case в заголовках тела (чисто механически),
+потом title/metaTitle через процедуру скилла `seo` (3 варианта + выбор
+владельца, длина 60–65, без двоеточия).
+
+## 5. Что нужно от владельца (блокирует шаг 2)
+
+Page-level выгрузка запросов из GSC (вкладка «Запросы» с фильтром по URL)
+для четырёх страниц диагноза C:
+
+1. `best-analytics-dashboard-examples` — приоритет №1, крупнейший показной пул.
+2. `top-dashboard-design-examples-ideas`.
+3. `dashboard-ui-design` (пиллар).
+4. `effective-dashboard-design-principles`.
+
+Без неё сниппет-правки рискуют попасть в шум, как это было с
+`how-to-study-saas-dashboard-in-the-ai-era`. Формат — тот же CSV, что и
+предыдущие выгрузки (уже лежат в `plans/*.zip`).
+
+Дополнительно, необязательно: ответ на вопрос «кто такой Saasframe»
+(конкурент по dashboard-паттернам или нет). Это решает судьбу
+`how-to-study-saas-dashboard`.
+
+## 6. Предлагаемый порядок работы
+
+| Шаг | Действие | Блокировка | Режим |
+|---|---|---|---|
+| 1 | Механические правки: sentence case в H2/H3 пяти файлов + снятие одного двоеточия | нет | code, по одному коммиту на файл |
+| 2 | Title/metaTitle через скилл `seo` (по 3 варианта) для best-analytics, top-dashboard, e-commerce, types-of-dashboards | нет | code, скилл `seo` |
+| 3 | Разбор page-level запросов четырёх страниц диагноза C | нужно от владельца | architect |
+| 4 | По результатам шага 3: body-рефактор (answer-first лид, TL;DR, FAQ) там, где это оправдано | после шага 3 | code |
+| 5 | Отдельно: решение по трём страницам класса D (это не сниппет) | нужно решение владельца | architect |
+
+Шаги 1 и 2 не пересекаются с шагом 3 и не блокированы — их можно делать
+сразу.
+
+## 7. Что НЕ делать
+
+- Не править сниппеты четырёх страниц диагноза C до получения page-level
+  запросов: риск повторить ошибку §12.3.
+- Не трогать `how-to-study-saas-dashboard-in-the-ai-era`: шум, подтверждено.
+- Не пытаться «поднять позицию» у страниц класса D через заголовок: §13.4.
+- Не смешивать с SEO-пластом (`white label seo`) — это другая тема,
+  §11.5 content-strategy.
+- Не объединять несколько файлов в один коммит.
+- Не менять `slug` и `coverImage`.
+
+## 8. Self-check перед каждым коммитом
+
+```
+F=content/blog/<slug>.mdx
+echo "HEADINGS:"; grep -nE '^#{2,3} ' $F | wc -l
+echo "TITLE CASE H:"; node -e "..."   # см. скрипт в разделе 4
+echo "HEADING COLONS:"; grep -cE '^#{2,3} [^:]*:' $F
+echo "EM-DASH:"; grep -o '—' $F | wc -l
+echo "FFFD:"; grep -c $'\xef\xbf\xbd' $F
+npm run lint 2>&1 | tail -1
+```
+
+Пороги: двоеточий в H2/H3 — 0 (кроме URL внутри ссылок), em-dash ≤ 2,
+FFFD = 0, `npm run lint` чист. YAML дополнительно через `gray-matter`.
+
+## 9. Источники этого файла
+
+- [`plans/Страницы.csv`](Страницы.csv) — показы и CTR, окно 3 мес.
+- [`plans/Запросы.csv`](Запросы.csv) — 66 dashboard-запросов, 27 120 показов, 65 кликов.
+- [`plans/dashboard-pillar-analysis.md`](dashboard-pillar-analysis.md) — разбор пиллара (Шаг 3).
+- [`.ai/content-strategy.md`](../.ai/content-strategy.md:539) — §12 (saasframe), §13 (каталог).
+- [`.ai/seo-benchmarks.md`](../.ai/seo-benchmarks.md:22) — бенчмарк UI design.
+- [`AGENTS.md`](../AGENTS.md:93) — sentence case и запрет двоеточий.
