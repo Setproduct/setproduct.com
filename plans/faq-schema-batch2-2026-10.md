@@ -190,6 +190,47 @@ U+FFFD во всех восьми файлах = 0, em-dash не вырос ни
 - `retro-brutalist-ui-design-2026`: HTML-ссылка `<a href="...WCAG22...">WCAG</a>`
   в схеме сведена к тексту `WCAG`, маркеры ❶–❻ сняты.
 
+### Батч 2 — прогресс (2026-10-15)
+
+| slug | коммит | faq items |
+|---|---|---|
+| complete-guide-to-blueprint-grid-design | e7d7dca | 5 |
+| jupiter-solana-swap-lend-and-referral-guide | 996c541 | 7 |
+| pay-for-claude-pro-with-usdt | 0363a06 | 6 |
+| chinese-ai-models-vs-american-2026 | 023b97f | 6 |
+| solcard-review-usdt-crypto-card-that-actually-helps-pay-for-online-subscriptions | 9700931 | 10 |
+| guest-article-for-web-development | a52c9a5 | 5 |
+| white-label-seo-reseller-platforms | 1d9783c | 5 |
+| how-much-does-guest-post-cost-2026 | 2f0472b | 8 |
+| why-landing-page-optimization-is-essential | ОТЛОЖЕН | — |
+
+Применено 8 файлов из 9, 52 вопроса. Диффы — только добавления, U+FFFD = 0,
+em-dash не вырос ни в одном файле.
+
+#### Блокер: why-landing-page-optimization-is-essential
+
+Видимый FAQ-блок этого поста содержит неподтверждённую статистику, при том что
+Wave 4 батч B (`f925f98`, коммит `f925f98`) уже убрал из тела поста
+ровно такие же цифры:
+
+- «Median across industries is 2.35%.»
+- «Top quartile is 5–11% depending on offer.»
+
+Копирование блока в `faq:` 1:1 по правилу content parity перенесло бы эти
+цифры в JSON-LD и разошлось бы с чисткой Wave 4. Это противоречит антипаттерну
+«Fake statistics without source attribution» из `.ai/seo-benchmarks.md` (строка 205).
+
+Файл поставлен на паузу до решения владельца. Варианты:
+
+1. Сначала снять цифры в видимом FAQ-блоке (правка тела, отдельный коммит),
+   потом скопировать очищенный блок в `faq:`.
+2. Скопировать в `faq:` версию без цифр, тело оставить как есть. Тогда
+   видимый блок и схема разойдутся, что нарушает content parity.
+3. Пропустить файл и вернуться к нему в отдельном заходе.
+
+Второй вопрос в блоке (сроки «7–14 days» и «4–6 weeks») — это ориентир по срокам,
+а не утверждение о рынке, его можно копировать без правок.
+
 ## Коммиты (без push)
 
 Один коммит на файл, сообщение `content: add faq schema to <slug>`
