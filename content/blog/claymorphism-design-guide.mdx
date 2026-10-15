@@ -16,6 +16,38 @@ relatedSlugs:
   - liquid-glass-design-explained-a-practical-guide
   - liquid-glass-vs-glassmorphism
   - retro-brutalist-ui-design-2026
+faq:
+  - question: Is claymorphism still relevant in 2026?
+    answer: >-
+      Yes, in its niche. Claymorphism never became a default like flat design, and it
+      cooled off after the 2021-2022 hype. As of 2026 it stays popular for onboarding,
+      kids' apps, friendly fintech, and 3D landing pages. It is a deliberate stylistic
+      choice for warm, playful products rather than a general-purpose system.
+  - question: What is the difference between claymorphism and neumorphism?
+    answer: >-
+      Neumorphism extrudes shapes from the same background color using one light and one
+      dark shadow, which often fails contrast checks. Claymorphism floats a saturated
+      colored surface above the page with a soft outer drop shadow and a bright inner
+      highlight. Clay keeps real contrast and looks puffy, while neumorphism looks
+      embossed and risks accessibility problems.
+  - question: How do I create the claymorphism shadow in CSS?
+    answer: >-
+      Stack three shadows on one box-shadow: a large soft outer drop shadow tinted with
+      the surface hue, an inset shadow on the bottom-right for shade, and an inset white
+      highlight on the top-left. Match the shadow color to the surface color instead of
+      using gray, and keep a border radius of at least 24px on cards.
+  - question: Is claymorphism accessible?
+    answer: >-
+      It can be, if you control contrast. The danger is letting pastel surfaces and soft
+      shadows pull text contrast below the WCAG AA threshold of 4.5:1. Keep text dark and
+      crisp on light clay surfaces, test every color pair, and never rely on shadow alone
+      to communicate state. The soft look should apply to shapes, not to legibility.
+  - question: Which fonts pair well with claymorphism?
+    answer: >-
+      Rounded sans-serifs match the soft geometry best. Quicksand, Nunito, Outfit, and
+      Fredoka all work well at medium to bold weight. Avoid sharp grotesks and serifs,
+      which visually fight the puffy, rounded shapes and break the toy-like consistency
+      the style depends on.
 ---
 
 <span class="blog_big-paragraph">Claymorphism is a UI style that makes elements look like soft, puffy pieces of clay. You get oversized rounded corners, a double shadow that lifts the surface off the page, and pastel colors that feel friendly instead of corporate. It is the visual opposite of sharp, flat, serious dashboards, and that is exactly why playful products keep reaching for it.</span>
