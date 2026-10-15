@@ -298,10 +298,12 @@ scalar (`>-`); первый `apply_diff` не совпал, применён п�
 `суффикс - Setproduct = 0`, `двоеточие в title/metaTitle = 0`,
 невидимые символы (`U+200B`/ZWJ/`U+2063`) = 0, `U+FFFD` = 0.
 
-**Что осталось как флаг (не дефект длины):** 5 постов без `metaTitle`
-(`computer-vision-consultancy-…`, `dashboard-ui-design`,
-`pay-for-claude-pro-with-usdt`, `the-ux-decisions-…`, `top-real-estate-…`) —
-у них SERP-заголовок берётся из `title`, и все `title` ≤ 65. Отдельно:
+**Флаг закрыт (2026-10-15).** 5 постов без `metaTitle` (`computer-vision-consultancy-…`,
+`dashboard-ui-design`, `pay-for-claude-pro-with-usdt`,
+`the-ux-decisions-…`, `top-real-estate-…`) получили `metaTitle` длиной
+54–65 символов, без двоеточия, в sentence case (коммиты `938c4a7`, `ca716e2`,
+`dffd964`, `2437507`, `431cf84`). У `the-ux-decisions-…` также сокращён
+`description` с 190 до 160 символов. Отдельно:
 `coverImageAlt` у `saas-dashboard-examples` дублировал старый Title Case
 `title` (`Best SaaS Dashboard Examples. Dashboard Design Templates for SaaS
 Companies`) — поле не входит в SERP и в батч не бралось.
