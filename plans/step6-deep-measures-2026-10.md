@@ -371,10 +371,18 @@ URL `guest-posts-vs-niche-edits` на позициях 3.1-4.2, а на сосе
 `chinese-ai-models-vs-american-2026`, `how-to-cancel-adobe`,
 `how-much-does-guest-post-cost-2026`.
 
-Остаток Wave 4 (батч B, требует решения владельца): `why-landing-page-optimization-is-essential`
-(смягчить формулировку форм до отраслевого ориентира), `user-profile-templates`
-(subtitle «3x faster»), `top-real-estate-app-development-companies-compared`
-(цифры подрядчиков — сначала проверить источник).
+**Wave 4 батч B выполнен 2026-10-15.**
+
+- `why-landing-page-optimization-is-essential` (`f925f98`): убраны непроверяемые
+  «70% of bounced visitors» и «5–10% / 25–40%» по полям формы, тезис сохранён.
+- `user-profile-templates` (`84e4ded`): из subtitle убран множитель «3x faster».
+- `top-real-estate-app-development-companies-compared` (`f8a57ca`, `877cf63`):
+  цифры вендоров оставлены, так как пост ссылается на источник-список в начале;
+  исправлен артикль «an 94%», дописано оборванное предложение, заголовки H2 и H4
+  приведены к sentence case без двоеточий (было 2 H2 и 5 H4).
+
+Em-dash в этих трёх постах 0 / 1 / 1, двоеточий в заголовках 0, FFFD 0,
+`npm run lint` чистый. Батч B закрывает Wave 4.
 
 ---
 
