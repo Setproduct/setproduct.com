@@ -146,6 +146,17 @@ const SPECTRUM_UI_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-spectrum-ui", text: "Why it belongs in your stack" },
 ];
 
+const GR8R_TASK_MANAGEMENT_HEADINGS: ArticleHeading[] = [
+  { id: "what-gr8r-does", text: "What Gr8r Studio actually does" },
+  { id: "why-project-apps-feel-heavy", text: "Why project apps feel heavy before they feel useful" },
+  { id: "how-gr8r-works", text: "How it works under the hood" },
+  { id: "what-ships-gr8r", text: "What ships in the workspace" },
+  { id: "no-framework-no-dependency", text: "No framework, no runtime dependency" },
+  { id: "opening-the-live-demo", text: "Opening the live demo" },
+  { id: "faq-gr8r", text: "Frequently asked questions" },
+  { id: "why-it-belongs-gr8r", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -159,6 +170,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   mailcheap: MAILCHEAP_HEADINGS,
   compositor: COMPOSITOR_HEADINGS,
   "spectrum-ui": SPECTRUM_UI_HEADINGS,
+  "gr8r-task-management": GR8R_TASK_MANAGEMENT_HEADINGS,
 };
 
 /**
@@ -2913,6 +2925,308 @@ export default function FreebieArticle({ slug }: Props) {
                   static. When you want the screens around that motion to hold
                   up, our{" "}
                   <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same ship-it-yourself workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "gr8r-task-management" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You open a project tool and the first thing it asks for is a
+                  decision. Pick a plan, then pick a template. Gr8r Studio skips
+                  that part. It is a workspace where the dashboard, the inbox
+                  and the task list already exist, built from plain JavaScript
+                  and CSS, and it runs with no UI framework underneath.
+                </p>
+
+                <h2 id="what-gr8r-does">What Gr8r Studio actually does</h2>
+                <p>
+                  Gr8r Studio is a project management workspace. It ships with a
+                  home dashboard, an inbox, a my tasks screen, a projects area,
+                  member and team management, an activity feed and a settings
+                  page. Each project opens in one of six views: board, list,
+                  table, calendar, timeline or files. You pick the view that
+                  matches the question you are asking, and the same task data
+                  appears in all of them.
+                </p>
+                <p>
+                  The live demo runs the whole thing on seeded data. Nothing is
+                  stubbed behind a paywall, so you can open a board, drag a
+                  card, read the task drawer and switch the same project to a
+                  timeline before you install anything. If your work leans on
+                  tables, the layout notes in our{" "}
+                  <Link href="/blog/data-table-ui-design">
+                    data table UI design guide
+                  </Link>{" "}
+                  cover where dense rows usually break.
+                </p>
+
+                <h2 id="why-project-apps-feel-heavy">
+                  Why project apps feel heavy before they feel useful
+                </h2>
+                <p>
+                  Most project tools load a framework, a component library and a
+                  state layer before the first task renders. That weight buys
+                  consistency across a large team, and it costs startup time on
+                  every open. For a solo builder or a small crew, the trade
+                  rarely pays off.
+                </p>
+                <p>
+                  Gr8r Studio takes the other route. There is no framework to
+                  boot and no runtime dependency to download, so the browser
+                  receives HTML and CSS and draws them. The interface behaves
+                  the same on a fast laptop and on a mid-range phone, because
+                  there is less machinery waiting to run.
+                </p>
+                <p>
+                  The trade is real, and worth naming. You give up the ready
+                  component library that a framework would hand you, and you
+                  write the markup yourself. In exchange you can read every
+                  file, change any view without fighting a build system, and
+                  keep the whole page small.
+                </p>
+
+                <h2 id="how-gr8r-works">How it works under the hood</h2>
+                <p>
+                  The code is organized in layers, and dependencies only point
+                  downward. The rule is stated in the README and it shapes
+                  everything else:
+                </p>
+                <ul>
+                  <li>
+                    <code>core/</code> and <code>data/</code> depend on nothing
+                    else in the app
+                  </li>
+                  <li>
+                    <code>ui/</code>, <code>shell/</code>,{" "}
+                    <code>components/</code>, <code>pages/</code>,{" "}
+                    <code>views/</code>, <code>overlays/</code> and{" "}
+                    <code>features/</code> render HTML from state
+                  </li>
+                  <li>
+                    <code>actions/</code> change state and re-render, and each
+                    action module registers itself on a shared action table when
+                    it loads
+                  </li>
+                </ul>
+                <p>
+                  Rendering works one way. Each page or view is a function that
+                  returns an HTML string built from the store, which the code
+                  calls <code>S</code>. A single <code>render()</code> call
+                  rebuilds the shell and restores focus and scroll positions, so
+                  swapping a view does not throw the reader back to the top of
+                  the page. That detail is the difference between a tool people
+                  keep open and one they close after a minute.
+                </p>
+                <p>
+                  Interactions work through attributes rather than listeners
+                  scattered across every component. An element declares{" "}
+                  <code>data-a="actionName"</code>, and one events module
+                  delegates the click to the matching action. Inputs carry{" "}
+                  <code>data-in</code>, and blur handlers carry{" "}
+                  <code>data-blur</code>. Layout follows the same discipline.
+                  Every page edge uses <code>var(--gutter)</code>, so the
+                  breadcrumb, the header and the list start on one line instead
+                  of drifting a few pixels apart.
+                </p>
+
+                <h2 id="what-ships-gr8r">What ships in the workspace</h2>
+                <p>
+                  The screens cover what a small team opens on a normal day:
+                </p>
+                <ul>
+                  <li>❶ A home dashboard with the state of current work</li>
+                  <li>❷ An inbox for what arrived since the last visit</li>
+                  <li>❸ A my tasks screen, filtered to the person looking</li>
+                  <li>❹ A projects area, each project carrying its own views</li>
+                  <li>❺ Members, teams and an activity feed</li>
+                  <li>❻ A settings page for the workspace itself</li>
+                </ul>
+                <p>
+                  Every project renders through six views, all reading the same
+                  task data:
+                </p>
+                <ul>
+                  <li>
+                    ❶ <code>board</code> for moving work across columns
+                  </li>
+                  <li>
+                    ❷ <code>list</code> for a compact scan of the whole
+                    project
+                  </li>
+                  <li>
+                    ❸ <code>table</code> when you need columns you can compare
+                    side by side
+                  </li>
+                  <li>
+                    ❹ <code>calendar</code> for dates, and{" "}
+                    <code>timeline</code> for sequence and duration
+                  </li>
+                  <li>
+                    ❺ <code>files</code> for what people attached along the way
+                  </li>
+                </ul>
+                <p>
+                  Overlays come in the package too. There is a task drawer,
+                  modals, popovers, a context menu and a command palette. The
+                  palette is the piece worth testing first, and if you want to
+                  compare it with other implementations, the breakdown in our{" "}
+                  <Link href="/blog/command-palette-ui-design-guide">
+                    command palette UI design guide
+                  </Link>{" "}
+                  covers the keyboard patterns they share.
+                </p>
+                <p>
+                  The sample workspace lives in <code>src/data/seed.js</code>.
+                  Replace that file and every screen reads your own data,
+                  because the render layer draws from the same store. For a
+                  dashboard built on the same principle, our{" "}
+                  <Link href="/blog/dashboard-ui-design">
+                    dashboard UI design guide
+                  </Link>{" "}
+                  covers the layout choices that keep a dense screen readable.
+                </p>
+
+                <h2 id="no-framework-no-dependency">
+                  No framework, no runtime dependency
+                </h2>
+                <p>
+                  The install path is the one every Vite project uses. Clone the
+                  repository, run <code>npm install</code>, then run{" "}
+                  <code>npm run dev</code>. The dev server starts on{" "}
+                  <code>localhost:5173</code> with hot reload, so a change to a
+                  stylesheet or a page module appears without a manual refresh.
+                </p>
+                <p>
+                  Node 18 or newer is the floor, and the <code>.nvmrc</code>{" "}
+                  file pins version 22 for anyone using nvm. For a production
+                  build, <code>npm run build</code> writes the output to{" "}
+                  <code>dist/</code>, and <code>npm run preview</code> serves
+                  that build locally so you can check it before it goes
+                  anywhere.
+                </p>
+                <p>
+                  Quality checks live in the same file.{" "}
+                  <code>npm run lint</code> runs ESLint, and{" "}
+                  <code>npm run format</code> runs Prettier. Continuous
+                  integration repeats both on every push and pull request,
+                  alongside a production build, so an unformatted file fails
+                  before it reaches a deploy. If you are assembling a stack
+                  where every piece earns its place, the breakdown in our{" "}
+                  <Link href="/blog/solo-founder-tech-stack-2026">
+                    solo founder tech stack
+                  </Link>{" "}
+                  follows the same reasoning.
+                </p>
+
+                <h2 id="opening-the-live-demo">Opening the live demo</h2>
+                <p>
+                  The fastest way to judge a workspace is to use it. The demo
+                  runs at{" "}
+                  <a
+                    href="https://gr8r-taskmanagement.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    gr8r-taskmanagement.vercel.app
+                  </a>
+                  , and it is the same build the repository produces. Open a
+                  project, switch it between a board and a table, pull up a task
+                  drawer, then drive the command palette from the keyboard.
+                </p>
+                <p>
+                  Keyboard access is worth testing on purpose. The{" "}
+                  <a
+                    href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WCAG guidance on keyboard access
+                  </a>{" "}
+                  treats it as a baseline requirement, which is why a palette
+                  and shortcuts matter more than they look in a demo. The source
+                  sits on{" "}
+                  <a
+                    href="https://github.com/gr8rstudio/gr8r-studio/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  , so you can read a file, trace a view and see how a screen
+                  becomes HTML.
+                </p>
+                <p>
+                  Deploy is covered as well. The repository includes a{" "}
+                  <code>vercel.json</code> that builds with Vite and serves the
+                  finished <code>dist/</code> folder, so pushing the project to
+                  Vercel produces a working site without extra configuration. A
+                  calendar view is the next thing to study once you have your
+                  own data in, and the patterns in our{" "}
+                  <Link href="/blog/calendar-ui-design">
+                    calendar UI design guide
+                  </Link>{" "}
+                  translate directly to that screen.
+                </p>
+
+                <h2 id="faq-gr8r">Frequently asked questions</h2>
+                <h3>How do I run Gr8r Studio locally?</h3>
+                <p>
+                  Clone the repository, run <code>npm install</code>, then run{" "}
+                  <code>npm run dev</code>. The dev server opens on{" "}
+                  <code>localhost:5173</code> with hot reload enabled. No global
+                  CLI and no build step is needed before the first run.
+                </p>
+                <h3>Do I need React or another framework?</h3>
+                <p>
+                  No. The app is written in plain JavaScript ES modules with no
+                  UI framework and no runtime dependency. Vite handles the
+                  bundling. If you know JavaScript and CSS, you can read every
+                  file in the project.
+                </p>
+                <h3>Which Node version does it require?</h3>
+                <p>
+                  Node 18 or newer. The <code>.nvmrc</code> file pins 22, so
+                  running <code>nvm use</code> inside the project folder picks
+                  the intended version automatically.
+                </p>
+                <h3>Where do I replace the demo data?</h3>
+                <p>
+                  The sample workspace comes from <code>src/data/seed.js</code>.
+                  Swap that file for your own data and the dashboard, the inbox
+                  and every project view read from it, because the render layer
+                  draws from the same store.
+                </p>
+                <h3>Which project views come with it?</h3>
+                <p>
+                  Six. Board, list, table, calendar, timeline and files. Each
+                  one renders the same project tasks, so switching a view never
+                  loses work or resets your place.
+                </p>
+                <h3>Can I use it in a commercial project?</h3>
+                <p>
+                  The source is public on GitHub. The README does not name a
+                  license, so check the repository for the current terms before
+                  you ship it inside a paid product.
+                </p>
+
+                <h2 id="why-it-belongs-gr8r">Why it belongs in your stack</h2>
+                <p>
+                  A workspace you can read end to end is rare. Gr8r Studio hands
+                  you the screens a small team opens every day, six ways to look
+                  at a project, and a codebase with nothing standing between you
+                  and the browser. You clone it, you run it, you replace the
+                  seed data, and it becomes yours to shape.
+                </p>
+                <p>
+                  For a solo builder, the useful part is the starting line.
+                  Instead of wiring a board, a calendar and a member list before
+                  reaching the actual idea, you begin with a workspace that
+                  already holds them. When you want the marketing site around
+                  that product to look deliberate, our{" "}
+                  <Link href="/freebies">free code resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same ship-it-yourself workflow.
                 </p>

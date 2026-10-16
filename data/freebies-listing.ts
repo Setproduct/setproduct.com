@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "gr8r-task-management",
+    title: "Gr8r Studio — calm project management workspace",
+    description:
+      "A calm project workspace with dashboard, inbox, board, calendar and timeline views. Plain JavaScript modules, no UI framework, zero runtime dependencies.",
+    thumb: "/freebies/thumbs/freebie-gr8r-task-management.webp",
+    image: "/freebies/freebie-gr8r-task-management.webp",
+    category: "Code",
+    previewHref: "/freebies/gr8r-task-management",
+    duplicateHref: "https://github.com/gr8rstudio/gr8r-studio/",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "spectrum-ui",
     title: "Spectrum UI — animated React components you copy and own",
     description:
