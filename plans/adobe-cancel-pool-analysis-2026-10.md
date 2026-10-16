@@ -1,5 +1,22 @@
 # Adobe-пул: разбор риска фантома и план CTR-fix (октябрь 2026)
 
+## Статус: Шаг A3 ВЫПОЛНЕН (2026-10-16)
+
+- Коммит `f24d40b` — `content: refresh adobe cancel post for the without-fee intent` (+137 / −43).
+- Сделано по таблице приоритетов ниже: `faq:` из 5 вопросов под реальные формы
+  запросов, `lastUpdated: '2026-10-16'`, `description` переписан под интент
+  «without the exit fee» (158 символов), добавлены секции «What Adobe charges
+  in 2026» (таблица планов и штрафов), «The chat script that gets the fee
+  removed», «If Adobe bills you anyway», «TL;DR» из 5 стрелок.
+- Лид answer-first усилен, заголовок секции про регуляторов приведён к
+  sentence case, добавлены 4 внутренние ссылки.
+- Self-check прогон: BODY WORDS 1733, EM-DASH 0, HEADING COLONS 0, TITLE 62
+  без «:», DESC 158, FFFD 0, NOT-BUT 0, FAQ ITEMS 5, INTERNAL LINKS 4,
+  `npm run lint` — exit 0, MDX serialize OK.
+- Трихолон 1 (`fast, stable, and subscription-free`) — в пределах лимита 2.
+- Замер результата: через 30 дней после 2026-10-16 сверить CTR хвоста
+  «without fee» и позицию головного запроса.
+
 ## 0. Итог одной строкой
 
 Это **не фантом**: 92.2% показов идёт по живому человеческому интенту
