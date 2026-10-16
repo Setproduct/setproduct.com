@@ -1,5 +1,23 @@
 # saas-dashboard-examples: разбор обвала позиции (октябрь 2026)
 
+## Статус: РАЗБОР ЗАКРЫТ, РЕФАКТОР ВЫПОЛНЕН (2026-10-16)
+
+| Шаг | Действие | Коммит |
+|---|---|---|
+| Разбор обвала (диагностика) | `docs: analyze saas dashboard examples position collapse` | `42ed6a5` |
+| Рефактор тела до уровня пиллара | `content: expand saas dashboard examples post to pillar depth` | `012cd44` |
+
+Рефактор `012cd44` (+158 / −78): добавлен `lastUpdated: 2026-10-16`,
+`faq:` из 5 вопросов, разделы «What to track, and what to ignore»,
+«Layout rules that keep a SaaS dashboard readable» и «How to test
+a SaaS dashboard before you ship it», TL;DR из 5 пунктов, пять
+описаний шаблонов переписаны в sentence case, внешняя авторитетная
+ссылка на NN/g. Перелинковка (пункт 3 плана) уже существовала:
+пиллар ссылается на страницу дважды (строки 67 и 166
+`dashboard-ui-design.mdx`) — правок не потребовалось.
+
+Замер позиции ядра — через 30 дней после `2026-10-16`.
+
 ## 0. Итог одной строкой
 
 Обвал реальный и **уникальный для этой страницы**: за неделю 20–26 июля
