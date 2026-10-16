@@ -1,6 +1,6 @@
 # Content strategy — Setproduct blog
 
-**Последнее обновление:** октябрь 2026 (после Wave 1; добавлен раздел 16 про white label пиллар и два сателлита)
+**Последнее обновление:** 2026-10-16 (сверка статусов: date picker опубликован, оба white label сателлита готовы, цифры why-landing-page и adobe актуализированы)
 **Источники данных:** GSC (6-мес сравнение и 3-мес детали к 2026-10-06), GA4 (2026-07-12 → 2026-10-09), on-site search, Ahrefs keyword history
 **Применять при:** написании нового поста, обновлении существующего, планировании контент-волн, обсуждении приоритетов
 
@@ -224,7 +224,7 @@ AI-инструменты (Claude, ChatGPT, Perplexity, Google AI Overviews) с�
 | Retro/brutalist UI design 2026 | On-site search | ✅ опубликован |
 | Liquid glass companion (vs glassmorphism etc.) | On-site search + GA4 | ✅ опубликован, CTR 1.81% |
 | Data table UI design | On-site search + GSC gap | ✅ опубликован, лучший CTR в UI design |
-| Date picker UI design | On-site search + GSC gap | ещё не написан |
+| Date picker UI design | On-site search + GSC gap | ✅ опубликован, 5 428 слов, faq есть |
 | AI chat interface UI design | Тренд индустрии + экспертиза | ✅ опубликован, 1 739 просмотров |
 
 ### Tier 2 — средний приоритет (есть контент, но плохо работает)
@@ -381,13 +381,13 @@ appbar 31 / 14.91.
 5. **First niche-opinion experiment** — Pattern C, 600 слов, проверить формулу strikethrough-text
 
 ### В течение 90 дней
-6. **Date picker UI design** — Pattern E, ещё не написан
+6. **Date picker UI design** — ПУБЛИКОВАН 2026-06-15 (Pattern E, 5 428 слов)
 7. **"Anatomy of Notion" — Design like X пилот** — новый Pattern, ещё не написан
 8. **Foundation tutorial #2** (e.g., "How to design an AI app foundation") — Pattern B, ещё не написан
 
 ### Новое по данным октября 2026
 9. **Guest posting cluster** — подтверждённый спрос, лучший CTR на сайте у submit-a-guest-post (3.33%). Развивать кластер, а не отдельные посты
-10. **Unconverted impression pools** — why-landing-page-optimization-is-essential (14 272 показа, 0 кликов) и how-to-cancel-adobe-subscription (51 863 показа, CTR 0.16%): сначала CTR-fix, потом новый контент
+10. **Unconverted impression pools** — why-landing-page-optimization-is-essential (5 942 показа, 0 кликов, позиция 24.65 — класс D) и how-to-cancel-adobe-subscription (51 863 показа, CTR 0.16% — класс A, рефактор выполнен 2026-10-16): сначала позиция и сниппет, потом новый контент
 
 ## 10. План усиления содержимого (после Wave 1)
 
@@ -801,6 +801,15 @@ sentence case в зоне правок, но в теле остались ста
 - Не создавать новые посты кластера: три уже добавлены в сентябре.
 
 ## 16. White label SEO pillar: два сателлита (октябрь 2026)
+
+**Статус: оба сателлита ГОТОВЫ (2026-10-13).** Проверено 2026-10-16:
+[`white-label-seo-reseller-programs`](../content/blog/white-label-seo-reseller-programs.mdx:1)
+(S1, интент reseller) и
+[`white-label-seo-tools`](../content/blog/white-label-seo-tools.mdx:1)
+(S2, интент tools) опубликованы и проходят чеклист §16.4–16.5 полностью:
+answer-first лид, TL;DR из 4 пунктов, FAQ из 5 вопросов, перелинковка на
+пиллар и на оба guest-post поста, обратные ссылки из пиллара стоят.
+Раздел ниже фиксирует историю решения, а не список задач к выполнению.
 
 Источник: [`plans/pillar-c-white-label-2026-10.md`](../plans/pillar-c-white-label-2026-10.md),
 разбор Search Console по пиллару (октябрь 2026). Пиллар переписан коммитом
