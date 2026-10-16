@@ -1,5 +1,22 @@
 # Шаг 5 dashboard: разбор трёх страниц «класса D» (октябрь 2026)
 
+## Статус: ЗАКРЫТ (2026-10-16)
+
+Все три пункта из §6 выполнены по решению владельца:
+
+| # | Пункт | Результат | Коммит |
+|---|---|---|---|
+| 1 | `types-of-dashboards`: снять дубль `### 10. Operational dashboards` | удалён блок (22 строки), H3-список заканчивается на «9. Product management dashboards». Побочно: `img-8.webp` осиротел, лежит в `public/blog/assets/types-of-dashboards-main-categories/` | `71456cd` |
+| 2 | `types-of-dashboards`: сниппет под запрос `types of dashboards` | title и metaTitle переписаны: `Types of dashboards explained, 3 core types and 9 categories` (60 симв.), description 151 симв., coverImageAlt на sentence case. **Уточнение к §2:** цифра 11.41 это позиция **запроса** (392 показа), позиция **страницы** в 3-месячном окне 30.76 | `f172fd9` |
+| 3 | `e-commerce-dashboard-examples`: принять как класс D | принято как класс D, сниппет не тронут (позиция 31.4, запросы 40.11 / 56.91 / 57.14). Снято нарушение жёсткого правила: Title Case в `title` и `coverImageAlt` заменён на sentence case | `6324502` |
+
+Проверки после каждого коммита: FFFD 0, двоеточий в заголовках 0, em-dash в лимите (типы 1, e-commerce 2), `npm run lint` чистый.
+
+Не сделано и остаётся за шагом 3: page-level выгрузки GSC нужны для
+`saas-dashboard-examples` (куда ушла позиция) и для четырёх страниц диагноза C.
+
+---
+
 Источник задачи: [`plans/dashboard-plateau-2026-10.md`](dashboard-plateau-2026-10.md:186),
 шаг 5 «Отдельно: решение по трём страницам класса D».
 Дата разбора: 2026-10-16. Режим: architect. Код в `content/` не менялся.
