@@ -308,3 +308,44 @@ dashboard-пласта (`button-group-guide`, `data-table-ui-design`,
 (2 слова)» не подтвердилась: `metaTitle` уже sentence case, двоеточия нет,
 описание 150 символов и без мусора. Правка нужна только если владелец
 захочет усилить хук (сейчас строка 76 — в норме).
+
+## 12. Шаг 2 закрыт: только гигиена, набор §11 не применён (2026-10-16)
+
+При выходе на шаг 2 сверены зафиксированный набор §11 и более новые
+диагнозы шагов 3 и 5. Обнаружено расхождение: набор §11 был CTR-правкой
+под запросы, но page-level данные отменили для двух страниц саму
+предпосылку.
+
+| Страница | Диагноз (шаги 3 и 5) | Набор §11 | Решение |
+|---|---|---|---|
+| `best-analytics-dashboard-examples` | класс E: 75% показов фантомные, человеческий пул в сниппете 347 показов / 0 кликов | CTR-правка | сниппет не применяем: он не влияет на фантом. Взята только гигиена |
+| `e-commerce-dashboard-examples` | настоящий класс D: ядро `ecommerce dashboard` на 40–57 | CTR-правка | сниппет не применяем: при позиции 26–31 он не виден |
+| `top-dashboard-design-examples-ideas` | класс C, живой пул 5 505 показов / 15 кликов; тело уже переделано в шаге 4 | CTR-правка | сниппет не применяем: рычаг был в теле, оно уже закрыто |
+
+Решение владельца: **Вариант B** — только гигиена sentence case, глифы ✔/➤
+из описаний не трогаем (отложенный долг §11.2).
+
+Сделано, три отдельных коммита:
+
+- `ece649f` — sentence case в `title` best-analytics
+  (`Best Analytics Dashboard Examples & Best Practices` →
+  `Best analytics dashboard examples & best practices`, 50 символов).
+- `c4b2778` — усиление короткого `metaTitle` best-analytics (33 → 57):
+  `Best analytics dashboard examples for cleaner KPI screens`.
+- `8534e5d` — sentence case в `title` top-dashboard
+  (`Top Dashboard Design Examples & Ideas. Dashboard Inspiration` →
+  `Top dashboard design examples & ideas. Dashboard inspiration`).
+
+Проверки: `npm run lint` — чисто; оба файла сериализуются; двоеточий в
+значениях `title`/`metaTitle` нет; FFFD 0; `e-commerce-dashboard-examples`
+намеренно не тронут.
+
+## 13. Найденный остаток (не входил в задачу)
+
+`coverImageAlt` в Title Case у трёх dashboard-постов:
+`top-dashboard-design-examples-ideas` (`Top Dashboard Design Examples & Ideas.
+Dashboard Inspiration`), `best-analytics-dashboard-examples`
+(`Best Analytics Dashboard Examples`), плюс встречается в других файлах
+пласта. По правилу sentence case это долг, но правка `coverImageAlt` не
+влияет на сниппет (используется в OG-теге и как alt обложки). Требует
+отдельного решения владельца — самовольно скоуп не расширял.
