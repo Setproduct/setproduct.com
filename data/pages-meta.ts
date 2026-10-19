@@ -74,9 +74,9 @@ export const PAGE_META: Record<string, PageMeta> = {
     canonical: "https://www.setproduct.com/blog",
   },
   freebies: {
-    title: "Free Figma Templates: UI Design Resources for Web, Mobile & Desktop",
+    title: "Free UI resources, open source code and Figma files",
     description:
-      "Discover how Setproduct Figma freebies can help you master component customization, and responsive template development. Duplicate, modify, and use for commercial use.",
+      "Free UI resources from Setproduct. Open source React components, code libraries and design files you can copy, adapt and ship in commercial work.",
     ogImage:
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com/freebies",

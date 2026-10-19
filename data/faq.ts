@@ -84,7 +84,7 @@ const HOME_FAQ: FaqItem[] = [
   {
     question: "Do you offer a free Figma UI kit?",
     answerHtml:
-      'Yes, Setproduct offers free Figma UI kits you can use right away. Head to <a class="span-link" href="/freebies">freebies</a> to duplicate them into your own Figma account at no cost. They\'re a good way to try the build quality and component structure before buying a full kit.',
+      'Yes, Setproduct offers free Figma UI kits you can use right away. Head to <a class="span-link" href="/freebies">free resources</a> to duplicate them into your own Figma account at no cost. They\'re a good way to try the build quality and component structure before buying a full kit.',
   },
   {
     question: "What's the difference between a UI kit and a design system?",
@@ -94,7 +94,7 @@ const HOME_FAQ: FaqItem[] = [
   {
     question: "I'm new to Figma. Can I still use your kits?",
     answerHtml:
-      'Yes, beginners can absolutely use them. Every Setproduct kit is documented, so you can learn by exploring how real components and layouts are built. A good starting point is our <a class="span-link" href="/freebies">free freebies</a>, no purchase needed. The <a class="span-link" href="/blog">blog</a> also has tutorials to help you find your way around Figma.',
+      'Yes, beginners can absolutely use them. Every Setproduct kit is documented, so you can learn by exploring how real components and layouts are built. A good starting point is our <a class="span-link" href="/freebies">free resources</a>, no purchase needed. The <a class="span-link" href="/blog">blog</a> also has tutorials to help you find your way around Figma.',
   },
   {
     question: "How do I import a kit into Figma or React?",

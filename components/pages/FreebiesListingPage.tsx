@@ -90,8 +90,8 @@ export default function FreebiesListingPage({ blogPosts = [] }: Props) {
             <div className="container">
               <div className="blog_hero-section">
                 <div className="heading-left-text-wr">
-                  <h1 className="heading-style-h1">Free Figma templates</h1>
-                  <div className="heading-style-h5">We make UI design resources right!</div>
+                  <h1 className="heading-style-h1">Free resources</h1>
+                  <div className="heading-style-h5">Open source code and design files, picked and tested by Setproduct</div>
                 </div>
               </div>
               <div className="spacer-64" />
@@ -154,7 +154,7 @@ export default function FreebiesListingPage({ blogPosts = [] }: Props) {
                       </div>
                       <input
                         className="text-input is-search is-templates w-input"
-                        aria-label="Search freebies"
+                        aria-label="Search free resources"
                         maxLength={256}
                         name="field"
                         onChange={(e) => {

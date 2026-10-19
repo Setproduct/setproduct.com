@@ -14,20 +14,23 @@ type Props = {
   blogPosts?: BlogPostPreview[];
 };
 
+// «freebie» уходит из суффикса тайтла: раздел теперь называется Resources.
+// «Figma» остаётся у Figma-файлов, иначе пропадает соответствие запросам
+// вида «free figma ios ui kit», по которым эти страницы и ранжируются.
 function suffixForCategory(category: string) {
-  if (category === "Code" || category === "Design & Code") return "code freebie";
-  if (category === "Tutorials & Education") return "tutorial";
-  return "Figma freebie";
+  if (category === "Code" || category === "Design & Code") return "free open source code";
+  if (category === "Tutorials & Education") return "free UI tutorial";
+  return "free Figma file";
 }
 
 export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
-    { label: "Freebies", href: "/freebies" },
+    { label: "Resources", href: "/freebies" },
     { label: item.title },
   ];
 
-  const title = `${item.title} — ${suffixForCategory(item.category)}`;
+  const title = `${item.title} (${suffixForCategory(item.category)})`;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/freebies/${item.slug}`;
 

@@ -21,7 +21,9 @@ const SYNONYM_GROUPS: string[][] = [
   ["icon", "icons", "iconset"],
   ["website", "web", "landing"],
   ["template", "templates", "layout"],
-  ["free", "freebie", "freebies"],
+  // «freebie» остаётся в группе: раздел переименован в Resources, но
+  // пользователи по-прежнему ищут по старым словам.
+  ["free", "freebie", "freebies", "resource", "resources", "open source"],
 ];
 
 const STOP_WORDS = new Set([

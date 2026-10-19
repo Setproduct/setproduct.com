@@ -9,7 +9,7 @@ export const PAGE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
   websites: [{ label: "Home", href: "/" }, { label: "Templates", href: "/all" }, { label: "Websites" }],
   bundle: [{ label: "Home", href: "/" }, { label: "Templates", href: "/all" }, { label: "Bundle" }],
   blog: [{ label: "Home", href: "/" }, { label: "Blog" }],
-  freebies: [{ label: "Home", href: "/" }, { label: "Freebies" }],
+  freebies: [{ label: "Home", href: "/" }, { label: "Resources" }],
   testimonials: [{ label: "Home", href: "/" }, { label: "Testimonials" }],
   "license": [{ label: "Home", href: "/" }, { label: "License" }],
   "refunds-policy": [{ label: "Home", href: "/" }, { label: "Refunds policy" }],

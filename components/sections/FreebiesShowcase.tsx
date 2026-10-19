@@ -75,11 +75,11 @@ export default function FreebiesShowcase({ excludeSlug }: Props) {
           <div className="main_template-list-section">
             <div className="heading-left-wr">
               <div className="heading-left-text-wr max-width-700">
-                <h2 className="heading-style-h2">More Figma freebies</h2>
+                <h2 className="heading-style-h2">More free resources</h2>
               </div>
               <div className="heading-left-text-btn-wr">
                 <Link className="button secondary w-inline-block" href="/freebies">
-                  <div className="text-size-large text-weight-bold">See All</div>
+                  <div className="text-size-large text-weight-bold">See all</div>
                   <div className="button-icon w-embed"><ArrowIcon /></div>
                 </Link>
               </div>

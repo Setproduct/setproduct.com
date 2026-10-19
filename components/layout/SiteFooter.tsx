@@ -24,7 +24,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
       { href: "/blog?category=UI%20Design", label: "UI Design" },
       { href: "/blog?category=Growth%20Hacking", label: "Growth Hacking" },
       { href: "/blog?category=Inspiration", label: "Inspiration" },
-      { href: "/blog?category=Resources", label: "Resources" },
+      { href: "/blog?category=Tools", label: "Tools" },
       { href: "/blog?category=Technology", label: "Technology" },
       { href: "/blog?category=Research", label: "Research" },
     ],
@@ -39,7 +39,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
       { href: "/code", label: "Code" },
       { href: "/websites", label: "Websites" },
       { href: "/bundle", label: "Bundle" },
-      { href: "/freebies", label: "Freebies" },
+      { href: "/freebies", label: "Resources" },
     ],
   },
   {

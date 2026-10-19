@@ -53,7 +53,7 @@ const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "UI Design", category: "UI Design" },
   { label: "Growth Hacking", category: "Growth Hacking" },
   { label: "Inspiration", category: "Inspiration" },
-  { label: "Resources", category: "Resources" },
+  { label: "Tools", category: "Tools" },
   { label: "Technology", category: "Technology" },
   { label: "Research", category: "Research" },
 ];
@@ -831,12 +831,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
                       onClick={() => toggleMenu("freebies")}
                     >
-                      <div className="text-size-regular">Freebies</div>
+                      <div className="text-size-regular">Resources</div>
                       <span className="icon nav_chevron"><ChevronIcon /></span>
                       <a
                         className="nav_dropdown_toggle-link w-inline-block"
                         href="/freebies"
-                        aria-label="Freebies"
+                        aria-label="Resources"
                         aria-haspopup="true"
                         aria-expanded={isMenuOpen("freebies")}
                       />

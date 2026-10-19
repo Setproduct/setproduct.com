@@ -175,7 +175,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
 
 /**
  * Long-form body content for specific freebie detail pages.
- * Rendered between the breadcrumbs and the "More Figma freebies" showcase.
+ * Rendered between the breadcrumbs and the "More free resources" showcase.
  * Reuses the blog two-column layout: sticky navigation on the left,
  * rich-text body on the right. Add a new branch per slug when a freebie
  * needs an editorial article.
@@ -540,7 +540,7 @@ export default function FreebieArticle({ slug }: Props) {
                   </Link>{" "}
                   comparison explains where the plain blur falls short. When you
                   want the rest of the interface to match, the other{" "}
-                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo workflow.
                 </p>
@@ -705,7 +705,7 @@ export default function FreebieArticle({ slug }: Props) {
                   buttons, and watch how many more users make it past the first
                   screen. When you want the interface those tours point at to
                   look sharp, the rest of our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo-founder workflow.
                 </p>
@@ -954,7 +954,7 @@ export default function FreebieArticle({ slug }: Props) {
                   </Link>{" "}
                   rounds out the funnel. When you want the rest of the interface
                   to match the app you send from, the other{" "}
-                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same fast, solo workflow.
                 </p>
@@ -1111,7 +1111,7 @@ export default function FreebieArticle({ slug }: Props) {
                   the code, point it at your invoice route, and keep the user in
                   the flow. When you want the screens around that viewer to
                   look sharp, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> cover the same
                   fast, ship-it-yourself workflow.
                 </p>
@@ -1270,7 +1270,7 @@ export default function FreebieArticle({ slug }: Props) {
                   For a solo builder shipping with AI, that saves the slow part:
                   explaining a layout in words. When you want reference designs
                   for the screens you assemble, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> cover the same
                   mobile-first, ship-fast workflow.
                 </p>
@@ -1478,7 +1478,7 @@ export default function FreebieArticle({ slug }: Props) {
                   part: real motion without writing animation code from scratch.
                   When you want the static design underneath that motion to hold
                   up, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same ship-it-yourself workflow.
                 </p>
@@ -1664,7 +1664,7 @@ export default function FreebieArticle({ slug }: Props) {
                   fact. Grab the set, keep one source of truth, and let the small
                   elements finally match. When you want the screens around those
                   icons to look sharp, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same ship-it-yourself workflow.
                 </p>
@@ -2262,7 +2262,7 @@ export default function FreebieArticle({ slug }: Props) {
                   Grab the repository, run the install once, and give it Full Disk
                   Access. When you want the files it surfaces to sit in a tidy
                   project, the rest of our{" "}
-                  <Link href="/freebies">free resources</Link> and{" "}
+                  <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same fast, solo workflow.
                 </p>
@@ -2495,7 +2495,7 @@ export default function FreebieArticle({ slug }: Props) {
                   When
                   you want the interface you are rebuilding to hold up against the
                   original, the rest of our{" "}
-                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same fast, solo workflow.
                 </p>
@@ -2729,7 +2729,7 @@ export default function FreebieArticle({ slug }: Props) {
                   from GitHub, point an agent at a <code>.comp</code>, and watch
                   the layers arrive. When you want the interface around those
                   images to match, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo workflow.
                 </p>
@@ -2924,7 +2924,7 @@ export default function FreebieArticle({ slug }: Props) {
                   building, run the command, and let the page stop feeling
                   static. When you want the screens around that motion to hold
                   up, our{" "}
-                  <Link href="/freebies">free Figma resources</Link> and{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same ship-it-yourself workflow.
                 </p>
@@ -3226,7 +3226,7 @@ export default function FreebieArticle({ slug }: Props) {
                   reaching the actual idea, you begin with a workspace that
                   already holds them. When you want the marketing site around
                   that product to look deliberate, our{" "}
-                  <Link href="/freebies">free code resources</Link> and{" "}
+                  <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same ship-it-yourself workflow.
                 </p>

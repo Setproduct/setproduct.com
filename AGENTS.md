@@ -1014,7 +1014,7 @@ export default function FeaturedCollections({ collections }: Props) {
 | `/code` | [`pages/code.tsx`](pages/code.tsx:1) | Категория «Design & Code» (React/Swift/Flutter UI kits) |
 | `/dashboards` | [`pages/dashboards.tsx`](pages/dashboards.tsx:1) | Категория дашбордов |
 | `/dataviz` | [`pages/dataviz.tsx`](pages/dataviz.tsx:1) | Категория Data Viz |
-| `/freebies` | [`pages/freebies.tsx`](pages/freebies.tsx:1) | Листинг бесплатных шаблонов |
+| `/freebies` | [`pages/freebies.tsx`](pages/freebies.tsx:1) | Раздел Resources (бесплатные open source и Figma ресурсы). Подпись «Resources», URL пока `/freebies` |
 | `/mobile` | [`pages/mobile.tsx`](pages/mobile.tsx:1) | Категория Mobile UI kits |
 | `/websites` | [`pages/websites.tsx`](pages/websites.tsx:1) | Категория Web UI kits |
 | `/search` | [`pages/search.tsx`](pages/search.tsx:1) | Полнотекстовый поиск (Fuse.js) |
@@ -1091,7 +1091,7 @@ export const getStaticPaths = async () => ({
 |---|---|
 | [`data/products.ts`](data/products.ts) (`PRODUCTS`) | Все шаблоны для категорийных грид-страниц |
 | [`data/templates-listing.ts`](data/templates-listing.ts) (`TEMPLATE_PRODUCTS`) | Шаблоны с детальными страницами (для `/templates/[slug]`) |
-| [`data/freebies-listing.ts`](data/freebies-listing.ts) (`FREEBIE_PRODUCTS`) | Freebies для `/freebies/[slug]` |
+| [`data/freebies-listing.ts`](data/freebies-listing.ts) (`FREEBIE_PRODUCTS`) | Ресурсы для `/freebies/[slug]` (раздел называется Resources) |
 | [`data/dashboard-templates.ts`](data/dashboard-templates.ts) (`DASHBOARD_TEMPLATES`) | Дашборды для `/dashboard-templates/[slug]` |
 | [`data/bundles.ts`](data/bundles.ts) | Бандлы |
 | [`data/categories.ts`](data/categories.ts) | Категории каталога |

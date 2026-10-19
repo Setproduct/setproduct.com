@@ -13,7 +13,7 @@ export default function CtaSubscribe() {
                 <div className="heading-center-wr">
                   <h2 className="heading-style-h2">Subscribe to Setproduct</h2>
                   <div className="heading-style-h5 mob-18">
-                    Once per week we send a newsletter with new releases, freebies and blog publications
+                    Once per week we send a newsletter with new releases, free resources and blog posts
                   </div>
                 </div>
                 <div className="actions">

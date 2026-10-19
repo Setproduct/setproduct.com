@@ -10,7 +10,7 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import ArrowIcon from "../sections/ArrowIcon";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { PAGE_META } from "../../data/pages-meta";
-import { BLOG_CATEGORIES } from "../../data/blog-categories";
+import { BLOG_CATEGORIES, LEGACY_BLOG_CATEGORIES } from "../../data/blog-categories";
 import type { BlogPostPreview } from "../../types/data";
 
 const PAGE_SIZE = 8;
@@ -29,7 +29,11 @@ export default function BlogListingPage({ blogPosts = [] }: Props) {
     if (!router.isReady) return;
     const raw = router.query.category ?? router.query["blog-categories"];
     const next = Array.isArray(raw) ? raw[0] : raw;
-    setActiveCategory(next ? String(next) : null);
+    // Совместимость со старыми ссылками: категория «Resources»
+    // переименована в «Tools», но закладки и внешние ссылки на
+    // `?category=Resources` должны по-прежнему фильтровать список.
+    const resolved = next ? LEGACY_BLOG_CATEGORIES[String(next)] ?? String(next) : null;
+    setActiveCategory(resolved);
     setVisibleCount(PAGE_SIZE);
   }, [router.isReady, router.query.category, router.query["blog-categories"]]);
 

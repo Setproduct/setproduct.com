@@ -57,7 +57,7 @@ const ANALYTICS_DELAY = 1500;
 // блог первым. Dashboards без счётчика: в поиске они часть UI kits.
 const BROWSE_LINKS: { label: string; href: string; type?: SearchGroup }[] = [
   { label: "Blog", href: "/blog", type: "blog" },
-  { label: "Freebies", href: "/freebies", type: "freebie" },
+  { label: "Resources", href: "/freebies", type: "freebie" },
   { label: "UI kits", href: "/all", type: "product" },
   { label: "Bundles", href: "/bundle", type: "bundle" },
   { label: "Dashboards", href: "/dashboards" },
@@ -761,7 +761,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                   role="search"
                 >
                   <label htmlFor="search-page-input" className="sr-only">
-                    Search UI kits, templates, freebies, and blog posts
+                    Search UI kits, templates, free resources, and blog posts
                   </label>
                   <input
                     ref={inputRef}
@@ -837,7 +837,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
                     <p className="text-size-regular is-mob-14">
                       {query.trim().length === 1
                         ? "Type at least 2 characters to start searching."
-                        : `Search across ${items.length} items: ${typeCounts.blog.length} blog posts, plus UI kits, freebies and bundles.`}
+                        : `Search across ${items.length} items: ${typeCounts.blog.length} blog posts, plus UI kits, free resources and bundles.`}
                     </p>
                     <div className="spacer-40" />
                     <SuggestionChips label="Popular searches" />

@@ -92,7 +92,7 @@ Most articles are structured as authoritative, citable references: each opens wi
 - [Mobile](https://www.setproduct.com/mobile): iOS, Android, and cross-platform mobile UI kits.
 - [Websites](https://www.setproduct.com/websites): Web and landing page UI kits.
 - [Design & code](https://www.setproduct.com/code): Coded UI kits for React, iOS, Android, Flutter, and Swift.
-- [Freebies](https://www.setproduct.com/freebies): Free Figma templates and resources.
+- [Resources](https://www.setproduct.com/freebies): Open source code, components and free Figma files.
 - [Bundle](https://www.setproduct.com/bundle): The complete bundle of all UI kits.
 - [Testimonials](https://www.setproduct.com/testimonials): Customer reviews and case results.
 

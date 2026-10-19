@@ -50,7 +50,7 @@ export const SEARCH_GROUP_OF: Record<SearchableType, SearchGroup> = {
 
 export const SEARCH_GROUP_LABELS: Record<SearchGroup, string> = {
   blog: "Blog",
-  freebie: "Freebies",
+  freebie: "Resources",
   product: "UI kits",
   bundle: "Bundles",
 };
@@ -59,7 +59,7 @@ export const SEARCH_GROUP_LABELS: Record<SearchGroup, string> = {
 export const SEARCHABLE_TYPE_BADGES: Record<SearchableType, string> = {
   blog: "Blog",
   product: "UI kit",
-  freebie: "Freebie",
+  freebie: "Resource",
   bundle: "Bundle",
   dashboard: "Dashboard",
 };
