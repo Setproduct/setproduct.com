@@ -14,11 +14,31 @@ type StateId = "default" | "hover" | "focus" | "filled" | "error" | "disabled";
 
 const STATES: { id: StateId; title: string; note: string }[] = [
   { id: "default", title: "Default", note: "Empty field, placeholder visible" },
-  { id: "hover", title: "Hover (frozen)", note: "Now: same as focus. Proposed: lighter purple border" },
-  { id: "focus", title: "Focus (frozen)", note: "Now: 1px border only. Proposed: white fill, primary border, soft ring" },
+  { id: "hover", title: "Hover (frozen)", note: "Now: same as focus. Proposed: the well gets one step deeper, no colour change" },
+  { id: "focus", title: "Focus (frozen)", note: "Now: 1px border only, nothing else happens. Proposed: the field sinks deeper into the page — the same move as the push button dropping onto its edge" },
   { id: "filled", title: "Filled", note: "Value entered, no focus" },
-  { id: "error", title: "Error", note: "Now: no error style at all. Proposed: red border, text linked via aria-describedby" },
+  { id: "error", title: "Error", note: "Now: no error style at all. Proposed: the well turns red, plus a text message linked to the field for screen readers" },
   { id: "disabled", title: "Disabled", note: "Now: Webflow grey #eee. Proposed: brand fill at 60%" },
+];
+
+/* Three ways to render the focused well. All of them keep the field on its own
+   fill and add no outer glow — the depth does the work. */
+const FOCUS_VARIANTS: { cls: string; title: string; note: string }[] = [
+  {
+    cls: "",
+    title: "A · Deep well",
+    note: "Top wall grows from 3 to 7px, the bottom edge catches light. Closest to the current brand shadow",
+  },
+  {
+    cls: "focusB",
+    title: "B · Deep well + darker fill",
+    note: "Same as A, but the fill loses light: the field reads as a hole in the page, not a raised plate",
+  },
+  {
+    cls: "focusC",
+    title: "C · Recessed on both walls",
+    note: "Top and bottom walls both curve inward. Reads as pressed from above and below, like the S-size button",
+  },
 ];
 
 const SEARCH_ICON = "/images/search.svg";
@@ -30,6 +50,13 @@ function cx(...parts: (string | false | undefined)[]) {
 function forcedClass(state: StateId) {
   if (state === "hover") return styles.forceHover;
   if (state === "focus") return styles.forceFocus;
+  return undefined;
+}
+
+/* Maps a variant key from FOCUS_VARIANTS to its module class. */
+function focusVariantClass(key: string) {
+  if (key === "focusB") return styles.focusB;
+  if (key === "focusC") return styles.focusC;
   return undefined;
 }
 
@@ -175,7 +202,8 @@ export default function InputsProtoPage({ blogPosts }: Props) {
               <p className="text-size-large m-0">
                 Left column shows the fields as they are on the site now. Right column shows the proposed
                 styles. Hover and focus rows are frozen; every other field is live, so you can click, type
-                and tab through it. Check the page at 1440, 1024, 768 and 390 px.
+                and tab through it. Check the page at 1440, 1024, 768 and 390 px. The three focus options
+                are compared right below the states table.
               </p>
 
               {STATES.map((state) => (
@@ -199,6 +227,35 @@ export default function InputsProtoPage({ blogPosts }: Props) {
               ))}
 
               <div className="spacer-48" />
+              <h2 className="heading-style-h5">Focus: three options</h2>
+              <div className="spacer-4" />
+              <p className={`text-size-regular ${styles.cellLabel}`}>
+                All three drop the outer ring and build on the inner shadow instead. Shown focused; the
+                second row shows each of them at rest for comparison.
+              </p>
+              <div className="spacer-16" />
+              <div className={styles.rowFour}>
+                {FOCUS_VARIANTS.map((v) => (
+                  <div className={`${styles.cell} ${styles.proto}`} key={v.title}>
+                    <p className={`text-size-small ${styles.cellLabel}`}>{v.title}</p>
+                    <input
+                      aria-label={`Focused field, ${v.title}`}
+                      className={cx("text-input w-input", styles.f, styles.forceFocus, focusVariantClass(v.cls))}
+                      defaultValue="roman@setproduct.com"
+                      type="email"
+                    />
+                    <input
+                      aria-label={`Field at rest, ${v.title}`}
+                      className={cx("text-input w-input", styles.f)}
+                      defaultValue="roman@setproduct.com"
+                      type="email"
+                    />
+                    <p className={`text-size-small ${styles.hint}`}>{v.note}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="spacer-48" />
               <h2 className="heading-style-h5">Live: textarea, select, field with a button</h2>
               <div className="spacer-4" />
               <p className={`text-size-regular ${styles.cellLabel}`}>
@@ -210,6 +267,10 @@ export default function InputsProtoPage({ blogPosts }: Props) {
                 <input type="checkbox" checked={submitting} onChange={(e) => setSubmitting(e.target.checked)} />
                 Simulate submitting (disables the subscribe form)
               </label>
+              <div className="spacer-4" />
+              <p className={`text-size-small ${styles.hint}`}>
+                Click into either column to feel the focus move. The left column is the site as it is today.
+              </p>
               <div className="spacer-16" />
               <div className={styles.row}>
                 <div className={`${styles.cell} ${styles.now}`}>
