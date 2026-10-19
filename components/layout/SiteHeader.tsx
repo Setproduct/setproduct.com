@@ -90,10 +90,10 @@ const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> 
   { label: "Code", category: "Code" },
   { label: "Components", category: "Components" },
   { label: "Mobile templates", category: "Mobile Templates" },
-  { label: "Mobile & desktop", category: "Mobile & Desktop" },
+  { label: "Desktop templates", category: "Desktop templates" },
+  { label: "Desktop apps", category: "Desktop apps" },
   { label: "Data visualization", category: "Data visualization" },
   { label: "Web design", category: "Web Design" },
-  { label: "Desktop", category: "Desktop" },
 ];
 
 const NAV_BLOG_PREVIEW_COUNT = 6;
