@@ -168,17 +168,25 @@
 
    Height is fixed and equal to the button body (border-box, so the 1px border is inside).
    It is computed from --em-px, the same scale the button padding and text use, so both
-   shrink together on every width and their bottom edges line up. The text is centred
-   vertically by the browser, so the 16px font floor never makes the field taller.
-   Lift is a third of the edge, so the edge reads the same on every size.
-   Text never drops below 16px on touch screens (smaller text makes iOS Safari zoom in);
-   L and M also never drop below 16px on narrow desktop windows. */
+   shrink together on every width and their bottom edges line up.
+   min-height: 0 is required: Webflow .text-input sets min-height: 2.77778em, which is
+   relative to the field's own font-size and silently made M and S taller than the button.
+   Text scales with the layout like the button label; the 16px floor applies only on touch
+   screens (smaller text makes iOS Safari zoom in), where the text is centred and the
+   height stays the same. */
+
+.proto .f.f.l,
+.proto .f.f.m,
+.proto .f.f.s {
+  min-height: 0;
+  line-height: normal;
+}
 
 .proto .f.f.l {
   --input-edge-size: calc(6 * var(--em-px));
   --input-lift: calc(-2 * var(--em-px));
   --input-pad-y: calc(10.5 * var(--em-px));
-  font-size: max(18em, 16px);
+  font-size: 18em;
   height: calc(50 * var(--em-px));
   padding: 0 calc(20 * var(--em-px));
   border-radius: calc(20 * var(--em-px));
@@ -188,7 +196,7 @@
   --input-edge-size: calc(4 * var(--em-px));
   --input-lift: calc(-1.5 * var(--em-px));
   --input-pad-y: calc(7 * var(--em-px));
-  font-size: max(16em, 16px);
+  font-size: 16em;
   height: calc(40 * var(--em-px));
   padding: 0 calc(16 * var(--em-px));
   border-radius: calc(16 * var(--em-px));
@@ -204,7 +212,18 @@
   border-radius: calc(12 * var(--em-px));
 }
 
+/* On phones Webflow drops .text-size-medium to 16em, so .button-small shrinks to
+   6 + 7 + 16 × 1.5 = 37. The M field follows it. */
+@media screen and (max-width: 479px) {
+  .proto .f.f.m {
+    height: calc(37 * var(--em-px));
+  }
+}
+
 @media (pointer: coarse) {
+  .proto .f.f.l { font-size: max(18em, 16px); }
+  .proto .f.f.m { font-size: max(16em, 16px); }
+
   .proto .f.f.s {
     font-size: max(14em, 16px);
   }
