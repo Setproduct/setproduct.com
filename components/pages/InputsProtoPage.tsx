@@ -27,6 +27,36 @@ function cx(...parts: (string | false | undefined)[]) {
   return parts.filter(Boolean).join(" ");
 }
 
+type Size = "l" | "m" | "s";
+
+const SIZES: { id: Size; title: string; button: string; buttonText: string; note: string }[] = [
+  {
+    id: "l",
+    title: "L",
+    button: "button",
+    buttonText: "text-size-large",
+    note: "Height 50, radius 20, text 18, focus edge 6. Forms, subscribe, contact modal",
+  },
+  {
+    id: "m",
+    title: "M",
+    button: "button-small",
+    buttonText: "text-size-medium",
+    note: "Height 40, radius 16, text 16, focus edge 4. Navbar search, /search, filters",
+  },
+  {
+    id: "s",
+    title: "S",
+    button: "button-x-small",
+    buttonText: "text-size-regular",
+    note: "Height 31, radius 12, text 14 (16 on touch), focus edge 3. Mega-menu, compact filters",
+  },
+];
+
+function sizeClass(size: Size) {
+  return styles[size];
+}
+
 function forcedClass(state: StateId) {
   if (state === "hover") return styles.forceHover;
   if (state === "focus") return styles.forceFocus;
@@ -49,7 +79,7 @@ function StateFields({ variant, state }: { variant: Variant; state: StateId }) {
           aria-describedby={isError ? `${id}-email-error` : `${id}-email-hint`}
           aria-invalid={isError || undefined}
           autoComplete="email"
-          className={cx("text-input w-input", proto, forcedClass(state))}
+          className={cx("text-input w-input", proto, proto && sizeClass("l"), forcedClass(state))}
           defaultValue={value}
           disabled={state === "disabled"}
           id={`${id}-email`}
@@ -70,7 +100,7 @@ function StateFields({ variant, state }: { variant: Variant; state: StateId }) {
       <div className="search w-form">
         <input
           aria-label="Search Setproduct"
-          className={cx("text-input is-nav-search w-input", styles.searchWide, proto, forcedClass(state))}
+          className={cx("text-input is-nav-search w-input", styles.searchWide, proto, proto && sizeClass("m"), forcedClass(state))}
           defaultValue={state === "filled" || isError ? "dashboard" : undefined}
           aria-invalid={isError || undefined}
           disabled={state === "disabled"}
@@ -97,7 +127,7 @@ function LiveFields({ variant, submitting }: { variant: Variant; submitting: boo
           Message
         </label>
         <textarea
-          className={cx("textarea-input w-input", proto)}
+          className={cx("textarea-input w-input", proto, proto && sizeClass("l"))}
           id={`${id}-message`}
           maxLength={5000}
           placeholder="Type your message…"
@@ -124,7 +154,7 @@ function LiveFields({ variant, submitting }: { variant: Variant; submitting: boo
           </div>
         ) : (
           <select
-            className={cx("text-input w-select", proto, styles.select)}
+            className={cx("text-input w-select", proto, sizeClass("m"), styles.select)}
             id={`${id}-topic`}
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
@@ -140,7 +170,7 @@ function LiveFields({ variant, submitting }: { variant: Variant; submitting: boo
         <input
           aria-label="Email address"
           autoComplete={variant === "proto" ? "email" : undefined}
-          className={cx("text-input w-input", proto)}
+          className={cx("text-input w-input", proto, proto && sizeClass("l"))}
           disabled={submitting}
           placeholder="Enter your email"
           required
@@ -153,6 +183,42 @@ function LiveFields({ variant, submitting }: { variant: Variant; submitting: boo
         </div>
       </form>
     </>
+  );
+}
+
+function SizeRows() {
+  return (
+    <div className={styles.proto}>
+      {SIZES.map((size) => (
+        <div key={size.id} className={styles.sizeBlock}>
+          <div className={styles.sizeHead}>
+            <span className="heading-style-h6">{size.title}</span>
+            <span className={`text-size-small ${styles.cellLabel}`}>{size.note}</span>
+          </div>
+          <div className={styles.sizeRow}>
+            <input
+              aria-label={`Email, size ${size.title}`}
+              autoComplete="email"
+              className={cx("text-input w-input", styles.f, sizeClass(size.id))}
+              placeholder="Enter your email"
+              type="email"
+            />
+            <input
+              aria-label={`Email, size ${size.title}, focused`}
+              className={cx("text-input w-input", styles.f, sizeClass(size.id), styles.forceFocus)}
+              defaultValue="roman@setproduct.com"
+              type="email"
+            />
+            <button className={`${size.button} w-inline-block`} type="button">
+              <div className={`${size.buttonText} text-weight-bold`}>Subscribe</div>
+            </button>
+            <button className={`${size.button} ${size.id === "s" ? "is-secondary" : "secondary"} w-inline-block`} type="button">
+              <div className={`${size.buttonText} text-weight-bold`}>Cancel</div>
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -177,6 +243,17 @@ export default function InputsProtoPage({ blogPosts }: Props) {
                 styles. Hover and focus rows are frozen; every other field is live, so you can click, type
                 and tab through it. Check the page at 1440, 1024, 768 and 390 px.
               </p>
+
+              <div className="spacer-48" />
+              <h2 className="heading-style-h5">Sizes L, M, S next to the buttons</h2>
+              <div className="spacer-4" />
+              <p className={`text-size-regular ${styles.cellLabel}`}>
+                Each row: empty field, frozen focus, primary and secondary button of the same size. Heights
+                match the button, and the focus edge matches the button edge. Click the empty field to see the
+                motion.
+              </p>
+              <div className="spacer-16" />
+              <SizeRows />
 
               {STATES.map((state) => (
                 <div key={state.id}>

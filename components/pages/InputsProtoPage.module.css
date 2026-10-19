@@ -1,3 +1,38 @@
+/* ---------- Size rows (fields next to buttons of the same size) ---------- */
+
+.sizeBlock + .sizeBlock {
+  margin-top: 32em;
+}
+
+.sizeHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12em;
+  margin-bottom: 12em;
+}
+
+.sizeRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12em;
+}
+
+.sizeRow > input {
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .sizeRow {
+    flex-wrap: wrap;
+  }
+
+  .sizeRow > input {
+    flex-basis: 100%;
+  }
+}
+
 /* Inputs prototype (see plans/inputs-design-system-audit.md).
    Proposed styles are scoped to .proto, so live fields on the site stay untouched.
    Every prototype field gets the module class .f. Selectors use `.f.f` on purpose:
@@ -28,10 +63,9 @@
   --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
   --input-border-focus: var(--primary);
 
-  /* Outer edge on focus = outlined push button edge. Height follows the button size:
-     L (6) for regular fields, M (4) for the navbar/search size, set per size below.
-     Written via --em-px because the field has its own font-size and plain em would scale. */
-  --input-edge-size: calc(6 * var(--em-px));
+  /* Outer edge on focus = outlined push button edge. Height follows the button size
+     (L 6, M 4, S 3), set per size below. Written via --em-px because the field has
+     its own font-size and plain em would scale with it. */
   --input-edge: var(--btn-outlined-edge);
   --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
   --input-shadow:
@@ -39,7 +73,6 @@
     inset 0 0 0 0 transparent,
     0 0 0 0 transparent;
   --input-shadow-hover: var(--input-shadow);
-  --input-lift: -2px;
 
   --input-placeholder: #19181b8c;
   --input-placeholder-hover: #19181bb3;
@@ -55,14 +88,11 @@
 /* ---------- Base ---------- */
 
 .proto .f.f {
-  /* Never below 16px: smaller text makes iOS Safari zoom the page on focus,
-     and at 768–1024px the em scale used to shrink the text to 10–13px. */
-  font-size: max(18em, 16px);
   color: var(--black);
   background-color: var(--input-bg);
   border: 1px solid var(--input-border);
-  border-radius: calc(16 * var(--em-px));
   box-shadow: var(--input-shadow);
+  line-height: 1.5;
   outline: none;
   margin-bottom: 0;
   transform: translateY(0);
@@ -82,24 +112,67 @@
   color: var(--input-placeholder);
 }
 
-/* Size M (navbar and /search). Height is pinned to the M button (41px at 1440).
-   Desktop keeps the compact 14em; touch screens get the 16px floor against iOS zoom. */
-.proto .f.f:global(.is-nav-search) {
+/* ---------- Sizes L / M / S, paired with the button sizes ----------
+   Each field size copies the button of the same size, value for value (px at 1440):
+
+   size | button class    | height | radius | text | focus edge | lift
+   L    | .button         | 50     | 20     | 18   | 6          | 2
+   M    | .button-small   | 40     | 16     | 16   | 4          | 1.5
+   S    | .button-x-small | 31     | 12     | 14   | 3          | 1
+
+   Height = text × 1.5 + vertical padding × 2 + 1px border × 2, so a field and a button
+   of the same size stand at the same height in one row and their bottom edges line up
+   on focus. Lift is a third of the edge, so the edge reads the same on every size.
+   Text never drops below 16px on touch screens (smaller text makes iOS Safari zoom in);
+   L and M also never drop below 16px on narrow desktop windows. */
+
+.proto .f.f.l {
+  --input-edge-size: calc(6 * var(--em-px));
+  --input-lift: calc(-2 * var(--em-px));
+  font-size: max(18em, 16px);
+  min-height: calc(50 * var(--em-px));
+  padding: calc(10.5 * var(--em-px)) calc(20 * var(--em-px));
+  border-radius: calc(20 * var(--em-px));
+}
+
+.proto .f.f.m {
   --input-edge-size: calc(4 * var(--em-px));
+  --input-lift: calc(-1.5 * var(--em-px));
+  font-size: max(16em, 16px);
+  min-height: calc(40 * var(--em-px));
+  padding: calc(7 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(16 * var(--em-px));
+}
+
+.proto .f.f.s {
+  --input-edge-size: calc(3 * var(--em-px));
+  --input-lift: calc(-1 * var(--em-px));
   font-size: 14em;
-  min-height: calc(41 * var(--em-px));
-  padding-left: max(calc(48 * var(--em-px)), 40px);
+  min-height: calc(31 * var(--em-px));
+  padding: calc(4 * var(--em-px)) calc(12 * var(--em-px));
   border-radius: calc(12 * var(--em-px));
 }
 
 @media (pointer: coarse) {
-  .proto .f.f:global(.is-nav-search) {
+  .proto .f.f.s {
     font-size: max(14em, 16px);
   }
 }
 
+/* The magnifier is a sibling, it does not inherit the field's --input-lift. */
+.proto .f.f.l ~ :global(.search-icon-wr) { --input-lift: calc(-2 * var(--em-px)); }
+.proto .f.f.m ~ :global(.search-icon-wr) { --input-lift: calc(-1.5 * var(--em-px)); }
+.proto .f.f.s ~ :global(.search-icon-wr) { --input-lift: calc(-1 * var(--em-px)); }
+
+/* Search: room for the magnifier on the left (icon wrapper 16 + icon 21 + gap 11). */
+.proto .f.f:global(.is-nav-search) {
+  padding-left: max(calc(48 * var(--em-px)), 40px);
+}
+
+/* Textarea: keeps the size's radius and paddings, grows to several lines. */
 .proto .f.f:global(.textarea-input) {
   resize: vertical;
+  min-height: calc(128 * var(--em-px));
 }
 
 /* Select: native element, brand chevron drawn as a background image. */
