@@ -57,7 +57,6 @@
 .sizeRow > input {
   flex: 1 1 0;
   min-width: 0;
-  height: auto;
 }
 
 @media (max-width: 991px) {
@@ -167,36 +166,41 @@
    M    | .button-small   | 40     | 16     | 16   | 4          | 1.5
    S    | .button-x-small | 31     | 12     | 14   | 3          | 1
 
-   Height = text × 1.5 + vertical padding × 2 + 1px border × 2, so a field and a button
-   of the same size stand at the same height in one row and their bottom edges line up
-   on focus. Lift is a third of the edge, so the edge reads the same on every size.
+   Height is fixed and equal to the button body (border-box, so the 1px border is inside).
+   It is computed from --em-px, the same scale the button padding and text use, so both
+   shrink together on every width and their bottom edges line up. The text is centred
+   vertically by the browser, so the 16px font floor never makes the field taller.
+   Lift is a third of the edge, so the edge reads the same on every size.
    Text never drops below 16px on touch screens (smaller text makes iOS Safari zoom in);
    L and M also never drop below 16px on narrow desktop windows. */
 
 .proto .f.f.l {
   --input-edge-size: calc(6 * var(--em-px));
   --input-lift: calc(-2 * var(--em-px));
+  --input-pad-y: calc(10.5 * var(--em-px));
   font-size: max(18em, 16px);
-  min-height: calc(50 * var(--em-px));
-  padding: calc(10.5 * var(--em-px)) calc(20 * var(--em-px));
+  height: calc(50 * var(--em-px));
+  padding: 0 calc(20 * var(--em-px));
   border-radius: calc(20 * var(--em-px));
 }
 
 .proto .f.f.m {
   --input-edge-size: calc(4 * var(--em-px));
   --input-lift: calc(-1.5 * var(--em-px));
+  --input-pad-y: calc(7 * var(--em-px));
   font-size: max(16em, 16px);
-  min-height: calc(40 * var(--em-px));
-  padding: calc(7 * var(--em-px)) calc(16 * var(--em-px));
+  height: calc(40 * var(--em-px));
+  padding: 0 calc(16 * var(--em-px));
   border-radius: calc(16 * var(--em-px));
 }
 
 .proto .f.f.s {
   --input-edge-size: calc(3 * var(--em-px));
   --input-lift: calc(-1 * var(--em-px));
+  --input-pad-y: calc(4 * var(--em-px));
   font-size: 14em;
-  min-height: calc(31 * var(--em-px));
-  padding: calc(4 * var(--em-px)) calc(12 * var(--em-px));
+  height: calc(31 * var(--em-px));
+  padding: 0 calc(12 * var(--em-px));
   border-radius: calc(12 * var(--em-px));
 }
 
@@ -230,7 +234,11 @@
 .proto .f.f.m:global(.textarea-input) { min-height: calc(104 * var(--em-px)); }
 .proto .f.f.s:global(.textarea-input) { min-height: calc(80 * var(--em-px)); }
 
-.proto .f.f:global(.textarea-input) {
+/* Textarea is the only multi-line field: it gets its vertical padding back and grows. */
+.proto .f.f.f:global(.textarea-input) {
+  height: auto;
+  padding-top: var(--input-pad-y);
+  padding-bottom: var(--input-pad-y);
   resize: vertical;
   display: block;
 }
@@ -238,7 +246,6 @@
 /* Select: native element, brand chevron drawn as a background image, scaled with the size. */
 .proto .f.f.select {
   appearance: none;
-  height: auto;
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237c4dff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
