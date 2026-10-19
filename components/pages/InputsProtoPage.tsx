@@ -14,8 +14,8 @@ type StateId = "default" | "hover" | "focus" | "filled" | "error" | "disabled";
 
 const STATES: { id: StateId; title: string; note: string }[] = [
   { id: "default", title: "Default", note: "Empty field, placeholder visible" },
-  { id: "hover", title: "Hover (frozen)", note: "Now: same as focus. Proposed: no movement. Fill clears up, border turns light purple, inner shadow sharpens into a crisp line" },
-  { id: "focus", title: "Focus (frozen)", note: "Now: 1px border only. Proposed: 2px purple border, the inner shadow moves outside as a crisp edge, the field lifts 2px, the label stays. Click a field to see the motion" },
+  { id: "hover", title: "Hover (frozen)", note: "Now: same as focus. Proposed: no movement, same inner shadow. Fill clears up, border turns light purple" },
+  { id: "focus", title: "Focus (frozen)", note: "Now: 1px border only. Proposed: 2px purple border, the inner shadow moves outside as the outlined button edge, the field lifts 2px, the label stays. Click a field to see the motion" },
   { id: "filled", title: "Filled", note: "Value entered, no focus" },
   { id: "error", title: "Error", note: "Now: no error style at all. Proposed: red border, text linked via aria-describedby" },
   { id: "disabled", title: "Disabled", note: "Now: Webflow grey #eee. Proposed: brand fill at 60%" },

@@ -11,16 +11,16 @@
      A field rests below the page (inner shadow from the top). On focus the shadow moves
      from the inner contour to the outer one:
      - the inner top shadow fades out (the well flattens);
-     - a crisp bottom edge appears outside, the same hard edge the push button has, no blur;
-     - a short soft contact shadow sits under the edge, kept tight so it adds depth, not haze;
+     - a crisp bottom edge appears outside, exactly the edge of the outlined push button:
+       same colour (--btn-outlined-edge, primary at 30%), same height (6 for L, 4 for M), no blur;
      - the field lifts 2px; the label above stays put, so the motion reads against it;
      - the border turns primary and doubles to 2px via an inner 1px rim;
      - the fill gets a touch lighter (it moved closer to the light).
-     Hover never moves the field. It is a static "the field noticed you" cue:
-     the fill clears up towards white, the border picks up the brand colour,
-     and the inner top shadow turns from a haze into a crisp purple line.
-     Every state uses the same 4 shadow layers in the same order, so the browser can
-     interpolate them: 1 inner top, 2 inner rim, 3 hard edge, 4 soft contact. */
+     Hover never moves the field and keeps the resting inner shadow as is.
+     It is a static "the field noticed you" cue: the fill clears up towards white,
+     the border picks up the brand colour, the placeholder gets a bit darker.
+     Every state uses the same 3 shadow layers in the same order, so the browser can
+     interpolate them: 1 inner top, 2 inner rim, 3 outer edge. */
   --input-bg: #f0ebff;
   --input-bg-hover: #f4f0ff;
   --input-bg-focus: #f8f5ff;
@@ -28,34 +28,23 @@
   --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
   --input-border-focus: var(--primary);
 
-  --input-edge: #5426d166;
-  --input-contact: #5426d140;
+  /* Outer edge on focus = outlined push button edge. Height follows the button size:
+     L (6) for regular fields, M (4) for the navbar/search size, set per size below.
+     Written via --em-px because the field has its own font-size and plain em would scale. */
+  --input-edge-size: calc(6 * var(--em-px));
+  --input-edge: var(--btn-outlined-edge);
+  --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
   --input-shadow:
     inset 0 3px 1px #7c4dff33,
     inset 0 0 0 0 transparent,
-    0 0 0 0 transparent,
     0 0 0 0 transparent;
-  --input-shadow-hover:
-    inset 0 2px 0 #7c4dff40,
-    inset 0 0 0 0 transparent,
-    0 0 0 0 transparent,
-    0 0 0 0 transparent;
-  --input-shadow-focus:
-    inset 0 0 0 0 transparent,
-    inset 0 0 0 1px var(--input-border-focus),
-    0 3px 0 0 var(--input-edge),
-    0 8px 10px -8px var(--input-contact);
+  --input-shadow-hover: var(--input-shadow);
   --input-lift: -2px;
 
   --input-placeholder: #19181b8c;
   --input-placeholder-hover: #19181bb3;
   --input-error: #e03e3e;
   --input-error-bg-focus: #fff5f5;
-  --input-shadow-error-focus:
-    inset 0 0 0 0 transparent,
-    inset 0 0 0 1px var(--input-error),
-    0 3px 0 0 #b4232366,
-    0 8px 10px -8px #b4232340;
 
   /* Rising is quick, settling back into the page is slower and softer. */
   --input-in: 160ms;
@@ -96,6 +85,7 @@
 /* Size M (navbar and /search). Height is pinned to the M button (41px at 1440).
    Desktop keeps the compact 14em; touch screens get the 16px floor against iOS zoom. */
 .proto .f.f:global(.is-nav-search) {
+  --input-edge-size: calc(4 * var(--em-px));
   font-size: 14em;
   min-height: calc(41 * var(--em-px));
   padding-left: max(calc(48 * var(--em-px)), 40px);
@@ -126,8 +116,8 @@
 
 /* ---------- Hover (differs from focus) ---------- */
 
-/* Hover: no movement. Fill clears up, border picks up the brand colour,
-   the inner top shadow sharpens into a crisp line, placeholder gets a bit darker. */
+/* Hover: no movement, resting inner shadow unchanged. Fill clears up,
+   border picks up the brand colour, placeholder gets a bit darker. */
 .proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
 .proto .f.f.forceHover {
   border-color: var(--input-border-hover);
@@ -141,6 +131,20 @@
 }
 
 /* ---------- Focus: the shadow moves from inside to outside, the field lifts ---------- */
+
+/* Focus shadows are declared on the field itself (not on .proto): a custom property
+   resolves where it is declared, so this is the only way the per-size
+   --input-edge-size (6 for L, 4 for the navbar size) reaches the shadow. */
+.proto .f.f {
+  --input-shadow-focus:
+    inset 0 0 0 0 transparent,
+    inset 0 0 0 1px var(--input-border-focus),
+    0 var(--input-edge-size) 0 0 var(--input-edge);
+  --input-shadow-error-focus:
+    inset 0 0 0 0 transparent,
+    inset 0 0 0 1px var(--input-error),
+    0 var(--input-edge-size) 0 0 var(--input-edge-error);
+}
 
 .proto .f.f:focus,
 .proto .f.f.forceFocus {
