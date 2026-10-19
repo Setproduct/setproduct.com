@@ -1,0 +1,200 @@
+/* Inputs prototype (see plans/inputs-design-system-audit.md).
+   Proposed styles are scoped to .proto, so live fields on the site stay untouched.
+   Every prototype field gets the module class .f. Selectors use `.f.f` on purpose:
+   specificity 0,3,0 beats `.text-input.is-nav-search` from globals.css (0,2,0),
+   and `.f.f:disabled` (0,4,0) beats Webflow `.w-input[disabled]:not(...)` (0,3,0),
+   regardless of the order in which the stylesheets load. */
+
+.proto {
+  --input-bg: #f0ebff;
+  --input-bg-focus: var(--white);
+  --input-border: #1a191c26;
+  --input-border-hover: color-mix(in srgb, var(--primary) 45%, transparent);
+  --input-border-focus: var(--primary);
+  --input-ring: color-mix(in srgb, var(--primary) 20%, transparent);
+  --input-ring-size: max(calc(4 * var(--em-px)), 3px);
+  /* The pressed-in inner shadow is the brand signature of the field (same idea as push buttons).
+     On focus it gets lighter: the field "rises" towards the user. */
+  --input-inset: inset 0 3px 1px #7c4dff33;
+  --input-inset-focus: inset 0 2px 1px #7c4dff14;
+  --input-placeholder: #19181b8c;
+  --input-error: #e03e3e;
+  --input-error-ring: color-mix(in srgb, #e03e3e 16%, transparent);
+  --input-dur: 200ms;
+  --input-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Base ---------- */
+
+.proto .f.f {
+  /* Never below 16px: smaller text makes iOS Safari zoom the page on focus,
+     and at 768–1024px the em scale used to shrink the text to 10–13px. */
+  font-size: max(18em, 16px);
+  color: var(--black);
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: calc(16 * var(--em-px));
+  box-shadow: var(--input-inset);
+  outline: none;
+  margin-bottom: 0;
+  transition:
+    border-color var(--input-dur) var(--input-ease),
+    box-shadow var(--input-dur) var(--input-ease),
+    background-color var(--input-dur) var(--input-ease);
+}
+
+.proto .f.f::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* Size M (navbar and /search). Height is pinned to the M button (41px at 1440).
+   Desktop keeps the compact 14em; touch screens get the 16px floor against iOS zoom. */
+.proto .f.f:global(.is-nav-search) {
+  font-size: 14em;
+  min-height: calc(41 * var(--em-px));
+  padding-left: max(calc(48 * var(--em-px)), 40px);
+  border-radius: calc(12 * var(--em-px));
+}
+
+@media (pointer: coarse) {
+  .proto .f.f:global(.is-nav-search) {
+    font-size: max(14em, 16px);
+  }
+}
+
+.proto .f.f:global(.textarea-input) {
+  resize: vertical;
+}
+
+/* Select: native element, brand chevron drawn as a background image. */
+.proto .f.f.select {
+  appearance: none;
+  height: auto;
+  cursor: pointer;
+  padding-right: max(calc(44 * var(--em-px)), 36px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237c4dff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right max(calc(16 * var(--em-px)), 12px) center;
+  background-size: max(calc(16 * var(--em-px)), 14px);
+}
+
+/* ---------- Hover (differs from focus) ---------- */
+
+.proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
+.proto .f.f.forceHover {
+  border-color: var(--input-border-hover);
+}
+
+/* ---------- Focus: primary border + soft ring, field turns white ---------- */
+
+.proto .f.f:focus,
+.proto .f.f.forceFocus {
+  border-color: var(--input-border-focus);
+  background-color: var(--input-bg-focus);
+  box-shadow: var(--input-inset-focus), 0 0 0 var(--input-ring-size) var(--input-ring);
+}
+
+/* ---------- Error: red border, red ring on focus ---------- */
+
+.proto .f.f[aria-invalid="true"] {
+  border-color: var(--input-error);
+}
+
+.proto .f.f[aria-invalid="true"]:focus {
+  box-shadow: var(--input-inset-focus), 0 0 0 var(--input-ring-size) var(--input-error-ring);
+}
+
+/* Separate rule: an unsupported pseudo-class would drop the whole selector list. */
+.proto .f.f:user-invalid {
+  border-color: var(--input-error);
+}
+
+/* ---------- Disabled: brand fill instead of Webflow grey #eee ---------- */
+
+.proto .f.f:disabled {
+  background-color: var(--input-bg);
+  box-shadow: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Inline form: button stretches to the field height ---------- */
+
+.proto .inlineForm {
+  align-items: stretch;
+}
+
+.proto .inlineForm :global(.button-form-wr) {
+  display: flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proto .f.f {
+    transition: none;
+  }
+}
+
+/* ---------- Current site: emulate :hover / :focus for the frozen state rows ---------- */
+
+.now .forceHover,
+.now .forceFocus {
+  border-color: var(--primary);
+}
+
+/* ---------- Field helpers (label, hint, error text) ---------- */
+
+.fieldWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8em;
+  width: 100%;
+}
+
+.label.label {
+  display: block;
+  margin: 0;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0;
+  color: #19181b99;
+}
+
+.errorText {
+  margin: 0;
+  color: #e03e3e;
+}
+
+/* /search width override: globals.css pins .is-nav-search to 16.67em */
+.cell input.searchWide {
+  width: 100%;
+}
+
+/* ---------- Page layout (prototype only) ---------- */
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24em;
+}
+
+.cell {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: 32em;
+  display: flex;
+  flex-direction: column;
+  gap: 16em;
+}
+
+.cellLabel {
+  margin: 0;
+  color: var(--grey);
+}
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
