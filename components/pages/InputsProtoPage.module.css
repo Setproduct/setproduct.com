@@ -14,37 +14,46 @@
      - a crisp bottom edge appears outside, the same hard edge the push button has, no blur;
      - a short soft contact shadow sits under the edge, kept tight so it adds depth, not haze;
      - the field lifts 2px; the label above stays put, so the motion reads against it;
-     - the border turns primary, the fill gets a touch lighter (it moved closer to the light).
-     Every state uses the same 3 shadow layers in the same order, so the browser can
-     interpolate them: layer 1 inner, layer 2 hard edge, layer 3 soft contact. */
+     - the border turns primary and doubles to 2px via an inner 1px rim;
+     - the fill gets a touch lighter (it moved closer to the light).
+     Hover never moves the field. It is a static "the field noticed you" cue:
+     the fill clears up towards white, the border picks up the brand colour,
+     and the inner top shadow turns from a haze into a crisp purple line.
+     Every state uses the same 4 shadow layers in the same order, so the browser can
+     interpolate them: 1 inner top, 2 inner rim, 3 hard edge, 4 soft contact. */
   --input-bg: #f0ebff;
-  --input-bg-focus: #f6f2ff;
+  --input-bg-hover: #f4f0ff;
+  --input-bg-focus: #f8f5ff;
   --input-border: #1a191c26;
-  --input-border-hover: color-mix(in srgb, var(--primary) 45%, transparent);
+  --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
   --input-border-focus: var(--primary);
 
   --input-edge: #5426d166;
   --input-contact: #5426d140;
   --input-shadow:
     inset 0 3px 1px #7c4dff33,
+    inset 0 0 0 0 transparent,
     0 0 0 0 transparent,
     0 0 0 0 transparent;
   --input-shadow-hover:
-    inset 0 2px 1px #7c4dff2e,
-    0 1px 0 0 #5426d126,
+    inset 0 2px 0 #7c4dff40,
+    inset 0 0 0 0 transparent,
+    0 0 0 0 transparent,
     0 0 0 0 transparent;
   --input-shadow-focus:
     inset 0 0 0 0 transparent,
+    inset 0 0 0 1px var(--input-border-focus),
     0 3px 0 0 var(--input-edge),
     0 8px 10px -8px var(--input-contact);
   --input-lift: -2px;
-  --input-lift-hover: -1px;
 
   --input-placeholder: #19181b8c;
+  --input-placeholder-hover: #19181bb3;
   --input-error: #e03e3e;
   --input-error-bg-focus: #fff5f5;
   --input-shadow-error-focus:
     inset 0 0 0 0 transparent,
+    inset 0 0 0 1px var(--input-error),
     0 3px 0 0 #b4232366,
     0 8px 10px -8px #b4232340;
 
@@ -117,18 +126,18 @@
 
 /* ---------- Hover (differs from focus) ---------- */
 
-/* Hover: a hint of the rise. The inner shadow gets shallower, a 1px edge peeks out below,
-   the field lifts 1px. */
+/* Hover: no movement. Fill clears up, border picks up the brand colour,
+   the inner top shadow sharpens into a crisp line, placeholder gets a bit darker. */
 .proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
 .proto .f.f.forceHover {
   border-color: var(--input-border-hover);
+  background-color: var(--input-bg-hover);
   box-shadow: var(--input-shadow-hover);
-  transform: translateY(var(--input-lift-hover));
 }
 
-.proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]) ~ :global(.search-icon-wr),
-.proto .f.f.forceHover ~ :global(.search-icon-wr) {
-  transform: translateY(var(--input-lift-hover));
+.proto .f.f:hover:not(:focus):not(:disabled)::placeholder,
+.proto .f.f.forceHover::placeholder {
+  color: var(--input-placeholder-hover);
 }
 
 /* ---------- Focus: the shadow moves from inside to outside, the field lifts ---------- */
