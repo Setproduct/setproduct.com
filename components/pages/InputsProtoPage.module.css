@@ -3,42 +3,45 @@
    Every prototype field gets the module class .f. Selectors use `.f.f` on purpose:
    specificity 0,3,0 beats `.text-input.is-nav-search` from globals.css (0,2,0),
    and `.f.f:disabled` (0,4,0) beats Webflow `.w-input[disabled]:not(...)` (0,3,0),
-   regardless of the order in which the stylesheets load.
-
-   Focus mechanic (v2, after review): no outer ring. The field already carries a
-   pressed-in inner shadow from the top (`inset 0 3px 1px`). Focus deepens that
-   well, the same way a push button drops onto its edge: the field sinks into the
-   page instead of lighting up around itself. Timing mirrors the buttons —
-   fast in, slower out, via `transition-duration` on the focused state. */
+   regardless of the order in which the stylesheets load. */
 
 .proto {
-  /* Fill and border */
+  /* Focus = the field sinks deeper, mirroring the pressed push button.
+     A button rests above the page and drops onto it; a field already rests
+     below the page (inner shadow from the top) and on focus goes one step deeper:
+     - the top inner shadow grows taller and softer (a deeper well);
+     - the fill gets a shade darker (less light reaches the bottom of the well);
+     - a thin light lip appears along the bottom inner edge (light catching the far wall);
+     - the 1px border turns primary and doubles via an inner 1px rim, no outer ring;
+     - the text drops 1px, like the label of a pressed button.
+     Nothing is drawn outside the field, so it never looks like a shadcn focus ring. */
   --input-bg: #f0ebff;
-  --input-bg-deep: var(--light-primary); /* a step darker: the well gets less light */
+  --input-bg-focus: #e9e0ff;
   --input-border: #1a191c26;
   --input-border-hover: color-mix(in srgb, var(--primary) 45%, transparent);
   --input-border-focus: var(--primary);
 
-  /* The well. Rest is the current brand shadow, untouched.
-     hover is a small step down (the field "notices" the pointer),
-     deep is the focus state (7px wall instead of 3px),
-     lip is the light catching the bottom wall of the recess. */
   --input-inset: inset 0 3px 1px #7c4dff33;
-  --input-inset-hover: inset 0 4px 2px #7c4dff3d;
-  --input-inset-deep: inset 0 7px 3px -1px #7c4dff59;
-  --input-inset-lip: inset 0 -2px 1px #ffffffa6;
-
-  /* Variant C: recessed on both walls instead of the top only. */
-  --input-inset-both: inset 0 5px 3px -1px #7c4dff40, inset 0 -5px 3px -1px #7c4dff26;
-
-  --input-inset-deep-error: inset 0 7px 3px -1px #e03e3e59;
+  --input-inset-hover: inset 0 3px 2px #7c4dff40;
+  --input-inset-focus:
+    inset 0 5px 8px -1px #5426d14d,
+    inset 0 2px 1px #5426d133,
+    inset 0 0 0 1px var(--input-border-focus),
+    inset 0 -1px 0 1px #ffffffb3;
+  --input-press-shift: 1px;
 
   --input-placeholder: #19181b8c;
   --input-error: #e03e3e;
+  --input-error-bg-focus: #fdeeee;
+  --input-inset-error-focus:
+    inset 0 5px 8px -1px #b4232333,
+    inset 0 2px 1px #b4232326,
+    inset 0 0 0 1px var(--input-error),
+    inset 0 -1px 0 1px #ffffffb3;
 
-  /* Same rhythm as the buttons: press in fast, release slower. */
-  --input-in: 80ms;
-  --input-out: 170ms;
+  /* Sinking in is quick (like the press), coming back up is slower (like the release). */
+  --input-sink: 140ms;
+  --input-rise: 260ms;
   --input-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -56,9 +59,10 @@
   outline: none;
   margin-bottom: 0;
   transition:
-    border-color var(--input-out) var(--input-ease),
-    box-shadow var(--input-out) var(--input-ease),
-    background-color var(--input-out) var(--input-ease);
+    border-color var(--input-rise) var(--input-ease),
+    box-shadow var(--input-rise) var(--input-ease),
+    background-color var(--input-rise) var(--input-ease),
+    padding var(--input-rise) var(--input-ease);
 }
 
 .proto .f.f::placeholder {
@@ -96,44 +100,50 @@
   background-size: max(calc(16 * var(--em-px)), 14px);
 }
 
-/* ---------- Hover: one small step down the well, no fill change ---------- */
+/* ---------- Hover (differs from focus) ---------- */
 
+/* Hover: the well gets a touch deeper, a hint of the focus to come. */
 .proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
 .proto .f.f.forceHover {
   border-color: var(--input-border-hover);
   box-shadow: var(--input-inset-hover);
 }
 
-/* ---------- Focus: the field sinks. Border marks it, depth carries it. ---------- */
+/* ---------- Focus: the field sinks deeper (see the token comment above) ---------- */
 
 .proto .f.f:focus,
 .proto .f.f.forceFocus {
   border-color: var(--input-border-focus);
-  box-shadow: var(--input-inset-deep), var(--input-inset-lip);
-  /* fast in, like the button press */
-  transition-duration: var(--input-in);
+  background-color: var(--input-bg-focus);
+  box-shadow: var(--input-inset-focus);
+  /* Text drops 1px: top padding grows, bottom shrinks, height stays the same. */
+  padding-top: calc(0.6em + var(--input-press-shift));
+  padding-bottom: calc(0.6em - var(--input-press-shift));
+  transition-duration: var(--input-sink);
 }
 
-/* Variant B: the well also loses light, so the fill darkens one step. */
-.proto .f.f.focusB.forceFocus,
-.proto .f.f.focusB:focus {
-  background-color: var(--input-bg-deep);
+/* Navbar size has its own paddings (0.629em), keep the same 1px drop there. */
+.proto .f.f:global(.is-nav-search):focus,
+.proto .f.f:global(.is-nav-search).forceFocus {
+  padding-top: calc(0.629em + var(--input-press-shift));
+  padding-bottom: calc(0.629em - var(--input-press-shift));
 }
 
-/* Variant C: recessed on both walls, like the S-size button pressing inside its box. */
-.proto .f.f.focusC.forceFocus,
-.proto .f.f.focusC:focus {
-  box-shadow: var(--input-inset-both);
+.proto .f.f:global(.textarea-input):focus,
+.proto .f.f:global(.textarea-input).forceFocus {
+  padding-top: calc(0.7em + var(--input-press-shift));
+  padding-bottom: calc(0.7em - var(--input-press-shift));
 }
 
-/* ---------- Error ---------- */
+/* ---------- Error: red border; on focus the same sink in red tones ---------- */
 
 .proto .f.f[aria-invalid="true"] {
   border-color: var(--input-error);
 }
 
 .proto .f.f[aria-invalid="true"]:focus {
-  box-shadow: var(--input-inset-deep-error), var(--input-inset-lip);
+  background-color: var(--input-error-bg-focus);
+  box-shadow: var(--input-inset-error-focus);
 }
 
 /* Separate rule: an unsupported pseudo-class would drop the whole selector list. */
@@ -166,12 +176,11 @@
   }
 }
 
-/* ---------- Current site: the frozen rows reproduce today's hover and focus ---------- */
+/* ---------- Current site: emulate :hover / :focus for the frozen state rows ---------- */
 
 .now .forceHover,
 .now .forceFocus {
   border-color: var(--primary);
-  box-shadow: var(--input-inset);
 }
 
 /* ---------- Field helpers (label, hint, error text) ---------- */
@@ -212,12 +221,6 @@
   gap: 24em;
 }
 
-.rowFour {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24em;
-}
-
 .cell {
   border: 1px solid var(--black-transparent);
   border-radius: calc(16 * var(--em-px));
@@ -232,15 +235,8 @@
   color: var(--grey);
 }
 
-@media (max-width: 991px) {
-  .rowFour {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 @media (max-width: 767px) {
-  .row,
-  .rowFour {
+  .row {
     grid-template-columns: 1fr;
   }
 }
