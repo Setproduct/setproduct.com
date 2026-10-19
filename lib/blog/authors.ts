@@ -53,6 +53,11 @@ export const AUTHORS: Record<string, Author> = {
     name: "William James",
     avatar: "/blog/authors/william-james.webp",
   },
+  "stephen-green": {
+    slug: "stephen-green",
+    name: "Stephen Green",
+    avatar: "/blog/authors/stephen-green.webp",
+  },
 };
 
 const FALLBACK_AUTHOR: Author = {
