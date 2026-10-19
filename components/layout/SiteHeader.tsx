@@ -89,9 +89,9 @@ const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> 
   { label: "All topics", category: null },
   { label: "Code", category: "Code" },
   { label: "Components", category: "Components" },
+  { label: "Free UI kits", category: "Free UI kits" },
   { label: "Mobile templates", category: "Mobile Templates" },
   { label: "Desktop templates", category: "Desktop templates" },
-  { label: "Desktop apps", category: "Desktop apps" },
   { label: "Data visualization", category: "Data visualization" },
   { label: "Web design", category: "Web Design" },
 ];
