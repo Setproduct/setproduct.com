@@ -6,42 +6,51 @@
    regardless of the order in which the stylesheets load. */
 
 .proto {
-  /* Focus = the field sinks deeper, mirroring the pressed push button.
-     A button rests above the page and drops onto it; a field already rests
-     below the page (inner shadow from the top) and on focus goes one step deeper:
-     - the top inner shadow grows taller and softer (a deeper well);
-     - the fill gets a shade darker (less light reaches the bottom of the well);
-     - a thin light lip appears along the bottom inner edge (light catching the far wall);
-     - the 1px border turns primary and doubles via an inner 1px rim, no outer ring;
-     - the text drops 1px, like the label of a pressed button.
-     Nothing is drawn outside the field, so it never looks like a shadcn focus ring. */
+  /* Focus = the field rises out of the page, the mirror image of the pressed push button.
+     A button rests above the page with a hard bottom edge and drops onto it when pressed.
+     A field rests below the page (inner shadow from the top). On focus the shadow moves
+     from the inner contour to the outer one:
+     - the inner top shadow fades out (the well flattens);
+     - a crisp bottom edge appears outside, the same hard edge the push button has, no blur;
+     - a short soft contact shadow sits under the edge, kept tight so it adds depth, not haze;
+     - the field lifts 2px; the label above stays put, so the motion reads against it;
+     - the border turns primary, the fill gets a touch lighter (it moved closer to the light).
+     Every state uses the same 3 shadow layers in the same order, so the browser can
+     interpolate them: layer 1 inner, layer 2 hard edge, layer 3 soft contact. */
   --input-bg: #f0ebff;
-  --input-bg-focus: #e9e0ff;
+  --input-bg-focus: #f6f2ff;
   --input-border: #1a191c26;
   --input-border-hover: color-mix(in srgb, var(--primary) 45%, transparent);
   --input-border-focus: var(--primary);
 
-  --input-inset: inset 0 3px 1px #7c4dff33;
-  --input-inset-hover: inset 0 3px 2px #7c4dff40;
-  --input-inset-focus:
-    inset 0 5px 8px -1px #5426d14d,
-    inset 0 2px 1px #5426d133,
-    inset 0 0 0 1px var(--input-border-focus),
-    inset 0 -1px 0 1px #ffffffb3;
-  --input-press-shift: 1px;
+  --input-edge: #5426d166;
+  --input-contact: #5426d140;
+  --input-shadow:
+    inset 0 3px 1px #7c4dff33,
+    0 0 0 0 transparent,
+    0 0 0 0 transparent;
+  --input-shadow-hover:
+    inset 0 2px 1px #7c4dff2e,
+    0 1px 0 0 #5426d126,
+    0 0 0 0 transparent;
+  --input-shadow-focus:
+    inset 0 0 0 0 transparent,
+    0 3px 0 0 var(--input-edge),
+    0 8px 10px -8px var(--input-contact);
+  --input-lift: -2px;
+  --input-lift-hover: -1px;
 
   --input-placeholder: #19181b8c;
   --input-error: #e03e3e;
-  --input-error-bg-focus: #fdeeee;
-  --input-inset-error-focus:
-    inset 0 5px 8px -1px #b4232333,
-    inset 0 2px 1px #b4232326,
-    inset 0 0 0 1px var(--input-error),
-    inset 0 -1px 0 1px #ffffffb3;
+  --input-error-bg-focus: #fff5f5;
+  --input-shadow-error-focus:
+    inset 0 0 0 0 transparent,
+    0 3px 0 0 #b4232366,
+    0 8px 10px -8px #b4232340;
 
-  /* Sinking in is quick (like the press), coming back up is slower (like the release). */
-  --input-sink: 140ms;
-  --input-rise: 260ms;
+  /* Rising is quick, settling back into the page is slower and softer. */
+  --input-in: 160ms;
+  --input-out: 260ms;
   --input-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -55,14 +64,20 @@
   background-color: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: calc(16 * var(--em-px));
-  box-shadow: var(--input-inset);
+  box-shadow: var(--input-shadow);
   outline: none;
   margin-bottom: 0;
+  transform: translateY(0);
   transition:
-    border-color var(--input-rise) var(--input-ease),
-    box-shadow var(--input-rise) var(--input-ease),
-    background-color var(--input-rise) var(--input-ease),
-    padding var(--input-rise) var(--input-ease);
+    border-color var(--input-out) var(--input-ease),
+    box-shadow var(--input-out) var(--input-ease),
+    background-color var(--input-out) var(--input-ease),
+    transform var(--input-out) var(--input-ease);
+}
+
+/* The search icon is positioned over the field, so it has to lift together with it. */
+.proto .f.f ~ :global(.search-icon-wr) {
+  transition: transform var(--input-out) var(--input-ease);
 }
 
 .proto .f.f::placeholder {
@@ -102,48 +117,47 @@
 
 /* ---------- Hover (differs from focus) ---------- */
 
-/* Hover: the well gets a touch deeper, a hint of the focus to come. */
+/* Hover: a hint of the rise. The inner shadow gets shallower, a 1px edge peeks out below,
+   the field lifts 1px. */
 .proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
 .proto .f.f.forceHover {
   border-color: var(--input-border-hover);
-  box-shadow: var(--input-inset-hover);
+  box-shadow: var(--input-shadow-hover);
+  transform: translateY(var(--input-lift-hover));
 }
 
-/* ---------- Focus: the field sinks deeper (see the token comment above) ---------- */
+.proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]) ~ :global(.search-icon-wr),
+.proto .f.f.forceHover ~ :global(.search-icon-wr) {
+  transform: translateY(var(--input-lift-hover));
+}
+
+/* ---------- Focus: the shadow moves from inside to outside, the field lifts ---------- */
 
 .proto .f.f:focus,
 .proto .f.f.forceFocus {
   border-color: var(--input-border-focus);
   background-color: var(--input-bg-focus);
-  box-shadow: var(--input-inset-focus);
-  /* Text drops 1px: top padding grows, bottom shrinks, height stays the same. */
-  padding-top: calc(0.6em + var(--input-press-shift));
-  padding-bottom: calc(0.6em - var(--input-press-shift));
-  transition-duration: var(--input-sink);
+  box-shadow: var(--input-shadow-focus);
+  transform: translateY(var(--input-lift));
+  transition-duration: var(--input-in);
 }
 
-/* Navbar size has its own paddings (0.629em), keep the same 1px drop there. */
-.proto .f.f:global(.is-nav-search):focus,
-.proto .f.f:global(.is-nav-search).forceFocus {
-  padding-top: calc(0.629em + var(--input-press-shift));
-  padding-bottom: calc(0.629em - var(--input-press-shift));
+.proto .f.f:focus ~ :global(.search-icon-wr),
+.proto .f.f.forceFocus ~ :global(.search-icon-wr) {
+  transform: translateY(var(--input-lift));
+  transition-duration: var(--input-in);
 }
 
-.proto .f.f:global(.textarea-input):focus,
-.proto .f.f:global(.textarea-input).forceFocus {
-  padding-top: calc(0.7em + var(--input-press-shift));
-  padding-bottom: calc(0.7em - var(--input-press-shift));
-}
-
-/* ---------- Error: red border; on focus the same sink in red tones ---------- */
+/* ---------- Error: red border; on focus the same rise in red tones ---------- */
 
 .proto .f.f[aria-invalid="true"] {
   border-color: var(--input-error);
 }
 
-.proto .f.f[aria-invalid="true"]:focus {
+.proto .f.f[aria-invalid="true"]:focus,
+.proto .f.f[aria-invalid="true"].forceFocus {
   background-color: var(--input-error-bg-focus);
-  box-shadow: var(--input-inset-error-focus);
+  box-shadow: var(--input-shadow-error-focus);
 }
 
 /* Separate rule: an unsupported pseudo-class would drop the whole selector list. */
@@ -156,6 +170,7 @@
 .proto .f.f:disabled {
   background-color: var(--input-bg);
   box-shadow: none;
+  transform: none;
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -170,9 +185,12 @@
   display: flex;
 }
 
+/* Reduced motion: keep the colour and shadow change, drop the lift. */
 @media (prefers-reduced-motion: reduce) {
-  .proto .f.f {
+  .proto .f.f,
+  .proto .f.f ~ :global(.search-icon-wr) {
     transition: none;
+    transform: none !important;
   }
 }
 
