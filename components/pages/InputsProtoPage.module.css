@@ -154,8 +154,14 @@
   transition: transform var(--input-out) var(--input-ease);
 }
 
+/* Webflow paints a background behind the placeholder text:
+   .text-input::placeholder { background-color: #f0ebff }. At rest it happens to equal
+   the field fill, so it is invisible. On hover and focus the field fill changes, while
+   this rectangle keeps the old colour and shows up as a lighter patch behind the text.
+   Within the field the inset shadow is also hidden behind it. Transparent fixes both. */
 .proto .f.f::placeholder {
   color: var(--input-placeholder);
+  background-color: transparent;
 }
 
 /* ---------- Sizes L / M / S, paired with the button sizes ----------
