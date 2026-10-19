@@ -1,14 +1,51 @@
-/* ---------- Size rows (fields next to buttons of the same size) ---------- */
+/* ---------- Layout: Now column narrow, Proposed column holds L / M / S side by side ---------- */
 
-.sizeBlock + .sizeBlock {
-  margin-top: 32em;
+.rowWide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  gap: 24em;
+  align-items: start;
 }
 
-.sizeHead {
+.sizes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24em;
+  align-items: start;
+}
+
+.sizeCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16em;
+  min-width: 0;
+}
+
+.sizeTag {
   display: flex;
   align-items: baseline;
+  gap: 8em;
+  padding-bottom: 8em;
+  border-bottom: 1px solid var(--black-transparent);
+}
+
+/* Field above its button, both full width: the heights compare at a glance. */
+.stackForm {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   gap: 12em;
-  margin-bottom: 12em;
+}
+
+/* Sizes overview: field + primary + secondary of one size in one row, nothing in between. */
+.sizeRowBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12em;
+}
+
+.sizeRowBlock + .sizeRowBlock {
+  margin-top: 16em;
 }
 
 .sizeRow {
@@ -23,7 +60,17 @@
   height: auto;
 }
 
+@media (max-width: 991px) {
+  .rowWide {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 767px) {
+  .sizes {
+    grid-template-columns: 1fr;
+  }
+
   .sizeRow {
     flex-wrap: wrap;
   }
@@ -164,27 +211,55 @@
 .proto .f.f.m ~ :global(.search-icon-wr) { --input-lift: calc(-1.5 * var(--em-px)); }
 .proto .f.f.s ~ :global(.search-icon-wr) { --input-lift: calc(-1 * var(--em-px)); }
 
-/* Search: room for the magnifier on the left (icon wrapper 16 + icon 21 + gap 11). */
-.proto .f.f:global(.is-nav-search) {
-  padding-left: max(calc(48 * var(--em-px)), 40px);
-}
+/* Search: room for the magnifier on the left, scaled with the size.
+   L: inset 20 + icon 21 + gap 10; M: 16 + 18 + 10; S: 12 + 14 + 8. */
+.proto .f.f.l:global(.is-nav-search) { padding-left: calc(51 * var(--em-px)); }
+.proto .f.f.m:global(.is-nav-search) { padding-left: calc(44 * var(--em-px)); }
+.proto .f.f.s:global(.is-nav-search) { padding-left: calc(34 * var(--em-px)); }
+
+.proto .f.f.l ~ :global(.search-icon-wr) { padding-left: calc(20 * var(--em-px)); }
+.proto .f.f.m ~ :global(.search-icon-wr) { padding-left: calc(16 * var(--em-px)); }
+.proto .f.f.s ~ :global(.search-icon-wr) { padding-left: calc(12 * var(--em-px)); }
+
+.proto .f.f.l ~ :global(.search-icon-wr) :global(.search-icon) { width: calc(21 * var(--em-px)); }
+.proto .f.f.m ~ :global(.search-icon-wr) :global(.search-icon) { width: calc(18 * var(--em-px)); }
+.proto .f.f.s ~ :global(.search-icon-wr) :global(.search-icon) { width: calc(14 * var(--em-px)); }
 
 /* Textarea: keeps the size's radius and paddings, grows to several lines. */
+.proto .f.f.l:global(.textarea-input) { min-height: calc(128 * var(--em-px)); }
+.proto .f.f.m:global(.textarea-input) { min-height: calc(104 * var(--em-px)); }
+.proto .f.f.s:global(.textarea-input) { min-height: calc(80 * var(--em-px)); }
+
 .proto .f.f:global(.textarea-input) {
   resize: vertical;
-  min-height: calc(128 * var(--em-px));
+  display: block;
 }
 
-/* Select: native element, brand chevron drawn as a background image. */
+/* Select: native element, brand chevron drawn as a background image, scaled with the size. */
 .proto .f.f.select {
   appearance: none;
   height: auto;
   cursor: pointer;
-  padding-right: max(calc(44 * var(--em-px)), 36px);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237c4dff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right max(calc(16 * var(--em-px)), 12px) center;
-  background-size: max(calc(16 * var(--em-px)), 14px);
+}
+
+.proto .f.f.l.select {
+  padding-right: calc(52 * var(--em-px));
+  background-position: right calc(20 * var(--em-px)) center;
+  background-size: calc(18 * var(--em-px));
+}
+
+.proto .f.f.m.select {
+  padding-right: calc(44 * var(--em-px));
+  background-position: right calc(16 * var(--em-px)) center;
+  background-size: calc(16 * var(--em-px));
+}
+
+.proto .f.f.s.select {
+  padding-right: calc(34 * var(--em-px));
+  background-position: right calc(12 * var(--em-px)) center;
+  background-size: calc(14 * var(--em-px));
 }
 
 /* ---------- Hover (differs from focus) ---------- */
@@ -259,16 +334,6 @@
   transform: none;
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-/* ---------- Inline form: button stretches to the field height ---------- */
-
-.proto .inlineForm {
-  align-items: stretch;
-}
-
-.proto .inlineForm :global(.button-form-wr) {
-  display: flex;
 }
 
 /* Reduced motion: keep the colour and shadow change, drop the lift. */
