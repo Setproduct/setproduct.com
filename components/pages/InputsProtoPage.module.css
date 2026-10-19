@@ -314,16 +314,27 @@
 
 /* Focus shadows are declared on the field itself (not on .proto): a custom property
    resolves where it is declared, so this is the only way the per-size
-   --input-edge-size (6 for L, 4 for the navbar size) reaches the shadow. */
+   --input-edge-size (6 for L, 4 for the navbar size) reaches the shadow.
+
+   Border thickness on focus = 1px real border + --input-rim-size inner rim.
+   L and M use a full 1px rim (2px total). S uses a 0.5px rim (1.5px total): on a
+   retina screen that is exactly 3 device pixels, crisp and not heavier than the
+   small button. Browsers do accept fractional widths here; at 1x a half pixel is
+   simply blended, which reads as slightly softer rather than broken. */
 .proto .f.f {
+  --input-rim-size: 1px;
   --input-shadow-focus:
     inset 0 0 0 0 transparent,
-    inset 0 0 0 1px var(--input-border-focus),
+    inset 0 0 0 var(--input-rim-size) var(--input-border-focus),
     0 var(--input-edge-size) 0 0 var(--input-edge);
   --input-shadow-error-focus:
     inset 0 0 0 0 transparent,
-    inset 0 0 0 1px var(--input-error),
+    inset 0 0 0 var(--input-rim-size) var(--input-error),
     0 var(--input-edge-size) 0 0 var(--input-edge-error);
+}
+
+.proto .f.f.s {
+  --input-rim-size: 0.5px;
 }
 
 .proto .f.f:focus,
