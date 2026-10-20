@@ -16,11 +16,19 @@ html:has(.yarl__portal) {
   scroll-behavior: auto;
 }
 
+/*
+ * `clip` trims horizontal overflow like `hidden`, but does not turn body
+ * into a scroll container. With `hidden` on both html and body, body became
+ * the scroller for position: sticky, so every sticky element silently broke
+ * (the blog sidebar needed a JS workaround for years). `hidden` stays as a
+ * fallback for browsers without `clip` support.
+ */
 html,
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -63,13 +71,210 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
- * Blog sidebar: JS controls inner element positioning.
- * Wrapper keeps grid layout stable when inner becomes fixed.
+ * Article sidebar (blog posts, resources, license).
+ * Native sticky, no JS. Sits under the fixed navbar (70em) with a 20em gap and
+ * never grows past the viewport: the TOC list shrinks and scrolls on its own,
+ * the subscribe block below it stays reachable. Two-column layout lives down
+ * to 480px (below that Webflow stacks the grid and .blogpost_mobile-toc
+ * takes over).
  */
-@media (min-width: 991px) {
-  .blogpost_content-column1 {
-    position: relative !important;
-    top: auto !important;
+.blogpost_content-section > .blogpost_content-column1 {
+  position: sticky;
+  top: calc(90 * var(--em-px));
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 110 * var(--em-px));
+  overflow: visible;
+}
+
+.blogpost_content-section > .blogpost_content-column1 > * {
+  flex: none;
+}
+
+.blogpost_content-section > .blogpost_content-column1 > .blogpost_toc {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.blogpost_toc {
+  display: flex;
+  flex-direction: column;
+}
+
+.blogpost_toc-list {
+  min-height: 0;
+  margin: 0;
+  padding: 0 0 0 0;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--black-transparent) transparent;
+}
+
+.blogpost_toc-list > li {
+  margin: 0;
+  padding: 0;
+}
+
+.blogpost_toc-list > li::before {
+  content: none;
+}
+
+.blogpost_navigation-link:focus-visible,
+.blogpost_mobile-toc-link:focus-visible,
+.blogpost_mobile-toc-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Long headings wrap to two lines at most; full text stays for screen readers. */
+.blogpost_navigation-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* H3 under the current section: indented, smaller, highlighted by colour. */
+.blogpost_navigation-link-wr.is-sub .blogpost_navigation-link {
+  margin-left: 16em;
+  padding-top: 6em;
+  padding-bottom: 6em;
+  color: rgba(25, 24, 27, 0.7);
+}
+
+.blogpost_navigation-link-wr.is-sub .blogpost_navigation-link:hover,
+.blogpost_navigation-link-wr.is-sub .blogpost_navigation-link.is-active {
+  color: var(--primary);
+}
+
+.blogpost_navigation-link-wr.is-sub .blogpost_navigation-link.is-active {
+  font-weight: 600;
+}
+
+/* Mobile "On this page" bar, only where the grid stacks (see above). */
+.blogpost_mobile-toc {
+  display: none;
+}
+
+@media screen and (max-width: 479px) {
+  .blogpost_toc {
+    display: none;
+  }
+
+  .blogpost_content-section > .blogpost_content-column1 {
+    position: static;
+    max-height: none;
+  }
+
+  /* Leave room for the navbar plus the sticky section bar. */
+  .rich-text-18 h2[id],
+  .rich-text-18 h3[id],
+  .rich-text-18 h4[id] {
+    scroll-margin-top: calc(150 * var(--em-px));
+  }
+
+  .blogpost_mobile-toc {
+    display: block;
+    position: sticky;
+    z-index: 20;
+    margin-bottom: 16em;
+  }
+}
+
+.blogpost_mobile-toc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12em;
+  width: 100%;
+  margin: 0;
+  padding: 10em 16em;
+  border: 1px solid var(--black-transparent);
+  background-color: var(--white);
+  box-shadow: 0 8em 24em -12em rgba(25, 24, 27, 0.25);
+  color: var(--black);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.blogpost_mobile-toc-heading {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.blogpost_mobile-toc-label {
+  color: rgba(25, 24, 27, 0.6);
+}
+
+.blogpost_mobile-toc-current {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.blogpost_mobile-toc-chevron {
+  flex: none;
+  width: 20em;
+  height: 20em;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blogpost_mobile-toc-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.blogpost_mobile-toc-panel {
+  position: absolute;
+  top: calc(100% + 8em);
+  left: 0;
+  right: 0;
+  max-height: 60vh;
+  padding: 8em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--black-transparent);
+  background-color: var(--white);
+  box-shadow: 0 16em 32em -12em rgba(25, 24, 27, 0.3);
+}
+
+.blogpost_mobile-toc-panel[hidden] {
+  display: none;
+}
+
+.blogpost_mobile-toc-link {
+  display: block;
+  padding: 10em 12em;
+  border-radius: calc(12 * var(--em-px));
+  color: var(--black);
+}
+
+.blogpost_mobile-toc-link.is-active {
+  background-color: var(--light-primary);
+  font-weight: 600;
+}
+
+/* Reading progress over the article body, pinned above the navbar. */
+.blog-reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  height: 3px;
+  background-color: var(--primary);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blogpost_mobile-toc-chevron {
+    transition: none;
   }
 }
 

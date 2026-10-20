@@ -7,6 +7,9 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import BlogHero from "./BlogHero";
 import BlogAuthor from "./BlogAuthor";
 import BlogSidebar from "./BlogSidebar";
+import MobileTableOfContents from "./MobileTableOfContents";
+import ReadingProgress from "./ReadingProgress";
+import { useArticleToc } from "../../hooks/useArticleToc";
 import BlogFloatingShare from "./BlogFloatingShare";
 import BlogInlineCta from "./BlogInlineCta";
 import BlogRelatedPosts from "./BlogRelatedPosts";
@@ -27,6 +30,7 @@ type BlogPostLayoutProps = {
 export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts }: BlogPostLayoutProps) {
   const { frontmatter, mdxSource, readingTimeText, readingTimeMinutes, headings } = post;
   const contentSectionRef = useRef<HTMLDivElement>(null);
+  const toc = useArticleToc(headings, `blog/${frontmatter.slug}`);
   const canonical = frontmatter.canonical ?? `${SITE_URL}/blog/${frontmatter.slug}`;
   const absoluteCoverUrl = frontmatter.coverImage?.startsWith("http")
     ? frontmatter.coverImage
@@ -62,6 +66,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
           />
         ) : null}
       </Head>
+      <ReadingProgress targetRef={contentSectionRef} />
       <SiteHeader blogPosts={blogPosts} />
       <main>
         <BlogHero
@@ -78,13 +83,23 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
           <div className="section-padding bottom-112">
             <div className="container">
               <div className="blogpost_content-section" ref={contentSectionRef}>
-                <BlogSidebar headings={headings} containerRef={contentSectionRef} />
+                <BlogSidebar
+                  headings={toc.items}
+                  activeId={toc.activeId}
+                  onNavigate={toc.onSidebarNavigate}
+                />
                 <div
                   id="w-node-content"
                   className="blogpost_content-column2"
                 >
                   <BlogAuthor authorSlug={frontmatter.author} />
                   <div className="spacer-16" />
+                  <MobileTableOfContents
+                    items={toc.items}
+                    activeId={toc.activeId}
+                    onNavigate={toc.onMobileNavigate}
+                    onOpen={toc.onMobileOpen}
+                  />
                   <div className="rich-text-18 w-richtext" data-post={frontmatter.slug}>
                     <MDXRemote {...mdxSource} components={blogMdxComponents} />
                   </div>

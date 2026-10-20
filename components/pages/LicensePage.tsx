@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
+import TableOfContents from "../blog/TableOfContents";
+import MobileTableOfContents from "../blog/MobileTableOfContents";
+import { useArticleToc } from "../../hooks/useArticleToc";
+import type { BlogHeading } from "../../types/blog";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import type { BlogPostPreview } from "../../types/data";
 
-const TOC_ITEMS = [
-  { id: "end-product", label: "An end product is one of the following" },
-  { id: "you-are-allowed-to", label: "You are allowed to" },
-  { id: "you-are-not-allowed-to", label: "You are not allowed to" },
-  { id: "other-license-terms", label: "Other license terms" },
-  { id: "individual-license", label: "Individual (Single license)" },
-  { id: "business-license", label: "Business (Unlimited)" },
+const TOC_ITEMS: BlogHeading[] = [
+  { id: "end-product", text: "An end product is one of the following", level: 2 },
+  { id: "you-are-allowed-to", text: "You are allowed to", level: 2 },
+  { id: "you-are-not-allowed-to", text: "You are not allowed to", level: 2 },
+  { id: "other-license-terms", text: "Other license terms", level: 2 },
+  { id: "individual-license", text: "Individual (single license)", level: 2 },
+  { id: "business-license", text: "Business (unlimited)", level: 2 },
 ];
 
 type Props = {
@@ -24,29 +27,7 @@ type Props = {
 export default function LicensePage({ blogPosts = [] }: Props) {
   const meta = PAGE_META["license"];
   const breadcrumbs = PAGE_BREADCRUMBS["license"] ?? [];
-  const [activeId, setActiveId] = useState<string>(TOC_ITEMS[0].id);
-
-  useEffect(() => {
-    const headings = TOC_ITEMS.map((item) => document.getElementById(item.id)).filter(
-      (el): el is HTMLElement => el !== null,
-    );
-    if (headings.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible.length > 0) {
-          setActiveId(visible[0].target.id);
-        }
-      },
-      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
-    );
-
-    for (const heading of headings) observer.observe(heading);
-    return () => observer.disconnect();
-  }, []);
+  const toc = useArticleToc(TOC_ITEMS, "legal/license");
 
   return (
     <>
@@ -67,27 +48,20 @@ export default function LicensePage({ blogPosts = [] }: Props) {
               </div>
               <div className="spacer-64"></div>
               <div className="blogpost_content-section">
-                <div className="blogpost_content-column1">
-                  <div className="hide-on-mobile">
-                    <p className="text-size-medium text-weight-bold">Table of contents</p>
-                  </div>
-                  <div className="spacer-16 hide-on-mobile"></div>
-                  <div className="blogpost_navigation-wr">
-                    {TOC_ITEMS.map((item) => (
-                      <div key={item.id} className="blogpost_navigation-link-wr">
-                        <a
-                          className={`blogpost_navigation-link w-inline-block${
-                            activeId === item.id ? " fs-cmsfilter_active" : ""
-                          }`}
-                          href={`#${item.id}`}
-                        >
-                          <p>{item.label}</p>
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <aside className="blogpost_content-column1">
+                  <TableOfContents
+                    items={toc.items}
+                    activeId={toc.activeId}
+                    onNavigate={toc.onSidebarNavigate}
+                  />
+                </aside>
                 <div className="blogpost_content-column2">
+                  <MobileTableOfContents
+                    items={toc.items}
+                    activeId={toc.activeId}
+                    onNavigate={toc.onMobileNavigate}
+                    onOpen={toc.onMobileOpen}
+                  />
                   <div className="rich-text-18 w-richtext">
                     <p>By purchasing any of listed products (&quot;item&quot; or &quot;file&quot;) you are being granted a license to use these files for specific uses under certain conditions.</p>
                     <p>Setproduct license grants the user an ongoing, non-exclusive, worldwide license to utilize the digital work (&quot;Item&quot;).</p>
