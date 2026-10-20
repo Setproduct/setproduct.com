@@ -74,3 +74,37 @@ flowchart TD
 
 ### Этап 6 (отдельно, контент)
 - Скрипт-аудит H2: жирный, ссылки, переносы, Title Case, дубли. Править пачками по правилам AGENTS.md.
+
+## Статус реализации (2026-10-20)
+
+Все этапы 1–5 сделаны, этап 6 сделан в части аудита (сам контент не правился).
+
+| Этап | Что сделано | Где |
+|---|---|---|
+| 1 | Заголовки для оглавления собираются rehype-плагином из готового HTML-дерева, id совпадают с якорями по построению | `lib/blog/mdx.ts` |
+| 1 | Новый scroll-spy: активен последний заголовок выше линии чтения, rAF-троттлинг, state меняется только при смене id, блокировка на 1.2 с после клика | `hooks/useActiveHeading.ts` |
+| 1 | Доступность: `nav aria-label`, `aria-current="location"`, `ol/li`, заголовок On this page | `components/blog/TableOfContents.tsx` |
+| 2 | `overflow-x: clip` у html/body (с `hidden` как фолбэк), нативный `position: sticky` вместо JS | `styles/globals.css` |
+| 2 | Удалены `useStickyInContainer` и `BlogTableOfContents` | — |
+| 2 | Длинное оглавление скроллится внутри себя и держит активный пункт в зоне видимости | `TableOfContents.tsx` |
+| 3 | Один компонент и один хук `useArticleToc` для блога, resources (`FreebieArticle`) и `/legal/license` | `hooks/useArticleToc.ts` |
+| 4 | Мобильная липкая плашка On this page (≤479px) с выпадающим списком H2, Esc и клик снаружи закрывают | `components/blog/MobileTableOfContents.tsx` |
+| 4 | Полоска прогресса чтения (блог и resources) | `components/blog/ReadingProgress.tsx` |
+| 4 | H3 раскрываются только под активным H2, line-clamp в 2 строки, оглавление скрыто при < 3 H2 | `TableOfContents.tsx`, `useArticleToc.ts` |
+| 5 | GA4: `toc_click` (location, page, heading_id, level, position, total), `toc_open`, `newsletter_subscribe` с `location: blog_sidebar` | `useArticleToc.ts`, `BlogSidebar.tsx` |
+| 6 | Аудит-скрипт заголовков, только чтение | `scripts/audit-headings.mjs` |
+
+### Что выяснилось по ходу
+- Старый `extractHeadings` на практике не давал битых якорей (проверка всех постов: 0). Переход на rehype оставлен ради единого источника id.
+- Ленивые картинки в теле статьи имеют общие атрибуты `1600x900`, и после перехода по якорю их реальная высота сдвигает заголовок. Добавлена короткая докрутка (3 проверки по 700 мс), которая отменяется при любом действии пользователя.
+- В самом низу страницы последние разделы физически не могут доехать до линии чтения. Кликнутый пункт остаётся подсвеченным, пока заголовок на экране.
+- Сетка Webflow складывается в одну колонку только на ≤479px, поэтому на 768px остаётся десктопное оглавление. Это поведение по дизайну.
+
+### Аудит заголовков (`node scripts/audit-headings.mjs`)
+190 постов, в среднем 8.5 H2 (от 1 до 24), проблемы в 107 постах:
+- `bold` 385 (жирный внутри H2/H3, в основном старые посты из Webflow);
+- `titleCase` 328 (эвристика, есть ложные срабатывания на именах и брендах);
+- `link` 49, `long` 11, `duplicate` 16 (одинаковый текст даёт якоря с суффиксом -1);
+- `fewH2` 5: adobe-stealing-designs, best-fonts-pairing, black-friday-2023, material-nextjs-ui-kit, most-stressful-design-phrases (оглавление у них скрыто).
+
+Правка контента по этим спискам идёт отдельной задачей, пачками и по правилам AGENTS.md.
