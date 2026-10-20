@@ -9,65 +9,51 @@ import { visit } from "unist-util-visit";
 import type { BlogFrontmatter, BlogHeading, BlogPost, BlogPostMeta } from "../../types/blog";
 import { computeReadingTime } from "./reading-time";
 
+type HastNode = {
+  type: string;
+  tagName?: string;
+  value?: string;
+  properties?: { id?: string };
+  children?: HastNode[];
+};
+
 function rehypeCleanIds() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (tree: any) => {
-    visit(tree, "element", (node: { tagName: string; properties?: { id?: string } }) => {
-      if (/^h[1-6]$/.test(node.tagName) && node.properties?.id) {
+  return (tree: HastNode) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    visit(tree as any, "element", (node: HastNode) => {
+      if (node.tagName && /^h[1-6]$/.test(node.tagName) && node.properties?.id) {
         node.properties.id = node.properties.id.replace(/-+/g, "-").replace(/^-|-$/g, "");
       }
     });
   };
 }
 
+function hastText(node: HastNode): string {
+  if (node.type === "text") return node.value ?? "";
+  return (node.children ?? []).map(hastText).join("");
+}
+
+/**
+ * Collects H2/H3 from the final HTML tree, after rehype-slug and
+ * rehypeCleanIds have assigned ids. The table of contents therefore uses
+ * exactly the same ids as the rendered headings (duplicates, inline
+ * markdown and multi-line headings included), so a TOC link can never
+ * point to a missing anchor.
+ */
+function rehypeCollectHeadings(target: BlogHeading[]) {
+  return () => (tree: HastNode) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    visit(tree as any, "element", (node: HastNode) => {
+      if (node.tagName !== "h2" && node.tagName !== "h3") return;
+      const id = node.properties?.id;
+      const text = hastText(node).replace(/\s+/g, " ").trim();
+      if (!id || !text) return;
+      target.push({ id, text, level: node.tagName === "h2" ? 2 : 3 });
+    });
+  };
+}
+
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
-
-function stripInlineMarkdown(raw: string): string {
-  return raw
-    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/__([^_]+)__/g, "$1")
-    .replace(/(^|[^*])\*([^*]+)\*/g, "$1$2")
-    .replace(/(^|[^_])_([^_]+)_/g, "$1$2")
-    .replace(/~~([^~]+)~~/g, "$1")
-    .replace(/\\([\\`*_{}\[\]()#+\-.!])/g, "$1")
-    .trim();
-}
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
-function extractHeadings(content: string): BlogHeading[] {
-  const headings: BlogHeading[] = [];
-  const lines = content.split("\n");
-  let inCodeFence = false;
-  for (const line of lines) {
-    if (/^\s*(```|~~~)/.test(line)) {
-      inCodeFence = !inCodeFence;
-      continue;
-    }
-    if (inCodeFence) continue;
-
-    const h3 = line.match(/^###\s+(.+)$/);
-    const h2 = !h3 && line.match(/^##\s+(.+)$/);
-    if (h3) {
-      const text = stripInlineMarkdown(h3[1]);
-      headings.push({ id: slugify(text), text, level: 3 });
-    } else if (h2) {
-      const text = stripInlineMarkdown(h2[1]);
-      headings.push({ id: slugify(text), text, level: 2 });
-    }
-  }
-  return headings;
-}
 
 export function getAllBlogSlugs(): string[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
@@ -86,19 +72,20 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const { data, content } = matter(raw);
     const frontmatter = data as BlogFrontmatter;
 
+    const headings: BlogHeading[] = [];
     const mdxSource = await serialize(content, {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
         rehypePlugins: [
           rehypeSlug,
           rehypeCleanIds,
+          rehypeCollectHeadings(headings),
           rehypeHighlight,
         ],
       },
     });
 
     const { text, minutes } = computeReadingTime(content);
-    const headings = extractHeadings(content);
 
     return {
       frontmatter,
