@@ -1,0 +1,205 @@
+---
+title: "10 open source tools we bookmarked in September and October 2026"
+description: "Ten open source tools for designers and developers, checked against GitHub and npm. Each entry names the one caveat to weigh before you adopt it."
+slug: open-source-tools-digest-2026-10
+date: '2026-10-20'
+author: Roman Kamushken
+coverImage: /blog/covers/open-source-tools-digest-2026-10.webp
+coverImageAlt: Ten pastel cards with bold black tool icons, one slot left empty and dashed
+thumbImage: /blog/covers/thumbs/open-source-tools-digest-2026-10.webp
+tags: ['open source', 'developer tools', 'design tools', 'github', 'npm']
+canonical: 'https://www.setproduct.com/blog/open-source-tools-digest-2026-10'
+category: Tools
+subtitle: >-
+  Ten utilities that landed in our Resources section over the past two months,
+  each checked against its repository and its package registry. We start with
+  the quiet one and work up to the tool that pulled more attention than the
+  rest of the section combined.
+metaTitle: "10 open source tools we bookmarked in September and October 2026"
+cardDescription: >-
+  Ten tools we added to Resources this autumn, with the caveat that matters for
+  each one.
+relatedSlugs:
+  - liquid-glass-design-explained-a-practical-guide
+  - ai-agent-ui-design-patterns
+  - how-to-replace-onboarding-with-contextual-help
+readingTimeText: 8 min read
+faq:
+  - question: What can replace Photoshop for free on macOS?
+    answer: >-
+      Compositor is the closest free option we tested. It opens PSD files, keeps
+      layers and masks editable, and stores projects in a format an AI agent can
+      read and write. It runs only on macOS, and at time of writing it is on
+      version 1.5.3 with 24 contributors.
+  - question: What should I use for product tours in a web app?
+    answer: >-
+      Driver.js handles tours, element highlighting and onboarding steps in
+      5 kB gzipped with no dependencies. It is vanilla JavaScript, so it works
+      next to React, Vue or plain HTML. Version 1.10.2 has been on npm since
+      2018 and pulls about 9.1 million downloads a month, so the maintenance
+      record is easy to check.
+  - question: Is there a file search for Mac that beats Spotlight?
+    answer: >-
+      FSearch indexes the whole disk and searches inside text files, including
+      typos. Its own benchmark reports 7,643,622 files and folders indexed with
+      a median query of 5.5 ms. It is macOS only and still on version 0.2.1,
+      which is fine for personal use and early adoption.
+  - question: What is an MCP server in plain terms?
+    answer: >-
+      MCP is a protocol that lets an AI assistant call outside tools. An MCP
+      server is the piece that exposes those tools, so the model can run a
+      search, read a file or analyse a binary instead of guessing. REA is one
+      example, aimed at reverse engineering applications locally.
+---
+
+<span class="blog_big-paragraph">The Resources section exists because we keep tripping over tools that solve a problem we already had. Over the past two months ten of them went in, and each one got opened, installed where it made sense, and cross-checked against its repository and its package registry.</span>
+
+This post walks through all ten. A few disclaimers up front. We did not test every tool for weeks, we read what the maintainers publish and looked for the one detail that usually decides whether you adopt something: a missing license, a zero version number, a package that belongs to a different project than the one you think you are installing.
+
+We start with the quiet entry and work toward the loud one. The last tool on this list pulled more attention in two months than everything else in the section combined, which tells you something about what people actually open. If you only read one section, make it that one.
+
+## 10. pdfcn - PDF documents inside your React app
+
+![pdfcn building a corporate invoice from document blocks in a React app](/freebies/freebie-pdfcn.webp "float")
+
+Most PDF work inside a React app still ends with an iframe pointed at a viewer you do not control. pdfcn keeps the document in your own component tree. It is a set of blocks for headers, tables, sections and footers that you assemble into an invoice, a report or a contract, with zoom, search and page navigation on top.
+
+The project collected 2,952 stars in 69 days and has 12 contributors, which is a healthy ratio for something that young. It ships through the shadcn registry rather than npm, so you copy the source into your repo and edit it.
+
+The caveat is versioning. There are no releases and no tags, so every install pulls whatever sits on the default branch today. Fine for a prototype, less fine when you need to reproduce a document next quarter.
+
+**[Learn more about pdfcn](/freebies/pdfcn)** · [GitHub source](https://github.com/shadcn-labs/pdfcn)
+
+## 9. spectrum-ui - animated components you copy and own
+
+![Spectrum UI customer table with status badges, payment methods and amounts](/freebies/freebie-spectrum-ui.webp "float")
+
+Spectrum UI takes the copy-and-own model that shadcn popularised and applies it to animation. Buttons, cards, loaders and text effects arrive through one CLI command and land in your project as editable files, so you are not depending on a library's release cycle to change a hover curve or the duration of a shimmer. The files you get are plain React and Tailwind, with no runtime wrapper around them.
+
+There are 24 contributors and 1,501 stars, and the repository has been alive since October 2024, which is a longer run than most component collections manage. License is Apache-2.0.
+
+One number needs care. The npm package `@spectrumui/mcp` shows 1,247 monthly downloads, and that package is the MCP server that lets an editor pick components. It is not the component library itself. Do not count that figure as usage of the components.
+
+**[Learn more about spectrum-ui](/freebies/spectrum-ui)** · [GitHub source](https://github.com/arihantcodes/spectrum-ui)
+
+## 8. sfinterface-numbers - rolling digits for live counters
+
+![A rolling number display showing 10047 with the last two digits mid-transition](/freebies/freebie-sfinterface-numbers.webp "float")
+
+Every dashboard eventually shows a counter that jumps from one value to another, and the whole block flashes as if the page reloaded. This component turns only the digits that changed. It is 13 kB, has no dependencies, formats through Intl so currency and locale come from the platform, and respects reduced-motion.
+
+Adoption is the surprise here. With 126 stars on GitHub, it still pulls 13,113 downloads a month from npm, second only to Driver.js on this list. Small libraries with a narrow job often look quiet on GitHub and busy in `package.json`, and this is the clearest case we found.
+
+The maintainers label it in development, with the API and tokens still moving. Version 0.3.4 is not a promise of stability, so pin the version.
+
+**[Learn more about sfinterface-numbers](/freebies/sfinterface-numbers)** · [GitHub source](https://github.com/wherescz/sfinterface-numbers)
+
+## 7. fsearch - whole-disk file search for macOS
+
+![FSearch terminal showing 7643622 indexed files and a query answered in 5.5 milliseconds](/freebies/thumbs/freebie-fsearch.webp "float")
+
+Spotlight answers "where is that app" and struggles with "which file mentions this variable". FSearch indexes the entire disk and searches inside text files, and it tolerates typos in file names.
+
+The published benchmark is specific enough to check: 7,643,622 files and folders indexed, median query at 5.5 ms, one small daemon holding the index. It is written in Rust, MIT licensed, and went from nothing to 2,149 stars in 11 days.
+
+Two limits. It is a macOS application only, so Windows and Linux are out, and the repository lists no plans for either. And at version 0.2.1 it is genuinely early: one daemon means one more process to keep alive, and an index of seven million entries is not something you want to debug a day before a release.
+
+**[Learn more about fsearch](/freebies/fsearch)** · [GitHub source](https://github.com/noahdunnagan/fsearch)
+
+## 6. gr8r-task-management - a task workspace without a framework
+
+![Gr8r Studio home screen with active and overdue counters, my tasks and upcoming deadlines](/freebies/freebie-gr8r-task-management.webp "float")
+
+Most task managers are React applications with a hundred dependencies under them. Gr8r Studio goes the other direction: a [dashboard](/blog/dashboard-ui-design), inbox, board, calendar and timeline built in plain JavaScript modules with no UI framework and no runtime dependencies at all.
+
+That makes it useful in two ways. You can run it as a working tool, and you can read the source as a reference for how to structure a large interface without a framework. 857 stars in 12 days and 198 forks suggest other people had the same second idea.
+
+The blocker is licensing. There is no license file in the repository, which by default means all rights reserved. 198 forks and one contributor also means everyone is waiting on the same person. Worth studying now, risky to build a product on.
+
+**[Learn more about gr8r-task-management](/freebies/gr8r-task-management)** · [GitHub source](https://github.com/gr8rstudio/gr8r-studio/)
+
+## 5. compositor - a free Photoshop alternative for macOS
+
+![Compositor editing a portrait on an external display with adjustment panels and a colour wheel](/freebies/freebie-compositor.webp "float")
+
+A free Photoshop alternative for macOS that opens PSD files, keeps layers and masks editable, and stores projects in a format an agent can read and write. That last part is the interesting claim: your layered file becomes something a model can inspect, not a binary it has to guess at.
+
+The traction is real. 17,521 stars in 33 days, 1,721 forks, 24 contributors, version 1.5.3, MIT. Those numbers for a desktop image editor are unusual, because the category has been owned by paid software for decades.
+
+Before you move a client project over, test PSD round-tripping on your own files, especially layered artwork with smart objects and adjustment layers. Import support and pixel-perfect export are different promises, and the project does not claim the second one loudly enough for production work.
+
+**[Learn more about compositor](/freebies/compositor)** · [GitHub source](https://github.com/robbietilton/Compositor)
+
+## 4. liquid-glass - Apple glass materials in React
+
+![A glass music player and context menu floating over a desert landscape](/freebies/freebie-liquid-glass.webp "float")
+
+[Apple's glass materials](https://developer.apple.com/design/human-interface-guidelines/) arrived on the desktop first, and the web has been imitating them badly ever since. This library gets the refraction right: Clear and Regular materials bend the live content behind them instead of faking it with a blur and a white gradient. Controls run on Base UI, so keyboard and focus behaviour comes from a library rather than a demo.
+
+It supports React on the web and in Electron. 3,818 downloads a month and 453 stars put it in the low-traffic tier, which lines up with how new it is.
+
+Version 0.0.2 and a single contributor are the honest signals here. Use it to prototype the look, and budget time for changes if you ship it. For the design reasoning behind the pattern, we wrote a longer piece on [liquid glass in interfaces](/blog/liquid-glass-design-explained-a-practical-guide).
+
+**[Learn more about liquid-glass](/freebies/liquid-glass)** · [GitHub source](https://github.com/Glass-HQ/liquid-glass)
+
+## 3. driver-js - product tours and onboarding steps
+
+![A fox in a yellow cap pointing at an onboarding tooltip sequence on a browser window](/freebies/freebie-driver-js.webp "float")
+
+Product tours are one of those features every team builds badly once, and then rebuilds from scratch a year later. Driver.js has been the answer since 2018: highlight an element, point an arrow at it, advance a step, done. It is 5 kB gzipped, has no dependencies, and ships accessibility support rather than bolting it on after the first bug report.
+
+9,130,632 downloads a month make it the most installed tool on this list by a wide margin, with 26,933 stars and 56 contributors behind version 1.10.2.
+
+The trap with mature libraries is assuming everyone already knows them. Half of onboarding problems live in the tour script: too many steps, no way to skip, no memory of what the user already saw. We covered that trade-off in [replacing onboarding with contextual help](/blog/how-to-replace-onboarding-with-contextual-help).
+
+**[Learn more about driver-js](/freebies/driver-js)** · [GitHub source](https://github.com/nilbuild/driver.js)
+
+## 2. rea - reverse engineering apps for AI agents
+
+![REA reverse engineering tool showing disassembly, a decompiled function and an agent workflow](/freebies/freebie-rea.webp "float")
+
+Give an agent a binary and it will guess. REA gives it evidence. The MCP server and CLI take apart native binaries, Electron apps, .NET assemblies, APK files and websites, and hand the results back as structured data. Everything runs locally, which matters if the binary is a client's build under NDA.
+
+Version rea-agents-6.7.0 shipped on 18 October with 266 contributors and 549,553 npm downloads a month. MIT license.
+
+One number we are not quoting as proof of anything: the star count is high enough that it says more about visibility than about use. If you are deciding whether to trust it, read the contributor list and the npm history instead. Agent tooling is also where our own [AI agent UI patterns](/blog/ai-agent-ui-design-patterns) research keeps landing.
+
+**[Learn more about rea](/freebies/rea)** · [GitHub source](https://github.com/morluto/rea)
+
+## 1. m3e-canvas - Material 3 screens exported as a prompt
+
+![M3E Canvas with a component palette, a Material 3 phone preview and an exported prompt panel](/freebies/freebie-m3e-canvas.webp "float")
+
+This is the one people opened. m3e-canvas assembles [Material 3 Expressive](https://m3.material.io/) interfaces in the browser, then exports a prompt you paste into an AI coding tool. What comes out is a written description precise enough for a model to build from: components, hierarchy, states, spacing.
+
+9,510 stars in 48 days with 1,030 forks and 14 contributors, MIT licensed. Those numbers for a browser tool with no release tag say a lot about how many people are currently trying to vibe-code Android apps.
+
+The caveat follows from what it produces. A prompt is a design system export in name only, and the tool does not pretend otherwise. It is a fast way to describe a screen, and you still own the decisions after the paste: which components survive, which states matter, what happens on a phone.
+
+**[Learn more about m3e-canvas](/freebies/m3e-canvas)** · [GitHub source](https://github.com/lnkiai/m3e-canvas)
+
+## Frequently asked questions
+
+**What can replace Photoshop for free on macOS?**
+
+Compositor is the closest free option we tested. It opens PSD files, keeps layers and masks editable, and stores projects in a format an AI agent can read and write. It runs only on macOS, and at time of writing it is on version 1.5.3 with 24 contributors.
+
+**What should I use for product tours in a web app?**
+
+Driver.js handles tours, element highlighting and onboarding steps in 5 kB gzipped with no dependencies. It is vanilla JavaScript, so it works next to React, Vue or plain HTML. Version 1.10.2 has been on npm since 2018 and pulls about 9.1 million downloads a month, so the maintenance record is easy to check.
+
+**Is there a file search for Mac that beats Spotlight?**
+
+FSearch indexes the whole disk and searches inside text files, including typos. Its own benchmark reports 7,643,622 files and folders indexed with a median query of 5.5 ms. It is macOS only and still on version 0.2.1, which is fine for personal use and early adoption.
+
+**What is an MCP server in plain terms?**
+
+MCP is a protocol that lets an AI assistant call outside tools. An MCP server is the piece that exposes those tools, so the model can run a search, read a file or analyse a binary instead of guessing. REA is one example, aimed at reverse engineering applications locally.
+
+## Why these keep showing up
+
+Open source moves faster than any curated list can follow. A tool with 2,000 stars today was two weeks old in some cases, and three of the ten entries here had no release tag at all. That is the state of things: the code ships before the version number does.
+
+We keep looking. Every week something lands in the Resources section that we did not know about the week before, and the filter is simple: does it solve a problem a designer or a developer already has, and can we tell you the one thing that might go wrong.
+
+If that is useful, subscribe to the newsletter. One email, the tools and posts worth your time, no drip sequence.
