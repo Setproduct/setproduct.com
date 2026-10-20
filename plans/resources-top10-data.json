@@ -1,0 +1,1226 @@
+{
+  "generatedAt": "2026-10-20T10:37:22.727Z",
+  "window": {
+    "from": "2026-09-20",
+    "to": "2026-10-19"
+  },
+  "weights": {
+    "traffic": 0.25,
+    "engagement": 0.15,
+    "stars": 0.3,
+    "freshness": 0.15,
+    "npm": 0.15
+  },
+  "githubToken": false,
+  "ga4": {
+    "m3e-canvas": {
+      "pageviews": 1488,
+      "activeUsers": 1099,
+      "engagement": 21
+    },
+    "rea": {
+      "pageviews": 71,
+      "activeUsers": 61,
+      "engagement": 20
+    },
+    "driver-js": {
+      "pageviews": 49,
+      "activeUsers": 44,
+      "engagement": 7
+    },
+    "liquid-glass": {
+      "pageviews": 48,
+      "activeUsers": 45,
+      "engagement": 41
+    },
+    "sfinterface-numbers": {
+      "pageviews": 46,
+      "activeUsers": 35,
+      "engagement": 21
+    },
+    "amicro": {
+      "pageviews": 42,
+      "activeUsers": 40,
+      "engagement": 5
+    },
+    "runeicons": {
+      "pageviews": 29,
+      "activeUsers": 25,
+      "engagement": 7
+    },
+    "fsearch": {
+      "pageviews": 27,
+      "activeUsers": 26,
+      "engagement": 9
+    },
+    "gr8r-task-management": {
+      "pageviews": 22,
+      "activeUsers": 16,
+      "engagement": 22
+    },
+    "compositor": {
+      "pageviews": 20,
+      "activeUsers": 18,
+      "engagement": 6
+    },
+    "spectrum-ui": {
+      "pageviews": 16,
+      "activeUsers": 14,
+      "engagement": 22
+    },
+    "pdfcn": {
+      "pageviews": 15,
+      "activeUsers": 12,
+      "engagement": 13
+    }
+  },
+  "repos": [
+    {
+      "slug": "m3e-canvas",
+      "kind": "web tool",
+      "repo": "https://github.com/lnkiai/m3e-canvas",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 9510,
+      "forks": 1030,
+      "openIssues": 11,
+      "createdAt": "2026-09-02T04:36:34Z",
+      "pushedAt": "2026-10-16T15:34:27Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Sketch Material 3 Expressive screens in the browser and turn them into vibe-coding prompts.",
+      "topics": [
+        "design-tool",
+        "material-3-expressive",
+        "material-design",
+        "material3",
+        "nextjs",
+        "prompt",
+        "react",
+        "vibe-coding"
+      ],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 14,
+      "contributorsSource": "link",
+      "npmPackage": null,
+      "npmDownloads": null,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "rea",
+      "kind": "MCP server",
+      "repo": "https://github.com/morluto/rea",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 342206,
+      "forks": 86328,
+      "openIssues": 1326,
+      "createdAt": "2026-04-14T00:51:32Z",
+      "pushedAt": "2026-10-20T10:33:25Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+      "topics": [
+        "agent-skills",
+        "ai-agents",
+        "binary-analysis",
+        "claude-code",
+        "cli",
+        "codex",
+        "cordis",
+        "decompiler",
+        "developer-tools",
+        "dsh",
+        "dsh-plugin",
+        "ghidra",
+        "hopper",
+        "llm",
+        "mcp",
+        "model-context-protocol",
+        "rea",
+        "reverse-engineering",
+        "static-analysis",
+        "touhou"
+      ],
+      "latestRelease": "rea-agents-6.7.0",
+      "releasePublishedAt": "2026-10-18T07:45:18Z",
+      "contributors": 266,
+      "contributorsSource": "link",
+      "npmPackage": "rea-agents",
+      "npmDownloads": 549553,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "driver-js",
+      "kind": "JS library",
+      "repo": "https://github.com/nilbuild/driver.js",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 26933,
+      "forks": 1212,
+      "openIssues": 1,
+      "createdAt": "2018-03-11T19:52:13Z",
+      "pushedAt": "2026-10-18T17:41:58Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "A lightweight, dependency-free JavaScript library for guiding user focus across the page.",
+      "topics": [
+        "feature-introductions",
+        "overlay",
+        "overlays",
+        "popover",
+        "product-tour",
+        "product-tours",
+        "spotlight",
+        "tour",
+        "user-onboarding",
+        "walkthrough"
+      ],
+      "latestRelease": "1.10.2",
+      "releasePublishedAt": "2026-10-18T17:42:01Z",
+      "contributors": 56,
+      "contributorsSource": "link",
+      "npmPackage": "driver.js",
+      "npmDownloads": 9130632,
+      "npmChecked": true,
+      "defaultBranch": "master"
+    },
+    {
+      "slug": "liquid-glass",
+      "kind": "React library",
+      "repo": "https://github.com/Glass-HQ/liquid-glass",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 453,
+      "forks": 20,
+      "openIssues": 0,
+      "createdAt": "2026-10-06T00:23:48Z",
+      "pushedAt": "2026-10-10T07:39:07Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Liquid Glass materials for web and Electron, built with vgpu.",
+      "topics": [],
+      "latestRelease": "v0.0.2",
+      "releasePublishedAt": "2026-10-10T01:36:21Z",
+      "contributors": 1,
+      "contributorsSource": "array",
+      "npmPackage": "@glass-sdk/liquid-glass",
+      "npmDownloads": 3818,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "sfinterface-numbers",
+      "kind": "React library",
+      "repo": "https://github.com/wherescz/sfinterface-numbers",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 126,
+      "forks": 9,
+      "openIssues": 1,
+      "createdAt": "2026-09-13T19:50:59Z",
+      "pushedAt": "2026-09-14T13:49:00Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Numbers that move the way they should. A React component from The San Francisco Interface.",
+      "topics": [
+        "animation",
+        "counter",
+        "number-animation",
+        "odometer",
+        "react",
+        "react-component"
+      ],
+      "latestRelease": "v0.3.4",
+      "releasePublishedAt": "2026-09-14T13:51:27Z",
+      "contributors": 1,
+      "contributorsSource": "array",
+      "npmPackage": "@sfinterface/numbers",
+      "npmDownloads": 13113,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "amicro",
+      "kind": "CSS/JS snippets",
+      "repo": "https://github.com/Subhan-code/Amicro--Micro-transitions-",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 2670,
+      "forks": 119,
+      "openIssues": 4,
+      "createdAt": "2026-07-11T08:33:33Z",
+      "pushedAt": "2026-10-10T18:55:27Z",
+      "archived": false,
+      "license": "MIT",
+      "description": null,
+      "topics": [],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 2,
+      "contributorsSource": "link",
+      "npmPackage": "@subhanhq/amicro",
+      "npmDownloads": 410,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "runeicons",
+      "kind": "icon set",
+      "repo": "https://github.com/Nexvyn/runeicons",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 698,
+      "forks": 49,
+      "openIssues": 1,
+      "createdAt": "2026-02-20T05:44:47Z",
+      "pushedAt": "2026-10-11T11:49:12Z",
+      "archived": false,
+      "license": "NOASSERTION",
+      "description": "Open-source icon library: 900+ icons in five styles (outline, duotone, fill, pixelated, glass), a browser editor, 1,100+ brand logos, and npm packages ",
+      "topics": [],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 10,
+      "contributorsSource": "link",
+      "npmPackage": "runeicons",
+      "npmDownloads": 376,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "fsearch",
+      "kind": "macOS app",
+      "repo": "https://github.com/noahdunnagan/fsearch",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 2149,
+      "forks": 138,
+      "openIssues": 5,
+      "createdAt": "2026-10-08T17:50:33Z",
+      "pushedAt": "2026-10-12T18:33:47Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Whole-disk file search for macOS: fuzzy names, typo tolerance, indexed content grep. ~1 ms over 8M files.",
+      "topics": [],
+      "latestRelease": "v0.2.1",
+      "releasePublishedAt": "2026-10-12T18:35:36Z",
+      "contributors": 9,
+      "contributorsSource": "link",
+      "npmPackage": null,
+      "npmDownloads": null,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "gr8r-task-management",
+      "kind": "web app",
+      "repo": "https://github.com/gr8rstudio/gr8r-studio",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 857,
+      "forks": 198,
+      "openIssues": 3,
+      "createdAt": "2026-10-07T11:44:07Z",
+      "pushedAt": "2026-10-07T14:51:02Z",
+      "archived": false,
+      "license": "none",
+      "description": "Gr8r Studio: a calm, structured project management workspace. Vite + plain ES modules.",
+      "topics": [],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 1,
+      "contributorsSource": "array",
+      "npmPackage": null,
+      "npmDownloads": null,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "compositor",
+      "kind": "macOS app",
+      "repo": "https://github.com/robbietilton/Compositor",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 17521,
+      "forks": 1721,
+      "openIssues": 74,
+      "createdAt": "2026-09-16T20:35:54Z",
+      "pushedAt": "2026-10-15T01:43:33Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "The Photoshop alternative for Mac",
+      "topics": [],
+      "latestRelease": "v1.5.3",
+      "releasePublishedAt": "2026-10-15T01:43:32Z",
+      "contributors": 24,
+      "contributorsSource": "link",
+      "npmPackage": null,
+      "npmDownloads": null,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "spectrum-ui",
+      "kind": "React library",
+      "repo": "https://github.com/arihantcodes/spectrum-ui",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 1501,
+      "forks": 125,
+      "openIssues": 6,
+      "createdAt": "2024-10-19T05:31:38Z",
+      "pushedAt": "2026-09-21T07:11:05Z",
+      "archived": false,
+      "license": "Apache-2.0",
+      "description": "Spectrum UI ⭐ is a collection of re-usable components built using Aceternity UI Magic UI and ShadCN UI that you can copy and paste into your apps.",
+      "topics": [],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 24,
+      "contributorsSource": "link",
+      "npmPackage": "@spectrumui/mcp",
+      "npmDownloads": 1247,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    },
+    {
+      "slug": "pdfcn",
+      "kind": "React library",
+      "repo": "https://github.com/shadcn-labs/pdfcn",
+      "ok": true,
+      "errors": [],
+      "n_a": [],
+      "stars": 2952,
+      "forks": 153,
+      "openIssues": 54,
+      "createdAt": "2026-08-11T11:55:41Z",
+      "pushedAt": "2026-10-15T08:35:55Z",
+      "archived": false,
+      "license": "MIT",
+      "description": "Beautiful pdf components, built on Takumi and Forme. 100% Free, Zero config, one command setup.",
+      "topics": [
+        "forme",
+        "html-to-pdf",
+        "jsx",
+        "pdf",
+        "pdf-generation",
+        "pdf-generator",
+        "react",
+        "rust",
+        "shadcn",
+        "takumi",
+        "typescript",
+        "wasm"
+      ],
+      "latestRelease": "no releases",
+      "releasePublishedAt": null,
+      "contributors": 12,
+      "contributorsSource": "link",
+      "npmPackage": null,
+      "npmDownloads": null,
+      "npmChecked": true,
+      "defaultBranch": "main"
+    }
+  ],
+  "scores": [
+    {
+      "slug": "m3e-canvas",
+      "pageviews": 1488,
+      "engagement": 21,
+      "stars": 9510,
+      "pushedAt": "2026-10-16T15:34:27Z",
+      "pushedDaysAgo": 3,
+      "npmDownloads": null,
+      "npmUsedMedian": true,
+      "npmPackage": null,
+      "norm": {
+        "traffic": 1,
+        "engagement": 0.4444444444444444,
+        "stars": 0.9945451292343535,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0.25,
+        "engagement": 0.06666666666666667,
+        "stars": 0.298363538770306,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 79.9,
+      "missing": []
+    },
+    {
+      "slug": "rea",
+      "pageviews": 71,
+      "engagement": 20,
+      "stars": 342206,
+      "pushedAt": "2026-10-20T10:33:25Z",
+      "pushedDaysAgo": 0,
+      "npmDownloads": 549553,
+      "npmUsedMedian": false,
+      "npmPackage": "rea-agents",
+      "norm": {
+        "traffic": 0.3381733746314181,
+        "engagement": 0.4166666666666667,
+        "stars": 1,
+        "freshness": 1,
+        "npm": 0.7216866258108268
+      },
+      "parts": {
+        "traffic": 0.08454334365785453,
+        "engagement": 0.0625,
+        "stars": 0.3,
+        "freshness": 0.15,
+        "npm": 0.10825299387162401
+      },
+      "score": 70.5,
+      "missing": []
+    },
+    {
+      "slug": "driver-js",
+      "pageviews": 49,
+      "engagement": 7,
+      "stars": 26933,
+      "pushedAt": "2026-10-18T17:41:58Z",
+      "pushedDaysAgo": 1,
+      "npmDownloads": 9130632,
+      "npmUsedMedian": false,
+      "npmPackage": "driver.js",
+      "norm": {
+        "traffic": 0.25750153537451054,
+        "engagement": 0.05555555555555555,
+        "stars": 1,
+        "freshness": 1,
+        "npm": 1
+      },
+      "parts": {
+        "traffic": 0.06437538384362763,
+        "engagement": 0.008333333333333333,
+        "stars": 0.3,
+        "freshness": 0.15,
+        "npm": 0.15
+      },
+      "score": 67.3,
+      "missing": []
+    },
+    {
+      "slug": "liquid-glass",
+      "pageviews": 48,
+      "engagement": 41,
+      "stars": 453,
+      "pushedAt": "2026-10-10T07:39:07Z",
+      "pushedDaysAgo": 10,
+      "npmDownloads": 3818,
+      "npmUsedMedian": false,
+      "npmPackage": "@glass-sdk/liquid-glass",
+      "norm": {
+        "traffic": 0.2530162910467053,
+        "engagement": 1,
+        "stars": 0.664024550503208,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0.06325407276167633,
+        "engagement": 0.15,
+        "stars": 0.19920736515096238,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 59.7,
+      "missing": []
+    },
+    {
+      "slug": "compositor",
+      "pageviews": 20,
+      "engagement": 6,
+      "stars": 17521,
+      "pushedAt": "2026-10-15T01:43:33Z",
+      "pushedDaysAgo": 5,
+      "npmDownloads": null,
+      "npmUsedMedian": true,
+      "npmPackage": null,
+      "norm": {
+        "traffic": 0.06257851549322255,
+        "engagement": 0.027777777777777776,
+        "stars": 1,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0.015644628873305637,
+        "engagement": 0.004166666666666667,
+        "stars": 0.3,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 50.4,
+      "missing": []
+    },
+    {
+      "slug": "gr8r-task-management",
+      "pageviews": 22,
+      "engagement": 22,
+      "stars": 857,
+      "pushedAt": "2026-10-07T14:51:02Z",
+      "pushedDaysAgo": 12,
+      "npmDownloads": null,
+      "npmUsedMedian": true,
+      "npmPackage": null,
+      "norm": {
+        "traffic": 0.08331101895690811,
+        "engagement": 0.4722222222222222,
+        "stars": 0.7332452054807995,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0.020827754739227027,
+        "engagement": 0.07083333333333333,
+        "stars": 0.21997356164423984,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 49.6,
+      "missing": []
+    },
+    {
+      "slug": "sfinterface-numbers",
+      "pageviews": 46,
+      "engagement": 21,
+      "stars": 126,
+      "pushedAt": "2026-09-14T13:49:00Z",
+      "pushedDaysAgo": 35,
+      "npmDownloads": 13113,
+      "npmUsedMedian": false,
+      "npmPackage": "@sfinterface/numbers",
+      "norm": {
+        "traffic": 0.24375844099162897,
+        "engagement": 0.4444444444444444,
+        "stars": 0.5250926362793906,
+        "freshness": 0.9666666666666667,
+        "npm": 0.35174552380513946
+      },
+      "parts": {
+        "traffic": 0.06093961024790724,
+        "engagement": 0.06666666666666667,
+        "stars": 0.1575277908838172,
+        "freshness": 0.145,
+        "npm": 0.05276182857077092
+      },
+      "score": 48.3,
+      "missing": []
+    },
+    {
+      "slug": "fsearch",
+      "pageviews": 27,
+      "engagement": 9,
+      "stars": 2149,
+      "pushedAt": "2026-10-12T18:33:47Z",
+      "pushedDaysAgo": 7,
+      "npmDownloads": null,
+      "npmUsedMedian": true,
+      "npmPackage": null,
+      "norm": {
+        "traffic": 0.1278592600602602,
+        "engagement": 0.1111111111111111,
+        "stars": 0.8330591038728608,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0.03196481501506505,
+        "engagement": 0.016666666666666666,
+        "stars": 0.24991773116185823,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 48.3,
+      "missing": []
+    },
+    {
+      "slug": "spectrum-ui",
+      "pageviews": 16,
+      "engagement": 22,
+      "stars": 1501,
+      "pushedAt": "2026-09-21T07:11:05Z",
+      "pushedDaysAgo": 29,
+      "npmDownloads": 1247,
+      "npmUsedMedian": false,
+      "npmPackage": "@spectrumui/mcp",
+      "norm": {
+        "traffic": 0.014038847852064528,
+        "engagement": 0.4722222222222222,
+        "stars": 0.7940951730608174,
+        "freshness": 1,
+        "npm": 0.11873237080456155
+      },
+      "parts": {
+        "traffic": 0.003509711963016132,
+        "engagement": 0.07083333333333333,
+        "stars": 0.2382285519182452,
+        "freshness": 0.15,
+        "npm": 0.017809855620684233
+      },
+      "score": 48,
+      "missing": []
+    },
+    {
+      "slug": "pdfcn",
+      "pageviews": 15,
+      "engagement": 13,
+      "stars": 2952,
+      "pushedAt": "2026-10-15T08:35:55Z",
+      "pushedDaysAgo": 5,
+      "npmDownloads": null,
+      "npmUsedMedian": true,
+      "npmPackage": null,
+      "norm": {
+        "traffic": 0,
+        "engagement": 0.2222222222222222,
+        "stars": 0.8675290882877509,
+        "freshness": 1,
+        "npm": 0.22954988170842316
+      },
+      "parts": {
+        "traffic": 0,
+        "engagement": 0.03333333333333333,
+        "stars": 0.26025872648632525,
+        "freshness": 0.15,
+        "npm": 0.034432482256263476
+      },
+      "score": 47.8,
+      "missing": []
+    },
+    {
+      "slug": "amicro",
+      "pageviews": 42,
+      "engagement": 5,
+      "stars": 2670,
+      "pushedAt": "2026-10-10T18:55:27Z",
+      "pushedDaysAgo": 9,
+      "npmDownloads": 410,
+      "npmUsedMedian": false,
+      "npmPackage": "@subhanhq/amicro",
+      "norm": {
+        "traffic": 0.2239696554639967,
+        "engagement": 0,
+        "stars": 0.8566278153411437,
+        "freshness": 1,
+        "npm": 0.008573164980395112
+      },
+      "parts": {
+        "traffic": 0.05599241386599917,
+        "engagement": 0,
+        "stars": 0.2569883446023431,
+        "freshness": 0.15,
+        "npm": 0.0012859747470592667
+      },
+      "score": 46.4,
+      "missing": []
+    },
+    {
+      "slug": "runeicons",
+      "pageviews": 29,
+      "engagement": 7,
+      "stars": 698,
+      "pushedAt": "2026-10-11T11:49:12Z",
+      "pushedDaysAgo": 8,
+      "npmDownloads": 376,
+      "npmUsedMedian": false,
+      "npmPackage": "runeicons",
+      "norm": {
+        "traffic": 0.14340348861289565,
+        "engagement": 0.05555555555555555,
+        "stars": 0.7109638556557902,
+        "freshness": 1,
+        "npm": 0
+      },
+      "parts": {
+        "traffic": 0.03585087215322391,
+        "engagement": 0.008333333333333333,
+        "stars": 0.21328915669673706,
+        "freshness": 0.15,
+        "npm": 0
+      },
+      "score": 40.7,
+      "missing": []
+    }
+  ],
+  "linkChecks": [
+    {
+      "slug": "gr8r-task-management",
+      "href": "https://github.com/gr8rstudio/gr8r-studio/",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "spectrum-ui",
+      "href": "https://github.com/arihantcodes/spectrum-ui",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "compositor",
+      "href": "https://github.com/robbietilton/Compositor",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "mailcheap",
+      "href": "https://github.com/marclou/mailcheap",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "liquid-glass",
+      "href": "https://github.com/Glass-HQ/liquid-glass",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "rea",
+      "href": "https://github.com/morluto/rea",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "fsearch",
+      "href": "https://github.com/noahdunnagan/fsearch",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "sfinterface-numbers",
+      "href": "https://github.com/wherescz/sfinterface-numbers",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "runeicons",
+      "href": "https://github.com/Nexvyn/runeicons",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "amicro",
+      "href": "https://github.com/Subhan-code/Amicro--Micro-transitions-",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "m3e-canvas",
+      "href": "https://github.com/lnkiai/m3e-canvas",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "driver-js",
+      "href": "https://github.com/nilbuild/driver.js",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "pdfcn",
+      "href": "https://github.com/shadcn-labs/pdfcn",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "invoice",
+      "href": "https://www.figma.com/file/DAxpyw1NCok6hrgRjkRzBBjr/Invoice/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "avatar-ui",
+      "href": "https://www.figma.com/file/Jww9nTpXrIea4XH3jjvX29/Avatars-UI-design/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "appbar-ui",
+      "href": "https://www.figma.com/file/X25RJI0WIGBRPc49kMvpf7/App-Bar-UI-design-guidelines/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "fonts-playground",
+      "href": "https://www.figma.com/file/wzpBLnFVlrMdsJtA9nZqJg/Figma-Fonts-Playground-System/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "website-template",
+      "href": "https://www.figma.com/file/PqSfLOUh5DvGCKDQYR9IEi/Creative-Website-Template-for-Figma/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "android-ui-kit",
+      "href": "https://www.figma.com/file/9SVBCR2rbaJyYOIxwmbwGV/Figma-Android-UI-kit---Kanban-Project-management/duplicate",
+      "status": 403,
+      "ok": false,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "figma-ios-ui-kit",
+      "href": "https://www.figma.com/file/7JEsgG701agVb4BCd2wQsq/iOS-design-system-%E2%80%94-Figma-UI-kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "material-x-starter",
+      "href": "https://www.figma.com/file/NZGoq5K6esdjlDSxcF4R0t/Material-X-UI-kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "radar-chart",
+      "href": "https://www.figma.com/file/R7D7rDPWSrEc7yaTLwRP6D/Figma-Charts-UI-kit---Radar-template/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "rome-ui-kit-lite",
+      "href": "https://www.figma.com/file/HIeyxrE4vWLb5WayReH6w4/Rome---Dashboard-UI-Kit-(Lite)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "xela-ui-kit-starter",
+      "href": "https://www.figma.com/file/PTLM9g778K5IvQhI3Znza1/XELA---Community/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "free-ios-ui-kit",
+      "href": "https://www.figma.com/file/wg137YA5IznyciTyh5prJR/Full-iOS-design-system-(Free)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "mobile-x-ui-kit",
+      "href": "https://www.figma.com/file/1lILyv4s9TXvmJzGX2GKHf/Mobile-X-design-system-lite/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "accordion-guide",
+      "href": "https://www.figma.com/file/cFANne9CCCOMACP3TEso8p/Accordion-UI-design-guidelines/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "eclipse-ui-kit",
+      "href": "https://www.figma.com/file/0bXou4jpPZbcjUXjb0NhV9/Eclipse-UI-kit---design-system-starter/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "appka-ios-ui-kit",
+      "href": "https://www.figma.com/file/MJb5f6UIoigfGueMCZIyXl/Appka.-iOS-Design-UI-Kit-(Free)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "nav-templates",
+      "href": "https://www.figma.com/file/2VwYyliScRSEsD3O0h1mgB/XELA---Community-2/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "dark-charts-ui-kit",
+      "href": "https://www.figma.com/file/VSAzjbWZ04yeSxKrDhH1f6MH/Dark-Chart-Templates/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "figma-email-templates",
+      "href": "https://www.figma.com/file/UxUylqu9GKJIMKsyKOzGCT/Setproduct-Email-Templates/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "charts-widgets-dark-light",
+      "href": "https://www.figma.com/file/Pj6KsldvwBKJNaisDitcSc/Charts-design-widgets-%F0%9F%93%88/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "shopping-layout-for-web-app",
+      "href": "https://www.figma.com/file/g1owQrbQ9zyB1GJ51Pk7Ly/Ecommerce-Desktop-Template/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "orion-dark-templates",
+      "href": "https://www.figma.com/file/DQaMAFsipldH7YfAwYnhpS/Orion-Charts-UI-kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "responsive-imagery-cards",
+      "href": "https://www.figma.com/file/HOw6dxTvps3V6EfDG151jH/Figma-Card-Templates/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "landing-page-web-blocks",
+      "href": "https://www.figma.com/file/HqFaicUnfCG0swdUtkOnF8/Zeus-UI-(community)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "mobile-tables-several-themes",
+      "href": "https://www.figma.com/file/ARYvgo05kkUhHF5PltU7l1/iOS-tables/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "12-free-mobile-templates",
+      "href": "https://www.figma.com/file/KfknKQuugP0N8b4Huupc7K/Mobile-UI-kit-for-Figma/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "calendars-date-picker-templates",
+      "href": "https://www.figma.com/file/mjj01Uk7fwfQN35jrFDoYY/Calendar-UI-design-templates/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "schedule-events-template",
+      "href": "https://www.figma.com/file/k3aJE7v3JJLhuQYpqv1CNZ/Landing-page-template-based-on-Zeus-Web-UI-kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "material-you-for-web-apps",
+      "href": "https://www.figma.com/file/Cv7VEQMi7aLumtOVc3hSSk/Material-Me-Lite/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "ios-datepickers",
+      "href": "https://www.figma.com/file/v6qXVivwjwDHQh2Tp2pnqb/iOS-datepicker/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "segment-ui-kit",
+      "href": "https://www.figma.com/file/1rtds7BSrlFryO1D9r2F3k/Segment---Free-UI-Kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "figma-react-ui-kit",
+      "href": "https://www.figma.com/file/gNPVChja64KSH48H4zDfV3/Figma-React-UI-kit-(Free)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "messenger-app-desktop-template",
+      "href": "https://www.figma.com/file/iofH3CMGRWgqpjtlmhhXTA/Messenger-UI-design-template/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "zeus-ui-free-website-template",
+      "href": "https://www.figma.com/file/k3aJE7v3JJLhuQYpqv1CNZ/Landing-page-template-based-on-Zeus-Web-UI-kit/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "design-system-starter",
+      "href": "https://www.figma.com/file/4FgwyPERZehFWdfy6HVpYL/Figma-design-system-template-setproduct.com/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "navigation-layout-4-samples",
+      "href": "https://www.figma.com/file/CjynFrHuBv0fOZgc6NOil2/Navigation-UI-design-components/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "chart-cards",
+      "href": "https://www.figma.com/file/9LP39ZeqrUdIGVGH7JJg4q/Figma-Charts-%26-Infographics-UI-kit-(Community)/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "material-ui-styled",
+      "href": "https://www.figma.com/file/brrB3vjxYf1mkh6zcbklpB/Material-Design-UI-kit---Components-library/duplicate",
+      "status": 403,
+      "ok": false,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "hyper-charts",
+      "href": "https://www.figma.com/file/vEyW2W0vQgeE8AXbPeonBX/Hyper-Charts-%E2%9C%A6-FREE/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "search-inputs",
+      "href": "https://www.figma.com/file/652eskZ40cSr0XXjrSn0dA/Search-Inputs/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "figma-grid-layouts",
+      "href": "https://www.figma.com/file/wpoGA2o6slPKnHJiVyXBJX/Figma-grid-layout/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "panda-dashboard-template",
+      "href": "https://www.figma.com/file/aTfDaTCZMycugJPBGj24bD/Panda-Design-System-for-Community/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    },
+    {
+      "slug": "orion-dataviz-templates",
+      "href": "https://www.figma.com/file/4OQBqLHei1o0kgVAlR012G/Figma-UI-kit-%E2%9C%A6-Orion-dashboard-templates/duplicate",
+      "status": 200,
+      "ok": true,
+      "method": "GET",
+      "headStatus": 404
+    }
+  ],
+  "suspectedLinks": [
+    {
+      "slug": "rea",
+      "href": "https://github.com/morluto/rea",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "fsearch",
+      "href": "https://github.com/noahdunnagan/fsearch",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    },
+    {
+      "slug": "driver-js",
+      "href": "https://github.com/nilbuild/driver.js",
+      "status": 200,
+      "ok": true,
+      "method": "HEAD"
+    }
+  ]
+}
