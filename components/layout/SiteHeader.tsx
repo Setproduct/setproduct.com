@@ -792,9 +792,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                             <a
                                               className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                               href={`/blog/${item.slug}`}
+                                              aria-hidden="true"
+                                              tabIndex={-1}
                                             >
                                               <img
-                                                alt={item.slug}
+                                                alt=""
                                                 src={item.thumbImage}
                                                 sizes="158px"
                                                 className="image-cover"
@@ -884,9 +886,11 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                            <a
                                              className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                              href={item.previewHref}
+                                             aria-hidden="true"
+                                             tabIndex={-1}
                                            >
                                              <Image
-                                               alt={item.title}
+                                               alt=""
                                                src={item.thumb}
                                                fill
                                                sizes="158px"
@@ -982,6 +986,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                            <a
                                              className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
                                              href={item.href}
+                                             aria-hidden="true"
+                                             tabIndex={-1}
                                            >
                                              <Image
                                                alt=""
