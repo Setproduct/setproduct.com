@@ -31,6 +31,12 @@ export const blogMdxComponents: MDXRemoteProps["components"] = {
     );
   },
   a: ({ href, children, ...props }) => {
+    // Internal links stay in the same tab. Opening /blog or /freebies pages
+    // in a new tab strands the reader in two copies of the same site.
+    const isInternal = typeof href === "string" && (href.startsWith("/") || href.startsWith("#"));
+    if (isInternal) {
+      return <a href={href} {...props}>{children}</a>;
+    }
     const isGumroad = href?.includes("gumroad.com");
     if (isGumroad) {
       // Gumroad overlay: gumroad.js intercepts clicks on plain gumroad.com
