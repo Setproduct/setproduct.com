@@ -102,8 +102,18 @@ h1[id], h2[id], h3[id], h4[id] {
   flex-direction: column;
 }
 
+/* Height of the dissolving bottom edge; animatable so it can fade in/out. */
+@property --toc-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 /* Scroll box of the sidebar TOC. Positioned so the shared indicators and
-   offsetTop of the items are measured against it. */
+   offsetTop of the items are measured against it.
+   The mask dissolves the bottom edge to full transparency while more items
+   are hidden below ([data-more]), so there is no hard cut line on any
+   background. */
 .blogpost_toc-scroll {
   position: relative;
   min-height: 0;
@@ -111,11 +121,21 @@ h1[id], h2[id], h3[id], h4[id] {
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--black-transparent) transparent;
+  --toc-fade: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--toc-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--toc-fade)), transparent 100%);
+  transition: --toc-fade 200ms ease;
 }
 
+.blogpost_toc-scroll[data-more] {
+  --toc-fade: calc(40 * var(--em-px));
+}
+
+/* The gap above "Subscribe to new posts" lives inside the scroll box: it
+   shows when the list ends and hides under the dissolving edge otherwise. */
 .blogpost_toc-list {
   margin: 0;
-  padding: 0;
+  padding: 0 0 calc(16 * var(--em-px));
   list-style: none;
 }
 
@@ -170,25 +190,23 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
- * Progressive blur at the bottom of the list: the items slide under the
- * "Subscribe to new posts" title and soften step by step. Three stacked
- * backdrop-filter layers, each masked to a lower band with a stronger blur,
- * plus a light white wash so the text fades out. Sticky at the bottom of the
- * scroll box; the negative margin keeps it from adding scroll height.
- * Visible only while there is more list below ([data-more], set in
- * TableOfContents).
+ * Progressive blur at the bottom of the list: three stacked backdrop-filter
+ * layers, each masked to a lower band with a stronger blur. The opacity fade
+ * itself is the mask on .blogpost_toc-scroll, so the blurriest text is
+ * already transparent at the edge. Sticky at the bottom of the scroll box;
+ * the negative margin keeps it from adding scroll height. Visible only while
+ * there is more list below ([data-more], set in TableOfContents).
  */
 .blogpost_toc-fade {
   position: sticky;
   bottom: 0;
   z-index: 2;
   display: block;
-  height: calc(48 * var(--em-px));
-  margin-top: calc(-48 * var(--em-px));
+  height: calc(40 * var(--em-px));
+  margin-top: calc(-40 * var(--em-px));
   pointer-events: none;
   opacity: 0;
   transition: opacity 200ms ease;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 100%);
 }
 
 .blogpost_toc-fade > span {

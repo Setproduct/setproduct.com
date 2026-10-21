@@ -27,9 +27,9 @@ export default function BlogSidebar({ headings, activeId, onNavigate }: BlogSide
     <aside id="w-node-sidebar" className="blogpost_content-column1">
       {headings.length > 0 ? (
         <>
+          {/* No divider or spacer: the list dissolves right above the
+              subscribe title; its own bottom padding is the gap. */}
           <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
-          {/* No divider: the list fades out under the subscribe title instead. */}
-          <div className="spacer-16 hide-on-mobile" />
         </>
       ) : null}
       <div className="blogpost_content-cta-wr hide-on-mobile">
