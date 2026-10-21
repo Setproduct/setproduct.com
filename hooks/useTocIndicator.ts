@@ -3,6 +3,9 @@ import { useEffect, useLayoutEffect, useRef, type RefObject } from "react";
 // useLayoutEffect warns during SSR; on the server there is nothing to measure.
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+/** Matches the H3 group transition in globals.css (280ms) plus a margin. */
+const FOLLOW_MS = 340;
+
 /**
  * Moves one shared indicator element to the active item of a list
  * (the "focus relay" pattern).
@@ -25,6 +28,13 @@ export function useTocIndicator(
   listRef: RefObject<HTMLElement | null>,
   indicatorRef: RefObject<HTMLElement | null>,
   activeSelector: string | null,
+  /**
+   * Changes when a height animation starts inside the list (an H3 group
+   * unfolding). For FOLLOW_MS afterwards the indicator is re-measured every
+   * frame, so it rides along with the moving items instead of jumping at
+   * the end.
+   */
+  followKey?: unknown,
 ) {
   const shown = useRef(false);
   const placeRef = useRef<() => void>(() => {});
@@ -74,6 +84,18 @@ export function useTocIndicator(
   useIsoLayoutEffect(() => {
     placeRef.current();
   });
+
+  useEffect(() => {
+    if (followKey === undefined) return;
+    let frame = 0;
+    const until = performance.now() + FOLLOW_MS;
+    const tick = () => {
+      placeRef.current();
+      if (performance.now() < until) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [followKey]);
 
   useEffect(() => {
     const list = listRef.current;

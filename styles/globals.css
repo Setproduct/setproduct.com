@@ -244,13 +244,58 @@ h1[id], h2[id], h3[id], h4[id] {
   background-color: transparent;
 }
 
-.blogpost_toc-list > li {
+.blogpost_toc-list > li,
+.blogpost_toc-sub-list > li {
   margin: 0;
   padding: 0;
 }
 
-.blogpost_toc-list > li::before {
+.blogpost_toc-list > li::before,
+.blogpost_toc-sub-list > li::before {
   content: none;
+}
+
+/*
+ * H3 group under each H2. Always rendered; folded to zero height with a grid
+ * row (0fr → 1fr), so it unfolds to its real height without measuring and
+ * the items below slide down on the same curve as the pill. The items fade
+ * in with a short stagger once the group is open; folding is quicker and has
+ * no stagger, so the old group gets out of the way first.
+ * TableOfContents delays opening by 150ms, so fast scrolling does not pump
+ * the list open and shut.
+ */
+.blogpost_toc-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blogpost_toc-sub.is-open {
+  grid-template-rows: 1fr;
+}
+
+.blogpost_toc-sub-list {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.blogpost_toc-sub-list > li {
+  opacity: 0;
+  translate: 0 calc(-4 * var(--em-px));
+  transition:
+    opacity 160ms ease,
+    translate 160ms ease;
+}
+
+.blogpost_toc-sub.is-open .blogpost_toc-sub-list > li {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 240ms ease calc(60ms + var(--i, 0) * 30ms),
+    translate 280ms cubic-bezier(0.22, 1, 0.36, 1) calc(60ms + var(--i, 0) * 30ms);
 }
 
 .blogpost_navigation-link:focus-visible,
@@ -525,7 +570,10 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
   .blogpost_mobile-toc-chevron,
   .blogpost_toc-pill,
-  .blogpost_toc-line {
+  .blogpost_toc-line,
+  .blogpost_toc-sub,
+  .blogpost_toc-sub-list > li,
+  .blogpost_toc-sub.is-open .blogpost_toc-sub-list > li {
     transition: none;
   }
 
