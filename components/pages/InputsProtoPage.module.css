@@ -414,7 +414,9 @@
    Rejected earlier: a rotating conic gradient (Kinetics original) and fixed
    keyframe shares per side. Both only look even at one aspect ratio and jerk at
    the corners on any other width: on a 284 × 50 field the beam ran the short sides
-   almost 3 times faster than the long ones.
+   almost 3 times faster than the long ones. Also rejected: a walk around the sharp
+   rectangle. Its corners lie outside the rounded border, so the visible light
+   stalled before a corner and then shot through it 3 times faster.
 
    On focus the regular focus takes over: the border turns solid primary and
    paints over the beam, the beam stops, the rim, the outer edge and the lift
@@ -450,22 +452,47 @@
   --attention-fill: var(--input-bg);
   --attention-line: #7c4dff2e;
   --attention-w: 100cqw;
-  --attention-p: calc(2 * (var(--attention-w) + var(--attention-h)));
+  /* The spot walks the centre line of the rounded border itself: 4 straights
+     and 4 quarter arcs. A walk around the sharp rectangle cut the corners off
+     and the light skipped through them. */
+  --attention-o: calc(var(--attention-b) / 2);
+  --attention-rr: calc(var(--attention-r) - var(--attention-o));
+  --attention-s1: calc(var(--attention-w) - 2 * var(--attention-r));
+  --attention-s2: calc(var(--attention-h) - 2 * var(--attention-r));
+  --attention-a: calc(1.5707963 * var(--attention-rr));
+  --attention-p: calc(2 * var(--attention-s1) + 2 * var(--attention-s2) + 4 * var(--attention-a));
   --attention-d: calc(var(--attention-t) * var(--attention-p));
-  /* Walk the perimeter: top →, right ↓, bottom ←, left ↑. */
+  /* Distance travelled on each piece, clockwise from the top left. */
+  --attention-c1: clamp(0px, var(--attention-d), var(--attention-s1));
+  --attention-c2: clamp(0px, var(--attention-d) - var(--attention-s1), var(--attention-a));
+  --attention-c3: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-a), var(--attention-s2));
+  --attention-c4: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-s2) - var(--attention-a), var(--attention-a));
+  --attention-c5: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-s2) - 2 * var(--attention-a), var(--attention-s1));
+  --attention-c6: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - var(--attention-s2) - 2 * var(--attention-a), var(--attention-a));
+  --attention-c7: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - var(--attention-s2) - 3 * var(--attention-a), var(--attention-s2));
+  --attention-c8: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - 2 * var(--attention-s2) - 3 * var(--attention-a), var(--attention-a));
+  /* Arc length → angle. CSS cannot divide px by px everywhere yet, so the angle
+     comes from atan2: 16 × atan2(c, 16R) is linear within 1%, the factor
+     1.0032 makes a full arc exactly 90deg. */
+  --attention-k: calc(16 * 1.0032043);
+  --attention-q: calc(16 * var(--attention-rr));
+  --attention-angle: calc(
+    -90deg + var(--attention-k) *
+      (atan2(var(--attention-c2), var(--attention-q)) + atan2(var(--attention-c4), var(--attention-q)) +
+        atan2(var(--attention-c6), var(--attention-q)) + atan2(var(--attention-c8), var(--attention-q)))
+  );
   --attention-x: calc(
-    clamp(0px, var(--attention-d), var(--attention-w)) -
-      clamp(0px, var(--attention-d) - var(--attention-w) - var(--attention-h), var(--attention-w))
+    var(--attention-r) + var(--attention-c1) - var(--attention-c5) +
+      var(--attention-rr) * cos(var(--attention-angle))
   );
   --attention-y: calc(
-    clamp(0px, var(--attention-d) - var(--attention-w), var(--attention-h)) -
-      clamp(0px, var(--attention-d) - 2 * var(--attention-w) - var(--attention-h), var(--attention-h))
+    var(--attention-r) + var(--attention-c3) - var(--attention-c7) +
+      var(--attention-rr) * sin(var(--attention-angle))
   );
-  /* An ellipse, not a circle: the field is only 31–50px tall, so a round spot
-     also lit the opposite side and the beam looked doubled. The vertical radius
-     stays under the field height, the horizontal one gives the tail length. */
+  /* A round spot smaller than the field height: it never reaches the opposite
+     side, so there is one beam, not two going towards each other. */
   --attention-beam: radial-gradient(
-    ellipse calc(80 * var(--em-px)) calc(0.6 * var(--attention-h)) at var(--attention-x) var(--attention-y),
+    circle calc(0.8 * var(--attention-h)) at var(--attention-x) var(--attention-y),
     var(--primary) 0%,
     #9c78ff 40%,
     #7c4dff00 100%
@@ -486,13 +513,23 @@
     transform var(--input-out) var(--input-ease);
 }
 
-/* Field heights per size, the same numbers as the size rules above. */
-.proto .f.f.l.attention { --attention-h: calc(50 * var(--em-px)); }
-.proto .f.f.m.attention { --attention-h: calc(40 * var(--em-px)); }
+/* Field height, radius and border per size, the same numbers as the size rules above. */
+.proto .f.f.l.attention {
+  --attention-h: calc(50 * var(--em-px));
+  --attention-r: calc(20 * var(--em-px));
+  --attention-b: 2px;
+}
+.proto .f.f.m.attention {
+  --attention-h: calc(40 * var(--em-px));
+  --attention-r: calc(16 * var(--em-px));
+  --attention-b: 2px;
+}
 
 /* S: 1px beam + 0.5px rim = the 1.5px focus border of the small field. */
 .proto .f.f.s.attention {
   --attention-h: calc(31 * var(--em-px));
+  --attention-r: calc(12 * var(--em-px));
+  --attention-b: 1px;
   --input-rim-size: 0.5px;
   border-width: 1px;
 }
