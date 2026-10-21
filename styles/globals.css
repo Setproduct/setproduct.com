@@ -180,13 +180,31 @@ h1[id], h2[id], h3[id], h4[id] {
   opacity: 1;
 }
 
-/* Compact items: about 34px per one-line H2 at 1440, so 9+ fit on a laptop. */
+/*
+ * Compact items: about 34px per one-line H2 at 1440, so 9+ fit on a laptop.
+ *
+ * Variable weight: Uncut Sans is a variable font (300–700), so the active
+ * item thickens 400 → 600 over the same 320ms curve as the pill instead of
+ * snapping to bold. Semibold glyphs are about 2% wider; the negative
+ * letter-spacing on the active item (measured: median −0.019em across TOC
+ * labels) keeps the label width steady, so a long heading never rewraps
+ * mid-transition and the pill does not have to resize.
+ */
 .blogpost_toc-scroll .blogpost_navigation-link {
   z-index: 1;
   margin-bottom: 2em;
   padding: 6em 12em;
   border-radius: calc(12 * var(--em-px));
-  transition: color 200ms ease;
+  letter-spacing: 0;
+  transition:
+    color 200ms ease,
+    font-weight 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blogpost_toc-scroll .blogpost_navigation-link.fs-cmsfilter_active,
+.blogpost_toc-scroll .blogpost_navigation-link.is-active {
+  letter-spacing: -0.02em;
 }
 
 /*
@@ -571,6 +589,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   .blogpost_mobile-toc-chevron,
   .blogpost_toc-pill,
   .blogpost_toc-line,
+  .blogpost_toc-scroll .blogpost_navigation-link,
   .blogpost_toc-sub,
   .blogpost_toc-sub-list > li,
   .blogpost_toc-sub.is-open .blogpost_toc-sub-list > li {
