@@ -461,8 +461,11 @@
     clamp(0px, var(--attention-d) - var(--attention-w), var(--attention-h)) -
       clamp(0px, var(--attention-d) - 2 * var(--attention-w) - var(--attention-h), var(--attention-h))
   );
+  /* An ellipse, not a circle: the field is only 31–50px tall, so a round spot
+     also lit the opposite side and the beam looked doubled. The vertical radius
+     stays under the field height, the horizontal one gives the tail length. */
   --attention-beam: radial-gradient(
-    circle calc(64 * var(--em-px)) at var(--attention-x) var(--attention-y),
+    ellipse calc(80 * var(--em-px)) calc(0.6 * var(--attention-h)) at var(--attention-x) var(--attention-y),
     var(--primary) 0%,
     #9c78ff 40%,
     #7c4dff00 100%
