@@ -412,11 +412,11 @@ h1[id], h2[id], h3[id], h4[id] {
 
 /* Reading progress over the article body, pinned above the navbar. */
 /*
- * Reading progress: a 1px line plus a 3px dot at its leading end that softly
- * pulses and sends out a fading ripple. ReadingProgress.tsx only writes --p
- * (0..1); the line scales and the dot's track slides by transform, so there
- * is no layout work while scrolling. The line sits 1px below the top edge so
- * the dot is not cut in half by the viewport.
+ * Reading progress: a 1px line flush with the top edge plus a 5px dot centred
+ * on its leading end that softly pulses and sends out a fading ripple. The
+ * top half of the dot is cut by the viewport on purpose. ReadingProgress.tsx
+ * only writes --p (0..1); the line scales and the dot's track slides by
+ * transform, so there is no layout work while scrolling.
  */
 .blog-reading-progress {
   --p: 0;
@@ -425,13 +425,13 @@ h1[id], h2[id], h3[id], h4[id] {
   left: 0;
   right: 0;
   z-index: 1001;
-  height: 4px;
+  height: 1px;
   pointer-events: none;
 }
 
 .blog-reading-progress-line {
   position: absolute;
-  top: 1px;
+  top: 0;
   left: 0;
   width: 100%;
   height: 1px;
@@ -445,16 +445,16 @@ h1[id], h2[id], h3[id], h4[id] {
   top: 0;
   left: 0;
   width: 100%;
-  height: 3px;
-  transform: translateX(calc(var(--p) * (100% - 3px)));
+  height: 1px;
+  transform: translateX(calc(var(--p) * 100%));
 }
 
 .blog-reading-progress-dot {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 3px;
+  top: -2px;
+  left: -2.5px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background-color: var(--primary);
   opacity: 0;
