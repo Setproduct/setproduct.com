@@ -105,12 +105,8 @@
   --input-bg: #f0ebff;
   --input-bg-hover: #f4f0ff;
   --input-bg-focus: #f8f5ff;
-  /* No visible outline until the field is activated. The 1px border stays in place but
-     its colour is transparent, so the box model does not change between states: the fill
-     is painted under the border anyway (background-clip: border-box), so the silhouette
-     is identical to border: 0, while the text never jumps by a pixel on focus. */
-  --input-border: transparent;
-  --input-border-hover: transparent;
+  --input-border: #1a191c26;
+  --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
   --input-border-focus: var(--primary);
 
   /* Outer edge on focus = outlined push button edge. Height follows the button size
@@ -157,7 +153,6 @@
 .proto .f.f ~ :global(.search-icon-wr) {
   transition: transform var(--input-out) var(--input-ease);
 }
-
 
 /* Webflow paints a background behind the placeholder text:
    .text-input::placeholder { background-color: #f0ebff }. At rest it happens to equal
@@ -302,7 +297,7 @@
 /* ---------- Hover (differs from focus) ---------- */
 
 /* Hover: no movement, resting inner shadow unchanged. Fill clears up,
-   no outline appears, placeholder gets a bit darker. */
+   border picks up the brand colour, placeholder gets a bit darker. */
 .proto .f.f:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
 .proto .f.f.forceHover {
   border-color: var(--input-border-hover);
