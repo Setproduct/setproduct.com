@@ -435,6 +435,19 @@
   initial-value: #f0ebff;
 }
 
+/* Typed so the computed centre can be read back (used by the visual checks). */
+@property --attention-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --attention-y {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 /* Clockwise from the top left corner, constant speed. */
 @keyframes attentionBeam {
   to {
@@ -489,10 +502,13 @@
     var(--attention-r) + var(--attention-c3) - var(--attention-c7) +
       var(--attention-rr) * sin(var(--attention-angle))
   );
-  /* A round spot smaller than the field height: it never reaches the opposite
-     side, so there is one beam, not two going towards each other. */
+  /* Both radii are multiples of the field height, so the beam is the same size on
+     every field, whatever its width. The horizontal one is twice the vertical one:
+     that is the streak the eye follows along the border. The vertical radius stays
+     at 0.4 of the height, just under the distance to the opposite border (half the
+     height), so it never lights the far side and the beam does not look doubled. */
   --attention-beam: radial-gradient(
-    circle calc(0.8 * var(--attention-h)) at var(--attention-x) var(--attention-y),
+    ellipse calc(1.6 * var(--attention-h)) calc(0.4 * var(--attention-h)) at var(--attention-x) var(--attention-y),
     var(--primary) 0%,
     #9c78ff 40%,
     #7c4dff00 100%
