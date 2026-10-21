@@ -320,26 +320,52 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
 
 /* ---------- Attention field: border beam, one per screen at most ---------- */
 
-function AttentionRows() {
+function AttentionFields() {
   return (
-    <div className={`${styles.proto} ${styles.cell}`}>
-      {SIZES.map((size) => (
-        <div className={styles.sizeRowBlock} key={size.id}>
-          <SizeTag size={size} />
-          <form className={styles.sizeRow} onSubmit={(e) => e.preventDefault()}>
-            <input
-              aria-label={`Email, attention field, size ${size.title}`}
-              autoComplete="email"
-              className={cx("text-input w-input", styles.f, styles[size.id], styles.attention)}
-              placeholder="Get new kits first"
-              type="email"
-            />
-            <button className={`${size.button} w-inline-block`} type="submit">
-              <div className={`${size.buttonText} text-weight-bold`}>Subscribe</div>
-            </button>
-          </form>
-        </div>
-      ))}
+    <div className={styles.sizes}>
+      {SIZES.map((size) => {
+        const id = `attention-${size.id}`;
+        return (
+          <div className={styles.sizeCol} key={size.id}>
+            <SizeTag size={size} />
+
+            <div className={styles.fieldWrap}>
+              <label className={`${size.label} ${styles.label}`} htmlFor={`${id}-email`}>
+                Email
+              </label>
+              <input
+                aria-describedby={`${id}-email-hint`}
+                autoComplete="email"
+                className={cx("text-input w-input", styles.f, styles[size.id], styles.attention)}
+                id={`${id}-email`}
+                placeholder="Enter your email"
+                type="email"
+              />
+              <p className={`${size.hint} ${styles.hint}`} id={`${id}-email-hint`}>
+                Once per week, no spam
+              </p>
+            </div>
+
+            <div className="search w-form">
+              <input
+                aria-label={`Search Setproduct, attention field, size ${size.title}`}
+                className={cx(
+                  "text-input is-nav-search w-input",
+                  styles.searchWide,
+                  styles.f,
+                  styles[size.id],
+                  styles.attention,
+                )}
+                placeholder="Search kits, articles…"
+                type="search"
+              />
+              <div className="search-icon-wr">
+                <img alt="" className="search-icon" src={SEARCH_ICON} />
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -414,7 +440,16 @@ export default function InputsProtoPage({ blogPosts }: Props) {
                 over. With reduced motion the border stays still.
               </p>
               <div className="spacer-16" />
-              <AttentionRows />
+              <div className={styles.rowWide}>
+                <div className={`${styles.cell} ${styles.now}`}>
+                  <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
+                  <p className={`text-size-regular ${styles.cellLabel}`}>Not on the site yet</p>
+                </div>
+                <div className={`${styles.cell} ${styles.proto}`}>
+                  <p className={`text-size-small ${styles.cellLabel}`}>Proposed</p>
+                  <AttentionFields />
+                </div>
+              </div>
 
               {STATES.map((state) => (
                 <div key={state.id}>
