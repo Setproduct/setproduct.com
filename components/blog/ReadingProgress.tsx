@@ -5,10 +5,11 @@ type ReadingProgressProps = {
 };
 
 /**
- * Thin progress line pinned to the top edge of the viewport. Progress is
- * measured over the article body only (not related posts or the footer).
- * Writes the transform straight to the DOM, so scrolling never re-renders
- * React.
+ * 1px progress line pinned to the top edge of the viewport, with a small
+ * pulsing dot at its leading end. Progress is measured over the article body
+ * only (not related posts or the footer). Writes one CSS variable (--p,
+ * 0..1) straight to the DOM, so scrolling never re-renders React; the line
+ * and the dot are both driven by transforms in globals.css.
  */
 export default function ReadingProgress({ targetRef }: ReadingProgressProps) {
   const barRef = useRef<HTMLDivElement>(null);
@@ -24,7 +25,9 @@ export default function ReadingProgress({ targetRef }: ReadingProgressProps) {
       const rect = target.getBoundingClientRect();
       const distance = rect.height - window.innerHeight;
       const progress = distance <= 0 ? (rect.top <= 0 ? 1 : 0) : -rect.top / distance;
-      bar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+      const p = Math.min(1, Math.max(0, progress));
+      bar.style.setProperty("--p", p.toFixed(4));
+      bar.toggleAttribute("data-started", p > 0);
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(update);
@@ -40,5 +43,12 @@ export default function ReadingProgress({ targetRef }: ReadingProgressProps) {
     };
   }, [targetRef]);
 
-  return <div ref={barRef} className="blog-reading-progress" aria-hidden="true" />;
+  return (
+    <div ref={barRef} className="blog-reading-progress" aria-hidden="true">
+      <span className="blog-reading-progress-line" />
+      <span className="blog-reading-progress-track">
+        <span className="blog-reading-progress-dot" />
+      </span>
+    </div>
+  );
 }
