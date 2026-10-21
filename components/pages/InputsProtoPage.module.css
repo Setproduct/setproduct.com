@@ -393,6 +393,128 @@
   }
 }
 
+/* ---------- Attention field: a light beam runs along the border ----------
+   For the few places where the field has to catch the eye (hero subscribe,
+   the one main CTA of a page). One per screen at most, otherwise it is noise.
+   Rollout name: .text-input.is-attention.
+
+   One element, no wrapper, so sizes, heights and focus stay exactly as in the
+   regular field. The border is transparent and carries the beam. Its width equals
+   the focus border of the size: 2px for L and M (no rim needed on focus), 1px for S
+   (+ the usual 0.5px rim = 1.5px on focus). 1.5px is not an option: Chrome rounds
+   border widths down to whole pixels, so 1.5px silently renders as 1px.
+   The background has three layers:
+   1. the fill, clipped to the padding box (inside the border);
+   2. the beam: a soft elongated purple spot on the border box. Only the border
+      ring shows it, so it reads as light running along the edge;
+   3. a faint brand line all around, also on the border box.
+   The beam position is a pair of registered custom properties, so the browser can
+   animate them. A rotating conic gradient (the Kinetics original) does not work on
+   a field: on a 2000 × 50 box the long sides take almost the whole circle, so the
+   beam crawls in the middle and jumps over the corners. Here the spot travels the
+   perimeter at an even pace instead (the sides are short, so they get 3% each).
+
+   On focus the regular focus takes over: the border turns solid primary and
+   paints over the beam, the beam stops, the rim, the outer edge and the lift
+   work as usual. Error paints over it in red. Disabled and reduced motion get
+   a still line without the beam. */
+
+@property --attention-x {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --attention-y {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --attention-fill {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #f0ebff;
+}
+
+/* Clockwise from the top left corner. */
+@keyframes attentionBeam {
+  0%   { --attention-x: 0%;   --attention-y: 0%; }
+  47%  { --attention-x: 100%; --attention-y: 0%; }
+  50%  { --attention-x: 100%; --attention-y: 100%; }
+  97%  { --attention-x: 0%;   --attention-y: 100%; }
+  100% { --attention-x: 0%;   --attention-y: 0%; }
+}
+
+.proto .f.f.attention {
+  --attention-fill: var(--input-bg);
+  --attention-line: #7c4dff2e;
+  --attention-beam: radial-gradient(
+    calc(120 * var(--em-px)) calc(36 * var(--em-px)) at var(--attention-x) var(--attention-y),
+    var(--primary) 0%,
+    #9c78ff 40%,
+    #7c4dff00 100%
+  );
+  /* 2px border = the 2px focus border of L and M, so the rim is not needed. */
+  --input-rim-size: 0px;
+  border-width: 2px;
+  border-color: transparent;
+  background:
+    linear-gradient(var(--attention-fill), var(--attention-fill)) padding-box,
+    var(--attention-beam) border-box,
+    linear-gradient(var(--attention-line), var(--attention-line)) border-box;
+  animation: attentionBeam 4s linear infinite;
+  transition:
+    border-color var(--input-out) var(--input-ease),
+    box-shadow var(--input-out) var(--input-ease),
+    --attention-fill var(--input-out) var(--input-ease),
+    transform var(--input-out) var(--input-ease);
+}
+
+/* S: 1px beam + 0.5px rim = the 1.5px focus border of the small field. */
+.proto .f.f.s.attention {
+  --input-rim-size: 0.5px;
+  border-width: 1px;
+}
+
+.proto .f.f.attention:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
+.proto .f.f.attention.forceHover {
+  --attention-fill: var(--input-bg-hover);
+  border-color: transparent;
+}
+
+/* A solid border paints over the background, so it simply covers the beam. */
+.proto .f.f.attention:focus,
+.proto .f.f.attention.forceFocus {
+  --attention-fill: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  animation-play-state: paused;
+}
+
+.proto .f.f.attention[aria-invalid="true"],
+.proto .f.f.attention:user-invalid {
+  border-color: var(--input-error);
+  animation-play-state: paused;
+}
+
+.proto .f.f.attention[aria-invalid="true"]:focus,
+.proto .f.f.attention[aria-invalid="true"].forceFocus {
+  --attention-fill: var(--input-error-bg-focus);
+}
+
+.proto .f.f.attention:disabled {
+  animation: none;
+  --attention-beam: linear-gradient(transparent, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proto .f.f.attention {
+    animation: none;
+    --attention-line: #7c4dff59;
+    --attention-beam: linear-gradient(transparent, transparent);
+  }
+}
+
 /* ---------- Current site: emulate :hover / :focus for the frozen state rows ---------- */
 
 .now .forceHover,

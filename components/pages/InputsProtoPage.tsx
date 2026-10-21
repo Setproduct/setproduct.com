@@ -318,6 +318,32 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
   );
 }
 
+/* ---------- Attention field: border beam, one per screen at most ---------- */
+
+function AttentionRows() {
+  return (
+    <div className={`${styles.proto} ${styles.cell}`}>
+      {SIZES.map((size) => (
+        <div className={styles.sizeRowBlock} key={size.id}>
+          <SizeTag size={size} />
+          <form className={styles.sizeRow} onSubmit={(e) => e.preventDefault()}>
+            <input
+              aria-label={`Email, attention field, size ${size.title}`}
+              autoComplete="email"
+              className={cx("text-input w-input", styles.f, styles[size.id], styles.attention)}
+              placeholder="Get new kits first"
+              type="email"
+            />
+            <button className={`${size.button} w-inline-block`} type="submit">
+              <div className={`${size.buttonText} text-weight-bold`}>Subscribe</div>
+            </button>
+          </form>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ---------- Sizes overview: a field next to the buttons of the same size ---------- */
 
 function SizeRows() {
@@ -378,6 +404,17 @@ export default function InputsProtoPage({ blogPosts }: Props) {
               </p>
               <div className="spacer-16" />
               <SizeRows />
+
+              <div className="spacer-48" />
+              <h2 className="heading-style-h5">Attention field (border beam)</h2>
+              <div className="spacer-4" />
+              <p className={`text-size-regular ${styles.cellLabel}`}>
+                For the one field on a screen that has to catch the eye, like the hero subscribe form. A purple
+                beam runs along the border every 3 seconds. On focus the beam stops and the regular focus takes
+                over. With reduced motion the border stays still.
+              </p>
+              <div className="spacer-16" />
+              <AttentionRows />
 
               {STATES.map((state) => (
                 <div key={state.id}>
