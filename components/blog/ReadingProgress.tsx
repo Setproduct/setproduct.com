@@ -5,14 +5,37 @@ type ReadingProgressProps = {
 };
 
 /**
- * 1px progress line pinned to the top edge of the viewport, with a small
+ * 1px progress line sitting on the bottom edge of the navbar, with a small
  * pulsing dot at its leading end. Progress is measured over the article body
- * only (not related posts or the footer). Writes one CSS variable (--p,
- * 0..1) straight to the DOM, so scrolling never re-renders React; the line
- * and the dot are both driven by transforms in globals.css.
+ * only (not related posts or the footer). Writes CSS variables straight to
+ * the DOM (--p for the progress, --rp-top for the navbar edge), so scrolling
+ * never re-renders React; the line and the dot are both driven by transforms
+ * in globals.css.
  */
 export default function ReadingProgress({ targetRef }: ReadingProgressProps) {
   const barRef = useRef<HTMLDivElement>(null);
+
+  // The navbar is fixed and its height depends on the breakpoint (and changes
+  // when the mobile drawer opens), so the edge is measured instead of hardcoded.
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const nav = document.querySelector<HTMLElement>(".navbar");
+    if (!nav) return;
+
+    const place = () => {
+      bar.style.setProperty("--rp-top", `${nav.getBoundingClientRect().bottom}px`);
+    };
+    place();
+
+    const observer = new ResizeObserver(place);
+    observer.observe(nav);
+    window.addEventListener("resize", place);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", place);
+    };
+  }, []);
 
   useEffect(() => {
     const bar = barRef.current;
