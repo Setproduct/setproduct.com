@@ -40,6 +40,7 @@ export default function TableOfContents({
   const listRef = useRef<HTMLDivElement>(null);
   const pillRef = useRef<HTMLSpanElement>(null);
   const lineRef = useRef<HTMLSpanElement>(null);
+  const fadeRef = useRef<HTMLSpanElement>(null);
   const entries = useMemo(() => buildTocEntries(items), [items]);
   const activeParentId = entries.find((entry) => entry.id === activeId)?.parentId ?? "";
   const visible = entries.filter(
@@ -48,6 +49,28 @@ export default function TableOfContents({
 
   useTocIndicator(listRef, pillRef, activeParentId ? ".blogpost_navigation-link.fs-cmsfilter_active" : null);
   useTocIndicator(listRef, lineRef, activeId && activeId !== activeParentId ? ".is-sub .is-active" : null);
+
+  // Progressive blur at the bottom edge: shown only while there is more list
+  // below. State goes straight to data attributes, so scrolling the list
+  // never re-renders React.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const update = () => {
+      const overflow = list.scrollHeight - list.clientHeight > 1;
+      const atEnd = list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      list.toggleAttribute("data-more", overflow && !atEnd);
+    };
+    update();
+    list.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(list);
+    if (list.lastElementChild) observer.observe(list.lastElementChild);
+    return () => {
+      list.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const list = listRef.current;
@@ -59,10 +82,12 @@ export default function TableOfContents({
     const top = el.offsetTop;
     const bottom = top + el.offsetHeight;
     const gap = 8;
+    // Keep the active item clear of the blurred bottom edge.
+    const bottomGap = (fadeRef.current?.offsetHeight ?? 0) + gap;
     if (top - gap < list.scrollTop) {
       list.scrollTo({ top: top - gap, behavior: "smooth" });
-    } else if (bottom + gap > list.scrollTop + list.clientHeight) {
-      list.scrollTo({ top: bottom + gap - list.clientHeight, behavior: "smooth" });
+    } else if (bottom + bottomGap > list.scrollTop + list.clientHeight) {
+      list.scrollTo({ top: bottom + bottomGap - list.clientHeight, behavior: "smooth" });
     }
   }, [activeId, activeParentId]);
 
@@ -71,7 +96,7 @@ export default function TableOfContents({
   return (
     <nav aria-label="Table of contents" className="blogpost_toc">
       <p className="text-size-medium text-weight-bold">{title}</p>
-      <div className="spacer-16" />
+      <div className="spacer-8" />
       <div ref={listRef} className="blogpost_toc-scroll">
         <span ref={pillRef} className="blogpost_toc-pill" aria-hidden="true" />
         <span ref={lineRef} className="blogpost_toc-line" aria-hidden="true" />
@@ -95,7 +120,7 @@ export default function TableOfContents({
                 onClick={() => onNavigate(entry, entry.position)}
               >
                 <span
-                  className={`blogpost_navigation-text ${isH3 ? "text-size-small" : "text-size-regular"}`}
+                  className={`blogpost_navigation-text ${isH3 ? "text-size-tiny" : "text-size-small"}`}
                 >
                   {entry.text}
                 </span>
@@ -104,6 +129,11 @@ export default function TableOfContents({
           );
         })}
         </ol>
+        <span ref={fadeRef} className="blogpost_toc-fade" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
       </div>
     </nav>
   );

@@ -80,10 +80,10 @@ h1[id], h2[id], h3[id], h4[id] {
  */
 .blogpost_content-section > .blogpost_content-column1 {
   position: sticky;
-  top: calc(90 * var(--em-px));
+  top: calc(80 * var(--em-px));
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 110 * var(--em-px));
+  max-height: calc(100vh - 100 * var(--em-px));
   overflow: visible;
 }
 
@@ -143,7 +143,7 @@ h1[id], h2[id], h3[id], h4[id] {
 .blogpost_toc-pill {
   width: var(--w, 0);
   height: var(--h, 0);
-  border-radius: calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
   background-color: var(--light-primary);
 }
 
@@ -159,9 +159,65 @@ h1[id], h2[id], h3[id], h4[id] {
   opacity: 1;
 }
 
+/* Compact items: about 34px per one-line H2 at 1440, so 9+ fit on a laptop. */
 .blogpost_toc-scroll .blogpost_navigation-link {
   z-index: 1;
+  margin-bottom: 2em;
+  padding: 6em 12em;
+  border-radius: calc(12 * var(--em-px));
   transition: color 200ms ease;
+}
+
+/*
+ * Progressive blur at the bottom of the list: the items slide under the
+ * "Subscribe to new posts" title and soften step by step. Three stacked
+ * backdrop-filter layers, each masked to a lower band with a stronger blur,
+ * plus a light white wash so the text fades out. Sticky at the bottom of the
+ * scroll box; the negative margin keeps it from adding scroll height.
+ * Visible only while there is more list below ([data-more], set in
+ * TableOfContents).
+ */
+.blogpost_toc-fade {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: block;
+  height: calc(48 * var(--em-px));
+  margin-top: calc(-48 * var(--em-px));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 100%);
+}
+
+.blogpost_toc-fade > span {
+  position: absolute;
+  inset: 0;
+}
+
+.blogpost_toc-fade > span:nth-child(1) {
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 100%);
+}
+
+.blogpost_toc-fade > span:nth-child(2) {
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 65%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 30%, #000 65%, #000 100%);
+}
+
+.blogpost_toc-fade > span:nth-child(3) {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 60%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 60%, #000 100%);
+}
+
+.blogpost_toc-scroll[data-more] .blogpost_toc-fade {
+  opacity: 1;
 }
 
 /* The pill replaces the per-link background from the Webflow styles. */
@@ -195,9 +251,9 @@ h1[id], h2[id], h3[id], h4[id] {
 
 /* H3 under the current section: indented, smaller, highlighted by colour. */
 .blogpost_navigation-link-wr.is-sub .blogpost_navigation-link {
-  margin-left: 16em;
-  padding-top: 6em;
-  padding-bottom: 6em;
+  margin-left: 12em;
+  padding-top: 4em;
+  padding-bottom: 4em;
   color: rgba(25, 24, 27, 0.7);
 }
 

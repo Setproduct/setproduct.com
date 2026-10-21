@@ -28,7 +28,8 @@ export default function BlogSidebar({ headings, activeId, onNavigate }: BlogSide
       {headings.length > 0 ? (
         <>
           <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
-          <div className="blogpost_content-line-divider hide-on-mobile" />
+          {/* No divider: the list fades out under the subscribe title instead. */}
+          <div className="spacer-16 hide-on-mobile" />
         </>
       ) : null}
       <div className="blogpost_content-cta-wr hide-on-mobile">
