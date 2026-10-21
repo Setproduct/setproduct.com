@@ -3166,7 +3166,7 @@ export default function FreebieArticle({ slug }: Props) {
                   content. The project states the outcome in one sentence, your
                   TV minus the ads. The scripts, the launcher and the per-model
                   debloat lists sit in a single GitHub repository under the MIT
-                  licence.
+                  license.
                 </p>
                 <p>
                   You run it from a computer on the same Wi-Fi. On the TV you
@@ -3189,26 +3189,26 @@ export default function FreebieArticle({ slug }: Props) {
                   Why TV home screens got so crowded
                 </h2>
                 <p>
-                  A stock launcher is written by the manufacturer and paid for
-                  by someone. Content rows, recommendation shelves and
-                  preloaded apps are how a set earns part of its margin after
-                  the sale, which explains why they survive every firmware
-                  update and why they tend to grow. The home screen you look at
-                  is a storefront with an app grid attached to it.
+                  A stock launcher is written by the manufacturer, and the
+                  project is blunt about what that produces. Sponsored rows,
+                  Discover prompts and analytics that phone home survive every
+                  firmware update and come back after each one. The amount
+                  differs by brand, which is why the repository keeps a separate
+                  debloat list per model instead of one universal file.
                 </p>
                 <p>
                   The apps themselves are usually fine. Netflix and Prime Video
                   behave as they always did. The problem sits in the layer above
                   them, in the launcher, the telemetry service and the content
-                  feeds that keep pulling rows nobody asked for. Those live in
-                  the system image, so no launcher from the app store can remove
+                  feeds that pull rows nobody asked for. Those live in the
+                  system image, so a launcher from the app store cannot remove
                   them from underneath.
                 </p>
                 <p>
                   That is the part CleanYourTV addresses. Disabling a package at
-                  the system level removes the surface without removing the
-                  app, so the set keeps working while the promotional rails stop
-                  loading.
+                  the system level removes the surface while the app stays
+                  installed, so the set keeps working and the promotional rails
+                  stop loading.
                 </p>
 
                 <h2 id="how-the-cleanup-works">How the cleanup works</h2>
@@ -3251,12 +3251,12 @@ export default function FreebieArticle({ slug }: Props) {
                 </div>
                 <p>
                   The disable list is a plain text file with one package name
-                  per line, and the repository stores them per model under{" "}
-                  <code>examples/</code>. The largest collection covers TCL
-                  sets, forty lists in one folder. Sony and Xiaomi follow with
-                  twenty two each, Philips with ten, Hisense with seven. Smaller
-                  folders cover Fire TV, Panasonic, Skyworth, NVIDIA Shield and
-                  a run of projectors.
+                  per line, and the repository stores it per model under{" "}
+                  <code>examples/</code>, one folder for each television. TCL
+                  sets fill the largest share of that folder tree. Sony and
+                  Xiaomi follow, then Philips and Hisense, with smaller groups
+                  for Fire TV, Panasonic, Skyworth, NVIDIA Shield and a run of
+                  projectors.
                 </p>
                 <p>
                   A typical list targets the ad services, the telemetry
@@ -3284,15 +3284,16 @@ export default function FreebieArticle({ slug }: Props) {
                   pitch-black background with a dock of four apps in a rounded
                   band. A top shelf that names whichever app has focus and tints
                   the room with the colours of its artwork. The full grid slides
-                  up when you press down. One floating glass highlight travels
-                  from tile to tile, so focus is always a single moving object
-                  rather than a rectangle that blinks in five places at once.
+                  up when you press down. One floating glass highlight springs
+                  from tile to tile, so focus stays a single moving object and
+                  never a rectangle that blinks in five places at once.
                 </p>
                 <p>
-                  Three frosted buttons sit in the top right: inputs with the
-                  HDMI ports named the way you named them in the TV settings,
-                  the network with its SSID, and settings. If this layer is where
-                  your own product lives, our{" "}
+                  Three frosted buttons sit in the top right. Inputs hold the
+                  HDMI ports under the names you gave them in the TV settings,
+                  plus AV and Live TV. The next one shows Wi-Fi or Ethernet with
+                  the network name. The last one opens settings. If this layer is
+                  where your own product lives, our{" "}
                   <Link href="/blog/settings-ui-design">
                     settings UI design guide
                   </Link>{" "}
@@ -3307,11 +3308,13 @@ export default function FreebieArticle({ slug }: Props) {
                   screen.
                 </p>
                 <p>
-                  Themes are data, not code. A <code>config.json</code> pushed
-                  over Wi-Fi changes the background, the wallpaper, the dock and
-                  the number of tiles per row, and five themes ship in the{" "}
-                  <code>themes/</code> folder. The same file holds the language
-                  setting, which reaches twenty four languages with a mirrored
+                  Themes live in a <code>config.json</code> pushed over Wi-Fi,
+                  and that file changes the background, the wallpaper, the dock
+                  and the number of tiles per row. Five themes ship in the{" "}
+                  <code>themes/</code> folder, and{" "}
+                  <code>tools/theme.sh</code> pushes any of them to the set
+                  without a rebuild. The same file holds the language setting,
+                  which reaches twenty four languages with a mirrored
                   right-to-left layout for Hebrew. Third-party apps can add a
                   tile of their own through module cards, with your approval.
                 </p>
@@ -3329,8 +3332,8 @@ export default function FreebieArticle({ slug }: Props) {
                   with different tooling. The repository points to a community
                   webOS port listed in <code>SHOWCASE.md</code> and to a Tizen
                   note under <code>docs/devices/</code>. A few China-market TCL
-                  sets decline the launcher install even after the debloat
-                  succeeds.
+                  sets refuse to install any launcher at all, and their lists
+                  say so in the header.
                 </p>
                 <p>
                   The tested set is unusually well documented. One hundred and
@@ -3345,9 +3348,9 @@ export default function FreebieArticle({ slug }: Props) {
                   Before the disable script changes anything, it writes a record
                   to <code>~/.cleanyourtv/</code>. That record holds the state
                   of every package it touched, which component owned the Home
-                  button, and the three animation scales it altered. Running the
-                  same list a second time keeps the first record rather than
-                  overwriting it.
+                  button, and the three animation scales it altered. A second run
+                  of the same list keeps the first record and does not overwrite
+                  it with the cleaned-up state.
                 </p>
                 <p>
                   Restoring replays that record. Point{" "}
@@ -3358,9 +3361,9 @@ export default function FreebieArticle({ slug }: Props) {
                   stays installed until you remove it.
                 </p>
                 <p>
-                  No computer at hand is not a dead end. The TV settings screen
-                  lists every app, and a disabled package can be enabled again
-                  from there.
+                  A computer is not required to undo the work. The TV settings
+                  screen lists every app, and a disabled package can be enabled
+                  again from there.
                 </p>
                 <p>
                   Firmware updates undo the work, which the project treats as a
@@ -3387,15 +3390,16 @@ export default function FreebieArticle({ slug }: Props) {
                   The project documents the exit. Turn off USB debugging and
                   network debugging, revoke the authorisations, reboot, then
                   confirm with <code>tools/adb-closed.py</code> pointed at the
-                  TV's address. Only a refused connection counts as closed. A
-                  timeout means something on the network is still answering.
+                  TV's address. Only a refused connection counts as closed. No
+                  route to host means check again, because macOS privacy can
+                  fake that answer while the port stays open.
                 </p>
                 <p>
                   macOS owners hit one specific wall. Local Network privacy
                   blocks <code>adb connect</code> and reports no route to host,
-                  which looks like a broken TV rather than a blocked permission.
-                  The bundled helper script avoids the binary for exactly this
-                  reason.
+                  which reads like a broken TV while the real cause is a blocked
+                  permission. The bundled helper script avoids the binary for
+                  exactly this reason.
                 </p>
 
                 <h2 id="faq-cleanyourtv">Frequently asked questions</h2>
@@ -3428,7 +3432,7 @@ export default function FreebieArticle({ slug }: Props) {
                   script that compiles the launcher and installs it, which keeps
                   the build tied to the source you can read.
                 </p>
-                <h3>What licence does it use?</h3>
+                <h3>What license does it use?</h3>
                 <p>
                   MIT. The Outfit typeface ships separately under the SIL Open
                   Font License.
@@ -3439,11 +3443,11 @@ export default function FreebieArticle({ slug }: Props) {
                 </h2>
                 <p>
                   A television is the one screen in the house that nobody
-                  redesigns. You buy it, you live with its home screen for eight
-                  years, and the only alternatives are a streaming stick or a
-                  new set. CleanYourTV treats the interface as something you can
-                  still change, using tools that ship with the platform and a
-                  door the manufacturer left open for developers.
+                  redesigns. You buy it, you live with its home screen until you
+                  replace the set, and the usual answers are a streaming stick
+                  or a new panel. CleanYourTV treats the interface as something
+                  you can still change, using tools that ship with the platform
+                  and a door the manufacturer left open for developers.
                 </p>
                 <p>
                   The wider lesson travels further than the TV. Disabling
@@ -3469,8 +3473,8 @@ export default function FreebieArticle({ slug }: Props) {
                   >
                     CleanYourTV site
                   </a>{" "}
-                  walks through the whole flow with screenshots of the finished
-                  home screen.
+                  collects the press coverage and the community projects built
+                  on top of the toolkit.
                 </p>
                   </>
                 )}
