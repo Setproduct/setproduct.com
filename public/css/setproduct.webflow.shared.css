@@ -2041,50 +2041,27 @@ textarea.w-input, textarea.w-select {
   display: grid;
 }
 
+/*
+ * Uncut Sans variable (SIL OFL 1.1, see /fonts/UncutSans-OFL.txt).
+ * One file covers every weight from 300 to 700, so font-weight can be
+ * animated smoothly (e.g. the active item of the blog TOC). The upstream
+ * font has a 0–11° ital axis; it is split into upright and italic files so
+ * the regular text never downloads italic outlines.
+ */
 @font-face {
   font-family: Uncutsans;
-  src: url("/fonts/UncutSans-Semibold.otf") format("opentype");
-  font-weight: 600;
+  src: url("/fonts/UncutSans-Variable.woff2") format("woff2-variations"),
+    url("/fonts/UncutSans-Variable.woff2") format("woff2");
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: Uncutsans;
-  src: url("/fonts/UncutSans-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Uncutsans;
-  src: url("/fonts/UncutSans-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Uncutsans;
-  src: url("/fonts/UncutSans-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Uncutsans;
-  src: url("/fonts/UncutSans-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Uncutsans;
-  src: url("/fonts/UncutSans-RegularItalic.otf") format("opentype");
-  font-weight: 400;
+  src: url("/fonts/UncutSans-VariableItalic.woff2") format("woff2-variations"),
+    url("/fonts/UncutSans-VariableItalic.woff2") format("woff2");
+  font-weight: 300 700;
   font-style: italic;
   font-display: swap;
 }

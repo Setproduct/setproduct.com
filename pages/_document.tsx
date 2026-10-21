@@ -13,6 +13,14 @@ export default function Document() {
           href="/images/fav-256.webp"
           rel="apple-touch-icon"
         />
+        {/* The upright variable font is used on every page: fetch it with the CSS, not after it. */}
+        <link
+          href="/fonts/UncutSans-Variable.woff2"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/webflow.css" rel="stylesheet" />
         {/* <link href="/css/setproduct.webflow.css" rel="stylesheet" /> */}
