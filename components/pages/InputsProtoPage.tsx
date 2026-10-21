@@ -436,7 +436,7 @@ export default function InputsProtoPage({ blogPosts }: Props) {
               <div className="spacer-4" />
               <p className={`text-size-regular ${styles.cellLabel}`}>
                 For the one field on a screen that has to catch the eye, like the hero subscribe form. A purple
-                beam runs along the border every 3 seconds. On focus the beam stops and the regular focus takes
+                beam runs along the border, one lap every 4 seconds. On focus the beam stops and the regular focus takes
                 over. With reduced motion the border stays still.
               </p>
               <div className="spacer-16" />

@@ -400,30 +400,31 @@
    border widths down to whole pixels, so 1.5px silently renders as 1px.
    The background has three layers:
    1. the fill, clipped to the padding box (inside the border);
-   2. the beam: a soft elongated purple spot on the border box. Only the border
+   2. the beam: a soft round purple spot on the border box. Only the border
       ring shows it, so it reads as light running along the edge;
    3. a faint brand line all around, also on the border box.
-   The beam position is a pair of registered custom properties, so the browser can
-   animate them. A rotating conic gradient (the Kinetics original) does not work on
-   a field: on a 2000 × 50 box the long sides take almost the whole circle, so the
-   beam crawls in the middle and jumps over the corners. Here the spot travels the
-   perimeter at an even pace instead (the sides are short, so they get 3% each).
+   Motion: one registered number --attention-t runs 0 → 1, that is the share of
+   the perimeter travelled. The spot centre is computed from it with clamp(), so the
+   beam moves at the same px/s on every side and every field width, and turns the
+   corners without a jolt. For that CSS needs the real field size:
+   - width = 100cqw, so the parent of the field must be a size container
+     (container-type: inline-size; here .fieldWrap and .search). Rollout: the same
+     declaration on the wrapper of every attention field;
+   - height = the fixed field height of the size (L 50, M 40 or 37 on phones, S 31).
+   Rejected earlier: a rotating conic gradient (Kinetics original) and fixed
+   keyframe shares per side. Both only look even at one aspect ratio and jerk at
+   the corners on any other width: on a 284 × 50 field the beam ran the short sides
+   almost 3 times faster than the long ones.
 
    On focus the regular focus takes over: the border turns solid primary and
    paints over the beam, the beam stops, the rim, the outer edge and the lift
    work as usual. Error paints over it in red. Disabled and reduced motion get
    a still line without the beam. */
 
-@property --attention-x {
-  syntax: "<length-percentage>";
+@property --attention-t {
+  syntax: "<number>";
   inherits: false;
-  initial-value: 0%;
-}
-
-@property --attention-y {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0%;
+  initial-value: 0;
 }
 
 @property --attention-fill {
@@ -432,20 +433,36 @@
   initial-value: #f0ebff;
 }
 
-/* Clockwise from the top left corner. */
+/* Clockwise from the top left corner, constant speed. */
 @keyframes attentionBeam {
-  0%   { --attention-x: 0%;   --attention-y: 0%; }
-  47%  { --attention-x: 100%; --attention-y: 0%; }
-  50%  { --attention-x: 100%; --attention-y: 100%; }
-  97%  { --attention-x: 0%;   --attention-y: 100%; }
-  100% { --attention-x: 0%;   --attention-y: 0%; }
+  to {
+    --attention-t: 1;
+  }
+}
+
+/* The field width comes from its parent via container units. */
+.proto :global(.search):has(> .attention),
+.proto .fieldWrap:has(> .attention) {
+  container-type: inline-size;
 }
 
 .proto .f.f.attention {
   --attention-fill: var(--input-bg);
   --attention-line: #7c4dff2e;
+  --attention-w: 100cqw;
+  --attention-p: calc(2 * (var(--attention-w) + var(--attention-h)));
+  --attention-d: calc(var(--attention-t) * var(--attention-p));
+  /* Walk the perimeter: top →, right ↓, bottom ←, left ↑. */
+  --attention-x: calc(
+    clamp(0px, var(--attention-d), var(--attention-w)) -
+      clamp(0px, var(--attention-d) - var(--attention-w) - var(--attention-h), var(--attention-w))
+  );
+  --attention-y: calc(
+    clamp(0px, var(--attention-d) - var(--attention-w), var(--attention-h)) -
+      clamp(0px, var(--attention-d) - 2 * var(--attention-w) - var(--attention-h), var(--attention-h))
+  );
   --attention-beam: radial-gradient(
-    calc(120 * var(--em-px)) calc(36 * var(--em-px)) at var(--attention-x) var(--attention-y),
+    circle calc(64 * var(--em-px)) at var(--attention-x) var(--attention-y),
     var(--primary) 0%,
     #9c78ff 40%,
     #7c4dff00 100%
@@ -466,10 +483,19 @@
     transform var(--input-out) var(--input-ease);
 }
 
+/* Field heights per size, the same numbers as the size rules above. */
+.proto .f.f.l.attention { --attention-h: calc(50 * var(--em-px)); }
+.proto .f.f.m.attention { --attention-h: calc(40 * var(--em-px)); }
+
 /* S: 1px beam + 0.5px rim = the 1.5px focus border of the small field. */
 .proto .f.f.s.attention {
+  --attention-h: calc(31 * var(--em-px));
   --input-rim-size: 0.5px;
   border-width: 1px;
+}
+
+@media screen and (max-width: 479px) {
+  .proto .f.f.m.attention { --attention-h: calc(37 * var(--em-px)); }
 }
 
 .proto .f.f.attention:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
