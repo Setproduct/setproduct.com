@@ -503,12 +503,23 @@
       var(--attention-rr) * sin(var(--attention-angle))
   );
   /* Both radii are multiples of the field height, so the beam is the same size on
-     every field, whatever its width. The horizontal one is twice the vertical one:
-     that is the streak the eye follows along the border. The vertical radius stays
-     at 0.4 of the height, just under the distance to the opposite border (half the
-     height), so it never lights the far side and the beam does not look doubled. */
+     every field, whatever its width.
+
+     The vertical radius must stay under the distance to the opposite border, which
+     is the FULL height of the field (the two long sides are h apart), not half of
+     it. That is why the near-circular value below is safe.
+
+     A flat ellipse (horizontal twice the vertical) is what caused the jerk at the
+     corners: the length of the lit run depends on the angle of the border under it,
+     so on the long side the run was about 90px and on the short side it collapsed
+     to about 25px, four times shorter, and it rebuilt with a jump. Here the two
+     radii are close to each other, so the lit run stays within 71..94px all the way
+     round, measured along the rounded border centreline.
+     Checked at 1440 / 1024 / 390 and on L / M / S: the run never falls below 70%
+     of its maximum, the peak travels at a constant speed, and while the top side is
+     lit the bottom one stays dark, so the beam is not doubled. */
   --attention-beam: radial-gradient(
-    ellipse calc(1.6 * var(--attention-h)) calc(0.4 * var(--attention-h)) at var(--attention-x) var(--attention-y),
+    ellipse calc(1.6 * var(--attention-h)) calc(0.92 * var(--attention-h)) at var(--attention-x) var(--attention-y),
     var(--primary) 0%,
     #9c78ff 40%,
     #7c4dff00 100%
