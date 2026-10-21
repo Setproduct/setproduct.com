@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
+import { useTocIndicator } from "../../hooks/useTocIndicator";
 import type { BlogHeading } from "../../types/blog";
 
 export type TocItem = BlogHeading;
@@ -22,10 +23,13 @@ export function buildTocEntries(items: TocItem[]): TocEntry[] {
 }
 
 /**
- * Desktop table of contents (hidden below 992px, see .blogpost_toc in
+ * Desktop table of contents (hidden at 479px and below, see .blogpost_toc in
  * globals.css). H2 are always listed; H3 unfold only under the H2 the reader
  * is currently in, so a 40-heading post still fits the sidebar. The list has
  * its own scroll and keeps the active item in view.
+ *
+ * The highlight is one shared pill (H2) and one shared side line (H3) that
+ * glide between items instead of each link switching its own background.
  */
 export default function TableOfContents({
   items,
@@ -33,12 +37,17 @@ export default function TableOfContents({
   onNavigate,
   title = "On this page",
 }: TableOfContentsProps) {
-  const listRef = useRef<HTMLOListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const pillRef = useRef<HTMLSpanElement>(null);
+  const lineRef = useRef<HTMLSpanElement>(null);
   const entries = useMemo(() => buildTocEntries(items), [items]);
   const activeParentId = entries.find((entry) => entry.id === activeId)?.parentId ?? "";
   const visible = entries.filter(
     (entry) => entry.level === 2 || (activeParentId !== "" && entry.parentId === activeParentId),
   );
+
+  useTocIndicator(listRef, pillRef, activeParentId ? ".blogpost_navigation-link.fs-cmsfilter_active" : null);
+  useTocIndicator(listRef, lineRef, activeId && activeId !== activeParentId ? ".is-sub .is-active" : null);
 
   useEffect(() => {
     const list = listRef.current;
@@ -63,7 +72,10 @@ export default function TableOfContents({
     <nav aria-label="Table of contents" className="blogpost_toc">
       <p className="text-size-medium text-weight-bold">{title}</p>
       <div className="spacer-16" />
-      <ol ref={listRef} className="blogpost_toc-list">
+      <div ref={listRef} className="blogpost_toc-scroll">
+        <span ref={pillRef} className="blogpost_toc-pill" aria-hidden="true" />
+        <span ref={lineRef} className="blogpost_toc-line" aria-hidden="true" />
+        <ol className="blogpost_toc-list">
         {visible.map((entry) => {
           const isH3 = entry.level === 3;
           const isCurrent = entry.id === activeId;
@@ -91,7 +103,8 @@ export default function TableOfContents({
             </li>
           );
         })}
-      </ol>
+        </ol>
+      </div>
     </nav>
   );
 }

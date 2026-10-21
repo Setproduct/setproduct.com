@@ -83,7 +83,11 @@ export default function MobileTableOfContents({
         <span className="blogpost_mobile-toc-heading">
           <span className="text-size-small blogpost_mobile-toc-label">On this page</span>
           <span className="text-size-regular text-weight-bold blogpost_mobile-toc-current">
-            {current ? current.text : "Jump to a section"}
+            {/* New key on every section change re-mounts the span and replays
+                the CSS slide-in, no JS animation needed. */}
+            <span key={current?.id ?? "none"} className="blogpost_mobile-toc-current-text">
+              {current ? current.text : "Jump to a section"}
+            </span>
           </span>
         </span>
         <svg
