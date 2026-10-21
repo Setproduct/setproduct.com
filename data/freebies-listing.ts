@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "cleanyourtv",
+    title: "CleanYourTV — Android TV without the ads",
+    description:
+      "Open source setup that disables ad services and bloatware on Android TV and Google TV over Wi-Fi. No root, nothing uninstalled, one line restores it.",
+    thumb: "/freebies/thumbs/freebie-cleanyourtv.webp",
+    image: "/freebies/freebie-cleanyourtv.webp",
+    category: "Code",
+    previewHref: "/freebies/cleanyourtv",
+    duplicateHref: "https://github.com/Gathin23/cleanyourtv",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "gr8r-task-management",
     title: "Gr8r Studio — calm project management workspace",
     description:

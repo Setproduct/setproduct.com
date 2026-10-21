@@ -146,6 +146,18 @@ const SPECTRUM_UI_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-spectrum-ui", text: "Why it belongs in your stack" },
 ];
 
+const CLEANYOURTV_HEADINGS: ArticleHeading[] = [
+  { id: "what-cleanyourtv-does", text: "What CleanYourTV actually does" },
+  { id: "why-tv-home-screens-got-crowded", text: "Why TV home screens got so crowded" },
+  { id: "how-the-cleanup-works", text: "How the cleanup works" },
+  { id: "what-the-launcher-replaces", text: "What the new launcher replaces" },
+  { id: "which-tvs-are-covered", text: "Which TVs are covered" },
+  { id: "restoring-your-tv", text: "Restoring your TV" },
+  { id: "turning-the-adb-door-shut", text: "Turning the ADB door shut afterwards" },
+  { id: "faq-cleanyourtv", text: "Frequently asked questions" },
+  { id: "why-it-belongs-cleanyourtv", text: "Why it belongs in your toolkit" },
+];
+
 const GR8R_TASK_MANAGEMENT_HEADINGS: ArticleHeading[] = [
   { id: "what-gr8r-does", text: "What Gr8r Studio actually does" },
   { id: "why-project-apps-feel-heavy", text: "Why project apps feel heavy before they feel useful" },
@@ -171,6 +183,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   compositor: COMPOSITOR_HEADINGS,
   "spectrum-ui": SPECTRUM_UI_HEADINGS,
   "gr8r-task-management": GR8R_TASK_MANAGEMENT_HEADINGS,
+  cleanyourtv: CLEANYOURTV_HEADINGS,
 };
 
 /**
@@ -3131,6 +3144,333 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">open source code</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same ship-it-yourself workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "cleanyourtv" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  A new smart TV arrives with a home screen that sells something.
+                  A sponsored row sits above your apps, a recommendation shelf
+                  opens uninvited, and a service you never touched waits in the
+                  middle of the first row. CleanYourTV takes that home screen
+                  apart over Wi-Fi and puts a quiet one back.
+                </p>
+
+                <h2 id="what-cleanyourtv-does">What CleanYourTV actually does</h2>
+                <p>
+                  CleanYourTV is an open source toolkit that connects to an
+                  Android TV or Google TV set over the local network and turns
+                  off the parts of the system that serve ads and preload
+                  content. The project states the outcome in one sentence, your
+                  TV minus the ads. The scripts, the launcher and the per-model
+                  debloat lists sit in a single GitHub repository under the MIT
+                  licence.
+                </p>
+                <p>
+                  You run it from a computer on the same Wi-Fi. On the TV you
+                  enable developer options by pressing the build number seven
+                  times, then switch on USB debugging and, where the menu offers
+                  it, network debugging. The scripts handle the rest, and the
+                  project puts a full session at around fifteen minutes.
+                </p>
+                <p>
+                  Two limits are worth stating early, because they shape every
+                  other answer on this page. CleanYourTV never roots a TV and
+                  never flashes firmware. It does not uninstall a package
+                  either. Apps are disabled inside the user profile with{" "}
+                  <code>pm disable-user</code>, so everything stays on the
+                  device and any single package can be turned back on from the
+                  TV's own settings.
+                </p>
+
+                <h2 id="why-tv-home-screens-got-crowded">
+                  Why TV home screens got so crowded
+                </h2>
+                <p>
+                  A stock launcher is written by the manufacturer and paid for
+                  by someone. Content rows, recommendation shelves and
+                  preloaded apps are how a set earns part of its margin after
+                  the sale, which explains why they survive every firmware
+                  update and why they tend to grow. The home screen you look at
+                  is a storefront with an app grid attached to it.
+                </p>
+                <p>
+                  The apps themselves are usually fine. Netflix and Prime Video
+                  behave as they always did. The problem sits in the layer above
+                  them, in the launcher, the telemetry service and the content
+                  feeds that keep pulling rows nobody asked for. Those live in
+                  the system image, so no launcher from the app store can remove
+                  them from underneath.
+                </p>
+                <p>
+                  That is the part CleanYourTV addresses. Disabling a package at
+                  the system level removes the surface without removing the
+                  app, so the set keeps working while the promotional rails stop
+                  loading.
+                </p>
+
+                <h2 id="how-the-cleanup-works">How the cleanup works</h2>
+                <p>
+                  The procedure runs in three stages, and the order matters more
+                  than the individual commands.
+                </p>
+                <div className="blog-fit-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Stage</th>
+                        <th>What it does</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Back up</td>
+                        <td>
+                          Reads the installed package list and the settings it is
+                          about to change, so there is a state to return to.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Disable</td>
+                        <td>
+                          Runs <code>pm disable-user</code> across telemetry,
+                          ad services, content rows and preloaded apps.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Install</td>
+                        <td>
+                          Builds the native launcher, installs it, and points the
+                          Home button at it.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>
+                  The disable list is a plain text file with one package name
+                  per line, and the repository stores them per model under{" "}
+                  <code>examples/</code>. The largest collection covers TCL
+                  sets, forty lists in one folder. Sony and Xiaomi follow with
+                  twenty two each, Philips with ten, Hisense with seven. Smaller
+                  folders cover Fire TV, Panasonic, Skyworth, NVIDIA Shield and
+                  a run of projectors.
+                </p>
+                <p>
+                  A typical list targets the ad services, the telemetry
+                  endpoints, the content rows behind the stock launcher and the
+                  preloaded apps that nobody opens. The project wraps that in
+                  several safety checks. The setup wizard is left alone while
+                  your saved Wi-Fi belongs to it. The HDMI and AV input packages
+                  stay in place. Home is never handed to the vendor fallback
+                  component. Environment variables can override each of those
+                  decisions when you know what you are doing.
+                </p>
+
+                <h2 id="what-the-launcher-replaces">
+                  What the new launcher replaces
+                </h2>
+                <p>
+                  The launcher is the other half of the project, and it is
+                  deliberately small. About 429 KB of plain Java, built for sets
+                  with 1 GB of memory, needing Android 8.0 or newer. It asks for
+                  no network permission and runs no background service, so it
+                  cannot phone home even if someone wanted it to.
+                </p>
+                <p>
+                  The home screen it draws takes its cues from Apple TV. A
+                  pitch-black background with a dock of four apps in a rounded
+                  band. A top shelf that names whichever app has focus and tints
+                  the room with the colours of its artwork. The full grid slides
+                  up when you press down. One floating glass highlight travels
+                  from tile to tile, so focus is always a single moving object
+                  rather than a rectangle that blinks in five places at once.
+                </p>
+                <p>
+                  Three frosted buttons sit in the top right: inputs with the
+                  HDMI ports named the way you named them in the TV settings,
+                  the network with its SSID, and settings. If this layer is where
+                  your own product lives, our{" "}
+                  <Link href="/blog/settings-ui-design">
+                    settings UI design guide
+                  </Link>{" "}
+                  covers the states these panels usually miss.
+                </p>
+                <p>
+                  Small details carry the rest. A greeting, a thin clock and the
+                  date set in Outfit. A clock screensaver that drifts across the
+                  panel to spare the panel from burn-in. An optional system line
+                  that reports CPU load, free memory and free storage, off
+                  unless you enable it, and refreshing only while Home is on
+                  screen.
+                </p>
+                <p>
+                  Themes are data, not code. A <code>config.json</code> pushed
+                  over Wi-Fi changes the background, the wallpaper, the dock and
+                  the number of tiles per row, and five themes ship in the{" "}
+                  <code>themes/</code> folder. The same file holds the language
+                  setting, which reaches twenty four languages with a mirrored
+                  right-to-left layout for Hebrew. Third-party apps can add a
+                  tile of their own through module cards, with your approval.
+                </p>
+
+                <h2 id="which-tvs-are-covered">Which TVs are covered</h2>
+                <p>
+                  Android TV and Google TV get the full treatment, debloat plus
+                  launcher. Fire TV gets the debloat half only, because Fire OS
+                  will not hand over its Home screen. One older Fire TV Box on
+                  Fire OS 5 refuses every package command, and the README says
+                  so plainly.
+                </p>
+                <p>
+                  Samsung Tizen and LG webOS are different operating systems
+                  with different tooling. The repository points to a community
+                  webOS port listed in <code>SHOWCASE.md</code> and to a Tizen
+                  note under <code>docs/devices/</code>. A few China-market TCL
+                  sets decline the launcher install even after the debloat
+                  succeeds.
+                </p>
+                <p>
+                  The tested set is unusually well documented. One hundred and
+                  seventy four TV models across fifty three brands, each with
+                  its own folder of package lists, and the project has been
+                  written up by TechCrunch, TechRadar, XDA and dozens of
+                  smaller outlets.
+                </p>
+
+                <h2 id="restoring-your-tv">Restoring your TV</h2>
+                <p>
+                  Before the disable script changes anything, it writes a record
+                  to <code>~/.cleanyourtv/</code>. That record holds the state
+                  of every package it touched, which component owned the Home
+                  button, and the three animation scales it altered. Running the
+                  same list a second time keeps the first record rather than
+                  overwriting it.
+                </p>
+                <p>
+                  Restoring replays that record. Point{" "}
+                  <code>tools/restore.sh</code> at a TV host and the list you
+                  applied, and Home returns to the component that owned it
+                  before. Packages you disabled yourself stay disabled, because
+                  the record only knows about its own changes. The new launcher
+                  stays installed until you remove it.
+                </p>
+                <p>
+                  No computer at hand is not a dead end. The TV settings screen
+                  lists every app, and a disabled package can be enabled again
+                  from there.
+                </p>
+                <p>
+                  Firmware updates undo the work, which the project treats as a
+                  maintenance task rather than a bug. The update installs over
+                  the cleaned system, listed packages return, and Home drifts
+                  back to the stock launcher. One command compares the live TV
+                  against the stored list, prints what drifted, and exits with a
+                  failure code, so a weekly cron entry is enough to notice. The
+                  same script with a fix flag reapplies the list and reads the
+                  TV back to confirm.
+                </p>
+
+                <h2 id="turning-the-adb-door-shut">
+                  Turning the ADB door shut afterwards
+                </h2>
+                <p>
+                  The connection that makes all of this possible is also the one
+                  to close when you finish. Network ADB speaks plaintext on port
+                  5555, and on firmware built with <code>ro.adb.secure=0</code>{" "}
+                  any device on the same network can open a shell on your
+                  television.
+                </p>
+                <p>
+                  The project documents the exit. Turn off USB debugging and
+                  network debugging, revoke the authorisations, reboot, then
+                  confirm with <code>tools/adb-closed.py</code> pointed at the
+                  TV's address. Only a refused connection counts as closed. A
+                  timeout means something on the network is still answering.
+                </p>
+                <p>
+                  macOS owners hit one specific wall. Local Network privacy
+                  blocks <code>adb connect</code> and reports no route to host,
+                  which looks like a broken TV rather than a blocked permission.
+                  The bundled helper script avoids the binary for exactly this
+                  reason.
+                </p>
+
+                <h2 id="faq-cleanyourtv">Frequently asked questions</h2>
+                <h3>Can this brick the TV?</h3>
+                <p>
+                  Nothing is flashed, rooted or deleted. Packages are disabled
+                  in the user profile, and the recoverable path stays open
+                  through the TV's own settings. The real risk is disabling
+                  something the set depends on, which is why the project
+                  recommends small batches and hands you a restore script before
+                  you start.
+                </p>
+                <h3>Will my streaming apps stop working?</h3>
+                <p>
+                  They keep working and they keep updating through the Play
+                  Store, which the lists leave alone. The launcher finds
+                  installed apps by intent, an interface that has been stable
+                  for a decade.
+                </p>
+                <h3>Does it block ads inside apps?</h3>
+                <p>
+                  Partly. On Android 9 and newer you can point Private DNS at
+                  AdGuard DNS, which filters system-wide and survives reboots.
+                  That does not touch YouTube ads, and the trade-off is that the
+                  resolver sees every lookup from the TV.
+                </p>
+                <h3>Where do I download the APK?</h3>
+                <p>
+                  There is no prebuilt binary. The repository ships a one-line
+                  script that compiles the launcher and installs it, which keeps
+                  the build tied to the source you can read.
+                </p>
+                <h3>What licence does it use?</h3>
+                <p>
+                  MIT. The Outfit typeface ships separately under the SIL Open
+                  Font License.
+                </p>
+
+                <h2 id="why-it-belongs-cleanyourtv">
+                  Why it belongs in your toolkit
+                </h2>
+                <p>
+                  A television is the one screen in the house that nobody
+                  redesigns. You buy it, you live with its home screen for eight
+                  years, and the only alternatives are a streaming stick or a
+                  new set. CleanYourTV treats the interface as something you can
+                  still change, using tools that ship with the platform and a
+                  door the manufacturer left open for developers.
+                </p>
+                <p>
+                  The wider lesson travels further than the TV. Disabling
+                  services at the system level and drawing your own surface on
+                  top is the same move a design system makes, and the same
+                  argument our{" "}
+                  <Link href="/blog/design-system-for-business">
+                    design system guide for business
+                  </Link>{" "}
+                  makes in a different register. If you want the interface
+                  layer for the product around it, our{" "}
+                  <Link href="/freebies">free UI resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  people who would rather own the markup.
+                </p>
+                <p>
+                  Start with the README, run the prompt inside a coding
+                  assistant with shell access, and do one TV at a time. The{" "}
+                  <a
+                    href="https://cleanyour.tv/"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    CleanYourTV site
+                  </a>{" "}
+                  walks through the whole flow with screenshots of the finished
+                  home screen.
                 </p>
                   </>
                 )}
