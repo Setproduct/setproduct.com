@@ -80,10 +80,11 @@ h1[id], h2[id], h3[id], h4[id] {
  */
 .blogpost_content-section > .blogpost_content-column1 {
   position: sticky;
-  top: calc(80 * var(--em-px));
+  /* Navbar is ~74em tall: 90 leaves a 16em gap above "On this page". */
+  top: calc(90 * var(--em-px));
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 100 * var(--em-px));
+  max-height: calc(100vh - 110 * var(--em-px));
   overflow: visible;
 }
 
