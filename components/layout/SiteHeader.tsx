@@ -313,6 +313,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const navbarRef = useRef<HTMLDivElement | null>(null);
   const hoverIntentRef = useRef<number | null>(null);
   const subHoverIntentRef = useRef<number | null>(null);
+  // Set right before Escape hands focus back to a trigger, so that programmatic
+  // focus doesn't bounce through openOnFocus and reopen the panel just closed.
+  const suppressFocusOpenRef = useRef(false);
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -427,6 +430,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   // the wrapper entirely (relatedTarget outside) closes it. Moving focus
   // between the trigger and the links inside keeps the panel open.
   const openOnFocus = (menuName: string) => {
+    if (suppressFocusOpenRef.current) {
+      suppressFocusOpenRef.current = false;
+      return;
+    }
     openMenuImmediate(menuName);
   };
 
@@ -508,17 +515,34 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     };
   }, []);
 
-  // Close any open dropdown on Escape (keyboard escape hatch).
+  // Close any open dropdown on Escape (keyboard escape hatch). If focus was
+  // inside the menu, hand it back to that menu's trigger so the keyboard user
+  // keeps their place in the navbar instead of being dropped onto <body>.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (openMenu === null) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        clearHoverIntent();
-        clearSubHoverIntent();
-        setIsSwitching(false);
-        setOpenMenu(null);
-      }
+      if (event.key !== "Escape") return;
+      const active = document.activeElement as HTMLElement | null;
+      const wrapper = active?.closest<HTMLElement>(".nav_dropdown-wr") ?? null;
+      clearHoverIntent();
+      clearSubHoverIntent();
+      setIsSwitching(false);
+      setOpenMenu(null);
+      if (!wrapper) return;
+      // Desktop focuses the transparent section link; the Company toggle is a
+      // role="button" div. Hidden candidates (mobile drawer) are skipped.
+      const trigger = Array.from(
+        wrapper.querySelectorAll<HTMLElement>(
+          ".nav_dropdown_toggle-link, .nav_dropdown_toggle[role='button']",
+        ),
+      ).find((el) => el.offsetParent !== null);
+      if (!trigger || trigger === active) return;
+      suppressFocusOpenRef.current = true;
+      trigger.focus();
+      // focus() fires onFocus synchronously; if it didn't reach openOnFocus
+      // (e.g. focus was already inside the wrapper), don't leave the flag set.
+      suppressFocusOpenRef.current = false;
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
