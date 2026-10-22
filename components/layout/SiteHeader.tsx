@@ -883,10 +883,13 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                 <div className="nav-links is-1-column">
                                   {NAV_FREEBIE_CATEGORIES.map((item) => {
                                     const isActive = activeFreebieCategory === item.category;
+                                    const href = item.category
+                                      ? `/freebies?category=${encodeURIComponent(item.category)}`
+                                      : "/freebies";
                                     return (
                                       <a
                                         className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
-                                        href="/freebies"
+                                        href={href}
                                         key={item.label}
                                         onMouseEnter={() => switchSubcategoryOnHover(() => setActiveFreebieCategory(item.category))}
                                         onMouseLeave={clearSubHoverIntent}

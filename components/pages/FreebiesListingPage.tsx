@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import styles from "./FreebiesListingPage.module.css";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
@@ -15,12 +16,24 @@ import type { BlogPostPreview } from "../../types/data";
 const PAGE_SIZE = 9;
 const ALL_TOPICS = "All topics";
 
+// Map a `?category=` value onto a known category: exact match first, then
+// case-insensitive (so `mobile templates` still resolves to "Mobile Templates").
+// Unknown or missing values fall back to the full list.
+function resolveCategory(raw: string | string[] | undefined): string {
+  const value = (Array.isArray(raw) ? raw[0] : raw)?.trim();
+  if (!value) return ALL_TOPICS;
+  if (FREEBIES_CATEGORIES.includes(value)) return value;
+  const lower = value.toLowerCase();
+  return FREEBIES_CATEGORIES.find((category) => category.toLowerCase() === lower) ?? ALL_TOPICS;
+}
+
 type Props = {
   blogPosts?: BlogPostPreview[];
 };
 
 export default function FreebiesListingPage({ blogPosts = [] }: Props) {
   const meta = PAGE_META.freebies;
+  const router = useRouter();
   const breadcrumbs = PAGE_BREADCRUMBS.freebies ?? [];
   const [activeCategory, setActiveCategory] = useState(ALL_TOPICS);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
@@ -47,10 +60,27 @@ export default function FreebiesListingPage({ blogPosts = [] }: Props) {
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
 
+  // Deep links from the mega-menu (and shared URLs) arrive as ?category=…
+  // On an SSG page router.query is empty until hydration, so wait for isReady.
+  useEffect(() => {
+    if (!router.isReady) return;
+    setActiveCategory(resolveCategory(router.query.category));
+    setVisibleCount(PAGE_SIZE);
+  }, [router.isReady, router.query.category]);
+
   const onCategoryChange = (category: string) => {
     setActiveCategory(category);
     setVisibleCount(PAGE_SIZE);
     setIsCategoryDropdownOpen(false);
+    // Keep the filter in the URL so the view can be shared. Canonical stays
+    // /freebies (PAGE_META), so filtered URLs don't create index duplicates.
+    const nextQuery = { ...router.query };
+    if (category === ALL_TOPICS) {
+      delete nextQuery.category;
+    } else {
+      nextQuery.category = category;
+    }
+    router.replace({ pathname: router.pathname, query: nextQuery }, undefined, { shallow: true, scroll: false });
   };
 
   useEffect(() => {
