@@ -176,7 +176,10 @@ export default function TableOfContents({
         className={`blogpost_navigation-link w-inline-block${
           isActive ? (isH3 ? " is-active" : " fs-cmsfilter_active") : ""
         }`}
-        onClick={() => {
+        onClick={(event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          // The page glide is driven by useActiveHeading, not the native jump.
+          event.preventDefault();
           expandNow.current = true;
           onNavigate(entry, entry.position);
         }}

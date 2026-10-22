@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-let settleToken = 0;
-
 /** Fallback when the heading has no computed scroll-margin-top. */
 const FALLBACK_OFFSET = 130;
 /** Extra px below the scroll-margin line that still counts as "reached". */
 const LINE_TOLERANCE = 12;
 /** How long a click-selected heading wins over scroll tracking. */
 const CLICK_LOCK_MS = 1200;
-/** Post-jump correction for late layout shifts (lazy images). */
-const SETTLE_STEP_MS = 700;
-const SETTLE_ATTEMPTS = 3;
-const SETTLE_TOLERANCE = 4;
+/** Glide duration grows with distance, within these bounds. */
+const GLIDE_MIN_MS = 450;
+const GLIDE_MAX_MS = 1000;
+/** After the glide the heading stays pinned while late images load. */
+const PIN_MS = 1500;
+const PIN_TOLERANCE = 2;
+
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function headingTarget(el: HTMLElement) {
+  const margin = parseFloat(window.getComputedStyle(el).scrollMarginTop) || 0;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  return Math.max(0, Math.min(max, window.scrollY + el.getBoundingClientRect().top - margin));
+}
 
 /**
  * Scroll-spy for a table of contents.
@@ -32,7 +42,7 @@ export function useActiveHeading(ids: readonly string[]) {
   const settleUntil = useRef(0);
   const recompute = useRef<() => void>(() => {});
   const unlockTimer = useRef<number | undefined>(undefined);
-  const settleTimer = useRef<number | undefined>(undefined);
+  const stopGlide = useRef<() => void>(() => {});
   const key = ids.join("|");
 
   useEffect(() => {
@@ -110,23 +120,28 @@ export function useActiveHeading(ids: readonly string[]) {
   useEffect(
     () => () => {
       window.clearTimeout(unlockTimer.current);
-      window.clearTimeout(settleTimer.current);
+      stopGlide.current();
     },
     [],
   );
 
   /**
-   * Highlight a heading right away on click, before smooth scroll ends.
+   * Highlight a heading right away on click and glide the page to it.
    *
-   * Lazy images above or around the target finish loading after the jump and
-   * change height (their width/height attributes are generic), which pushes
-   * the heading away from the reading line. A few short follow-up checks pull
-   * it back into place.
+   * The glide is driven by rAF instead of the native smooth scroll: lazy
+   * images finish loading during the jump and change height, which moves the
+   * heading. Native smooth scroll keeps its old target, and any mid-flight
+   * correction restarts it from zero speed, so the page (and the reading
+   * progress dot) visibly stalls near the end. Here the target is re-read on
+   * every frame, so the motion stays one continuous curve. After landing the
+   * heading stays pinned for a moment while late images settle.
+   *
+   * Any real user input (wheel, touch, keys) stops it at once.
    */
   const selectHeading = useCallback((id: string) => {
+    const el = document.getElementById(id);
     lockUntil.current = Date.now() + CLICK_LOCK_MS;
     clickedId.current = id;
-    settleUntil.current = Date.now() + SETTLE_STEP_MS * (SETTLE_ATTEMPTS + 1);
     setActiveId(id);
     window.clearTimeout(unlockTimer.current);
     unlockTimer.current = window.setTimeout(() => {
@@ -134,32 +149,49 @@ export function useActiveHeading(ids: readonly string[]) {
       recompute.current();
     }, CLICK_LOCK_MS);
 
-    window.clearTimeout(settleTimer.current);
-    const token = ++settleToken;
-    const cancel = () => {
-      settleToken += 1;
-      window.clearTimeout(settleTimer.current);
+    stopGlide.current();
+    if (!el) return;
+    if (window.location.hash !== `#${id}`) {
+      window.history.pushState(window.history.state, "", `#${id}`);
+    }
+
+    const startY = window.scrollY;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const distance = Math.abs(headingTarget(el) - startY);
+    const duration = reduced
+      ? 0
+      : Math.min(GLIDE_MAX_MS, Math.max(GLIDE_MIN_MS, 300 + Math.sqrt(distance) * 6));
+    settleUntil.current = Date.now() + duration + PIN_MS;
+
+    let frame = 0;
+    const startedAt = performance.now();
+    const stop = () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("touchstart", stop);
+      window.removeEventListener("keydown", stop);
+      stopGlide.current = () => {};
     };
-    // Any real user input stops the correction so it never fights the reader.
-    window.addEventListener("wheel", cancel, { once: true, passive: true });
-    window.addEventListener("touchstart", cancel, { once: true, passive: true });
-    window.addEventListener("keydown", cancel, { once: true });
-    let attempts = 0;
-    const settle = () => {
-      if (token !== settleToken) return;
-      const el = document.getElementById(id);
-      if (!el) return;
-      const margin = parseFloat(window.getComputedStyle(el).scrollMarginTop) || 0;
-      const diff = el.getBoundingClientRect().top - margin;
-      const doc = document.documentElement;
-      const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
-      if (Math.abs(diff) > SETTLE_TOLERANCE && !(atBottom && diff > 0)) {
-        window.scrollTo({ top: window.scrollY + diff, behavior: "auto" });
+    const step = (now: number) => {
+      const elapsed = now - startedAt;
+      const target = headingTarget(el);
+      if (elapsed < duration) {
+        const y = startY + (target - startY) * easeInOutCubic(elapsed / duration);
+        // "instant" overrides `scroll-behavior: smooth` from <html>.
+        window.scrollTo({ top: y, behavior: "instant" });
+      } else {
+        if (Math.abs(target - window.scrollY) > PIN_TOLERANCE) {
+          window.scrollTo({ top: target, behavior: "instant" });
+        }
+        if (elapsed >= duration + PIN_MS) return stop();
       }
-      attempts += 1;
-      if (attempts < SETTLE_ATTEMPTS) settleTimer.current = window.setTimeout(settle, SETTLE_STEP_MS);
+      frame = window.requestAnimationFrame(step);
     };
-    settleTimer.current = window.setTimeout(settle, SETTLE_STEP_MS);
+    window.addEventListener("wheel", stop, { passive: true });
+    window.addEventListener("touchstart", stop, { passive: true });
+    window.addEventListener("keydown", stop);
+    stopGlide.current = stop;
+    frame = window.requestAnimationFrame(step);
   }, []);
 
   return { activeId, selectHeading };

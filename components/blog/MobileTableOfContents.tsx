@@ -120,7 +120,10 @@ export default function MobileTableOfContents({
                   href={`#${entry.id}`}
                   aria-current={isActive ? "location" : undefined}
                   className={`blogpost_mobile-toc-link${isActive ? " is-active" : ""}`}
-                  onClick={() => {
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    // The page glide is driven by useActiveHeading, not the native jump.
+                    event.preventDefault();
                     setOpen(false);
                     onNavigate(entry, entry.position);
                   }}
