@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, FocusEvent as ReactFocusEvent } from "react";
+import type { CSSProperties, FocusEvent as ReactFocusEvent, MouseEvent as ReactMouseEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
@@ -15,6 +15,14 @@ import { BUNDLES } from "../../data/bundles";
 import type { BundleItem } from "../../data/bundles";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
 import { getGumroadLinkProps } from "../../lib/gumroad";
+import {
+  NAV_MENU_ID,
+  describeHref,
+  getNavLinkType,
+  parsePrice,
+  trackNav,
+} from "../../lib/nav/analytics";
+import type { NavOpenSource } from "../../lib/nav/analytics";
 
 function ChevronIcon() {
   return (
@@ -294,6 +302,13 @@ const NAV_HOVER_CLOSE_DELAY_MS = 250;
 // it a cursor sweeping down the Categories column strobes through every preview
 // set; this makes only the category the pointer settles on actually load.
 const NAV_SUBCATEGORY_HOVER_DELAY_MS = 260;
+// A panel must stay open this long to count as a real `nav_menu_open` in GA4,
+// so a cursor sweeping across the navbar doesn't inflate the numbers.
+const NAV_OPEN_TRACK_DELAY_MS = 500;
+
+function isFinePointer(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -316,6 +331,17 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   // Set right before Escape hands focus back to a trigger, so that programmatic
   // focus doesn't bounce through openOnFocus and reopen the panel just closed.
   const suppressFocusOpenRef = useRef(false);
+  // How the most recent menu was opened, read when `nav_menu_open` is sent.
+  const lastOpenSourceRef = useRef<NavOpenSource>("hover");
+  // Last committed subcategory per panel. Category-view events fire only on a
+  // real change, so the mount run (and StrictMode's double effect run in dev)
+  // never reports the initial "All" as a user choice.
+  const lastTrackedCategoryRef = useRef<Record<string, string | null>>({
+    inspiration: null,
+    tutorials: null,
+    freebies: null,
+    designKits: null,
+  });
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -337,6 +363,9 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const isMenuOpen = (menuName: string) => openMenu === menuName;
 
   const toggleMenu = (menuName: string) => {
+    if (openMenu !== menuName) {
+      lastOpenSourceRef.current = isFinePointer() ? "click" : "tap";
+    }
     setOpenMenu((current) => (current === menuName ? null : menuName));
   };
 
@@ -398,6 +427,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     if (typeof window === "undefined") return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     clearHoverIntent();
+    if (openMenu !== menuName) lastOpenSourceRef.current = "hover";
     // If a sibling menu is already open, swap instantly so sweeping across the
     // bar stays responsive. Opening from a closed state waits out a short
     // intent delay so an incidental pass-over never drops the panel.
@@ -434,6 +464,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
       suppressFocusOpenRef.current = false;
       return;
     }
+    if (openMenu !== menuName) lastOpenSourceRef.current = "keyboard";
     openMenuImmediate(menuName);
   };
 
@@ -562,6 +593,119 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     [],
   );
 
+  // GA4: count a panel as opened once it has stayed open for a moment. The
+  // source is captured when the panel actually changes, so a later focus event
+  // inside an already-open panel can't relabel it.
+  useEffect(() => {
+    if (openMenu === null) return;
+    const source = lastOpenSourceRef.current;
+    const menuName = NAV_MENU_ID[openMenu] ?? openMenu;
+    const timer = window.setTimeout(() => {
+      trackNav("nav_menu_open", { menu_name: menuName, input_type: source });
+    }, NAV_OPEN_TRACK_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [openMenu]);
+
+  // GA4: a subcategory was actually committed (after the hover debounce or on
+  // keyboard focus). One effect per panel, deduped against the last value.
+  const trackCategoryView = (menuKey: string, category: string | null) => {
+    if (lastTrackedCategoryRef.current[menuKey] === category) return;
+    lastTrackedCategoryRef.current[menuKey] = category;
+    trackNav("nav_category_view", {
+      menu_name: NAV_MENU_ID[menuKey] ?? menuKey,
+      category: categoryLabel(menuKey, category),
+    });
+  };
+  useEffect(() => trackCategoryView("inspiration", activeInspirationCategory),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeInspirationCategory]);
+  useEffect(() => trackCategoryView("tutorials", activeBlogCategory),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeBlogCategory]);
+  useEffect(() => trackCategoryView("freebies", activeFreebieCategory),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeFreebieCategory]);
+  useEffect(() => trackCategoryView("designKits", activeKitCategory),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeKitCategory]);
+
+  // Human-readable category for reports (matches what the user saw).
+  function categoryLabel(menuKey: string, category: string | null): string {
+    if (category === null) return "all";
+    if (menuKey === "inspiration") {
+      return INSPIRATION_CATEGORIES.find((c) => c.slug === category)?.label ?? category;
+    }
+    if (menuKey === "designKits") {
+      return DESIGN_KITS.find((k) => k.category === category)?.label ?? category;
+    }
+    return category;
+  }
+
+  const activeCategoryFor = (menuKey: string): string | null => {
+    switch (menuKey) {
+      case "inspiration":
+        return activeInspirationCategory;
+      case "tutorials":
+        return activeBlogCategory;
+      case "freebies":
+        return activeFreebieCategory;
+      case "designKits":
+        return activeKitCategory;
+      default:
+        return null;
+    }
+  };
+
+  // GA4: one delegated capture listener for every link in the navbar menus.
+  // Only elements inside a [data-nav-menu] wrapper are tracked, so the logo,
+  // search forms and the "Write for us" button stay out of these events.
+  const handleNavClickCapture = (event: ReactMouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement | null;
+    const el = target?.closest<HTMLElement>("a, button, [role='button']");
+    if (!el) return;
+    const scope = el.closest<HTMLElement>("[data-nav-menu]");
+    if (!scope) return;
+    const menuKey = scope.dataset.navMenu ?? "";
+    const linkType = getNavLinkType(el);
+    // Toggles without a link (mobile accordion, Company) are covered by
+    // nav_menu_open; only real navigations are clicks.
+    if (!(el instanceof HTMLAnchorElement) || !el.getAttribute("href") || el.getAttribute("href") === "#") {
+      if (linkType !== "company_link" && linkType !== "promo") return;
+    }
+
+    const card = el.closest<HTMLElement>(".nav_tabs-list-item");
+    const itemTitle = card
+      ?.querySelector<HTMLElement>(".nav_tabs-list-item-info-wr .hover-lift-title")
+      ?.textContent?.trim();
+    const itemPosition = card?.parentElement
+      ? Array.prototype.indexOf.call(card.parentElement.children, card) + 1
+      : undefined;
+    const label = el.textContent?.replace(/\s+/g, " ").trim() ?? "";
+    const link = el instanceof HTMLAnchorElement && el.href ? describeHref(el) : null;
+    const menuName = NAV_MENU_ID[menuKey] ?? menuKey;
+    const category = categoryLabel(menuKey, activeCategoryFor(menuKey));
+
+    trackNav("nav_click", {
+      menu_name: menuName,
+      category,
+      link_type: linkType,
+      item_title: itemTitle ?? (linkType === "card_title" ? undefined : label),
+      item_position: itemPosition,
+      link_url: link?.url,
+      outbound: link?.outbound,
+    });
+
+    if (menuKey === "designKits" && linkType === "card_cta") {
+      trackNav("nav_buy_click", {
+        menu_name: menuName,
+        category,
+        item_title: itemTitle,
+        value: parsePrice(label),
+        currency: "USD",
+      });
+    }
+  };
+
   // Reshuffle the inspiration pool once on mount. Doing it in an effect (not at
   // render) keeps SSR and the first client paint identical — the randomised
   // order swaps in right after hydration, so each refresh shows a fresh six.
@@ -648,11 +792,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
           <nav
             className={`nav-menu w-nav-menu${isMobileNavOpen ? " is-mobile-open" : ""}`}
             role="navigation"
+            onClickCapture={handleNavClickCapture}
           >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
                 {HAS_INSPIRATION ? (
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("inspiration")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("inspiration")} onBlur={closeOnBlur}>
+                <div className="nav_dropdown-wr" data-nav-menu="inspiration" onMouseEnter={() => openOnHover("inspiration")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("inspiration")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("inspiration") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("inspiration") ? "w--open" : ""}${isInspirationActive ? " w--current" : ""}`}
@@ -743,6 +888,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                 ) : (
                   <a
                     className="nav-link-block w-inline-block"
+                    data-nav-menu="inspiration"
                     href={withUtm("https://app.setproduct.com/")}
                     rel="noreferrer"
                     target="_blank"
@@ -755,7 +901,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </a>
                 )}
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("tutorials")} onBlur={closeOnBlur}>
+                <div className="nav_dropdown-wr" data-nav-menu="tutorials" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("tutorials")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
@@ -852,7 +998,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("freebies")} onBlur={closeOnBlur}>
+                <div className="nav_dropdown-wr" data-nav-menu="freebies" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("freebies")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("freebies") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
@@ -953,7 +1099,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("designKits")} onBlur={closeOnBlur}>
+                <div className="nav_dropdown-wr" data-nav-menu="designKits" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("designKits")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
@@ -1053,7 +1199,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   </div>
                 </div>
 
-                <div className="nav_dropdown-wr" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("information")} onBlur={closeOnBlur}>
+                <div className="nav_dropdown-wr" data-nav-menu="information" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("information")} onBlur={closeOnBlur}>
                   <div className={`nav_dropdown w-dropdown ${isMenuOpen("information") ? "w--open" : ""}`} data-delay="0" data-hover="true">
                     <div
                       className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
@@ -1188,7 +1334,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileNavOpen}
             className={`menu-button icon-2 w-nav-button${isMobileNavOpen ? " w--open" : ""}`}
-            onClick={() => setIsMobileNavOpen((open) => !open)}
+            onClick={() => {
+              if (!isMobileNavOpen) trackNav("nav_drawer_open");
+              setIsMobileNavOpen((open) => !open);
+            }}
           >
             <div className="menu-button-img-wr">
               <img alt="" className="menu-button-img is-burger" loading="lazy" src="/images/menu.svg" />
