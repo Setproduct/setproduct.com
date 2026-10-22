@@ -798,7 +798,8 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                                               <img
                                                 alt=""
                                                 src={item.thumbImage}
-                                                sizes="158px"
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="image-cover"
                                               />
                                             </a>
