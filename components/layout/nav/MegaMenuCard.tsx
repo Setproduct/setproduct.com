@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { EXTERNAL_LINK_PROPS } from "./navConfig";
+import { NavLink } from "./NavLink";
 
 type MegaMenuCardProps = {
   /** Destination of the card title. */
@@ -20,15 +20,14 @@ type MegaMenuCardProps = {
  * also what the GA4 click tracker reads as `item_title`.
  */
 export function MegaMenuCard({ href, title, description, external = false, media, actions }: MegaMenuCardProps) {
-  const linkProps = external ? EXTERNAL_LINK_PROPS : {};
   return (
     <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" role="listitem">
       <div className="nav_tabs-list-item-wr">
         {media}
         <div className="nav_tabs-list-item-info-wr">
-          <a className="w-inline-block" href={href} {...linkProps}>
+          <NavLink className="w-inline-block" href={href} external={external}>
             <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{title}</p>
-          </a>
+          </NavLink>
           <p className="text-size-tiny text-style-3lines">{description}</p>
           <div className="nav_tabs-list-item-btn-wr">{actions}</div>
         </div>
@@ -43,13 +42,13 @@ export function MegaMenuCard({ href, title, description, external = false, media
  */
 export function MegaMenuCardMedia({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <a
+    <NavLink
       className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
       href={href}
       aria-hidden="true"
       tabIndex={-1}
     >
       {children}
-    </a>
+    </NavLink>
   );
 }

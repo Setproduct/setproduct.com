@@ -32,6 +32,11 @@ import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
 import { InspirationThumb } from "./nav/InspirationThumb";
 import { CompanyPanel } from "./nav/CompanyPanel";
 import { NavSearch } from "./nav/NavSearch";
+import { NavLink } from "./nav/NavLink";
+import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
+
+/** `sizes` of the next/image thumbs in the Resources and UI kits cards. */
+const CARD_IMAGE_SIZES = "158px";
 
 type SiteHeaderProps = {
   /** Compact menu data from getNavData() in the page's getStaticProps. */
@@ -124,6 +129,20 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     };
   }, [isMobileNavOpen]);
 
+  // Client-side navigation (next/link) keeps this header mounted, so the open
+  // panel and the drawer would otherwise stay on screen over the new page.
+  // The ref keeps the listener stable while always calling the latest closer.
+  const closeMenuRef = useRef(menu.closeMenu);
+  closeMenuRef.current = menu.closeMenu;
+  useEffect(() => {
+    const handleRouteChangeStart = () => {
+      closeMenuRef.current();
+      setIsMobileNavOpen(false);
+    };
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    return () => router.events.off("routeChangeStart", handleRouteChangeStart);
+  }, [router.events]);
+
   // Reshuffle the inspiration sample once on mount. Doing it in an effect (not
   // at render) keeps SSR and the first client paint identical — the randomised
   // order swaps in right after hydration, so each refresh shows a fresh six.
@@ -151,10 +170,30 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
       });
   }, []);
 
-  const kitPreviews: KitPreview[] = catalogue ? catalogue.getKitPreviews(categories.designKits) : KIT_PREVIEWS;
-  const freebiePreviews: NavFreebie[] = catalogue
-    ? catalogue.getFreebiePreviews(categories.freebies)
-    : navData.freebies;
+  // Before the catalogue arrives only the "All" sets are known.
+  const getKitSet = (category: string | null): KitPreview[] =>
+    catalogue ? catalogue.getKitPreviews(category) : KIT_PREVIEWS;
+  const getFreebieSet = (category: string | null): NavFreebie[] =>
+    catalogue ? catalogue.getFreebiePreviews(category) : navData.freebies;
+
+  const kitPreviews = getKitSet(categories.designKits);
+  const freebiePreviews = getFreebieSet(categories.freebies);
+
+  // Hover-intent preloading: the pointer reaching a trigger or a category
+  // starts fetching that set's six images, so they are usually decoded by the
+  // time the 120 ms open delay (or the 260 ms category delay) runs out.
+  const preloadInspiration = (category: string | null) =>
+    getInspirationPreviews(shuffledInspiration, category).forEach((item) => preloadPlainImage(item.image));
+  const preloadBlog = (category: string | null) =>
+    getBlogPreviews(navBlog, category).forEach((item) => preloadPlainImage(item.thumbImage));
+  const preloadFreebies = (category: string | null) => {
+    if (!catalogue && category !== null) return;
+    getFreebieSet(category).forEach((item) => preloadNextImage(item.thumb, CARD_IMAGE_SIZES));
+  };
+  const preloadKits = (category: string | null) => {
+    if (!catalogue && category !== null) return;
+    getKitSet(category).forEach((item) => preloadNextImage(item.image, CARD_IMAGE_SIZES));
+  };
 
   const inspirationCategories: MegaMenuCategory[] = navData.inspirationCategories.map((cat) => ({
     key: cat.slug,
@@ -200,7 +239,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
         <div className="nav-wrapper div-block">
           <div className="brand">
             <img alt="" className="nav_logo-image" loading="lazy" src="/images/Vectors-Wrapper.svg" />
-            <a className="brand-link w-inline-block" href="/" />
+            <NavLink className="brand-link w-inline-block" href="/" aria-label="Setproduct home" />
           </div>
 
           <nav
@@ -226,6 +265,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                     formName="email-form-nav-inspiration"
                     listKeyPrefix="inspiration"
                     categories={inspirationCategories}
+                    onIntent={preloadInspiration}
                   >
                     {getInspirationPreviews(shuffledInspiration, categories.inspiration).map((item) => (
                       <MegaMenuCard
@@ -268,6 +308,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   formName="email-form-nav-1"
                   listKeyPrefix="tutorials"
                   categories={blogCategories}
+                  onIntent={preloadBlog}
                 >
                   {getBlogPreviews(navBlog, categories.tutorials).map((item) => (
                     <MegaMenuCard
@@ -281,9 +322,9 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                         </MegaMenuCardMedia>
                       }
                       actions={
-                        <a className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
+                        <NavLink className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
                           <div className="text-size-regular text-weight-bold">Read more</div>
-                        </a>
+                        </NavLink>
                       }
                     />
                   ))}
@@ -299,6 +340,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   formName="email-form-nav-3"
                   listKeyPrefix="freebies"
                   categories={freebieCategories}
+                  onIntent={preloadFreebies}
                 >
                   {freebiePreviews.map((item) => (
                     <MegaMenuCard
@@ -308,7 +350,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       description={item.description}
                       media={
                         <MegaMenuCardMedia href={item.previewHref}>
-                          <Image alt="" src={item.thumb} fill sizes="158px" className="image-cover" />
+                          <Image alt="" src={item.thumb} fill sizes={CARD_IMAGE_SIZES} className="image-cover" />
                         </MegaMenuCardMedia>
                       }
                       actions={
@@ -316,9 +358,9 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                           <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
                             <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
                           </a>
-                          <a className="button-x-small is-text w-inline-block" href={item.previewHref}>
+                          <NavLink className="button-x-small is-text w-inline-block" href={item.previewHref}>
                             <div className="text-size-regular text-weight-bold">Preview</div>
-                          </a>
+                          </NavLink>
                         </>
                       }
                     />
@@ -335,6 +377,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   formName="email-form-nav-2"
                   listKeyPrefix="kits"
                   categories={kitCategories}
+                  onIntent={preloadKits}
                 >
                   {kitPreviews.map((item) => (
                     <MegaMenuCard
@@ -344,7 +387,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       description={item.description}
                       media={
                         <MegaMenuCardMedia href={item.href}>
-                          <Image alt="" src={item.image} fill sizes="158px" className="image-cover" />
+                          <Image alt="" src={item.image} fill sizes={CARD_IMAGE_SIZES} className="image-cover" />
                         </MegaMenuCardMedia>
                       }
                       actions={
@@ -352,9 +395,9 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                           <a href={item.buyHref} {...getGumroadLinkProps(item.buyHref, "button-x-small is-secondary w-inline-block")}>
                             <div className="text-size-regular text-weight-bold">{item.buyLabel}</div>
                           </a>
-                          <a className="button-x-small is-text w-inline-block" href={item.href}>
+                          <NavLink className="button-x-small is-text w-inline-block" href={item.href}>
                             <div className="text-size-regular text-weight-bold">Learn more</div>
-                          </a>
+                          </NavLink>
                         </>
                       }
                     />

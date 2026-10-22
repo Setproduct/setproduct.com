@@ -1,5 +1,6 @@
 import ArrowIcon from "../../sections/ArrowIcon";
 import { ChevronIcon } from "./ChevronIcon";
+import { NavLink } from "./NavLink";
 import { INFORMATION_LINKS } from "./navConfig";
 import type { MegaMenuState } from "./useMegaMenuState";
 
@@ -47,16 +48,22 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                   <div className="text-size-regular">Company</div>
                 </div>
                 <div className="nav-links is-1-column">
-                  {INFORMATION_LINKS.map((link) => (
-                    <a
-                      className="link-block w-inline-block"
-                      href={link.href}
-                      key={link.label}
-                      onClick={link.modal ? (e) => { e.preventDefault(); onContact(); } : undefined}
-                    >
-                      <div className="text-size-regular">{link.label}</div>
-                    </a>
-                  ))}
+                  {INFORMATION_LINKS.map((link) =>
+                    link.modal ? (
+                      <a
+                        className="link-block w-inline-block"
+                        href={link.href}
+                        key={link.label}
+                        onClick={(e) => { e.preventDefault(); onContact(); }}
+                      >
+                        <div className="text-size-regular">{link.label}</div>
+                      </a>
+                    ) : (
+                      <NavLink className="link-block w-inline-block" href={link.href} key={link.label}>
+                        <div className="text-size-regular">{link.label}</div>
+                      </NavLink>
+                    ),
+                  )}
                 </div>
               </div>
               <div className="nav_info-promo-wr">

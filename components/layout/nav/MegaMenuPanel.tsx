@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { ChevronIcon } from "./ChevronIcon";
-import { EXTERNAL_LINK_PROPS } from "./navConfig";
+import { NavLink } from "./NavLink";
 import type { CategoryMenuKey } from "./navConfig";
 import type { MegaMenuState } from "./useMegaMenuState";
 
@@ -32,6 +32,11 @@ type MegaMenuPanelProps = {
   /** Prefix of the animated list key; the list remounts on category change. */
   listKeyPrefix: string;
   categories: MegaMenuCategory[];
+  /**
+   * Early intent signal: the pointer entered the panel or a category, before
+   * the hover delay commits it. Used to warm up the preview images.
+   */
+  onIntent?: (category: string | null) => void;
   /** Preview cards (MegaMenuCard). */
   children: ReactNode;
 };
@@ -53,14 +58,23 @@ export function MegaMenuPanel({
   formName,
   listKeyPrefix,
   categories,
+  onIntent,
   children,
 }: MegaMenuPanelProps) {
   const isOpen = state.isMenuOpen(menu);
   const openClass = isOpen ? "w--open" : "";
-  const linkProps = external ? EXTERNAL_LINK_PROPS : {};
+  const wrapperProps = state.getWrapperProps(menu);
 
   return (
-    <div className="nav_dropdown-wr" data-nav-menu={menu} {...state.getWrapperProps(menu)}>
+    <div
+      className="nav_dropdown-wr"
+      data-nav-menu={menu}
+      {...wrapperProps}
+      onMouseEnter={() => {
+        onIntent?.(state.categories[menu]);
+        wrapperProps.onMouseEnter();
+      }}
+    >
       <div className={`nav_dropdown w-dropdown ${openClass}`} data-delay="0" data-hover="true">
         <div
           className={`nav_dropdown_toggle w-dropdown-toggle ${openClass}${isCurrent || isOpen ? " w--current" : ""}`}
@@ -70,10 +84,10 @@ export function MegaMenuPanel({
             {label}
           </div>
           <span className="icon nav_chevron"><ChevronIcon /></span>
-          <a
+          <NavLink
             className="nav_dropdown_toggle-link w-inline-block"
             href={toggleHref}
-            {...linkProps}
+            external={external}
             aria-label={toggleAriaLabel}
             aria-haspopup="true"
             aria-expanded={isOpen}
@@ -90,17 +104,20 @@ export function MegaMenuPanel({
                     </div>
                     <div className="nav-links is-1-column">
                       {categories.map((cat) => (
-                        <a
+                        <NavLink
                           className={`nav_radio w-inline-block${cat.isActive ? " w--current" : ""}`}
                           href={cat.href}
-                          {...linkProps}
+                          external={external}
                           key={cat.key}
-                          onMouseEnter={() => state.setCategoryOnHover(menu, cat.value)}
+                          onMouseEnter={() => {
+                            onIntent?.(cat.value);
+                            state.setCategoryOnHover(menu, cat.value);
+                          }}
                           onMouseLeave={state.clearCategoryHover}
                           onFocus={() => state.setCategoryNow(menu, cat.value)}
                         >
                           <p className={`text-size-regular${cat.isActive ? " text-color-primary" : ""}`}>{cat.label}</p>
-                        </a>
+                        </NavLink>
                       ))}
                     </div>
                   </div>

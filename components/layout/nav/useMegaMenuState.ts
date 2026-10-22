@@ -206,6 +206,8 @@ export function useMegaMenuState() {
     lastOpenSourceRef,
     isMenuOpen,
     toggleMenu,
+    /** Close whatever is open right now, cancelling pending hover timers. */
+    closeMenu: closeMenuImmediate,
     getWrapperProps,
     setCategoryOnHover,
     setCategoryNow,
