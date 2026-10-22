@@ -105,7 +105,12 @@
   --input-bg: #f0ebff;
   --input-bg-hover: #f4f0ff;
   --input-bg-focus: #f8f5ff;
-  --input-border: #1a191c26;
+  /* Resting border = the colour the inner top shadow actually renders as:
+     #7c4dff33 (20% brand) laid over the #f0ebff fill gives about #d9cbff. Taking
+     that same colour as the border makes the edge read as a continuation of the
+     shadow instead of a separate grey line. System rule: an input in the resting
+     state has no grey border at all. */
+  --input-border: #d7ccfc;
   --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
   --input-border-focus: var(--primary);
 
@@ -463,7 +468,10 @@
 
 .proto .f.f.attention {
   --attention-fill: var(--input-bg);
-  --attention-line: #7c4dff2e;
+  /* Same resting edge colour as the regular field, so the attention field does not
+     look like a different component. Its border is transparent and only carries the
+     beam, so the colour shows up as the faint line under the beam. */
+  --attention-line: #d7ccfc;
   --attention-w: 100cqw;
   /* The spot walks the centre line of the rounded border itself: 4 straights
      and 4 quarter arcs. A walk around the sharp rectangle cut the corners off
