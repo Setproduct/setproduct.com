@@ -1,347 +1,65 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, FocusEvent as ReactFocusEvent, MouseEvent as ReactMouseEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 // Temporarily disabled — kept for potential future use.
 // import LaunchAppCallout from "./LaunchAppCallout";
-import ArrowIcon from "../sections/ArrowIcon";
-import type { BlogPostPreview, InspirationItem, Product } from "../../types/data";
-import { PRODUCTS } from "../../data/products";
-import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
-import { BUNDLES } from "../../data/bundles";
-import type { BundleItem } from "../../data/bundles";
+import type { BlogPostPreview, InspirationItem } from "../../types/data";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
 import { getGumroadLinkProps } from "../../lib/gumroad";
+import { trackNav } from "../../lib/nav/analytics";
 import {
-  NAV_MENU_ID,
-  describeHref,
-  getNavLinkType,
-  parsePrice,
-  trackNav,
-} from "../../lib/nav/analytics";
-import type { NavOpenSource } from "../../lib/nav/analytics";
-
-function ChevronIcon() {
-  return (
-    <svg
-      className="nav_chevron-svg"
-      width="1em"
-      height="1em"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M4 6l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-type KitPreview = {
-  href: string;
-  buyHref: string;
-  buyLabel: string;
-  image: string;
-  title: string;
-  description: string;
-};
-
-const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
-  { label: "All topics", category: null },
-  { label: "Startups & SaaS", category: "Startups & SaaS" },
-  { label: "UI Design", category: "UI Design" },
-  { label: "Growth Hacking", category: "Growth Hacking" },
-  { label: "Inspiration", category: "Inspiration" },
-  { label: "Tools", category: "Tools" },
-  { label: "Technology", category: "Technology" },
-  { label: "Research", category: "Research" },
-];
-
-// Sentinel category for the Bundle tab. Bundles aren't catalogue Products and
-// carry no `categories` array, so we route this tab through a dedicated branch
-// in filteredKitPreviews instead of the product filter — otherwise it falls
-// back to the featured set and duplicates the "All" tab.
-const BUNDLE_CATEGORY = "__bundles__";
-
-const DESIGN_KITS: Array<{ href: string; label: string; category: string | null }> = [
-  { href: "/all", label: "All", category: null },
-  { href: "/dashboards", label: "Dashboards", category: "dashboards" },
-  { href: "/mobile", label: "Mobile", category: "mobile" },
-  { href: "/dataviz", label: "Charts", category: "dataviz" },
-  { href: "/code", label: "Code", category: "code" },
-  { href: "/websites", label: "Websites", category: "websites" },
-  { href: "/bundle", label: "Bundle", category: BUNDLE_CATEGORY },
-];
-
-const INFORMATION_LINKS = [
-  { href: "/testimonials", label: "Testimonials" },
-  { href: "/legal/license", label: "License" },
-  { href: "/legal/refunds-policy", label: "Refund Policy" },
-  { href: "#", label: "Contact us", modal: true },
-];
-
-// Curated subset of freebies categories surfaced in the nav dropdown. Like
-// DESIGN_KITS, we don't list every taxonomy entry — only the well-populated,
-// recognisable ones — so each hovered tab yields a full preview grid. `label`
-// is sentence-case for display; `category` must match FREEBIE_PRODUCTS exactly.
-const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
-  { label: "All topics", category: null },
-  { label: "Code", category: "Code" },
-  { label: "Components", category: "Components" },
-  { label: "Free UI kits", category: "Free UI kits" },
-  { label: "Mobile templates", category: "Mobile Templates" },
-  { label: "Desktop templates", category: "Desktop templates" },
-  { label: "Data visualization", category: "Data visualization" },
-  { label: "Web design", category: "Web Design" },
-];
-
-const NAV_BLOG_PREVIEW_COUNT = 6;
-const NAV_KIT_PREVIEW_COUNT = 6;
-const NAV_FREEBIE_PREVIEW_COUNT = 6;
-const NAV_INSPIRATION_PREVIEW_COUNT = 6;
-
-// Safety net: if a failed/empty scrape leaves data/inspiration.ts with no
-// items, the mega-menu would render a blank panel. In that case we fall back
-// to a plain external link to the AI UI library instead.
-const HAS_INSPIRATION = INSPIRATION_ITEMS.length > 0;
-
-// UTM tagging for every outbound Inspiration link so app.setproduct.com can
-// attribute the traffic this mega-menu sends. Appended at render time (the
-// scraped hrefs in data/inspiration.ts stay clean).
-const INSPIRATION_UTM = "utm_source=setproduct.com&utm_medium=navbar&utm_campaign=inspiration";
-function withUtm(href: string): string {
-  return href.includes("?") ? `${href}&${INSPIRATION_UTM}` : `${href}?${INSPIRATION_UTM}`;
-}
-
-// Fisher–Yates shuffle — returns a new array, leaving the source untouched.
-function shuffle<T>(input: readonly T[]): T[] {
-  const out = input.slice();
-  for (let i = out.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
-// Tracks image URLs that have already been revealed once. Cards remount when
-// the active category changes (key={item.id}); without this, every remount
-// would replay the blur fade-in even though the image is already cached. By
-// remembering revealed URLs we initialise such thumbs as already-loaded, so the
-// reveal animation plays only the first time each preview appears.
-const revealedInspirationImages = new Set<string>();
-
-// Thumbnail with a shimmer skeleton until the lazy image decodes. The wrapper
-// gets `.is-loaded` on load → shimmer fades out, image blur-fades in. We check
-// `complete` on mount so cached images (which may skip onLoad) reveal at once,
-// and skip the animation entirely for previews already shown earlier.
-function InspirationThumb({ href, image }: { href: string; image: string }) {
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const [loaded, setLoaded] = useState(() => revealedInspirationImages.has(image));
-
-  const reveal = () => {
-    revealedInspirationImages.add(image);
-    setLoaded(true);
-  };
-
-  useEffect(() => {
-    if (!loaded && imgRef.current?.complete) {
-      reveal();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <a
-      className={`nav_tabs-list-item-img-wr nav_inspiration-img-wr hover-lift-media w-inline-block relative${loaded ? " is-loaded" : ""}`}
-      href={href}
-      rel="noreferrer"
-      target="_blank"
-    >
-      <img
-        ref={imgRef}
-        alt=""
-        src={image}
-        loading="lazy"
-        onLoad={reveal}
-        onError={reveal}
-        className="image-cover nav_inspiration-img"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-      />
-    </a>
-  );
-}
-
-const SEARCH_PLACEHOLDERS = [
-  "Search dashboards…",
-  "Search Figma kits…",
-  "Search blog posts…",
-  "Search AI UI examples…",
-];
-
-const SEARCH_PLACEHOLDER_INTERVAL_MS = 2500;
-
-const INSPIRATION_BADGE_STYLE: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  marginLeft: "0.5em",
-  padding: "0.18em 0.5em",
-  borderRadius: "0.35em",
-  backgroundColor: "var(--primary)",
-  color: "var(--white)",
-  fontSize: "0.62em",
-  fontWeight: 700,
-  letterSpacing: "0.06em",
-  lineHeight: 1,
-};
-
-const KIT_PREVIEWS: KitPreview[] = [
-  {
-    href: "/templates/orion",
-    buyHref: "https://gumroad.com/a/530945235/kzbajr",
-    buyLabel: "Buy $148",
-    image: "/images/pricing-orion-01.webp",
-    title: "Orion UI kit",
-    description: "Figma library with 40+ full-width charts templates served in light & dark themes. Contains 200+ of dataviz widgets that look perfect on desktop & mobile screens.",
-  },
-  {
-    href: "/templates/nocra",
-    buyHref: "https://gumroad.com/a/530945235/uocxtg",
-    buyLabel: "Buy $98",
-    image: "/images/nocra-list-image.webp",
-    title: "Nocra UI kit",
-    description: "Nocra is a design system for AI products. Built specifically for startups harnessing AI generation: images, video, audio, music, prompts, and beyond.",
-  },
-  {
-    href: "/templates/charts",
-    buyHref: "https://setproduct.gumroad.com/l/graphz_pro",
-    buyLabel: "Buy $168",
-    image: "/images/pricing-charts-01.webp",
-    title: "Figma Charts UI kit",
-    description: "Components-driven graphs design kit for dashboards, presentations, infographics & data visualisation. Includes 25+ charts types for all the viewports.",
-  },
-  {
-    href: "/templates/nucleus-ui",
-    buyHref: "https://gumroad.com/a/169902547/snlaf",
-    buyLabel: "Buy $89",
-    image: "/images/nucleus-cover-1920-m.webp",
-    title: "Nucleus UI",
-    description: "Nucleus UI contains 1000 components and variants with 500+ mobile screens designed for Figma (including 9 themes from Event, E-commerce, Finance, NFT, etc.).",
-  },
-  {
-    href: "/templates/material-x",
-    buyHref: "https://setproduct.gumroad.com/l/material-x-fig",
-    buyLabel: "Buy $148",
-    image: "/images/pircing-mx-02_(1).webp",
-    title: "Material X for Figma",
-    description: "Figma library with 1100+ components & 40 app templates beyond Material Design. Powered by top-notch shapes and Manrope font. Customizable & Adjustable UI kit now available for Angular & Figma",
-  },
-  {
-    href: "/templates/material-you",
-    buyHref: "https://gumroad.com/a/135691379/upxbb",
-    buyLabel: "Buy $124",
-    image: "/images/pricing-materialme_(1).webp",
-    title: "Material You UI kit",
-    description: "Figma & React library with 2600+ variants of 32 components compatible with Material Design 3. Plus 220+ dashboard templates for all the viewports. Now available for NextJS & TailwindCSS.",
-  },
-];
-
-// Map a catalogue product onto the mega-menu card shape so the Design Kits
-// dropdown can swap its right-hand previews per hovered category — mirroring
-// how Tutorials filters blog previews by category.
-function kitPreviewFromProduct(product: Product): KitPreview {
-  return {
-    href: `/templates/${product.slug}`,
-    buyHref: product.buyHref,
-    buyLabel: `Buy $${product.price}`,
-    image: product.image,
-    title: product.title,
-    description: product.description,
-  };
-}
-
-// Map a bundle onto the mega-menu card shape. Bundles point at the /bundle
-// listing (no per-bundle detail route), keep their already-formatted "$210"
-// price, and have their HTML description flattened to plain text for the
-// clamped preview line.
-function bundlePreviewFromItem(bundle: BundleItem): KitPreview {
-  return {
-    href: "/bundle",
-    buyHref: bundle.buyHref,
-    buyLabel: `Buy ${bundle.price}`,
-    image: bundle.image,
-    title: bundle.title,
-    description: bundle.descriptionHtml
-      .replace(/<[^>]*>/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/\s+/g, " ")
-      .trim(),
-  };
-}
+  DESIGN_KITS,
+  HAS_INSPIRATION,
+  INFORMATION_LINKS,
+  INSPIRATION_BADGE_STYLE,
+  INSPIRATION_LABEL_STYLE,
+  NAV_BLOG_CATEGORIES,
+  NAV_FREEBIE_CATEGORIES,
+  shuffle,
+  withUtm,
+} from "./nav/navConfig";
+import {
+  getBlogPreviews,
+  getFreebiePreviews,
+  getInspirationPreviews,
+  getKitPreviews,
+} from "./nav/navPreviews";
+import { useMegaMenuState } from "./nav/useMegaMenuState";
+import { useNavAnalytics } from "./nav/useNavAnalytics";
+import { MegaMenuPanel } from "./nav/MegaMenuPanel";
+import type { MegaMenuCategory } from "./nav/MegaMenuPanel";
+import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
+import { InspirationThumb } from "./nav/InspirationThumb";
+import { CompanyPanel } from "./nav/CompanyPanel";
+import { NavSearch } from "./nav/NavSearch";
 
 type SiteHeaderProps = {
   blogPosts?: BlogPostPreview[];
 };
 
-// Hover-intent timings. A short open delay stops a cursor that merely sweeps
-// across a trigger from dropping the full-width panel; a longer close grace
-// period lets the pointer travel diagonally into the panel (or hop to an
-// adjacent trigger) without the menu snapping shut underneath it.
-const NAV_HOVER_OPEN_DELAY_MS = 120;
-const NAV_HOVER_CLOSE_DELAY_MS = 250;
-// Debounce for switching subcategories *inside* an already-open panel. Without
-// it a cursor sweeping down the Categories column strobes through every preview
-// set; this makes only the category the pointer settles on actually load.
-const NAV_SUBCATEGORY_HOVER_DELAY_MS = 260;
-// A panel must stay open this long to count as a real `nav_menu_open` in GA4,
-// so a cursor sweeping across the navbar doesn't inflate the numbers.
-const NAV_OPEN_TRACK_DELAY_MS = 500;
+const INSPIRATION_HOME = "https://app.setproduct.com/";
+const INSPIRATION_ARIA_LABEL = "Inspiration — AI UI library (opens in a new tab)";
 
-function isFinePointer(): boolean {
-  return typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-}
+const inspirationLabel = (
+  <>
+    Inspiration
+    <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
+  </>
+);
 
 export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [isSwitching, setIsSwitching] = useState(false);
-  const [activeBlogCategory, setActiveBlogCategory] = useState<string | null>(null);
-  const [activeKitCategory, setActiveKitCategory] = useState<string | null>(null);
-  const [activeFreebieCategory, setActiveFreebieCategory] = useState<string | null>(null);
-  const [activeInspirationCategory, setActiveInspirationCategory] = useState<string | null>(null);
+  const menu = useMegaMenuState();
+  const { categories } = menu;
+  const { handleNavClickCapture } = useNavAnalytics(menu);
   // Server render and first client paint must match, so we start from the
   // source order and reshuffle on mount — giving a fresh six on every refresh
   // without tripping hydration.
   const [shuffledInspiration, setShuffledInspiration] = useState<InspirationItem[]>(INSPIRATION_ITEMS);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);
-  const [previousPlaceholderIndex, setPreviousPlaceholderIndex] =
-    useState<number | null>(null);
   const navbarRef = useRef<HTMLDivElement | null>(null);
-  const hoverIntentRef = useRef<number | null>(null);
-  const subHoverIntentRef = useRef<number | null>(null);
-  // Set right before Escape hands focus back to a trigger, so that programmatic
-  // focus doesn't bounce through openOnFocus and reopen the panel just closed.
-  const suppressFocusOpenRef = useRef(false);
-  // How the most recent menu was opened, read when `nav_menu_open` is sent.
-  const lastOpenSourceRef = useRef<NavOpenSource>("hover");
-  // Last committed subcategory per panel. Category-view events fire only on a
-  // real change, so the mount run (and StrictMode's double effect run in dev)
-  // never reports the initial "All" as a user choice.
-  const lastTrackedCategoryRef = useRef<Record<string, string | null>>({
-    inspiration: null,
-    tutorials: null,
-    freebies: null,
-    designKits: null,
-  });
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -356,135 +74,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
   const isInformationActive = INFORMATION_LINKS.some(
     (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
   );
-  // The Inspiration tab points off-site (app.setproduct.com), so it never maps
-  // to a local route — its "active" state is purely the open-menu highlight.
-  const isInspirationActive = openMenu === "inspiration";
-
-  const isMenuOpen = (menuName: string) => openMenu === menuName;
-
-  const toggleMenu = (menuName: string) => {
-    if (openMenu !== menuName) {
-      lastOpenSourceRef.current = isFinePointer() ? "click" : "tap";
-    }
-    setOpenMenu((current) => (current === menuName ? null : menuName));
-  };
-
-  const clearHoverIntent = () => {
-    if (hoverIntentRef.current !== null) {
-      window.clearTimeout(hoverIntentRef.current);
-      hoverIntentRef.current = null;
-    }
-  };
-
-  const clearSubHoverIntent = () => {
-    if (subHoverIntentRef.current !== null) {
-      window.clearTimeout(subHoverIntentRef.current);
-      subHoverIntentRef.current = null;
-    }
-  };
-
-  // Pointer hover over a subcategory: debounce so a passing cursor doesn't
-  // load every set on the way; only the one it lingers on (~90ms) commits.
-  const switchSubcategoryOnHover = (apply: () => void) => {
-    clearSubHoverIntent();
-    if (typeof window === "undefined") {
-      apply();
-      return;
-    }
-    subHoverIntentRef.current = window.setTimeout(() => {
-      subHoverIntentRef.current = null;
-      apply();
-    }, NAV_SUBCATEGORY_HOVER_DELAY_MS);
-  };
-
-  // Keyboard focus on a subcategory: cancel any queued hover switch and commit
-  // instantly so Tab navigation maps 1:1 to the previews shown.
-  const switchSubcategoryNow = (apply: () => void) => {
-    clearSubHoverIntent();
-    apply();
-  };
-
-  // Open (or swap between) menus immediately. Shared by pointer hover-intent
-  // and keyboard focus so both input paths behave identically.
-  const openMenuImmediate = (menuName: string) => {
-    clearHoverIntent();
-    // Moving straight from one already-open menu to another: swap the panel
-    // content without the collapse→expand bounce. `is-switching` disables the
-    // panel's max-height transition so the new panel snaps to full height
-    // while its inner content cross-fades in.
-    setIsSwitching(openMenu !== null && openMenu !== menuName);
-    setOpenMenu(menuName);
-  };
-
-  const closeMenuImmediate = () => {
-    clearHoverIntent();
-    clearSubHoverIntent();
-    setIsSwitching(false);
-    setOpenMenu(null);
-  };
-
-  const openOnHover = (menuName: string) => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    clearHoverIntent();
-    if (openMenu !== menuName) lastOpenSourceRef.current = "hover";
-    // If a sibling menu is already open, swap instantly so sweeping across the
-    // bar stays responsive. Opening from a closed state waits out a short
-    // intent delay so an incidental pass-over never drops the panel.
-    if (openMenu !== null) {
-      openMenuImmediate(menuName);
-      return;
-    }
-    hoverIntentRef.current = window.setTimeout(() => {
-      hoverIntentRef.current = null;
-      setIsSwitching(false);
-      setOpenMenu(menuName);
-    }, NAV_HOVER_OPEN_DELAY_MS);
-  };
-
-  const closeOnHoverLeave = () => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    clearHoverIntent();
-    // Grace period before collapsing: a diagonal path from trigger into the
-    // panel, or a quick hop to a neighbouring trigger, cancels this timer.
-    hoverIntentRef.current = window.setTimeout(() => {
-      hoverIntentRef.current = null;
-      clearSubHoverIntent();
-      setIsSwitching(false);
-      setOpenMenu(null);
-    }, NAV_HOVER_CLOSE_DELAY_MS);
-  };
-
-  // Keyboard parity: focus entering a dropdown wrapper opens it; focus leaving
-  // the wrapper entirely (relatedTarget outside) closes it. Moving focus
-  // between the trigger and the links inside keeps the panel open.
-  const openOnFocus = (menuName: string) => {
-    if (suppressFocusOpenRef.current) {
-      suppressFocusOpenRef.current = false;
-      return;
-    }
-    if (openMenu !== menuName) lastOpenSourceRef.current = "keyboard";
-    openMenuImmediate(menuName);
-  };
-
-  const closeOnBlur = (event: ReactFocusEvent<HTMLDivElement>) => {
-    if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
-    closeMenuImmediate();
-  };
-
-  const closeMobileNav = () => {
-    setIsMobileNavOpen(false);
-    setOpenMenu(null);
-  };
 
   // Lock body scroll while the drawer is open, expose the live navbar height
   // as a CSS var so the drawer can pin itself to the actual bottom of the
   // header (Webflow's vw-based em sizing makes the height fluid), and
   // auto-close on resize to desktop.
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const navbarEl = navbarRef.current;
     const previousOverflow = document.body.style.overflow;
 
@@ -516,196 +111,6 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     };
   }, [isMobileNavOpen]);
 
-  // Rotate the nav-search placeholder to hint that search covers kits, blog,
-  // dashboards and AI inspiration. Cross-fades the outgoing text with the
-  // incoming one by rendering two overlay spans for ~320ms.
-  // Respects prefers-reduced-motion.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const cleanupTimers: number[] = [];
-
-    const id = window.setInterval(() => {
-      setSearchPlaceholderIndex((current) => {
-        if (!reduceMotion) {
-          setPreviousPlaceholderIndex(current);
-          const t = window.setTimeout(() => {
-            setPreviousPlaceholderIndex(null);
-          }, 360);
-          cleanupTimers.push(t);
-        }
-        return (current + 1) % SEARCH_PLACEHOLDERS.length;
-      });
-    }, SEARCH_PLACEHOLDER_INTERVAL_MS);
-
-    return () => {
-      window.clearInterval(id);
-      cleanupTimers.forEach((t) => window.clearTimeout(t));
-    };
-  }, []);
-
-  // Close any open dropdown on Escape (keyboard escape hatch). If focus was
-  // inside the menu, hand it back to that menu's trigger so the keyboard user
-  // keeps their place in the navbar instead of being dropped onto <body>.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (openMenu === null) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      const active = document.activeElement as HTMLElement | null;
-      const wrapper = active?.closest<HTMLElement>(".nav_dropdown-wr") ?? null;
-      clearHoverIntent();
-      clearSubHoverIntent();
-      setIsSwitching(false);
-      setOpenMenu(null);
-      if (!wrapper) return;
-      // Desktop focuses the transparent section link; the Company toggle is a
-      // role="button" div. Hidden candidates (mobile drawer) are skipped.
-      const trigger = Array.from(
-        wrapper.querySelectorAll<HTMLElement>(
-          ".nav_dropdown_toggle-link, .nav_dropdown_toggle[role='button']",
-        ),
-      ).find((el) => el.offsetParent !== null);
-      if (!trigger || trigger === active) return;
-      suppressFocusOpenRef.current = true;
-      trigger.focus();
-      // focus() fires onFocus synchronously; if it didn't reach openOnFocus
-      // (e.g. focus was already inside the wrapper), don't leave the flag set.
-      suppressFocusOpenRef.current = false;
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [openMenu]);
-
-  // Tidy any pending hover-intent timer on unmount so a queued open/close
-  // never fires after teardown.
-  useEffect(
-    () => () => {
-      if (hoverIntentRef.current !== null) {
-        window.clearTimeout(hoverIntentRef.current);
-      }
-      if (subHoverIntentRef.current !== null) {
-        window.clearTimeout(subHoverIntentRef.current);
-      }
-    },
-    [],
-  );
-
-  // GA4: count a panel as opened once it has stayed open for a moment. The
-  // source is captured when the panel actually changes, so a later focus event
-  // inside an already-open panel can't relabel it.
-  useEffect(() => {
-    if (openMenu === null) return;
-    const source = lastOpenSourceRef.current;
-    const menuName = NAV_MENU_ID[openMenu] ?? openMenu;
-    const timer = window.setTimeout(() => {
-      trackNav("nav_menu_open", { menu_name: menuName, input_type: source });
-    }, NAV_OPEN_TRACK_DELAY_MS);
-    return () => window.clearTimeout(timer);
-  }, [openMenu]);
-
-  // GA4: a subcategory was actually committed (after the hover debounce or on
-  // keyboard focus). One effect per panel, deduped against the last value.
-  const trackCategoryView = (menuKey: string, category: string | null) => {
-    if (lastTrackedCategoryRef.current[menuKey] === category) return;
-    lastTrackedCategoryRef.current[menuKey] = category;
-    trackNav("nav_category_view", {
-      menu_name: NAV_MENU_ID[menuKey] ?? menuKey,
-      category: categoryLabel(menuKey, category),
-    });
-  };
-  useEffect(() => trackCategoryView("inspiration", activeInspirationCategory),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeInspirationCategory]);
-  useEffect(() => trackCategoryView("tutorials", activeBlogCategory),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeBlogCategory]);
-  useEffect(() => trackCategoryView("freebies", activeFreebieCategory),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeFreebieCategory]);
-  useEffect(() => trackCategoryView("designKits", activeKitCategory),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeKitCategory]);
-
-  // Human-readable category for reports (matches what the user saw).
-  function categoryLabel(menuKey: string, category: string | null): string {
-    if (category === null) return "all";
-    if (menuKey === "inspiration") {
-      return INSPIRATION_CATEGORIES.find((c) => c.slug === category)?.label ?? category;
-    }
-    if (menuKey === "designKits") {
-      return DESIGN_KITS.find((k) => k.category === category)?.label ?? category;
-    }
-    return category;
-  }
-
-  const activeCategoryFor = (menuKey: string): string | null => {
-    switch (menuKey) {
-      case "inspiration":
-        return activeInspirationCategory;
-      case "tutorials":
-        return activeBlogCategory;
-      case "freebies":
-        return activeFreebieCategory;
-      case "designKits":
-        return activeKitCategory;
-      default:
-        return null;
-    }
-  };
-
-  // GA4: one delegated capture listener for every link in the navbar menus.
-  // Only elements inside a [data-nav-menu] wrapper are tracked, so the logo,
-  // search forms and the "Write for us" button stay out of these events.
-  const handleNavClickCapture = (event: ReactMouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement | null;
-    const el = target?.closest<HTMLElement>("a, button, [role='button']");
-    if (!el) return;
-    const scope = el.closest<HTMLElement>("[data-nav-menu]");
-    if (!scope) return;
-    const menuKey = scope.dataset.navMenu ?? "";
-    const linkType = getNavLinkType(el);
-    // Toggles without a link (mobile accordion, Company) are covered by
-    // nav_menu_open; only real navigations are clicks.
-    if (!(el instanceof HTMLAnchorElement) || !el.getAttribute("href") || el.getAttribute("href") === "#") {
-      if (linkType !== "company_link" && linkType !== "promo") return;
-    }
-
-    const card = el.closest<HTMLElement>(".nav_tabs-list-item");
-    const itemTitle = card
-      ?.querySelector<HTMLElement>(".nav_tabs-list-item-info-wr .hover-lift-title")
-      ?.textContent?.trim();
-    const itemPosition = card?.parentElement
-      ? Array.prototype.indexOf.call(card.parentElement.children, card) + 1
-      : undefined;
-    const label = el.textContent?.replace(/\s+/g, " ").trim() ?? "";
-    const link = el instanceof HTMLAnchorElement && el.href ? describeHref(el) : null;
-    const menuName = NAV_MENU_ID[menuKey] ?? menuKey;
-    const category = categoryLabel(menuKey, activeCategoryFor(menuKey));
-
-    trackNav("nav_click", {
-      menu_name: menuName,
-      category,
-      link_type: linkType,
-      item_title: itemTitle ?? (linkType === "card_title" ? undefined : label),
-      item_position: itemPosition,
-      link_url: link?.url,
-      outbound: link?.outbound,
-    });
-
-    if (menuKey === "designKits" && linkType === "card_cta") {
-      trackNav("nav_buy_click", {
-        menu_name: menuName,
-        category,
-        item_title: itemTitle,
-        value: parsePrice(label),
-        currency: "USD",
-      });
-    }
-  };
-
   // Reshuffle the inspiration pool once on mount. Doing it in an effect (not at
   // render) keeps SSR and the first client paint identical — the randomised
   // order swaps in right after hydration, so each refresh shows a fresh six.
@@ -713,72 +118,43 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     setShuffledInspiration(shuffle(INSPIRATION_ITEMS));
   }, []);
 
-  const filteredBlogPreviews = (activeBlogCategory
-    ? blogPosts.filter((p) => p.category === activeBlogCategory)
-    : blogPosts
-  ).slice(0, NAV_BLOG_PREVIEW_COUNT);
+  const inspirationCategories: MegaMenuCategory[] = INSPIRATION_CATEGORIES.map((cat) => ({
+    key: cat.slug,
+    label: cat.label,
+    value: cat.slug,
+    href: withUtm(`https://app.setproduct.com/components/${cat.slug}`),
+    isActive: categories.inspiration === cat.slug,
+  }));
 
-  // Hovering a category on the left swaps the kit previews on the right. The
-  // featured six (KIT_PREVIEWS) belong to every category, so we rank matches by
-  // specificity — fewer categories means the kit is more characteristic of the
-  // hovered section — giving each tab a genuinely distinct set. On top of that
-  // we pin the freshest catalogue product (PRODUCTS[0]) to the front of any
-  // section it belongs to, so the newest kit always leads its tabs. "All"/
-  // "Bundle" (category === null) keep the curated featured order.
-  const filteredKitPreviews = (() => {
-    if (activeKitCategory === BUNDLE_CATEGORY) {
-      return BUNDLES.slice(0, NAV_KIT_PREVIEW_COUNT).map(bundlePreviewFromItem);
-    }
-    if (!activeKitCategory) return KIT_PREVIEWS;
-    const category = activeKitCategory;
-    const freshest = PRODUCTS[0];
-    const matched = PRODUCTS.filter((product) => product.categories.includes(category))
-      .slice()
-      .sort((a, b) => {
-        if (a === freshest) return -1;
-        if (b === freshest) return 1;
-        return a.categories.length - b.categories.length;
-      })
-      .slice(0, NAV_KIT_PREVIEW_COUNT)
-      .map(kitPreviewFromProduct);
-    return matched.length ? matched : KIT_PREVIEWS;
-  })();
+  const blogCategories: MegaMenuCategory[] = NAV_BLOG_CATEGORIES.map((item) => ({
+    key: item.label,
+    label: item.label,
+    value: item.category,
+    href: item.category ? `/blog?category=${encodeURIComponent(item.category)}` : "/blog",
+    isActive: categories.tutorials === item.category,
+  }));
 
-  // Hovering a freebies category swaps the right-hand previews. Freebies have a
-  // single category each (unlike kits), so a plain equality filter is enough;
-  // empty categories fall back to the full set so a tab never renders blank.
-  const filteredFreebiePreviews = (() => {
-    const list = activeFreebieCategory
-      ? FREEBIE_PRODUCTS.filter((item) => item.category === activeFreebieCategory)
-      : FREEBIE_PRODUCTS;
-    return (list.length ? list : FREEBIE_PRODUCTS).slice(0, NAV_FREEBIE_PREVIEW_COUNT);
-  })();
+  const freebieCategories: MegaMenuCategory[] = NAV_FREEBIE_CATEGORIES.map((item) => ({
+    key: item.label,
+    label: item.label,
+    value: item.category,
+    href: item.category ? `/freebies?category=${encodeURIComponent(item.category)}` : "/freebies",
+    isActive: categories.freebies === item.category,
+  }));
 
-  // Hovering a category on the left narrows the inspiration previews to that
-  // component type; "All" (category === null) draws from the whole shuffled
-  // pool. We filter the already-shuffled list so the six shown stay random yet
-  // refresh-stable. If a category has fewer than NAV_INSPIRATION_PREVIEW_COUNT
-  // items (e.g. Badges only has 4), we top the row up with other items from the
-  // pool so the grid always renders a full set of six cards.
-  const filteredInspirationPreviews = (() => {
-    if (!activeInspirationCategory) {
-      return shuffledInspiration.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
-    }
-    const matched = shuffledInspiration.filter(
-      (item) => item.componentType === activeInspirationCategory,
-    );
-    if (matched.length >= NAV_INSPIRATION_PREVIEW_COUNT) {
-      return matched.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
-    }
-    const matchedIds = new Set(matched.map((item) => item.id));
-    const filler = shuffledInspiration.filter((item) => !matchedIds.has(item.id));
-    return [...matched, ...filler].slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
-  })();
+  // "All" leads to /all, so it is never highlighted as the hovered category.
+  const kitCategories: MegaMenuCategory[] = DESIGN_KITS.map((link) => ({
+    key: link.href,
+    label: link.label,
+    value: link.category,
+    href: link.href,
+    isActive: link.category !== null && categories.designKits === link.category,
+  }));
 
   return (
     <div
       ref={navbarRef}
-      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}${isSwitching ? " is-switching" : ""}`}
+      className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}${menu.isSwitching ? " is-switching" : ""}`}
       data-collapse="medium"
       role="banner"
     >
@@ -797,516 +173,155 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
                 {HAS_INSPIRATION ? (
-                <div className="nav_dropdown-wr" data-nav-menu="inspiration" onMouseEnter={() => openOnHover("inspiration")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("inspiration")} onBlur={closeOnBlur}>
-                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("inspiration") ? "w--open" : ""}`} data-delay="0" data-hover="true">
-                    <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("inspiration") ? "w--open" : ""}${isInspirationActive ? " w--current" : ""}`}
-                      onClick={() => toggleMenu("inspiration")}
-                    >
-                      <div className="text-size-regular" style={{ display: "inline-flex", alignItems: "center" }}>
-                        Inspiration
-                        <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
-                      </div>
-                      <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a
-                        className="nav_dropdown_toggle-link w-inline-block"
-                        href={withUtm("https://app.setproduct.com/")}
-                        rel="noreferrer"
-                        target="_blank"
-                        aria-label="Inspiration — AI UI library (opens in a new tab)"
-                        aria-haspopup="true"
-                        aria-expanded={isMenuOpen("inspiration")}
+                  <MegaMenuPanel
+                    menu="inspiration"
+                    state={menu}
+                    label={inspirationLabel}
+                    labelStyle={INSPIRATION_LABEL_STYLE}
+                    // Off-site section: "current" is purely the open-menu highlight.
+                    isCurrent={false}
+                    toggleHref={withUtm(INSPIRATION_HOME)}
+                    toggleAriaLabel={INSPIRATION_ARIA_LABEL}
+                    external
+                    formName="email-form-nav-inspiration"
+                    listKeyPrefix="inspiration"
+                    categories={inspirationCategories}
+                  >
+                    {getInspirationPreviews(shuffledInspiration, categories.inspiration).map((item) => (
+                      <MegaMenuCard
+                        key={item.id}
+                        href={withUtm(item.href)}
+                        title={item.title}
+                        description={item.description}
+                        external
+                        media={<InspirationThumb href={withUtm(item.href)} image={item.image} />}
+                        actions={
+                          <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
+                            <div className="text-size-regular text-weight-bold">View</div>
+                          </a>
+                        }
                       />
-                    </div>
-                    <nav
-                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("inspiration") ? "w--open" : ""}`}
-                      inert={!isMenuOpen("inspiration")}
-                    >
-                      <div className="container">
-                        <div className="form-block w-form">
-                          <form method="get" name="email-form-nav-inspiration">
-                            <div className="nav_dropdown-menu2">
-                              <div className="nav_dropdown-column list">
-                                <div className="nav_dropdown-column-title-wr">
-                                  <div className="text-size-regular">Categories</div>
-                                </div>
-                                <div className="nav-links is-1-column">
-                                  {INSPIRATION_CATEGORIES.map((cat) => {
-                                    const isActive = activeInspirationCategory === cat.slug;
-                                    return (
-                                      <a
-                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
-                                        href={withUtm(`https://app.setproduct.com/components/${cat.slug}`)}
-                                        rel="noreferrer"
-                                        target="_blank"
-                                        key={cat.slug}
-                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveInspirationCategory(cat.slug))}
-                                        onMouseLeave={clearSubHoverIntent}
-                                        onFocus={() => switchSubcategoryNow(() => setActiveInspirationCategory(cat.slug))}
-                                      >
-                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{cat.label}</p>
-                                      </a>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <div className="nav_dropdown-list-wr">
-                                <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div
-                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
-                                    role="list"
-                                    key={`inspiration-${activeInspirationCategory ?? "all"}`}
-                                  >
-                                    {filteredInspirationPreviews.map((item) => (
-                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.id} role="listitem">
-                                        <div className="nav_tabs-list-item-wr">
-                                          <InspirationThumb href={withUtm(item.href)} image={item.image} />
-                                          <div className="nav_tabs-list-item-info-wr">
-                                            <a className="w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
-                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
-                                            </a>
-                                            <p className="text-size-tiny text-style-3lines">{item.description}</p>
-                                            <div className="nav_tabs-list-item-btn-wr">
-                                              <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
-                                                <div className="text-size-regular text-weight-bold">View</div>
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </nav>
-                  </div>
-                </div>
+                    ))}
+                  </MegaMenuPanel>
                 ) : (
                   <a
                     className="nav-link-block w-inline-block"
                     data-nav-menu="inspiration"
-                    href={withUtm("https://app.setproduct.com/")}
+                    href={withUtm(INSPIRATION_HOME)}
                     rel="noreferrer"
                     target="_blank"
-                    aria-label="Inspiration — AI UI library (opens in a new tab)"
+                    aria-label={INSPIRATION_ARIA_LABEL}
                   >
-                    <div className="text-size-regular" style={{ display: "inline-flex", alignItems: "center" }}>
-                      Inspiration
-                      <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
+                    <div className="text-size-regular" style={INSPIRATION_LABEL_STYLE}>
+                      {inspirationLabel}
                     </div>
                   </a>
                 )}
 
-                <div className="nav_dropdown-wr" data-nav-menu="tutorials" onMouseEnter={() => openOnHover("tutorials")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("tutorials")} onBlur={closeOnBlur}>
-                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("tutorials") ? "w--open" : ""}`} data-delay="0" data-hover="true">
-                    <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("tutorials") ? "w--open" : ""}${isTutorialsActive || isMenuOpen("tutorials") ? " w--current" : ""}`}
-                      onClick={() => toggleMenu("tutorials")}
-                    >
-                      <div className="text-size-regular">Learn</div>
-                      <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a
-                        className="nav_dropdown_toggle-link w-inline-block"
-                        href="/blog"
-                        aria-label="Learn — blog and tutorials"
-                        aria-haspopup="true"
-                        aria-expanded={isMenuOpen("tutorials")}
-                      />
-                    </div>
-                    <nav
-                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("tutorials") ? "w--open" : ""}`}
-                      inert={!isMenuOpen("tutorials")}
-                    >
-                      <div className="container">
-                        <div className="form-block w-form">
-                          <form method="get" name="email-form-nav-1">
-                            <div className="nav_dropdown-menu2">
-                              <div className="nav_dropdown-column list">
-                                <div className="nav_dropdown-column-title-wr">
-                                  <div className="text-size-regular">Categories</div>
-                                </div>
-                                <div className="nav-links is-1-column">
-                                  {NAV_BLOG_CATEGORIES.map((item) => {
-                                    const href = item.category
-                                      ? `/blog?category=${encodeURIComponent(item.category)}`
-                                      : "/blog";
-                                    return (
-                                      <a
-                                        className={`nav_radio w-inline-block${activeBlogCategory === item.category ? " w--current" : ""}`}
-                                        key={item.label}
-                                        href={href}
-                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveBlogCategory(item.category))}
-                                        onMouseLeave={clearSubHoverIntent}
-                                        onFocus={() => switchSubcategoryNow(() => setActiveBlogCategory(item.category))}
-                                      >
-                                        <p className={`text-size-regular${activeBlogCategory === item.category ? " text-color-primary" : ""}`}>{item.label}</p>
-                                      </a>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <div className="nav_dropdown-list-wr">
-                                <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div
-                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
-                                    role="list"
-                                    key={`tutorials-${activeBlogCategory ?? "all"}`}
-                                  >
-                                    {filteredBlogPreviews.map((item) => (
-                                       <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
-                                         <div className="nav_tabs-list-item-wr">
-                                            <a
-                                              className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
-                                              href={`/blog/${item.slug}`}
-                                              aria-hidden="true"
-                                              tabIndex={-1}
-                                            >
-                                              <img
-                                                alt=""
-                                                src={item.thumbImage}
-                                                loading="lazy"
-                                                decoding="async"
-                                                className="image-cover"
-                                              />
-                                            </a>
-                                           <div className="nav_tabs-list-item-info-wr">
-                                             <a className="w-inline-block" href={`/blog/${item.slug}`}>
-                                               <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
-                                             </a>
-                                             <p className="text-size-tiny text-style-3lines">{item.description}</p>
-                                             <div className="nav_tabs-list-item-btn-wr">
-                                               <a className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
-                                                 <div className="text-size-regular text-weight-bold">Read more</div>
-                                               </a>
-                                             </div>
-                                           </div>
-                                         </div>
-                                       </div>
-                                     ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </nav>
-                  </div>
-                </div>
+                <MegaMenuPanel
+                  menu="tutorials"
+                  state={menu}
+                  label="Learn"
+                  isCurrent={isTutorialsActive}
+                  toggleHref="/blog"
+                  toggleAriaLabel="Learn — blog and tutorials"
+                  formName="email-form-nav-1"
+                  listKeyPrefix="tutorials"
+                  categories={blogCategories}
+                >
+                  {getBlogPreviews(blogPosts, categories.tutorials).map((item) => (
+                    <MegaMenuCard
+                      key={item.slug}
+                      href={`/blog/${item.slug}`}
+                      title={item.title}
+                      description={item.description}
+                      media={
+                        <MegaMenuCardMedia href={`/blog/${item.slug}`}>
+                          <img alt="" src={item.thumbImage} loading="lazy" decoding="async" className="image-cover" />
+                        </MegaMenuCardMedia>
+                      }
+                      actions={
+                        <a className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
+                          <div className="text-size-regular text-weight-bold">Read more</div>
+                        </a>
+                      }
+                    />
+                  ))}
+                </MegaMenuPanel>
 
-                <div className="nav_dropdown-wr" data-nav-menu="freebies" onMouseEnter={() => openOnHover("freebies")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("freebies")} onBlur={closeOnBlur}>
-                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("freebies") ? "w--open" : ""}`} data-delay="0" data-hover="true">
-                    <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("freebies") ? "w--open" : ""}${isFreebiesActive || isMenuOpen("freebies") ? " w--current" : ""}`}
-                      onClick={() => toggleMenu("freebies")}
-                    >
-                      <div className="text-size-regular">Resources</div>
-                      <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a
-                        className="nav_dropdown_toggle-link w-inline-block"
-                        href="/freebies"
-                        aria-label="Resources"
-                        aria-haspopup="true"
-                        aria-expanded={isMenuOpen("freebies")}
-                      />
-                    </div>
-                    <nav
-                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("freebies") ? "w--open" : ""}`}
-                      inert={!isMenuOpen("freebies")}
-                    >
-                      <div className="container">
-                        <div className="form-block w-form">
-                          <form method="get" name="email-form-nav-3">
-                            <div className="nav_dropdown-menu2">
-                              <div className="nav_dropdown-column list">
-                                <div className="nav_dropdown-column-title-wr">
-                                  <div className="text-size-regular">Categories</div>
-                                </div>
-                                <div className="nav-links is-1-column">
-                                  {NAV_FREEBIE_CATEGORIES.map((item) => {
-                                    const isActive = activeFreebieCategory === item.category;
-                                    const href = item.category
-                                      ? `/freebies?category=${encodeURIComponent(item.category)}`
-                                      : "/freebies";
-                                    return (
-                                      <a
-                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
-                                        href={href}
-                                        key={item.label}
-                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveFreebieCategory(item.category))}
-                                        onMouseLeave={clearSubHoverIntent}
-                                        onFocus={() => switchSubcategoryNow(() => setActiveFreebieCategory(item.category))}
-                                      >
-                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{item.label}</p>
-                                      </a>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <div className="nav_dropdown-list-wr">
-                                <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div
-                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
-                                    role="list"
-                                    key={`freebies-${activeFreebieCategory ?? "all"}`}
-                                  >
-                                    {filteredFreebiePreviews.map((item) => (
-                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.slug} role="listitem">
-                                        <div className="nav_tabs-list-item-wr">
-                                           <a
-                                             className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
-                                             href={item.previewHref}
-                                             aria-hidden="true"
-                                             tabIndex={-1}
-                                           >
-                                             <Image
-                                               alt=""
-                                               src={item.thumb}
-                                               fill
-                                               sizes="158px"
-                                               className="image-cover"
-                                             />
-                                           </a>
-                                          <div className="nav_tabs-list-item-info-wr">
-                                            <a className="w-inline-block" href={item.previewHref}>
-                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
-                                            </a>
-                                            <p className="text-size-tiny text-style-3lines">{item.description}</p>
-                                            <div className="nav_tabs-list-item-btn-wr">
-                                              <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
-                                                <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
-                                              </a>
-                                              <a className="button-x-small is-text w-inline-block" href={item.previewHref}>
-                                                <div className="text-size-regular text-weight-bold">Preview</div>
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </nav>
-                  </div>
-                </div>
+                <MegaMenuPanel
+                  menu="freebies"
+                  state={menu}
+                  label="Resources"
+                  isCurrent={isFreebiesActive}
+                  toggleHref="/freebies"
+                  toggleAriaLabel="Resources"
+                  formName="email-form-nav-3"
+                  listKeyPrefix="freebies"
+                  categories={freebieCategories}
+                >
+                  {getFreebiePreviews(categories.freebies).map((item) => (
+                    <MegaMenuCard
+                      key={item.slug}
+                      href={item.previewHref}
+                      title={item.title}
+                      description={item.description}
+                      media={
+                        <MegaMenuCardMedia href={item.previewHref}>
+                          <Image alt="" src={item.thumb} fill sizes="158px" className="image-cover" />
+                        </MegaMenuCardMedia>
+                      }
+                      actions={
+                        <>
+                          <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
+                            <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
+                          </a>
+                          <a className="button-x-small is-text w-inline-block" href={item.previewHref}>
+                            <div className="text-size-regular text-weight-bold">Preview</div>
+                          </a>
+                        </>
+                      }
+                    />
+                  ))}
+                </MegaMenuPanel>
 
-                <div className="nav_dropdown-wr" data-nav-menu="designKits" onMouseEnter={() => openOnHover("designKits")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("designKits")} onBlur={closeOnBlur}>
-                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("designKits") ? "w--open" : ""}`} data-delay="0" data-hover="true">
-                    <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("designKits") ? "w--open" : ""}${isDesignKitsActive || isMenuOpen("designKits") ? " w--current" : ""}`}
-                      onClick={() => toggleMenu("designKits")}
-                    >
-                      <div className="text-size-regular">UI Kits</div>
-                      <span className="icon nav_chevron"><ChevronIcon /></span>
-                      <a
-                        className="nav_dropdown_toggle-link w-inline-block"
-                        href="/all"
-                        aria-label="UI kits"
-                        aria-haspopup="true"
-                        aria-expanded={isMenuOpen("designKits")}
-                      />
-                    </div>
-                    <nav
-                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("designKits") ? "w--open" : ""}`}
-                      inert={!isMenuOpen("designKits")}
-                    >
-                      <div className="container">
-                        <div className="form-block w-form">
-                          <form method="get" name="email-form-nav-2">
-                            <div className="nav_dropdown-menu2">
-                              <div className="nav_dropdown-column list">
-                                <div className="nav_dropdown-column-title-wr">
-                                  <div className="text-size-regular">Categories</div>
-                                </div>
-                                <div className="nav-links is-1-column">
-                                  {DESIGN_KITS.map((link) => {
-                                    const isActive =
-                                      link.category !== null &&
-                                      activeKitCategory === link.category;
-                                    return (
-                                      <a
-                                        className={`nav_radio w-inline-block${isActive ? " w--current" : ""}`}
-                                        href={link.href}
-                                        key={link.href}
-                                        onMouseEnter={() => switchSubcategoryOnHover(() => setActiveKitCategory(link.category))}
-                                        onMouseLeave={clearSubHoverIntent}
-                                        onFocus={() => switchSubcategoryNow(() => setActiveKitCategory(link.category))}
-                                      >
-                                        <p className={`text-size-regular${isActive ? " text-color-primary" : ""}`}>{link.label}</p>
-                                      </a>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <div className="nav_dropdown-list-wr">
-                                <div className="nav_tabs-list-wr w-dyn-list">
-                                  <div
-                                    className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"
-                                    role="list"
-                                    key={`kits-${activeKitCategory ?? "all"}`}
-                                  >
-                                    {filteredKitPreviews.map((item) => (
-                                      <div className="nav_tabs-list-item hover-lift w-dyn-item w-col w-col-6" key={item.href} role="listitem">
-                                        <div className="nav_tabs-list-item-wr">
-                                           <a
-                                             className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
-                                             href={item.href}
-                                             aria-hidden="true"
-                                             tabIndex={-1}
-                                           >
-                                             <Image
-                                               alt=""
-                                               src={item.image}
-                                               fill
-                                               sizes="158px"
-                                               className="image-cover"
-                                             />
-                                           </a>
-                                          <div className="nav_tabs-list-item-info-wr">
-                                            <a className="w-inline-block" href={item.href}>
-                                              <p className="hover-lift-title text-size-regular text-weight-semibold text-color-dark-primary text-style-1line">{item.title}</p>
-                                            </a>
-                                            <p className="text-size-tiny text-style-3lines">{item.description}</p>
-                                            <div className="nav_tabs-list-item-btn-wr">
-                                          <a href={item.buyHref} {...getGumroadLinkProps(item.buyHref, "button-x-small is-secondary w-inline-block")}>
-                                            <div className="text-size-regular text-weight-bold">{item.buyLabel}</div>
-                                          </a>
-                                              <a className="button-x-small is-text w-inline-block" href={item.href}>
-                                                <div className="text-size-regular text-weight-bold">Learn more</div>
-                                              </a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </nav>
-                  </div>
-                </div>
+                <MegaMenuPanel
+                  menu="designKits"
+                  state={menu}
+                  label="UI Kits"
+                  isCurrent={isDesignKitsActive}
+                  toggleHref="/all"
+                  toggleAriaLabel="UI kits"
+                  formName="email-form-nav-2"
+                  listKeyPrefix="kits"
+                  categories={kitCategories}
+                >
+                  {getKitPreviews(categories.designKits).map((item) => (
+                    <MegaMenuCard
+                      key={item.href}
+                      href={item.href}
+                      title={item.title}
+                      description={item.description}
+                      media={
+                        <MegaMenuCardMedia href={item.href}>
+                          <Image alt="" src={item.image} fill sizes="158px" className="image-cover" />
+                        </MegaMenuCardMedia>
+                      }
+                      actions={
+                        <>
+                          <a href={item.buyHref} {...getGumroadLinkProps(item.buyHref, "button-x-small is-secondary w-inline-block")}>
+                            <div className="text-size-regular text-weight-bold">{item.buyLabel}</div>
+                          </a>
+                          <a className="button-x-small is-text w-inline-block" href={item.href}>
+                            <div className="text-size-regular text-weight-bold">Learn more</div>
+                          </a>
+                        </>
+                      }
+                    />
+                  ))}
+                </MegaMenuPanel>
 
-                <div className="nav_dropdown-wr" data-nav-menu="information" onMouseEnter={() => openOnHover("information")} onMouseLeave={closeOnHoverLeave} onFocus={() => openOnFocus("information")} onBlur={closeOnBlur}>
-                  <div className={`nav_dropdown w-dropdown ${isMenuOpen("information") ? "w--open" : ""}`} data-delay="0" data-hover="true">
-                    <div
-                      className={`nav_dropdown_toggle w-dropdown-toggle ${isMenuOpen("information") ? "w--open" : ""}${isInformationActive || isMenuOpen("information") ? " w--current" : ""}`}
-                      onClick={() => toggleMenu("information")}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          toggleMenu("information");
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      aria-haspopup="true"
-                      aria-expanded={isMenuOpen("information")}
-                    >
-                      <div className="text-size-regular">Company</div>
-                      <span className="icon nav_chevron"><ChevronIcon /></span>
-                    </div>
-                    <nav
-                      className={`nav_dropdown_list w-dropdown-list ${isMenuOpen("information") ? "w--open" : ""}`}
-                      inert={!isMenuOpen("information")}
-                    >
-                      <div className="container">
-                        <div className="nav_dropdown-menu2">
-                          <div className="nav_dropdown-column list">
-                            <div className="nav_dropdown-column-title-wr">
-                              <div className="text-size-regular">Company</div>
-                            </div>
-                            <div className="nav-links is-1-column">
-                              {INFORMATION_LINKS.map((link) => (
-                                <a
-                                  className="link-block w-inline-block"
-                                  href={link.href}
-                                  key={link.label}
-                                  onClick={link.modal ? (e) => { e.preventDefault(); openContactModal(); } : undefined}
-                                >
-                                  <div className="text-size-regular">{link.label}</div>
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="nav_info-promo-wr">
-                            <div className="nav_info-promo">
-                              <span className="nav_info-promo-glow" aria-hidden="true" />
-                              <div className="nav_info-promo-content">
-                                <div className="nav_info-promo-eyebrow">Work with us</div>
-                                <div className="nav_info-promo-title">Need a custom design?</div>
-                                <p className="text-size-regular nav_info-promo-text">
-                                  Tell us about your product — our team crafts tailored dashboards, mobile, and web UI, or a full design system built around your brand.
-                                </p>
-                                <button
-                                  type="button"
-                                  className="button w-inline-block nav_info-promo-cta"
-                                  onClick={() => openContactModal()}
-                                >
-                                  <div className="text-size-large text-weight-bold">Get a quote</div>
-                                </button>
-                              </div>
-                            </div>
-                            <div className="nav_info-promo is-advertising">
-                              <span className="nav_info-promo-glow" aria-hidden="true" />
-                              <div className="nav_info-promo-content">
-                                <div className="nav_info-promo-eyebrow">Advertising</div>
-                                <div className="nav_info-promo-title">Publish on our blog</div>
-                                <p className="text-size-regular nav_info-promo-text">
-                                  Reach thousands of designers and founders. Place a sponsored article or banner and put your product in front of our audience.
-                                </p>
-                                <a
-                                  className="button secondary w-inline-block nav_info-promo-cta"
-                                  href="https://publish.setproduct.com"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <div className="text-size-large text-weight-bold">Advertise with us</div>
-                                  <div className="button-icon w-embed"><ArrowIcon /></div>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="nav_info-promo-mobile">
-                            <div className="nav_info-promo-mobile-eyebrow">Work with us</div>
-                            <div className="nav_info-promo-mobile-title">Custom design or advertising?</div>
-                            <p className="text-size-regular nav_info-promo-mobile-text">
-                              Tell us about your product, or place a sponsored post in front of our audience.
-                            </p>
-                            <button
-                              type="button"
-                              className="button-small w-inline-block nav_info-promo-mobile-cta"
-                              onClick={() => openContactModal()}
-                            >
-                              <div className="text-size-medium text-weight-bold">Get a quote</div>
-                            </button>
-                            <a
-                              className="button-small secondary w-inline-block nav_info-promo-mobile-cta"
-                              href="https://publish.setproduct.com"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <div className="text-size-medium text-weight-bold">Advertise with us</div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </nav>
-                  </div>
-                </div>
-
+                <CompanyPanel state={menu} isCurrent={isInformationActive} onContact={openContactModal} />
               </div>
 
               <div className="nav-menu-mob-btn-wr">
@@ -1346,38 +361,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
           </button>
 
           <div className="nav-button-wr">
-            <form action="/search" className="search w-form" style={{ position: "relative" }}>
-              <input
-                aria-label="Search Setproduct"
-                className="text-input is-nav-search w-input"
-                id="search"
-                maxLength={256}
-                name="query"
-                placeholder=""
-                required
-                type="search"
-              />
-              {previousPlaceholderIndex !== null && (
-                <span
-                  key={`leaving-${previousPlaceholderIndex}`}
-                  aria-hidden="true"
-                  className="nav-search-placeholder is-leaving"
-                >
-                  {SEARCH_PLACEHOLDERS[previousPlaceholderIndex]}
-                </span>
-              )}
-              <span
-                key={`entering-${searchPlaceholderIndex}`}
-                aria-hidden="true"
-                className="nav-search-placeholder is-entering"
-              >
-                {SEARCH_PLACEHOLDERS[searchPlaceholderIndex]}
-              </span>
-              <input className="hide w-button" type="submit" value="Search" />
-              <div className="search-icon-wr">
-                <img alt="" className="search-icon" loading="lazy" src="/images/search.svg" />
-              </div>
-            </form>
+            <NavSearch />
             <div className="relative inline-flex items-center">
               <a
                 className="button-small outlined w-inline-block"
