@@ -1325,8 +1325,17 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     transition: max-height 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Open panel is capped to the viewport below the navbar and scrolls inside
+     itself on short laptop screens (≈700–800px tall) instead of silently
+     clipping the bottom row of cards. --mobile-navbar-height is synced on all
+     widths by SiteHeader. overscroll-behavior keeps the page from scrolling
+     once the panel hits its end. */
   .navbar .nav_dropdown_list.w-dropdown-list.w--open {
-    max-height: 90vh;
+    max-height: calc(100vh - var(--mobile-navbar-height, 80px) - 24px);
+    max-height: calc(100dvh - var(--mobile-navbar-height, 80px) - 24px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     pointer-events: auto;
   }
 
