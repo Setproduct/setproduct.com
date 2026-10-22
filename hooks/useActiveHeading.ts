@@ -43,6 +43,7 @@ export function useActiveHeading(ids: readonly string[]) {
   const recompute = useRef<() => void>(() => {});
   const unlockTimer = useRef<number | undefined>(undefined);
   const stopGlide = useRef<() => void>(() => {});
+  const gliding = useRef(false);
   const key = ids.join("|");
 
   useEffect(() => {
@@ -96,6 +97,10 @@ export function useActiveHeading(ids: readonly string[]) {
       schedule();
     };
     const handleScrollEnd = () => {
+      // Every frame of our own glide is an instant scrollTo, and each one
+      // fires `scrollend`. Releasing the lock there would let the highlight
+      // run through every section the page passes on the way.
+      if (gliding.current) return;
       lockUntil.current = 0;
       schedule();
     };
@@ -140,16 +145,17 @@ export function useActiveHeading(ids: readonly string[]) {
    */
   const selectHeading = useCallback((id: string) => {
     const el = document.getElementById(id);
-    lockUntil.current = Date.now() + CLICK_LOCK_MS;
+    stopGlide.current();
     clickedId.current = id;
     setActiveId(id);
     window.clearTimeout(unlockTimer.current);
+    // Fallback unlock in case there is nothing to glide to.
+    lockUntil.current = Date.now() + CLICK_LOCK_MS;
     unlockTimer.current = window.setTimeout(() => {
+      if (gliding.current) return;
       lockUntil.current = 0;
       recompute.current();
     }, CLICK_LOCK_MS);
-
-    stopGlide.current();
     if (!el) return;
     if (window.location.hash !== `#${id}`) {
       window.history.pushState(window.history.state, "", `#${id}`);
@@ -165,12 +171,23 @@ export function useActiveHeading(ids: readonly string[]) {
 
     let frame = 0;
     const startedAt = performance.now();
+    // The clicked heading stays highlighted for the whole glide, so the TOC
+    // does not flicker through the sections in between.
+    gliding.current = true;
+    lockUntil.current = Number.POSITIVE_INFINITY;
+    const release = () => {
+      if (!gliding.current) return;
+      gliding.current = false;
+      lockUntil.current = 0;
+      recompute.current();
+    };
     const stop = () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("wheel", stop);
       window.removeEventListener("touchstart", stop);
       window.removeEventListener("keydown", stop);
       stopGlide.current = () => {};
+      release();
     };
     const step = (now: number) => {
       const elapsed = now - startedAt;
@@ -183,6 +200,9 @@ export function useActiveHeading(ids: readonly string[]) {
         if (Math.abs(target - window.scrollY) > PIN_TOLERANCE) {
           window.scrollTo({ top: target, behavior: "instant" });
         }
+        // Landed: hand the highlight back to scroll tracking. The heading is
+        // on the reading line, so tracking picks the same item.
+        release();
         if (elapsed >= duration + PIN_MS) return stop();
       }
       frame = window.requestAnimationFrame(step);
