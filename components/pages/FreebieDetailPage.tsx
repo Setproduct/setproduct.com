@@ -7,11 +7,12 @@ import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
 import { CANONICAL_SITE_URL } from "../../lib/blog/site-config";
-import type { BlogPostPreview, FreebieItem } from "../../types/data";
+import type { FreebieItem } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 type Props = {
   item: FreebieItem;
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
 // «freebie» уходит из суффикса тайтла: раздел теперь называется Resources.
@@ -23,7 +24,7 @@ function suffixForCategory(category: string) {
   return "free Figma file";
 }
 
-export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
+export default function FreebieDetailPage({ item, navData }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Resources", href: "/freebies" },
@@ -44,7 +45,7 @@ export default function FreebieDetailPage({ item, blogPosts = [] }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.image} />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="pt-[70em]">
         <div className="section is-height-100vh">
           <div className="section-padding top-80 bottom-64">

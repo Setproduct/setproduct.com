@@ -1,21 +1,21 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import PushButtonsProtoPage from "../components/pages/PushButtonsProtoPage";
-import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview } from "../types/data";
+import { getNavData } from "../lib/nav/buildNavData";
+import type { NavData } from "../lib/nav/types";
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 // Temporary prototype page (noindex, not in sitemap). Remove after push buttons ship.
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };
 
-export default function PushButtonsProtoRoute({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <PushButtonsProtoPage blogPosts={blogPosts} />;
+export default function PushButtonsProtoRoute({ navData }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <PushButtonsProtoPage navData={navData} />;
 }

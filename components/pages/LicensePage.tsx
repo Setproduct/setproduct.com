@@ -9,7 +9,7 @@ import { useArticleToc } from "../../hooks/useArticleToc";
 import type { BlogHeading } from "../../types/blog";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const TOC_ITEMS: BlogHeading[] = [
   { id: "end-product", text: "An end product is one of the following", level: 2 },
@@ -21,10 +21,10 @@ const TOC_ITEMS: BlogHeading[] = [
 ];
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function LicensePage({ blogPosts = [] }: Props) {
+export default function LicensePage({ navData }: Props) {
   const meta = PAGE_META["license"];
   const breadcrumbs = PAGE_BREADCRUMBS["license"] ?? [];
   const toc = useArticleToc(TOC_ITEMS, "legal/license");
@@ -36,7 +36,7 @@ export default function LicensePage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

@@ -12,14 +12,16 @@ import CtaSubscribe from "../sections/CtaSubscribe";
 import { PAGE_META } from "../../data/pages-meta";
 import { BLOG_CATEGORIES, LEGACY_BLOG_CATEGORIES } from "../../data/blog-categories";
 import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const PAGE_SIZE = 8;
 
 type Props = {
   blogPosts: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function BlogListingPage({ blogPosts = [] }: Props) {
+export default function BlogListingPage({ blogPosts = [], navData }: Props) {
   const meta = PAGE_META.blog;
   const router = useRouter();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -64,7 +66,7 @@ export default function BlogListingPage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} blogPosts={blogPosts} />
       <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">
           <div className="section-padding top-80 bottom-80">

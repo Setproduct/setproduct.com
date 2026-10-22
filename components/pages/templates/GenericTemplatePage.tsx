@@ -13,7 +13,8 @@ import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
 import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
-import type { BlogPostPreview, TemplateItem } from "../../../types/data";
+import type { TemplateItem } from "../../../types/data";
+import type { NavData } from "../../../lib/nav/types";
 
 type TemplateContent = {
   previewLabel?: string;
@@ -83,10 +84,10 @@ type TemplateContent = {
 type Props = {
   item: TemplateItem;
   content: TemplateContent;
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function GenericTemplatePage({ item, content, blogPosts = [] }: Props) {
+export default function GenericTemplatePage({ item, content, navData }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/all" },
@@ -107,7 +108,7 @@ export default function GenericTemplatePage({ item, content, blogPosts = [] }: P
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.ogImage} />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="pt-[70em]">
         {/* Hero Section */}
         <div className="section is-height-100vh">

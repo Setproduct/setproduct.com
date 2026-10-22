@@ -1,12 +1,13 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import FreebieDetailPage from "../../components/pages/FreebieDetailPage";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
-import { getBlogPostPreviews } from "../../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview, FreebieItem } from "../../types/data";
+import { getNavData } from "../../lib/nav/buildNavData";
+import type { NavData } from "../../lib/nav/types";
+import type { FreebieItem } from "../../types/data";
 
 type PageProps = {
   item: FreebieItem;
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -21,9 +22,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   if (!item) return { notFound: true };
 
-  return { props: { item, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
+  return { props: { item, navData: getNavData() } };
 };
 
-export default function FreebieDetailRoute({ item, blogPosts }: PageProps) {
-  return <FreebieDetailPage item={item} blogPosts={blogPosts} />;
+export default function FreebieDetailRoute({ item, navData }: PageProps) {
+  return <FreebieDetailPage item={item} navData={navData} />;
 }

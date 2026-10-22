@@ -4,25 +4,25 @@ import { PRODUCTS } from "../data/products";
 import { PAGE_META } from "../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../data/breadcrumbs";
 import { PAGE_FAQ } from "../data/faq";
-import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview } from "../types/data";
+import { getNavData } from "../lib/nav/buildNavData";
+import type { NavData } from "../lib/nav/types";
 
 const SLUG = "all";
 const products = PRODUCTS;
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };
 
-export default function AllPage({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function AllPage({ navData }: InferGetStaticPropsType<typeof getStaticProps>) {
   const meta = PAGE_META[SLUG];
   return (
     <CategoryPage
@@ -35,7 +35,7 @@ export default function AllPage({ blogPosts }: InferGetStaticPropsType<typeof ge
       breadcrumbs={PAGE_BREADCRUMBS[SLUG] ?? []}
       products={products}
       faq={PAGE_FAQ[SLUG] ?? []}
-      blogPosts={blogPosts}
+      navData={navData}
     />
   );
 }

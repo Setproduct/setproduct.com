@@ -1,20 +1,20 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import TestimonialsPage from "../components/pages/TestimonialsPage";
-import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview } from "../types/data";
+import { getNavData } from "../lib/nav/buildNavData";
+import type { NavData } from "../lib/nav/types";
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };
 
-export default function TestimonialsRoute({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <TestimonialsPage blogPosts={blogPosts} />;
+export default function TestimonialsRoute({ navData }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <TestimonialsPage navData={navData} />;
 }

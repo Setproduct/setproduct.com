@@ -2,11 +2,11 @@ import Head from "next/head";
 import { useState } from "react";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 import styles from "./InputsProtoPage.module.css";
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData?: NavData;
 };
 
 type StateId = "default" | "hover" | "focus" | "filled" | "error" | "disabled";
@@ -399,7 +399,7 @@ function SizeRows() {
   );
 }
 
-export default function InputsProtoPage({ blogPosts }: Props) {
+export default function InputsProtoPage({ navData }: Props) {
   const [submitting, setSubmitting] = useState(false);
 
   return (
@@ -408,7 +408,7 @@ export default function InputsProtoPage({ blogPosts }: Props) {
         <title>Inputs prototype | Setproduct</title>
         <meta content="noindex, nofollow" name="robots" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <div className="section">
           <div className="section-padding top-80 bottom-80">

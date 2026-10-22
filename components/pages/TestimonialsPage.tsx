@@ -9,7 +9,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import { useContactModal } from "../modals/ContactModalContext";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 type Photo = { src: string; width: number; height: number };
 
@@ -59,10 +59,10 @@ const TESTIMONIAL_PAGES: Photo[][] = [
 ];
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function TestimonialsPage({ blogPosts = [] }: Props) {
+export default function TestimonialsPage({ navData }: Props) {
   const meta = PAGE_META.testimonials;
   const breadcrumbs = PAGE_BREADCRUMBS.testimonials ?? [];
   const [visiblePages, setVisiblePages] = useState(1);
@@ -81,7 +81,7 @@ export default function TestimonialsPage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

@@ -1,7 +1,10 @@
+// Client-safe nav config: small constants and pure helpers only. Heavy
+// catalogues (products, bundles, resources, the Inspiration pool) live in
+// ./navPreviews, which SiteHeader loads lazily.
 import type { CSSProperties } from "react";
-import type { Product } from "../../../types/data";
+import type { InspirationItem, Product } from "../../../types/data";
 import type { BundleItem } from "../../../data/bundles";
-import { INSPIRATION_ITEMS } from "../../../data/inspiration";
+import type { NavBlogPost } from "../../../lib/nav/types";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
 export type MenuKey = "inspiration" | "tutorials" | "freebies" | "designKits" | "information";
@@ -37,6 +40,10 @@ export const NAV_BLOG_PREVIEW_COUNT = 6;
 export const NAV_KIT_PREVIEW_COUNT = 6;
 export const NAV_FREEBIE_PREVIEW_COUNT = 6;
 export const NAV_INSPIRATION_PREVIEW_COUNT = 6;
+// Inspiration items shipped with every page (random per build). The "All" tab
+// picks its six from these on mount, so it changes on every refresh without
+// downloading the full pool; category tabs use the pool once it loads.
+export const NAV_INSPIRATION_SAMPLE_COUNT = NAV_INSPIRATION_PREVIEW_COUNT * 3;
 
 export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "All topics", category: null },
@@ -87,10 +94,25 @@ export const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | n
   { label: "Web design", category: "Web Design" },
 ];
 
-// Safety net: if a failed/empty scrape leaves data/inspiration.ts with no
-// items, the mega-menu would render a blank panel. In that case we fall back
-// to a plain external link to the AI UI library instead.
-export const HAS_INSPIRATION = INSPIRATION_ITEMS.length > 0;
+/** Learn: newest posts, optionally narrowed to the hovered category. */
+export function getBlogPreviews<T extends Pick<NavBlogPost, "category">>(posts: T[], category: string | null): T[] {
+  return (category ? posts.filter((p) => p.category === category) : posts).slice(0, NAV_BLOG_PREVIEW_COUNT);
+}
+
+// Narrows the (already shuffled) inspiration pool to the hovered component
+// type; "All" (null) draws from the whole pool. If a category has fewer than
+// NAV_INSPIRATION_PREVIEW_COUNT items (e.g. Badges only has 4), the row is
+// topped up with other items so the grid always renders a full set of six.
+export function getInspirationPreviews(pool: InspirationItem[], category: string | null): InspirationItem[] {
+  if (!category) return pool.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+  const matched = pool.filter((item) => item.componentType === category);
+  if (matched.length >= NAV_INSPIRATION_PREVIEW_COUNT) {
+    return matched.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+  }
+  const matchedIds = new Set(matched.map((item) => item.id));
+  const filler = pool.filter((item) => !matchedIds.has(item.id));
+  return [...matched, ...filler].slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
+}
 
 // UTM tagging for every outbound Inspiration link so app.setproduct.com can
 // attribute the traffic this mega-menu sends. Appended at render time (the

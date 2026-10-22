@@ -13,14 +13,15 @@ import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import { chartsContent } from "../../../data/template-content/charts";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
 import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
-import type { BlogPostPreview, TemplateItem } from "../../../types/data";
+import type { TemplateItem } from "../../../types/data";
+import type { NavData } from "../../../lib/nav/types";
 
 type Props = {
   item: TemplateItem;
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function ChartsTemplatePage({ item, blogPosts = [] }: Props) {
+export default function ChartsTemplatePage({ item, navData }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/all" },
@@ -41,7 +42,7 @@ export default function ChartsTemplatePage({ item, blogPosts = [] }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={item.ogImage} />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="pt-[70em]">
         {/* Hero Section */}
         <div className="section is-height-100vh">

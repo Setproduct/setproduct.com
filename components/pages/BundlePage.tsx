@@ -12,13 +12,13 @@ import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import { PAGE_FAQ } from "../../data/faq";
 import { BUNDLES } from "../../data/bundles";
 import { CATEGORY_TABS } from "../../data/categories";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function BundlePage({ blogPosts = [] }: Props) {
+export default function BundlePage({ navData }: Props) {
   const meta = PAGE_META.bundle;
   const breadcrumbs = PAGE_BREADCRUMBS.bundle ?? [];
   const faq = PAGE_FAQ.bundle ?? [];
@@ -30,7 +30,7 @@ export default function BundlePage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <Breadcrumbs items={breadcrumbs} />
         <div className="section">

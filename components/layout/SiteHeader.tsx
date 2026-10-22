@@ -1,32 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 // Temporarily disabled — kept for potential future use.
 // import LaunchAppCallout from "./LaunchAppCallout";
-import type { BlogPostPreview, InspirationItem } from "../../types/data";
-import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
+import type { InspirationItem } from "../../types/data";
+import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
 import { getGumroadLinkProps } from "../../lib/gumroad";
 import { trackNav } from "../../lib/nav/analytics";
 import {
   DESIGN_KITS,
-  HAS_INSPIRATION,
   INFORMATION_LINKS,
   INSPIRATION_BADGE_STYLE,
   INSPIRATION_LABEL_STYLE,
+  KIT_PREVIEWS,
   NAV_BLOG_CATEGORIES,
   NAV_FREEBIE_CATEGORIES,
+  getBlogPreviews,
+  getInspirationPreviews,
   shuffle,
   withUtm,
 } from "./nav/navConfig";
-import {
-  getBlogPreviews,
-  getFreebiePreviews,
-  getInspirationPreviews,
-  getKitPreviews,
-} from "./nav/navPreviews";
+import type { KitPreview } from "./nav/navConfig";
 import { useMegaMenuState } from "./nav/useMegaMenuState";
 import { useNavAnalytics } from "./nav/useNavAnalytics";
 import { MegaMenuPanel } from "./nav/MegaMenuPanel";
@@ -37,8 +34,18 @@ import { CompanyPanel } from "./nav/CompanyPanel";
 import { NavSearch } from "./nav/NavSearch";
 
 type SiteHeaderProps = {
-  blogPosts?: BlogPostPreview[];
+  /** Compact menu data from getNavData() in the page's getStaticProps. */
+  navData?: NavData;
+  /**
+   * Full post list for pages that already ship it (home, /blog). Used for the
+   * Learn panel when navData was built with `{ blog: false }`.
+   */
+  blogPosts?: NavBlogPost[];
 };
+
+type NavCatalogue = typeof import("./nav/navPreviews");
+
+const EMPTY_NAV_DATA: NavData = { blog: [], freebies: [], inspiration: [], inspirationCategories: [] };
 
 const INSPIRATION_HOME = "https://app.setproduct.com/";
 const INSPIRATION_ARIA_LABEL = "Inspiration — AI UI library (opens in a new tab)";
@@ -50,14 +57,20 @@ const inspirationLabel = (
   </>
 );
 
-export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
+export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }: SiteHeaderProps) {
   const menu = useMegaMenuState();
   const { categories } = menu;
-  const { handleNavClickCapture } = useNavAnalytics(menu);
+  const { handleNavClickCapture } = useNavAnalytics(menu, navData.inspirationCategories);
+  const navBlog = navData.blog.length > 0 ? navData.blog : blogPosts;
+  const hasInspiration = navData.inspiration.length > 0;
   // Server render and first client paint must match, so we start from the
-  // source order and reshuffle on mount — giving a fresh six on every refresh
-  // without tripping hydration.
-  const [shuffledInspiration, setShuffledInspiration] = useState<InspirationItem[]>(INSPIRATION_ITEMS);
+  // build-time sample and reshuffle on mount — giving a fresh six on every
+  // refresh without tripping hydration.
+  const [shuffledInspiration, setShuffledInspiration] = useState<InspirationItem[]>(navData.inspiration);
+  // Full catalogue (kits per category, all resources, the Inspiration pool).
+  // Loaded on the first sign of intent so it stays out of the initial JS.
+  const [catalogue, setCatalogue] = useState<NavCatalogue | null>(null);
+  const catalogueRequestedRef = useRef(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement | null>(null);
   const { openContactModal } = useContactModal();
@@ -111,14 +124,39 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
     };
   }, [isMobileNavOpen]);
 
-  // Reshuffle the inspiration pool once on mount. Doing it in an effect (not at
-  // render) keeps SSR and the first client paint identical — the randomised
+  // Reshuffle the inspiration sample once on mount. Doing it in an effect (not
+  // at render) keeps SSR and the first client paint identical — the randomised
   // order swaps in right after hydration, so each refresh shows a fresh six.
   useEffect(() => {
-    setShuffledInspiration(shuffle(INSPIRATION_ITEMS));
+    setShuffledInspiration(shuffle(navData.inspiration));
+    // The sample is fixed per build; reshuffling on prop identity is enough.
+  }, [navData.inspiration]);
+
+  const loadCatalogue = useCallback(() => {
+    if (catalogueRequestedRef.current) return;
+    catalogueRequestedRef.current = true;
+    import("./nav/navPreviews")
+      .then((mod) => {
+        setCatalogue(mod);
+        // Append the rest of the pool behind the sample, so the "All" six the
+        // user may already be looking at stay put and category tabs fill up.
+        setShuffledInspiration((current) => {
+          const seen = new Set(current.map((item) => item.id));
+          return [...current, ...shuffle(mod.INSPIRATION_POOL).filter((item) => !seen.has(item.id))];
+        });
+      })
+      .catch(() => {
+        // Offline or a stale deploy: keep the build-time previews, retry later.
+        catalogueRequestedRef.current = false;
+      });
   }, []);
 
-  const inspirationCategories: MegaMenuCategory[] = INSPIRATION_CATEGORIES.map((cat) => ({
+  const kitPreviews: KitPreview[] = catalogue ? catalogue.getKitPreviews(categories.designKits) : KIT_PREVIEWS;
+  const freebiePreviews: NavFreebie[] = catalogue
+    ? catalogue.getFreebiePreviews(categories.freebies)
+    : navData.freebies;
+
+  const inspirationCategories: MegaMenuCategory[] = navData.inspirationCategories.map((cat) => ({
     key: cat.slug,
     label: cat.label,
     value: cat.slug,
@@ -169,10 +207,12 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             className={`nav-menu w-nav-menu${isMobileNavOpen ? " is-mobile-open" : ""}`}
             role="navigation"
             onClickCapture={handleNavClickCapture}
+            onPointerEnter={loadCatalogue}
+            onFocus={loadCatalogue}
           >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr">
-                {HAS_INSPIRATION ? (
+                {hasInspiration ? (
                   <MegaMenuPanel
                     menu="inspiration"
                     state={menu}
@@ -229,7 +269,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   listKeyPrefix="tutorials"
                   categories={blogCategories}
                 >
-                  {getBlogPreviews(blogPosts, categories.tutorials).map((item) => (
+                  {getBlogPreviews(navBlog, categories.tutorials).map((item) => (
                     <MegaMenuCard
                       key={item.slug}
                       href={`/blog/${item.slug}`}
@@ -260,7 +300,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   listKeyPrefix="freebies"
                   categories={freebieCategories}
                 >
-                  {getFreebiePreviews(categories.freebies).map((item) => (
+                  {freebiePreviews.map((item) => (
                     <MegaMenuCard
                       key={item.slug}
                       href={item.previewHref}
@@ -296,7 +336,7 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
                   listKeyPrefix="kits"
                   categories={kitCategories}
                 >
-                  {getKitPreviews(categories.designKits).map((item) => (
+                  {kitPreviews.map((item) => (
                     <MegaMenuCard
                       key={item.href}
                       href={item.href}
@@ -350,7 +390,10 @@ export default function SiteHeader({ blogPosts = [] }: SiteHeaderProps) {
             aria-expanded={isMobileNavOpen}
             className={`menu-button icon-2 w-nav-button${isMobileNavOpen ? " w--open" : ""}`}
             onClick={() => {
-              if (!isMobileNavOpen) trackNav("nav_drawer_open");
+              if (!isMobileNavOpen) {
+                trackNav("nav_drawer_open");
+                loadCatalogue();
+              }
               setIsMobileNavOpen((open) => !open);
             }}
           >

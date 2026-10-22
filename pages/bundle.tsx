@@ -1,20 +1,20 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import BundlePage from "../components/pages/BundlePage";
-import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview } from "../types/data";
+import { getNavData } from "../lib/nav/buildNavData";
+import type { NavData } from "../lib/nav/types";
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };
 
-export default function BundleRoute({ blogPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <BundlePage blogPosts={blogPosts} />;
+export default function BundleRoute({ navData }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <BundlePage navData={navData} />;
 }

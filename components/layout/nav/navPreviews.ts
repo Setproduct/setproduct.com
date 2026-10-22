@@ -1,23 +1,24 @@
-import type { BlogPostPreview, InspirationItem } from "../../../types/data";
+// Lazy catalogue of the mega-menu. SiteHeader loads this module with a
+// dynamic import() on the first sign of intent (pointer over the menu, focus,
+// opening the drawer), so products, bundles, resources and the ~280-item
+// Inspiration pool stay out of the JS every page downloads up front.
+import type { InspirationItem } from "../../../types/data";
 import { PRODUCTS } from "../../../data/products";
 import { FREEBIE_PRODUCTS } from "../../../data/freebies-listing";
 import { BUNDLES } from "../../../data/bundles";
+import { INSPIRATION_ITEMS } from "../../../data/inspiration";
 import {
   BUNDLE_CATEGORY,
   KIT_PREVIEWS,
-  NAV_BLOG_PREVIEW_COUNT,
   NAV_FREEBIE_PREVIEW_COUNT,
-  NAV_INSPIRATION_PREVIEW_COUNT,
   NAV_KIT_PREVIEW_COUNT,
   bundlePreviewFromItem,
   kitPreviewFromProduct,
 } from "./navConfig";
 import type { KitPreview } from "./navConfig";
 
-/** Learn: newest posts, optionally narrowed to the hovered category. */
-export function getBlogPreviews(posts: BlogPostPreview[], category: string | null): BlogPostPreview[] {
-  return (category ? posts.filter((p) => p.category === category) : posts).slice(0, NAV_BLOG_PREVIEW_COUNT);
-}
+/** Full Inspiration pool; SiteHeader appends it (shuffled) after the sample. */
+export const INSPIRATION_POOL: InspirationItem[] = INSPIRATION_ITEMS;
 
 // Hovering a category on the left swaps the kit previews on the right. The
 // featured six (KIT_PREVIEWS) belong to every category, so we rank matches by
@@ -50,19 +51,4 @@ export function getKitPreviews(category: string | null): KitPreview[] {
 export function getFreebiePreviews(category: string | null) {
   const list = category ? FREEBIE_PRODUCTS.filter((item) => item.category === category) : FREEBIE_PRODUCTS;
   return (list.length ? list : FREEBIE_PRODUCTS).slice(0, NAV_FREEBIE_PREVIEW_COUNT);
-}
-
-// Narrows the (already shuffled) inspiration pool to the hovered component
-// type; "All" (null) draws from the whole pool. If a category has fewer than
-// NAV_INSPIRATION_PREVIEW_COUNT items (e.g. Badges only has 4), the row is
-// topped up with other items so the grid always renders a full set of six.
-export function getInspirationPreviews(pool: InspirationItem[], category: string | null): InspirationItem[] {
-  if (!category) return pool.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
-  const matched = pool.filter((item) => item.componentType === category);
-  if (matched.length >= NAV_INSPIRATION_PREVIEW_COUNT) {
-    return matched.slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
-  }
-  const matchedIds = new Set(matched.map((item) => item.id));
-  const filler = pool.filter((item) => !matchedIds.has(item.id));
-  return [...matched, ...filler].slice(0, NAV_INSPIRATION_PREVIEW_COUNT);
 }

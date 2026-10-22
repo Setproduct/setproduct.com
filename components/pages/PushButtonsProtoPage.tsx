@@ -3,11 +3,11 @@ import { useState } from "react";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ArrowIcon from "../sections/ArrowIcon";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 import styles from "./PushButtonsProtoPage.module.css";
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  navData?: NavData;
 };
 
 type RowId = "large" | "medium" | "small" | "card";
@@ -105,7 +105,7 @@ function ButtonSet({ row }: { row: RowId }) {
   );
 }
 
-export default function PushButtonsProtoPage({ blogPosts }: Props) {
+export default function PushButtonsProtoPage({ navData }: Props) {
   const [pressedAll, setPressedAll] = useState(false);
   const protoClass = pressedAll ? `${styles.cell} ${styles.proto} ${styles.pressedAll}` : `${styles.cell} ${styles.proto}`;
 
@@ -115,7 +115,7 @@ export default function PushButtonsProtoPage({ blogPosts }: Props) {
         <title>Push buttons prototype | Setproduct</title>
         <meta content="noindex, nofollow" name="robots" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       {/* Empty touchstart listener makes :active work in iOS Safari */}
       <main className="mt-22.5" onTouchStart={() => {}}>
         <div className="section">

@@ -5,13 +5,13 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function TermsOfPaidPostsPage({ blogPosts = [] }: Props) {
+export default function TermsOfPaidPostsPage({ navData }: Props) {
   const meta = PAGE_META["terms-of-paid-posts"];
   const breadcrumbs = PAGE_BREADCRUMBS["terms-of-paid-posts"] ?? [];
 
@@ -22,7 +22,7 @@ export default function TermsOfPaidPostsPage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

@@ -11,7 +11,7 @@ import FreebieTemplateCard from "../sections/FreebieTemplateCard";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import { FREEBIE_PRODUCTS, FREEBIES_CATEGORIES } from "../../data/freebies-listing";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const PAGE_SIZE = 9;
 const ALL_TOPICS = "All topics";
@@ -28,10 +28,10 @@ function resolveCategory(raw: string | string[] | undefined): string {
 }
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function FreebiesListingPage({ blogPosts = [] }: Props) {
+export default function FreebiesListingPage({ navData }: Props) {
   const meta = PAGE_META.freebies;
   const router = useRouter();
   const breadcrumbs = PAGE_BREADCRUMBS.freebies ?? [];
@@ -112,7 +112,7 @@ export default function FreebiesListingPage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">

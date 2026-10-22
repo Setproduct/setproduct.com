@@ -4,13 +4,14 @@ import ChartsTemplatePage from "../../components/pages/templates/ChartsTemplateP
 import GenericTemplatePage from "../../components/pages/templates/GenericTemplatePage";
 import { TEMPLATE_PRODUCTS } from "../../data/templates-listing";
 import { getTemplateContent } from "../../data/template-content";
-import { getBlogPostPreviews } from "../../lib/blog/get-blog-post-previews";
-import type { BlogPostPreview, TemplateItem } from "../../types/data";
+import { getNavData } from "../../lib/nav/buildNavData";
+import type { NavData } from "../../lib/nav/types";
+import type { TemplateItem } from "../../types/data";
 
 type PageProps = {
   item: TemplateItem;
   content: Record<string, unknown> | null;
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -28,23 +29,23 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   // Charts uses dedicated component with its own content import
   if (slug === "charts") {
-    return { props: { item, content: null, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
+    return { props: { item, content: null, navData: getNavData() } };
   }
 
   // Load content for other templates
   const content = await getTemplateContent(slug);
 
-  return { props: { item, content: content || null, blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }) } };
+  return { props: { item, content: content || null, navData: getNavData() } };
 };
 
-export default function TemplateDetailRoute({ item, content, blogPosts }: PageProps) {
+export default function TemplateDetailRoute({ item, content, navData }: PageProps) {
   if (item.slug === "charts") {
-    return <ChartsTemplatePage item={item} blogPosts={blogPosts} />;
+    return <ChartsTemplatePage item={item} navData={navData} />;
   }
 
   if (content) {
-    return <GenericTemplatePage item={item} content={content as Parameters<typeof GenericTemplatePage>[0]["content"]} blogPosts={blogPosts} />;
+    return <GenericTemplatePage item={item} content={content as Parameters<typeof GenericTemplatePage>[0]["content"]} navData={navData} />;
   }
 
-  return <TemplateDetailPage item={item} blogPosts={blogPosts} />;
+  return <TemplateDetailPage item={item} navData={navData} />;
 }

@@ -1,24 +1,24 @@
 import type { GetStaticProps } from "next";
 import SearchPage from "../components/pages/SearchPage";
-import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
+import { getNavData } from "../lib/nav/buildNavData";
+import type { NavData } from "../lib/nav/types";
 import { buildSearchIndex } from "../lib/search/buildIndex";
 import type { SearchableItem } from "../lib/search/types";
-import type { BlogPostPreview } from "../types/data";
 
 type Props = {
   items: SearchableItem[];
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
-export default function SearchRoute({ items, blogPosts }: Props) {
-  return <SearchPage items={items} blogPosts={blogPosts} />;
+export default function SearchRoute({ items, navData }: Props) {
+  return <SearchPage items={items} navData={navData} />;
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       items: buildSearchIndex(),
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };

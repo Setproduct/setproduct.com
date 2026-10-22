@@ -2,13 +2,15 @@ import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "ne
 import AuthorPage from "../../components/pages/AuthorPage";
 import { AUTHORS, getAuthor } from "../../lib/blog/authors";
 import { getBlogPostPreviews } from "../../lib/blog/get-blog-post-previews";
+import { getNavData } from "../../lib/nav/buildNavData";
+import type { NavData } from "../../lib/nav/types";
 import type { Author } from "../../types/blog";
 import type { BlogPostPreview } from "../../types/data";
 
 type PageProps = {
   author: Author;
   authorPosts: BlogPostPreview[];
-  blogPosts: BlogPostPreview[];
+  navData: NavData;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -26,7 +28,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
     props: {
       author,
       authorPosts: getBlogPostPreviews({ authorSlug: author.slug }),
-      blogPosts: getBlogPostPreviews({ maxPerCategory: 6 }),
+      navData: getNavData(),
     },
   };
 };
@@ -34,7 +36,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 export default function AuthorRoute({
   author,
   authorPosts,
-  blogPosts,
+  navData,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <AuthorPage author={author} authorPosts={authorPosts} blogPosts={blogPosts} />;
+  return <AuthorPage author={author} authorPosts={authorPosts} navData={navData} />;
 }

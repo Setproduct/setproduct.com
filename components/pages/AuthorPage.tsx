@@ -11,16 +11,17 @@ import { buildPersonJsonLd } from "../../lib/blog/schema";
 import { SITE_URL } from "../../lib/blog/site-config";
 import type { Author } from "../../types/blog";
 import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const PAGE_SIZE = 9;
 
 type Props = {
   author: Author;
   authorPosts: BlogPostPreview[];
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function AuthorPage({ author, authorPosts, blogPosts = [] }: Props) {
+export default function AuthorPage({ author, authorPosts, navData }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const postCount = authorPosts.length;
@@ -58,7 +59,7 @@ export default function AuthorPage({ author, authorPosts, blogPosts = [] }: Prop
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <div className="section">
           <div className="section-padding top-80 bottom-80">

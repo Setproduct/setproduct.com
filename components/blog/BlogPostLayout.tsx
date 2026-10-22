@@ -18,16 +18,16 @@ import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
 import { SITE_URL } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 type BlogPostLayoutProps = {
   post: BlogPost;
   relatedPosts: BlogPostMeta[];
   postUrl: string;
-  blogPosts: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts }: BlogPostLayoutProps) {
+export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }: BlogPostLayoutProps) {
   const { frontmatter, mdxSource, readingTimeText, readingTimeMinutes, headings } = post;
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const toc = useArticleToc(headings, `blog/${frontmatter.slug}`);
@@ -67,7 +67,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, blogPosts 
         ) : null}
       </Head>
       <ReadingProgress targetRef={contentSectionRef} />
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main>
         <BlogHero
           title={frontmatter.title}

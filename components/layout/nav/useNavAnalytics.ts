@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { INSPIRATION_CATEGORIES } from "../../../data/inspiration";
+import type { InspirationCategory } from "../../../types/data";
 import {
   NAV_MENU_ID,
   describeHref,
@@ -13,10 +13,14 @@ import type { CategoryMenuKey } from "./navConfig";
 import type { MegaMenuState, MenuCategories } from "./useMegaMenuState";
 
 // Human-readable category for reports (matches what the user saw).
-function categoryLabel(menuKey: string, category: string | null): string {
+function categoryLabel(
+  menuKey: string,
+  category: string | null,
+  inspirationCategories: InspirationCategory[],
+): string {
   if (category === null) return "all";
   if (menuKey === "inspiration") {
-    return INSPIRATION_CATEGORIES.find((c) => c.slug === category)?.label ?? category;
+    return inspirationCategories.find((c) => c.slug === category)?.label ?? category;
   }
   if (menuKey === "designKits") {
     return DESIGN_KITS.find((k) => k.category === category)?.label ?? category;
@@ -29,7 +33,10 @@ function categoryLabel(menuKey: string, category: string | null): string {
  * `nav_click` and `nav_buy_click`. Returns the delegated click handler that
  * goes on the root navigation element as `onClickCapture`.
  */
-export function useNavAnalytics({ openMenu, categories, lastOpenSourceRef }: MegaMenuState) {
+export function useNavAnalytics(
+  { openMenu, categories, lastOpenSourceRef }: MegaMenuState,
+  inspirationCategories: InspirationCategory[],
+) {
   // Last committed subcategory per panel. Category-view events fire only on a
   // real change, so the mount run (and StrictMode's double effect run in dev)
   // never reports the initial "All" as a user choice.
@@ -60,7 +67,7 @@ export function useNavAnalytics({ openMenu, categories, lastOpenSourceRef }: Meg
     lastTrackedCategoryRef.current[menuKey] = category;
     trackNav("nav_category_view", {
       menu_name: NAV_MENU_ID[menuKey] ?? menuKey,
-      category: categoryLabel(menuKey, category),
+      category: categoryLabel(menuKey, category, inspirationCategories),
     });
   };
   useEffect(() => trackCategoryView("inspiration", categories.inspiration),
@@ -104,7 +111,7 @@ export function useNavAnalytics({ openMenu, categories, lastOpenSourceRef }: Meg
     const link = el instanceof HTMLAnchorElement && el.href ? describeHref(el) : null;
     const menuName = NAV_MENU_ID[menuKey] ?? menuKey;
     const activeCategory = menuKey in categories ? categories[menuKey as CategoryMenuKey] : null;
-    const category = categoryLabel(menuKey, activeCategory);
+    const category = categoryLabel(menuKey, activeCategory, inspirationCategories);
 
     trackNav("nav_click", {
       menu_name: menuName,

@@ -13,7 +13,7 @@ import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import { PAGE_FAQ } from "../../data/faq";
 import { PRODUCTS } from "../../data/products";
 import { CATEGORY_TABS } from "../../data/categories";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const SLUG = "dashboards";
 const PAGE_SIZE = 8;
@@ -45,10 +45,10 @@ const BENEFITS_HTML = `<p>Numerous advantages catered to your needs are provided
 </ul>`;
 
 type Props = {
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
-export default function DashboardsPage({ blogPosts = [] }: Props) {
+export default function DashboardsPage({ navData }: Props) {
   const meta = PAGE_META[SLUG];
   const breadcrumbs = PAGE_BREADCRUMBS[SLUG] ?? [];
   const faq = PAGE_FAQ[SLUG] ?? [];
@@ -62,7 +62,7 @@ export default function DashboardsPage({ blogPosts = [] }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <Breadcrumbs items={breadcrumbs} />
         <div className="section">

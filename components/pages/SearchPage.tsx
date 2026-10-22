@@ -35,7 +35,7 @@ import {
 import { formatCategoryLabel } from "../../lib/search/format";
 import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
 import { event as gtagEvent } from "../../lib/gtag";
-import type { BlogPostPreview } from "../../types/data";
+import type { NavData } from "../../lib/nav/types";
 
 const SLUG = "search";
 // Во вкладке «All» каждая группа показывает короткое превью.
@@ -168,7 +168,7 @@ function parseTab(value: unknown): SearchTab {
 
 type Props = {
   items: SearchableItem[];
-  blogPosts?: BlogPostPreview[];
+  navData?: NavData;
 };
 
 function Highlight({ text, re }: { text: string; re: RegExp | null }) {
@@ -340,7 +340,7 @@ function groupResults(results: SearchableItem[]): Record<SearchGroup, Searchable
   return grouped;
 }
 
-export default function SearchPage({ items, blogPosts = [] }: Props) {
+export default function SearchPage({ items, navData }: Props) {
   const meta = PAGE_META[SLUG];
   const breadcrumbs = PAGE_BREADCRUMBS[SLUG] ?? [];
   const router = useRouter();
@@ -573,16 +573,17 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
     [items],
   );
 
-  // Свежие посты: blogPosts уже отсортированы по дате, берём данные из индекса.
+  // Свежие посты: navData.blog отсортирован по дате и всегда содержит
+  // шесть самых новых постов (вкладка «All topics»), берём данные из индекса.
   const freshPosts = useMemo(() => {
     const bySlug = new Map(
       items.filter((i) => i.type === "blog").map((i) => [i.slug, i]),
     );
-    return blogPosts
+    return (navData?.blog ?? [])
       .map((post) => bySlug.get(post.slug))
       .filter((i): i is SearchableItem => Boolean(i))
       .slice(0, FRESH_POSTS_COUNT);
-  }, [items, blogPosts]);
+  }, [items, navData]);
 
   const typeCounts = useMemo(() => groupResults(items), [items]);
 
@@ -740,7 +741,7 @@ export default function SearchPage({ items, blogPosts = [] }: Props) {
         <meta content={meta.title} property="twitter:title" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader blogPosts={blogPosts} />
+      <SiteHeader navData={navData} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">
