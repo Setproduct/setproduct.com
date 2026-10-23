@@ -25,10 +25,14 @@ type MegaMenuPanelProps = {
   labelStyle?: CSSProperties;
   /** The current route belongs to this section. */
   isCurrent: boolean;
-  /** Section landing page, linked from the panel as "See all". */
-  seeAllHref: string;
+  /**
+   * Section landing page. Only needed when the panel has no "All …" category
+   * (Inspiration): everywhere else the first category already links there, and
+   * a second link to the same URL would just be noise.
+   */
+  seeAllHref?: string;
   /** Text of the "See all" link: sentence case, verb first. */
-  seeAllLabel: string;
+  seeAllLabel?: string;
   /** Section and category links open in a new tab (off-site section). */
   external?: boolean;
   /** Prefix of the animated list key; the list remounts on category change. */
@@ -147,14 +151,16 @@ export function MegaMenuPanel({
                     </NavLink>
                   ))}
                 </div>
-                <NavLink
-                  className="button-x-small is-text w-inline-block nav_see-all"
-                  href={seeAllHref}
-                  external={external}
-                >
-                  <div className="text-size-regular text-weight-bold">{seeAllLabel}</div>
-                  <div className="button-icon is-small w-embed"><ArrowIcon /></div>
-                </NavLink>
+                {seeAllHref && seeAllLabel ? (
+                  <NavLink
+                    className="button-x-small is-text w-inline-block nav_see-all"
+                    href={seeAllHref}
+                    external={external}
+                  >
+                    <div className="text-size-regular text-weight-bold">{seeAllLabel}</div>
+                    <div className="button-icon is-small w-embed"><ArrowIcon /></div>
+                  </NavLink>
+                ) : null}
               </div>
               <div className="nav_dropdown-list-wr">
                 <div className="nav_tabs-list-wr w-dyn-list">

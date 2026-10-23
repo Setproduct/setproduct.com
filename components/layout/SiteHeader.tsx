@@ -302,8 +302,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Learn"
                   isCurrent={isTutorialsActive}
-                  seeAllHref="/blog"
-                  seeAllLabel="See all posts"
+                  // No "See all" here: the first category ("All topics") already lands on /blog.
                   listKeyPrefix="tutorials"
                   categories={blogCategories}
                   onIntent={preloadBlog}
@@ -333,8 +332,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Resources"
                   isCurrent={isFreebiesActive}
-                  seeAllHref="/freebies"
-                  seeAllLabel="See all resources"
+                  // No "See all" here: "All topics" already lands on /freebies.
                   listKeyPrefix="freebies"
                   categories={freebieCategories}
                   onIntent={preloadFreebies}
@@ -369,8 +367,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="UI Kits"
                   isCurrent={isDesignKitsActive}
-                  seeAllHref="/all"
-                  seeAllLabel="See all kits"
+                  // No "See all" here: "All" already lands on /all.
                   listKeyPrefix="kits"
                   categories={kitCategories}
                   onIntent={preloadKits}
