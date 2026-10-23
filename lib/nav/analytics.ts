@@ -19,6 +19,7 @@ export type NavOpenSource = "hover" | "click" | "keyboard" | "tap";
 
 export type NavLinkType =
   | "trigger"
+  | "see_all"
   | "category"
   | "card_image"
   | "card_title"
@@ -54,7 +55,8 @@ export function trackNav(name: string, params: Record<string, unknown> = {}) {
 
 /** Classify a clicked element inside the mega-menu by its existing markup. */
 export function getNavLinkType(el: HTMLElement): NavLinkType {
-  if (el.matches(".nav_dropdown_toggle-link, .nav_dropdown_toggle, .nav-link-block")) return "trigger";
+  if (el.matches(".nav_dropdown_toggle, .nav-link-block")) return "trigger";
+  if (el.matches(".nav_see-all")) return "see_all";
   if (el.matches(".nav_radio")) return "category";
   if (el.matches(".nav_tabs-list-item-img-wr")) return "card_image";
   if (el.matches(".link-block")) return "company_link";

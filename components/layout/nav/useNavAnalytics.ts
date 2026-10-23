@@ -94,11 +94,13 @@ export function useNavAnalytics(
     if (!scope) return;
     const menuKey = scope.dataset.navMenu ?? "";
     const linkType = getNavLinkType(el);
-    // Toggles without a link (mobile accordion, Company) are covered by
-    // nav_menu_open; only real navigations are clicks.
+    // Trigger buttons are covered by nav_menu_open; only real navigations are
+    // clicks. A touch tap that only swapped the category previews (see
+    // MegaMenuPanel) is reported by nav_category_view instead.
     if (!(el instanceof HTMLAnchorElement) || !el.getAttribute("href") || el.getAttribute("href") === "#") {
       if (linkType !== "company_link" && linkType !== "promo") return;
     }
+    if (el.dataset.previewTap === "1") return;
 
     const card = el.closest<HTMLElement>(".nav_tabs-list-item");
     const itemTitle = card

@@ -1,6 +1,8 @@
+import { useRef } from "react";
 import ArrowIcon from "../../sections/ArrowIcon";
-import { ChevronIcon } from "./ChevronIcon";
 import { NavLink } from "./NavLink";
+import { MenuTrigger } from "./MenuTrigger";
+import { handlePanelKeyDown } from "./interaction";
 import { INFORMATION_LINKS } from "./navConfig";
 import type { MegaMenuState } from "./useMegaMenuState";
 
@@ -13,37 +15,39 @@ type CompanyPanelProps = {
 
 /**
  * The Company dropdown: a plain link list plus two promo cards (custom design
- * and advertising) and their compact mobile variant. Its trigger has no
- * landing page, so it's a role="button" toggle instead of a transparent link.
+ * and advertising) and their compact mobile variant. Same disclosure button
+ * as the other panels; Company has no landing page, so no "See all" link.
  */
 export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps) {
   const isOpen = state.isMenuOpen("information");
   const openClass = isOpen ? "w--open" : "";
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const panelId = "nav-panel-information";
+
+  const focusTrigger = () =>
+    panelRef.current?.parentElement?.querySelector<HTMLElement>(".nav_dropdown_toggle")?.focus();
 
   return (
     <div className="nav_dropdown-wr" data-nav-menu="information" {...state.getWrapperProps("information")}>
       <div className={`nav_dropdown w-dropdown ${openClass}`} data-delay="0" data-hover="true">
+        <MenuTrigger
+          menu="information"
+          state={state}
+          panelId={panelId}
+          panelRef={panelRef}
+          label="Company"
+          isCurrent={isCurrent}
+        />
         <div
-          className={`nav_dropdown_toggle w-dropdown-toggle ${openClass}${isCurrent || isOpen ? " w--current" : ""}`}
-          onClick={() => state.toggleMenu("information")}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              state.toggleMenu("information");
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-haspopup="true"
-          aria-expanded={isOpen}
+          ref={panelRef}
+          id={panelId}
+          className={`nav_dropdown_list w-dropdown-list ${openClass}`}
+          inert={!isOpen}
+          onKeyDown={(e) => handlePanelKeyDown(e, focusTrigger)}
         >
-          <div className="text-size-regular">Company</div>
-          <span className="icon nav_chevron"><ChevronIcon /></span>
-        </div>
-        <nav className={`nav_dropdown_list w-dropdown-list ${openClass}`} inert={!isOpen}>
           <div className="container">
             <div className="nav_dropdown-menu2">
-              <div className="nav_dropdown-column list">
+              <div className="nav_dropdown-column list" data-nav-group="links">
                 <div className="nav_dropdown-column-title-wr">
                   <div className="text-size-regular">Company</div>
                 </div>
@@ -66,7 +70,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                   )}
                 </div>
               </div>
-              <div className="nav_info-promo-wr">
+              <div className="nav_info-promo-wr" data-nav-group="promo">
                 <div className="nav_info-promo">
                   <span className="nav_info-promo-glow" aria-hidden="true" />
                   <div className="nav_info-promo-content">
@@ -104,7 +108,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                   </div>
                 </div>
               </div>
-              <div className="nav_info-promo-mobile">
+              <div className="nav_info-promo-mobile" data-nav-group="promo-mobile">
                 <div className="nav_info-promo-mobile-eyebrow">Work with us</div>
                 <div className="nav_info-promo-mobile-title">Custom design or advertising?</div>
                 <p className="text-size-regular nav_info-promo-mobile-text">
@@ -128,7 +132,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
               </div>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
     </div>
   );

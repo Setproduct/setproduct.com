@@ -244,7 +244,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
 
           <nav
             className={`nav-menu w-nav-menu${isMobileNavOpen ? " is-mobile-open" : ""}`}
-            role="navigation"
+            aria-label="Main"
             onClickCapture={handleNavClickCapture}
             onPointerEnter={loadCatalogue}
             onFocus={loadCatalogue}
@@ -259,10 +259,9 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                     labelStyle={INSPIRATION_LABEL_STYLE}
                     // Off-site section: "current" is purely the open-menu highlight.
                     isCurrent={false}
-                    toggleHref={withUtm(INSPIRATION_HOME)}
-                    toggleAriaLabel={INSPIRATION_ARIA_LABEL}
+                    seeAllHref={withUtm(INSPIRATION_HOME)}
+                    seeAllLabel="Open the library"
                     external
-                    formName="email-form-nav-inspiration"
                     listKeyPrefix="inspiration"
                     categories={inspirationCategories}
                     onIntent={preloadInspiration}
@@ -303,9 +302,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Learn"
                   isCurrent={isTutorialsActive}
-                  toggleHref="/blog"
-                  toggleAriaLabel="Learn — blog and tutorials"
-                  formName="email-form-nav-1"
+                  seeAllHref="/blog"
+                  seeAllLabel="See all posts"
                   listKeyPrefix="tutorials"
                   categories={blogCategories}
                   onIntent={preloadBlog}
@@ -335,9 +333,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Resources"
                   isCurrent={isFreebiesActive}
-                  toggleHref="/freebies"
-                  toggleAriaLabel="Resources"
-                  formName="email-form-nav-3"
+                  seeAllHref="/freebies"
+                  seeAllLabel="See all resources"
                   listKeyPrefix="freebies"
                   categories={freebieCategories}
                   onIntent={preloadFreebies}
@@ -372,9 +369,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="UI Kits"
                   isCurrent={isDesignKitsActive}
-                  toggleHref="/all"
-                  toggleAriaLabel="UI kits"
-                  formName="email-form-nav-2"
+                  seeAllHref="/all"
+                  seeAllLabel="See all kits"
                   listKeyPrefix="kits"
                   categories={kitCategories}
                   onIntent={preloadKits}

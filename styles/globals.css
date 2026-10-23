@@ -1379,6 +1379,33 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
+ * Dropdown triggers are real <button>s (disclosure pattern). Strip the UA
+ * button chrome so they look exactly like the former div toggles; spacing and
+ * layout still come from Webflow's .nav_dropdown_toggle.
+ */
+.navbar button.nav_dropdown_toggle {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  line-height: inherit;
+}
+
+/* Webflow kills the outline on .w-dropdown-toggle:focus; restore it for keyboard users only. */
+.navbar .nav_dropdown_toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -14em;
+  border-radius: calc(12 * var(--em-px));
+}
+
+/* "See all …" under the category list: the section landing page lives here now. */
+.navbar .nav_dropdown_list .nav_see-all {
+  align-self: flex-start;
+  margin-top: 6em;
+}
+
+/*
  * Active nav state — colour the current page's link / open dropdown toggle
  * with the primary brand colour. Webflow stylesheet only covers
  * .nav-link-block.w--current; toggles don't have a built-in active style.
