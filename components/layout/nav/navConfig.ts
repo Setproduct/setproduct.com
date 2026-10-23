@@ -28,10 +28,20 @@ export const EXTERNAL_LINK_PROPS = { rel: "noreferrer", target: "_blank" } as co
 // adjacent trigger) without the menu snapping shut underneath it.
 export const NAV_HOVER_OPEN_DELAY_MS = 120;
 export const NAV_HOVER_CLOSE_DELAY_MS = 250;
-// Debounce for switching subcategories *inside* an already-open panel. Without
-// it a cursor sweeping down the Categories column strobes through every preview
-// set; this makes only the category the pointer settles on actually load.
-export const NAV_SUBCATEGORY_HOVER_DELAY_MS = 260;
+// Menu aim for the Categories column (see useMenuAim). A pointer moving down
+// the list switches the previews almost at once; the short settle delay only
+// filters a fast flick across several rows, so they don't all load images.
+export const NAV_SUBCATEGORY_SETTLE_MS = 60;
+// A pointer heading diagonally for the preview grid keeps the current category.
+// While it does, the hovered row is rechecked at this interval: if the pointer
+// has stopped on it, the user wants that row after all.
+export const NAV_MENU_AIM_RECHECK_MS = 280;
+// Vertical slack added above and below the preview grid when testing whether
+// the pointer aims at it, so a path towards the top or bottom card counts too.
+export const NAV_MENU_AIM_TOLERANCE_PX = 24;
+// Pointer samples kept for the direction test. The oldest one is the origin,
+// which smooths out single-pixel jitter.
+export const NAV_MENU_AIM_HISTORY = 3;
 // A panel must stay open this long to count as a real `nav_menu_open` in GA4,
 // so a cursor sweeping across the navbar doesn't inflate the numbers.
 export const NAV_OPEN_TRACK_DELAY_MS = 500;

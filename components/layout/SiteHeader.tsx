@@ -179,9 +179,10 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const kitPreviews = getKitSet(categories.designKits);
   const freebiePreviews = getFreebieSet(categories.freebies);
 
-  // Hover-intent preloading: the pointer reaching a trigger or a category
-  // starts fetching that set's six images, so they are usually decoded by the
-  // time the 120 ms open delay (or the 260 ms category delay) runs out.
+  // Hover-intent preloading: the pointer reaching a trigger, or settling on a
+  // category, starts fetching that set's six images, so they are usually
+  // decoded by the time the 120 ms open delay (or the short category settle
+  // delay after the menu-aim check) runs out.
   const preloadInspiration = (category: string | null) =>
     getInspirationPreviews(shuffledInspiration, category).forEach((item) => preloadPlainImage(item.image));
   const preloadBlog = (category: string | null) =>

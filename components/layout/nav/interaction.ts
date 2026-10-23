@@ -17,6 +17,39 @@ export function isDesktopLayout(): boolean {
   return typeof window !== "undefined" && window.matchMedia("(min-width: 992px)").matches;
 }
 
+export type Point = { x: number; y: number };
+
+/** Signed area test: which side of the line a→b the point p lies on. */
+function side(p: Point, a: Point, b: Point): number {
+  return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+}
+
+function isInTriangle(p: Point, a: Point, b: Point, c: Point): boolean {
+  const d1 = side(p, a, b);
+  const d2 = side(p, b, c);
+  const d3 = side(p, c, a);
+  const hasNegative = d1 < 0 || d2 < 0 || d3 < 0;
+  const hasPositive = d1 > 0 || d2 > 0 || d3 > 0;
+  return !(hasNegative && hasPositive);
+}
+
+/**
+ * Menu aim ("safe triangle"): is the pointer heading for `target`, the preview
+ * grid to the right of the Categories column? True when the pointer moved
+ * right and its current position lies inside the triangle spanned by its
+ * earlier position and the left edge of the target (widened by `tolerance`).
+ * Movement mostly down or up the list falls outside the triangle.
+ */
+export function isAimingAt(prev: Point, curr: Point, target: DOMRect, tolerance = 0): boolean {
+  // Hidden grid (drawer layout) or a pointer that isn't moving right.
+  if (target.width === 0 || curr.x <= prev.x) return false;
+  // Already over the grid or past its edge: nothing left to aim at.
+  if (curr.x >= target.left) return false;
+  const top = { x: target.left, y: target.top - tolerance };
+  const bottom = { x: target.left, y: target.bottom + tolerance };
+  return isInTriangle(curr, prev, top, bottom);
+}
+
 /** Focusable, visible elements in DOM order, skipping decorative duplicates. */
 function getFocusables(root: Element): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(

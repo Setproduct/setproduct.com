@@ -5,6 +5,7 @@ import { MenuTrigger } from "./MenuTrigger";
 import { handlePanelKeyDown, isDesktopLayout } from "./interaction";
 import type { CategoryMenuKey } from "./navConfig";
 import type { MegaMenuState } from "./useMegaMenuState";
+import { useMenuAim } from "./useMenuAim";
 
 export type MegaMenuCategory = {
   /** React key, unique within the panel. */
@@ -30,8 +31,9 @@ type MegaMenuPanelProps = {
   listKeyPrefix: string;
   categories: MegaMenuCategory[];
   /**
-   * Early intent signal: the pointer entered the panel or a category, before
-   * the hover delay commits it. Used to warm up the preview images.
+   * Early intent signal: the pointer entered the panel, or settled on a
+   * category (past the menu-aim check), just before the switch commits. Used
+   * to warm up the preview images.
    */
   onIntent?: (category: string | null) => void;
   /** Preview cards (MegaMenuCard). */
@@ -63,7 +65,19 @@ export function MegaMenuPanel({
   const openClass = isOpen ? "w--open" : "";
   const wrapperProps = state.getWrapperProps(menu);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const previewsRef = useRef<HTMLDivElement | null>(null);
   const panelId = `nav-panel-${menu}`;
+
+  // Diagonal travel towards the previews keeps the current category; only a
+  // pointer moving along the list (or stopping on a row) switches it.
+  const aim = useMenuAim({
+    targetRef: previewsRef,
+    onSwitch: (value) => {
+      onIntent?.(value);
+      state.setCategoryOnHover(menu, value);
+    },
+    onCancel: state.clearCategoryHover,
+  });
 
   const focusTrigger = () =>
     panelRef.current?.parentElement?.querySelector<HTMLElement>(".nav_dropdown_toggle")?.focus();
@@ -119,7 +133,7 @@ export function MegaMenuPanel({
                 <div className="nav_dropdown-column-title-wr">
                   <div className="text-size-regular">Categories</div>
                 </div>
-                <div className="nav-links is-1-column">
+                <div className="nav-links is-1-column" onMouseMove={aim.track}>
                   {categories.map((cat) => (
                     <NavLink
                       className={`nav_radio w-inline-block${cat.isActive ? " w--current" : ""}`}
@@ -127,11 +141,8 @@ export function MegaMenuPanel({
                       external={external}
                       key={cat.key}
                       aria-current={cat.isActive ? "true" : undefined}
-                      onMouseEnter={() => {
-                        onIntent?.(cat.value);
-                        state.setCategoryOnHover(menu, cat.value);
-                      }}
-                      onMouseLeave={state.clearCategoryHover}
+                      onMouseEnter={(e) => aim.enter(cat.value, e)}
+                      onMouseLeave={aim.leave}
                       onFocus={() => state.setCategoryNow(menu, cat.value)}
                       onPointerDown={(e) => onCategoryPointerDown(e, cat)}
                       onClick={(e) => onCategoryClick(e, cat)}
@@ -141,7 +152,7 @@ export function MegaMenuPanel({
                   ))}
                 </div>
               </div>
-              <div className="nav_dropdown-list-wr">
+              <div className="nav_dropdown-list-wr" ref={previewsRef}>
                 <div className="nav_tabs-list-wr w-dyn-list">
                   <div
                     className="nav_tabs-list w-dyn-items w-row nav_tabs-list--animated"

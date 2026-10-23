@@ -5,7 +5,7 @@ import { isDesktopLayout, isFinePointer } from "./interaction";
 import {
   NAV_HOVER_CLOSE_DELAY_MS,
   NAV_HOVER_OPEN_DELAY_MS,
-  NAV_SUBCATEGORY_HOVER_DELAY_MS,
+  NAV_SUBCATEGORY_SETTLE_MS,
 } from "./navConfig";
 import type { CategoryMenuKey, MenuKey } from "./navConfig";
 
@@ -149,14 +149,15 @@ export function useMegaMenuState() {
     setCategories((prev) => (prev[menuName] === value ? prev : { ...prev, [menuName]: value }));
   };
 
-  // Pointer hover over a subcategory: debounce so a passing cursor doesn't
-  // load every set on the way; only the one it lingers on commits.
+  // Pointer hover over a subcategory, already past the menu-aim check in
+  // useMenuAim. The short settle delay only filters a fast flick across rows,
+  // so not every set on the way starts loading its images.
   const setCategoryOnHover = (menuName: CategoryMenuKey, value: string | null) => {
     clearSubHoverIntent();
     subHoverIntentRef.current = window.setTimeout(() => {
       subHoverIntentRef.current = null;
       commitCategory(menuName, value);
-    }, NAV_SUBCATEGORY_HOVER_DELAY_MS);
+    }, NAV_SUBCATEGORY_SETTLE_MS);
   };
 
   // Keyboard focus on a subcategory: cancel any queued hover switch and commit
