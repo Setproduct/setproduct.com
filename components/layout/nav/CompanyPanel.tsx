@@ -16,7 +16,7 @@ type CompanyPanelProps = {
 /**
  * The Company dropdown: a plain link list plus two promo cards (custom design
  * and advertising) and their compact mobile variant. Same disclosure button
- * as the other panels; Company has no landing page, so no "See all" link.
+ * as the other panels; Company has no landing page of its own.
  */
 export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps) {
   const isOpen = state.isMenuOpen("information");

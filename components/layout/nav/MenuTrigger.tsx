@@ -19,10 +19,11 @@ type MenuTriggerProps = {
 };
 
 /**
- * Top-level navbar item. It is only a disclosure button: the section landing
- * page lives inside the panel as a "See all" link, so one element never has
- * two roles (B2) and a tap on a touch screen opens the panel instead of
- * leaving the page (C1).
+ * Top-level navbar item. It is only a disclosure button, so one element never
+ * has two roles (B2) and a tap on a touch screen opens the panel instead of
+ * leaving the page (C1). The section landing page is reached through the
+ * first category of the panel ("All topics" → /blog, "All" → /all), which
+ * keeps the link in the server-rendered HTML.
  *
  * Enter/Space toggle, ↓ opens and moves into the panel, ←/→ hop between
  * navbar items. Focus alone never opens anything (B1).

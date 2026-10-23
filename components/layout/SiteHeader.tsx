@@ -259,8 +259,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                     labelStyle={INSPIRATION_LABEL_STYLE}
                     // Off-site section: "current" is purely the open-menu highlight.
                     isCurrent={false}
-                    seeAllHref={withUtm(INSPIRATION_HOME)}
-                    seeAllLabel="Open the library"
                     external
                     listKeyPrefix="inspiration"
                     categories={inspirationCategories}
@@ -302,7 +300,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Learn"
                   isCurrent={isTutorialsActive}
-                  // No "See all" here: the first category ("All topics") already lands on /blog.
                   listKeyPrefix="tutorials"
                   categories={blogCategories}
                   onIntent={preloadBlog}
@@ -332,7 +329,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="Resources"
                   isCurrent={isFreebiesActive}
-                  // No "See all" here: "All topics" already lands on /freebies.
                   listKeyPrefix="freebies"
                   categories={freebieCategories}
                   onIntent={preloadFreebies}
@@ -367,7 +363,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   state={menu}
                   label="UI Kits"
                   isCurrent={isDesignKitsActive}
-                  // No "See all" here: "All" already lands on /all.
                   listKeyPrefix="kits"
                   categories={kitCategories}
                   onIntent={preloadKits}

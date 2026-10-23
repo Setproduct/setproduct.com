@@ -1399,12 +1399,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   border-radius: calc(12 * var(--em-px));
 }
 
-/* "See all …" under the category list: the section landing page lives here now. */
-.navbar .nav_dropdown_list .nav_see-all {
-  align-self: flex-start;
-  margin-top: 6em;
-}
-
 /*
  * Active nav state — colour the current page's link / open dropdown toggle
  * with the primary brand colour. Webflow stylesheet only covers

@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode } from "react";
-import ArrowIcon from "../../sections/ArrowIcon";
 import { NavLink } from "./NavLink";
 import { MenuTrigger } from "./MenuTrigger";
 import { handlePanelKeyDown, isDesktopLayout } from "./interaction";
@@ -25,14 +24,6 @@ type MegaMenuPanelProps = {
   labelStyle?: CSSProperties;
   /** The current route belongs to this section. */
   isCurrent: boolean;
-  /**
-   * Section landing page. Only needed when the panel has no "All …" category
-   * (Inspiration): everywhere else the first category already links there, and
-   * a second link to the same URL would just be noise.
-   */
-  seeAllHref?: string;
-  /** Text of the "See all" link: sentence case, verb first. */
-  seeAllLabel?: string;
   /** Section and category links open in a new tab (off-site section). */
   external?: boolean;
   /** Prefix of the animated list key; the list remounts on category change. */
@@ -62,8 +53,6 @@ export function MegaMenuPanel({
   label,
   labelStyle,
   isCurrent,
-  seeAllHref,
-  seeAllLabel,
   external = false,
   listKeyPrefix,
   categories,
@@ -151,16 +140,6 @@ export function MegaMenuPanel({
                     </NavLink>
                   ))}
                 </div>
-                {seeAllHref && seeAllLabel ? (
-                  <NavLink
-                    className="button-x-small is-text w-inline-block nav_see-all"
-                    href={seeAllHref}
-                    external={external}
-                  >
-                    <div className="text-size-regular text-weight-bold">{seeAllLabel}</div>
-                    <div className="button-icon is-small w-embed"><ArrowIcon /></div>
-                  </NavLink>
-                ) : null}
               </div>
               <div className="nav_dropdown-list-wr">
                 <div className="nav_tabs-list-wr w-dyn-list">
