@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useRef } from "react";
 import Link from "next/link";
+import MDXImage from "../blog/MDXImage";
 import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import ReadingProgress from "../blog/ReadingProgress";
@@ -550,11 +551,19 @@ export default function FreebieArticle({ slug }: Props) {
                 <h2 id="why-hand-drawn-differs">
                   Why hand-drawn beats a sketch filter
                 </h2>
+                <MDXImage
+                  src="/freebies/matita-icons-specimen.webp"
+                  alt="Calendar glyph drawn on a 24 unit grid, with callouts for crossed corners, lines running past the box and overshooting ticks"
+                  width={1302}
+                  height={1546}
+                  float="right"
+                />
                 <p>
-                  The details are small and easy to miss. A box does not close on
-                  its corners, it crosses them. A rule does not stop at the frame,
-                  it runs past on both sides. Even a short tick for a calendar
-                  binding overshoots where it starts and where it stops.
+                  The specimen labels the three details that carry the whole
+                  style. A box does not close on its corners, it crosses them. A
+                  rule does not stop at the frame, it runs past on both sides.
+                  Even a short tick for a calendar binding overshoots where it
+                  starts and where it stops.
                 </p>
                 <p>
                   A sketch filter takes a clean vector and adds wobble on top.
@@ -572,14 +581,31 @@ export default function FreebieArticle({ slug }: Props) {
                   of the set still feel drawn by one hand.
                 </p>
                 <p>
-                  ☞ The shape comes out of the same numbers every time. No random
-                  seed, no drift between builds, no glyph that looks different
-                  after a package upgrade.
+                  ☞ The drawing is computed from those numbers, so the same name
+                  yields the same shape across builds and across machines. A seed
+                  sits in the generator, and changing it redraws the glyph in a
+                  different hand without touching the definition or the name.
                 </p>
 
                 <h2 id="what-ships-matita">What ships in the package</h2>
                 <p>
-                  The package covers the formats most projects actually consume:
+                  The browser tool at matita.dev does the searching for you. Type
+                  a concept, set the size and stroke width, pick a colour from the
+                  swatches, then switch the right panel between React, JavaScript
+                  and plain SVG. The panel names the component, names the file
+                  path, and prints a snippet you copy in one click.
+                </p>
+
+                <MDXImage
+                  src="/freebies/matita-icons-tool-set.webp"
+                  alt="Matita icon browser with a search field, size and stroke sliders, colour swatches and a side panel showing the ExternalLink React snippet"
+                  width={2396}
+                  height={1586}
+                />
+
+                <p>
+                  The same set is shipped in five shapes, for whatever your
+                  project already consumes:
                 </p>
                 <ul>
                   <li>
