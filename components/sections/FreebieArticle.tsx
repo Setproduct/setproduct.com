@@ -1,7 +1,6 @@
 "use client";
 import { useMemo, useRef } from "react";
 import Link from "next/link";
-import MDXImage from "../blog/MDXImage";
 import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import ReadingProgress from "../blog/ReadingProgress";
@@ -551,19 +550,11 @@ export default function FreebieArticle({ slug }: Props) {
                 <h2 id="why-hand-drawn-differs">
                   Why hand-drawn beats a sketch filter
                 </h2>
-                <MDXImage
-                  src="/freebies/matita-icons-specimen.webp"
-                  alt="Specimen sheet of the calendar glyph on graph paper with crossed corners, ruled lines past the box and ticks that overshoot"
-                  width={760}
-                  height={1442}
-                  float="right"
-                />
                 <p>
-                  The specimen measures the calendar glyph against the 24 unit
-                  grid and marks the three details that carry the whole style.
-                  The box corners cross instead of meeting, the top rule runs
-                  past the frame on both sides, and even the short ticks for the
-                  binding overshoot where they start and where they stop.
+                  The details are small and easy to miss. A box does not close on
+                  its corners, it crosses them. A rule does not stop at the frame,
+                  it runs past on both sides. Even a short tick for a calendar
+                  binding overshoots where it starts and where it stops.
                 </p>
                 <p>
                   A sketch filter takes a clean vector and adds wobble on top.
