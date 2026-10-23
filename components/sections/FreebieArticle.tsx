@@ -169,7 +169,25 @@ const GR8R_TASK_MANAGEMENT_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-gr8r", text: "Why it belongs in your stack" },
 ];
 
+const MATITA_ICONS_HEADINGS: ArticleHeading[] = [
+  { id: "what-matita-does", text: "What Matita actually does" },
+  { id: "why-hand-drawn-differs", text: "Why hand-drawn beats a sketch filter" },
+  { id: "what-ships-matita", text: "What ships in the package" },
+  {
+    id: "how-deterministic-drawing-works",
+    text: "How deterministic drawing works",
+  },
+  { id: "pencil-variant", text: "The pencil variant and its paper grain" },
+  {
+    id: "icons-in-figma-and-code-matita",
+    text: "Getting icons into Figma and code",
+  },
+  { id: "faq-matita", text: "Frequently asked questions" },
+  { id: "why-it-belongs-matita", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
+  "matita-icons": MATITA_ICONS_HEADINGS,
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
   pdfcn: PDFCN_HEADINGS,
@@ -456,6 +474,281 @@ export default function FreebieArticle({ slug }: Props) {
                   comparison explains where the plain blur falls short. When you
                   want the rest of the interface to match, the other{" "}
                   <Link href="/freebies">open source code</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for
+                  the same fast, solo workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "matita-icons" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  A pencil icon on graph paper usually means someone took a
+                  stock set and ran it through a sketch filter. Matita works the
+                  other way round. Two hundred glyphs are drawn by code from a
+                  short list of drafting primitives, so every line overshoots its
+                  end the way a real pencil does, and a given name draws the same
+                  way on every machine.
+                </p>
+
+                <h2 id="what-matita-does">What Matita actually does</h2>
+                <p>
+                  Matita is an icon library with 200 glyphs on a 24 unit grid.
+                  Strokes sit at 1.6 and take their color from{" "}
+                  <code>currentColor</code>, so an icon inherits the text color
+                  of whatever sits around it. The same set arrives as React
+                  components, as plain SVG files, as one sprite sheet, and as a
+                  UMD bundle for a script tag.
+                </p>
+                <p>
+                  Names are plain kebab-case: <code>arrow-right</code>,{" "}
+                  <code>trash-2</code>, <code>circle-check</code>. You guess the
+                  name, you get the icon. That matters more than it sounds once
+                  you have spent ten minutes scrolling a gallery for a shape you
+                  could already describe in two words.
+                </p>
+                <p>
+                  Installation is one command, and the React entry point asks
+                  for React 17 or newer as a peer:
+                </p>
+                <ul>
+                  <li>
+                    <code>npm i @matita/icons</code>
+                  </li>
+                  <li>
+                    <code>
+                      import &#123; ArrowRight &#125; from
+                      "@matita/icons/react"
+                    </code>
+                  </li>
+                  <li>
+                    <code>{"<ArrowRight size={20} />"}</code>
+                  </li>
+                </ul>
+                <p>
+                  The code lives on{" "}
+                  <a
+                    href="https://github.com/matita-dev/icons"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>{" "}
+                  under an MIT license. The browsable gallery with search sits
+                  at{" "}
+                  <a
+                    href="https://matita.dev/"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    matita.dev
+                  </a>
+                  , where you can filter the set and copy a glyph before you
+                  install anything.
+                </p>
+
+                <h2 id="why-hand-drawn-differs">
+                  Why hand-drawn beats a sketch filter
+                </h2>
+                <p>
+                  A sketch filter takes a clean vector and adds wobble on top.
+                  The result reads as drawn, yet the original geometry stays
+                  underneath, so a set assembled from three sources still carries
+                  three different line systems. The filter roughs up the edges
+                  and leaves the mismatch in place.
+                </p>
+                <p>
+                  Matita starts from the stroke. Each glyph is a short program
+                  over drafting primitives: a line, a polyline, a closed shape, a
+                  rect, a circle, an ellipse, an arc, a curve and a dot. Boxes
+                  cross at the corners, circles overlap where the pen closes,
+                  straight lines run a unit or two past their ends. The looseness
+                  lives in the definition rather than painted on afterwards.
+                </p>
+                <p>
+                  ☞ The shape comes out of the same numbers every time. No random
+                  seed, no drift between builds, no glyph that looks different
+                  after a package upgrade.
+                </p>
+
+                <h2 id="what-ships-matita">What ships in the package</h2>
+                <p>
+                  The package covers the formats most projects actually consume:
+                </p>
+                <ul>
+                  <li>
+                    ❶ React components from{" "}
+                    <code>@matita/icons/react</code>, one module per glyph, so a
+                    bundler drops what you do not import
+                  </li>
+                  <li>
+                    ❷ Raw SVG at{" "}
+                    <code>{"@matita/icons/icons/<name>.svg"}</code>, for
+                    Figma, Vue, Svelte or plain HTML
+                  </li>
+                  <li>
+                    ❸ One sprite sheet for projects that reference icons by{" "}
+                    <code>{"<use>"}</code>
+                  </li>
+                  <li>
+                    ❹ A UMD build on jsDelivr with{" "}
+                    <code>data-sketch-icon</code> attributes for pages with no
+                    build step
+                  </li>
+                  <li>
+                    ❺ <code>icons.json</code>, which lists every name, plus a{" "}
+                    <code>toSvg</code> helper that returns an SVG string
+                  </li>
+                </ul>
+                <p>
+                  There are helper exports too: <code>SketchIcon</code> renders
+                  any glyph by name, and <code>SketchIconProvider</code> sets a
+                  default size and stroke width once for the whole tree instead
+                  of repeating it on every icon.
+                </p>
+
+                <h2 id="how-deterministic-drawing-works">
+                  How deterministic drawing works
+                </h2>
+                <p>
+                  Every glyph is described in one file, <code>src/defs.js</code>,
+                  as a list of primitives on a 24 unit grid. A build step turns
+                  that list into React modules, SVG files, a sprite and the JSON
+                  index. Because nothing is hand-drawn as a finished path, the
+                  same definition produces byte-identical output on any machine.
+                </p>
+                <p>
+                  The contribution rules are tight on purpose. Two to five
+                  primitives per glyph, everything inside the 1 to 23 range, no
+                  fills, short descriptive names. A glyph built that way stays
+                  legible at 16px and still reads as pencil work at 64px, which
+                  is the range a product interface actually uses.
+                </p>
+                <p>
+                  ☛ Determinism is the quiet feature here. A hand-edited SVG set
+                  drifts the moment three people add icons in three sessions.
+                  This one cannot drift, because the drawing is computed and the
+                  test suite runs on the output.
+                </p>
+
+                <h2 id="pencil-variant">
+                  The pencil variant and its paper grain
+                </h2>
+                <p>
+                  Every glyph ships twice. The standard version is a clean stroke
+                  with a pencil cadence. The pencil version draws each stroke as
+                  two or three loose pencil lines and adds paper grain, so it
+                  looks like a sketch on a notepad rather than a vector outline.
+                </p>
+                <p>
+                  You switch by adding one prop. <code>SketchIcon</code> accepts{" "}
+                  <code>pencil</code>, and the raw files sit in{" "}
+                  <code>{"@matita/icons/pencil/<name>.svg"}</code>. When you
+                  reference those files yourself, import{" "}
+                  <code>@matita/icons/pencil.css</code> so the grain lands
+                  properly.
+                </p>
+                <p>
+                  Grain is texture, and texture costs markup. Save the pencil
+                  variant for empty states, onboarding screens, editorial blocks,
+                  and anything above 32px where the double stroke is visible.
+                  Keep the standard variant for toolbars and dense tables, where
+                  a 16px icon has no room to show a second line.
+                </p>
+
+                <h2 id="icons-in-figma-and-code-matita">
+                  Getting icons into Figma and code
+                </h2>
+                <p>
+                  Designers get a community file on Figma plus the raw SVGs, so a
+                  glyph can be dropped onto an artboard and resized without a
+                  plugin. Engineers get the matching React component or the same
+                  SVG path. One name works on both sides, which removes the
+                  usual review comment about a shipped icon that differs from the
+                  file.
+                </p>
+                <p>
+                  Styling stays yours. Size comes from a prop or from width and
+                  height, color from <code>currentColor</code>, and stroke width
+                  from the component or the provider. Nothing is locked to a
+                  theme, so the set follows your tokens instead of asking you to
+                  match its own.
+                </p>
+                <p>
+                  For accessibility, inline SVG needs a decision per icon. A
+                  decorative glyph next to a label should carry{" "}
+                  <code>aria-hidden</code>, while a lone icon button needs an
+                  accessible name. The{" "}
+                  <a
+                    href="https://www.w3.org/WAI/tutorials/images/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    W3C images tutorial
+                  </a>{" "}
+                  spells out the cases, and it applies to the labels you wrap
+                  around these icons too.
+                </p>
+
+                <h2 id="faq-matita">Frequently asked questions</h2>
+                <h3>Can I use Matita in commercial work?</h3>
+                <p>
+                  Yes. The set is MIT licensed, so you can ship it in client
+                  projects and paid products, modify the glyphs, and keep the
+                  changes. No account, no attribution banner in your interface.
+                </p>
+                <h3>Does it work without React?</h3>
+                <p>
+                  It does. The SVG files render anywhere, the sprite works with a
+                  plain <code>{"<use>"}</code> tag, and the UMD build on
+                  jsDelivr replaces <code>data-sketch-icon</code> placeholders in
+                  a static page. The <code>toSvg</code> helper covers server side
+                  rendering and build scripts.
+                </p>
+                <h3>What is the difference between the two variants?</h3>
+                <p>
+                  The standard glyph is one clean stroke with pencil character.
+                  The pencil glyph draws each stroke as two or three loose lines
+                  and adds paper grain. Use the pencil variant above 32px and the
+                  standard one in dense UI.
+                </p>
+                <h3>Can I add my own icon to the set?</h3>
+                <p>
+                  Yes. Add a definition in <code>src/defs.js</code>, keep it to
+                  two to five primitives inside the 1 to 23 grid with no fills,
+                  then run <code>npm run build</code> and <code>npm test</code>.
+                  The build regenerates every output format, so your glyph gets
+                  the React component and the SVG file automatically.
+                </p>
+
+                <h2 id="why-it-belongs-matita">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  Most interfaces need an icon set long before they need a
+                  design system, and the usual choice is between a 5,000 icon
+                  library that looks like every other product and a folder of
+                  mismatched downloads. Matita sits in the middle: 200 glyphs,
+                  one consistent drawing engine, and a look that reads as
+                  sketched without turning your toolbar into a cartoon.
+                </p>
+                <p>
+                  For a designer, the pencil style is a fast way to make a
+                  product feel human, especially on an empty state or a landing
+                  block. For a builder shipping with an AI assistant, the set is
+                  plain SVG and typed React, so the model reads it cleanly and
+                  produces working markup on the first pass.
+                </p>
+                <p>
+                  It pairs with the rest of the reading here. The{" "}
+                  <Link href="/freebies/runeicons">RuneIcons set</Link> covers the
+                  clean line school when you need neutral shapes, and the guide to{" "}
+                  <Link href="/blog/design-system-for-business">
+                    design systems for business
+                  </Link>{" "}
+                  covers how icons fit into a component library. When you want
+                  the screens around those icons to hold up, the other{" "}
+                  <Link href="/freebies">free resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo workflow.
                 </p>

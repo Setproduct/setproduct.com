@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "matita-icons",
+    title: "Matita icons, 200 pencil-style glyphs",
+    description:
+      "200 pencil-style icons as SVG files and React components. Every stroke overshoots like a ruled pencil line, names stay predictable, and the set is MIT licensed.",
+    thumb: "/freebies/thumbs/freebie-matita-icons.webp",
+    image: "/freebies/freebie-matita-icons.webp",
+    category: "Components",
+    previewHref: "/freebies/matita-icons",
+    duplicateHref: "https://github.com/matita-dev/icons",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "cleanyourtv",
     title: "CleanYourTV — Android TV without the ads",
     description:
