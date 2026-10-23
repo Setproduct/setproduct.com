@@ -24,7 +24,7 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     slug: "matita-icons",
     title: "Matita icons, 200 pencil-style glyphs",
     description:
-      "200 pencil-style icons as SVG files and React components. Every stroke overshoots like a ruled pencil line, names stay predictable, and the set is MIT licensed.",
+      "200 pencil-style icons as SVG files and React components. Every stroke overshoots like a ruled pencil line, and the whole set is free under the MIT license.",
     thumb: "/freebies/thumbs/freebie-matita-icons.webp",
     image: "/freebies/freebie-matita-icons.webp",
     category: "Components",
