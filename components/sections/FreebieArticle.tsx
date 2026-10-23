@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useRef } from "react";
 import Link from "next/link";
+import MDXImage from "../blog/MDXImage";
 import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import ReadingProgress from "../blog/ReadingProgress";
@@ -550,6 +551,20 @@ export default function FreebieArticle({ slug }: Props) {
                 <h2 id="why-hand-drawn-differs">
                   Why hand-drawn beats a sketch filter
                 </h2>
+                <MDXImage
+                  src="/freebies/matita-icons-specimen.webp"
+                  alt="Specimen sheet of the calendar glyph on graph paper with crossed corners, ruled lines past the box and ticks that overshoot"
+                  width={760}
+                  height={1442}
+                  float="right"
+                />
+                <p>
+                  The specimen measures the calendar glyph against the 24 unit
+                  grid and marks the three details that carry the whole style.
+                  The box corners cross instead of meeting, the top rule runs
+                  past the frame on both sides, and even the short ticks for the
+                  binding overshoot where they start and where they stop.
+                </p>
                 <p>
                   A sketch filter takes a clean vector and adds wobble on top.
                   The result reads as drawn, yet the original geometry stays
@@ -558,12 +573,12 @@ export default function FreebieArticle({ slug }: Props) {
                   and leaves the mismatch in place.
                 </p>
                 <p>
-                  Matita starts from the stroke. Each glyph is a short program
+                  Matita starts from the stroke. Every glyph is a short program
                   over drafting primitives: a line, a polyline, a closed shape, a
-                  rect, a circle, an ellipse, an arc, a curve and a dot. Boxes
-                  cross at the corners, circles overlap where the pen closes,
-                  straight lines run a unit or two past their ends. The looseness
-                  lives in the definition rather than painted on afterwards.
+                  rect, a circle, an ellipse, an arc, a curve and a dot. The
+                  looseness lives in those primitives rather than in a filter
+                  painted on afterwards, which is why two icons from opposite ends
+                  of the set still feel drawn by one hand.
                 </p>
                 <p>
                   ☞ The shape comes out of the same numbers every time. No random
