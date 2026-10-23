@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import type { FocusEvent as ReactFocusEvent } from "react";
+import type { FocusEvent as ReactFocusEvent, MouseEvent as ReactMouseEvent } from "react";
 import type { NavOpenSource } from "../../../lib/nav/analytics";
-import { isDesktopLayout, isFinePointer } from "./interaction";
+import { isDesktopLayout, isFinePointer, isHeadingDownInto } from "./interaction";
+import type { Point } from "./interaction";
 import {
   NAV_HOVER_CLOSE_DELAY_MS,
   NAV_HOVER_OPEN_DELAY_MS,
+  NAV_MENU_AIM_HISTORY,
+  NAV_MENU_SWITCH_AIM_MIN_DY_PX,
+  NAV_MENU_SWITCH_AIM_RECHECK_MS,
+  NAV_MENU_SWITCH_AIM_SLOPE,
   NAV_SUBCATEGORY_SETTLE_MS,
 } from "./navConfig";
 import type { CategoryMenuKey, MenuKey } from "./navConfig";
@@ -32,6 +37,9 @@ export function useMegaMenuState() {
   const subHoverIntentRef = useRef<number | null>(null);
   // How the most recent menu was opened, read when `nav_menu_open` is sent.
   const lastOpenSourceRef = useRef<NavOpenSource>("hover");
+  // Recent pointer positions over the top bar, for the menu-aim test.
+  const pointerHistoryRef = useRef<Point[]>([]);
+  const lastPointerMoveAtRef = useRef(0);
 
   const isMenuOpen = (menuName: MenuKey) => openMenu === menuName;
 
@@ -95,15 +103,64 @@ export function useMegaMenuState() {
     openMenuImmediate(menuName);
   };
 
+  /** onMouseMove on the top bar: feeds the menu-aim test below. */
+  const trackPointer = (event: ReactMouseEvent<HTMLElement>) => {
+    const now = performance.now();
+    // A pause breaks the path: older points say nothing about the new one.
+    if (now - lastPointerMoveAtRef.current >= NAV_MENU_SWITCH_AIM_RECHECK_MS) pointerHistoryRef.current = [];
+    const history = pointerHistoryRef.current;
+    history.push({ x: event.clientX, y: event.clientY });
+    if (history.length > NAV_MENU_AIM_HISTORY) history.shift();
+    lastPointerMoveAtRef.current = now;
+  };
+
+  // Is the pointer, right now, travelling down into the open panel?
+  const isAimingAtOpenPanel = (current: MenuKey): boolean => {
+    const history = pointerHistoryRef.current;
+    if (history.length < 2) return false;
+    if (performance.now() - lastPointerMoveAtRef.current >= NAV_MENU_SWITCH_AIM_RECHECK_MS) return false;
+    const panel = document.getElementById(`nav-panel-${current}`);
+    if (!panel) return false;
+    return isHeadingDownInto(
+      history[0],
+      history[history.length - 1],
+      panel.getBoundingClientRect(),
+      NAV_MENU_SWITCH_AIM_SLOPE,
+      NAV_MENU_SWITCH_AIM_MIN_DY_PX,
+    );
+  };
+
+  // Swap to a sibling menu unless the pointer is only passing over its trigger
+  // on the way into the open panel. In that case wait; a pointer that stops on
+  // the trigger gets the swap on the next check. Uses hoverIntentRef, so
+  // entering the open panel (its wrapper calls openOnHover) cancels it.
+  const switchUnlessAiming = (current: MenuKey, menuName: MenuKey) => {
+    if (!isAimingAtOpenPanel(current)) {
+      openMenuImmediate(menuName);
+      return;
+    }
+    hoverIntentRef.current = window.setTimeout(() => {
+      hoverIntentRef.current = null;
+      switchUnlessAiming(current, menuName);
+    }, NAV_MENU_SWITCH_AIM_RECHECK_MS);
+  };
+
   const openOnHover = (menuName: MenuKey) => {
     if (!isFinePointer()) return;
     clearHoverIntent();
     if (openMenu !== menuName) lastOpenSourceRef.current = "hover";
-    // If a sibling menu is already open, swap instantly so sweeping across the
-    // bar stays responsive. Opening from a closed state waits out a short
-    // intent delay so an incidental pass-over never drops the panel.
-    if (openMenu !== null) {
+    // Back over the panel that is already open: keep it (and settle the
+    // switching flag, as before).
+    if (openMenu === menuName) {
       openMenuImmediate(menuName);
+      return;
+    }
+    // A sibling menu is already open: swap at once while the pointer sweeps
+    // along the bar, but not while it heads down into the open panel (menu
+    // aim). Opening from a closed state waits out a short intent delay so an
+    // incidental pass-over never drops the panel.
+    if (openMenu !== null) {
+      switchUnlessAiming(openMenu, menuName);
       return;
     }
     hoverIntentRef.current = window.setTimeout(() => {
@@ -226,6 +283,7 @@ export function useMegaMenuState() {
     /** Close whatever is open right now, cancelling pending hover timers. */
     closeMenu: closeMenuImmediate,
     getWrapperProps,
+    trackPointer,
     setCategoryOnHover,
     setCategoryNow,
     clearCategoryHover: clearSubHoverIntent,

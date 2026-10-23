@@ -251,7 +251,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
             onFocus={loadCatalogue}
           >
             <div className="nav-menu-inner">
-              <div className="nav-menu-links-wr">
+              <div className="nav-menu-links-wr" onMouseMove={menu.trackPointer}>
                 {hasInspiration ? (
                   <MegaMenuPanel
                     menu="inspiration"

@@ -50,6 +50,26 @@ export function isAimingAt(prev: Point, curr: Point, target: DOMRect, tolerance 
   return isInTriangle(curr, prev, top, bottom);
 }
 
+/**
+ * Menu aim for the top bar: is the pointer heading down into an open panel
+ * that spans the page below the triggers? The panel is full-width, so the
+ * safe triangle reduces to "moving down steeply enough and still above it".
+ */
+export function isHeadingDownInto(
+  prev: Point,
+  curr: Point,
+  panel: DOMRect,
+  slope: number,
+  minDy: number,
+): boolean {
+  if (panel.height === 0) return false;
+  const dy = curr.y - prev.y;
+  if (dy < minDy) return false;
+  // Already inside the panel: its own wrapper handles the hover from here.
+  if (curr.y >= panel.top) return false;
+  return dy >= slope * Math.abs(curr.x - prev.x);
+}
+
 /** Focusable, visible elements in DOM order, skipping decorative duplicates. */
 function getFocusables(root: Element): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(

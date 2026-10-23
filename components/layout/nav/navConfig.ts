@@ -42,6 +42,19 @@ export const NAV_MENU_AIM_TOLERANCE_PX = 24;
 // Pointer samples kept for the direction test. The oldest one is the origin,
 // which smooths out single-pixel jitter.
 export const NAV_MENU_AIM_HISTORY = 3;
+// Menu aim for the top bar. With a panel open, a pointer crossing another
+// trigger on its way down into the panel (Learn → card on the right, passing
+// over Resources) keeps the open panel. If it stops on that trigger instead,
+// the switch happens after this delay.
+export const NAV_MENU_SWITCH_AIM_RECHECK_MS = 300;
+// How steeply the pointer must head down to count as aiming at the panel:
+// dy ≥ slope × |dx|. Kept low on purpose: the path from Learn to the top-right
+// card on 1440 drops only ~7°, and erring towards "aiming" costs just the
+// delay above, while erring the other way is the bug itself.
+export const NAV_MENU_SWITCH_AIM_SLOPE = 1 / 20;
+// Minimum downward travel across the sample history, so hand jitter on a
+// horizontal sweep along the bar never reads as aiming.
+export const NAV_MENU_SWITCH_AIM_MIN_DY_PX = 2;
 // A panel must stay open this long to count as a real `nav_menu_open` in GA4,
 // so a cursor sweeping across the navbar doesn't inflate the numbers.
 export const NAV_OPEN_TRACK_DELAY_MS = 500;
