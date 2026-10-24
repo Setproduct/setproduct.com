@@ -3217,6 +3217,383 @@ figcaption {
   min-height: 2.7em;
 }
 
+/* ==========================================================================
+   Inputs L / M / S (approved on /inputs-proto, see plans/inputs-rollout-plan-2026-10.md).
+   Opt-in: the new look switches on only with a size class, a field without it keeps
+   the old Webflow style above. Size pairs with the button of the same size:
+     .text-input.is-l  ↔ .button          (50 high)
+     .text-input.is-m  ↔ .button-small    (40, 37 on phones)
+     .text-input.is-s  ↔ .button-x-small  (31)
+   Modifiers: .is-select (native select), .is-attention (border beam),
+   .textarea-input.is-l / .is-m / .is-s (multi-line).
+
+   Specificity: the class is doubled inside :is(), so every rule here is 0,3,0 or more.
+   That beats `.text-input.is-nav-search` from styles/globals.css (0,2,0) and, with
+   :disabled, Webflow `.w-input[disabled]:not(.w-input-disabled)` (0,3,0), whatever
+   order the stylesheets load in.
+
+   Rows: a field and a button in one horizontal row are aligned on the centre line
+   (align-items: center), never on the top edge. The push edge of the button and the
+   focus edge of the field are shadows and do not take part in alignment.
+   ========================================================================== */
+
+/* ---------- Size → generic geometry tokens ---------- */
+
+:is(.text-input.text-input, .textarea-input.textarea-input).is-l {
+  --input-h: var(--input-l-h);
+  --input-r: var(--input-l-r);
+  --input-px: var(--input-l-px);
+  --input-pb: var(--input-l-pb);
+  --input-pad-y: var(--input-l-pad-y);
+  --input-fs: var(--input-l-fs);
+  --input-edge-size: var(--input-l-edge-size);
+  --input-lift: var(--input-l-lift);
+  --input-rim-size: 1px;
+}
+
+:is(.text-input.text-input, .textarea-input.textarea-input).is-m {
+  --input-h: var(--input-m-h);
+  --input-r: var(--input-m-r);
+  --input-px: var(--input-m-px);
+  --input-pb: var(--input-m-pb);
+  --input-pad-y: var(--input-m-pad-y);
+  --input-fs: var(--input-m-fs);
+  --input-edge-size: var(--input-m-edge-size);
+  --input-lift: var(--input-m-lift);
+  --input-rim-size: 1px;
+}
+
+/* S: 0.5px rim, so the focus border is 1.5px (3 device pixels on retina). */
+:is(.text-input.text-input, .textarea-input.textarea-input).is-s {
+  --input-h: var(--input-s-h);
+  --input-r: var(--input-s-r);
+  --input-px: var(--input-s-px);
+  --input-pb: var(--input-s-pb);
+  --input-pad-y: var(--input-s-pad-y);
+  --input-fs: var(--input-s-fs);
+  --input-edge-size: var(--input-s-edge-size);
+  --input-lift: var(--input-s-lift);
+  --input-rim-size: 0.5px;
+}
+
+/* ---------- Base ----------
+   Focus shadows live on the field itself: a custom property resolves where it is
+   declared, so this is the only way the per-size --input-edge-size reaches them.
+   Same 3 layers in the same order in every state (inner top, inner rim, outer edge),
+   so the browser animates between them. */
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s) {
+  --input-shadow-focus:
+    inset 0 0 0 0 transparent,
+    inset 0 0 0 var(--input-rim-size) var(--input-border-focus),
+    0 var(--input-edge-size) 0 0 var(--input-edge);
+  --input-shadow-error-focus:
+    inset 0 0 0 0 transparent,
+    inset 0 0 0 var(--input-rim-size) var(--input-error),
+    0 var(--input-edge-size) 0 0 var(--input-edge-error);
+  display: block;
+  width: 100%;
+  /* Webflow .text-input sets min-height: 2.77778em of its own font-size,
+     which silently made M and S taller than the button. */
+  min-height: 0;
+  height: var(--input-h);
+  margin-bottom: 0;
+  /* Bottom padding lifts the text as much as the button label is lifted
+     (button padding 9/11, 6/7, 3/4), so both share one text line. */
+  padding: 0 var(--input-px) var(--input-pb);
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-r);
+  background-color: var(--input-bg);
+  box-shadow: var(--input-shadow);
+  color: var(--black);
+  font-size: var(--input-fs);
+  line-height: normal;
+  outline: none;
+  transform: translateY(0);
+  transition:
+    border-color var(--input-out) var(--input-ease),
+    box-shadow var(--input-out) var(--input-ease),
+    background-color var(--input-out) var(--input-ease),
+    transform var(--input-out) var(--input-ease);
+}
+
+/* Webflow paints #f0ebff behind the placeholder text. On hover and focus the fill
+   changes and that rectangle shows up as a patch, so it goes transparent. */
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s)::placeholder {
+  color: var(--input-placeholder);
+  background-color: transparent;
+}
+
+/* Smaller text makes iOS Safari zoom in: 16px floor on touch screens only. */
+@media (pointer: coarse) {
+  :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s) {
+    font-size: max(var(--input-fs), 16px);
+  }
+}
+
+/* ---------- Hover: no movement, fill clears up, border picks up the brand ---------- */
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):hover:not(:focus):not(:disabled):not([aria-invalid="true"]) {
+  border-color: var(--input-border-hover);
+  background-color: var(--input-bg-hover);
+  box-shadow: var(--input-shadow-hover);
+}
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):hover:not(:focus):not(:disabled)::placeholder {
+  color: var(--input-placeholder-hover);
+}
+
+/* ---------- Focus: the inner shadow moves outside as the outlined button edge,
+   the field lifts, the border doubles via the inner rim ---------- */
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):focus {
+  border-color: var(--input-border-focus);
+  background-color: var(--input-bg-focus);
+  box-shadow: var(--input-shadow-focus);
+  transform: translateY(var(--input-lift));
+  transition-duration: var(--input-in);
+}
+
+/* ---------- Error ---------- */
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s)[aria-invalid="true"] {
+  border-color: var(--input-error);
+}
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s)[aria-invalid="true"]:focus {
+  background-color: var(--input-error-bg-focus);
+  box-shadow: var(--input-shadow-error-focus);
+}
+
+/* Separate rule: an unsupported pseudo-class would drop the whole selector list. */
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):user-invalid {
+  border-color: var(--input-error);
+}
+
+/* ---------- Disabled: brand fill at 60% instead of Webflow grey #eee ---------- */
+
+:is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):disabled {
+  border-color: var(--input-border);
+  background-color: var(--input-bg);
+  box-shadow: none;
+  transform: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Search: magnifier on the left, lifts together with the field ----------
+   Markup: .search > input.text-input.is-nav-search.is-* + .search-icon-wr > .search-icon.
+   L: inset 20 + icon 21 + gap 10; M: 16 + 18 + 10; S: 12 + 14 + 8. */
+
+.text-input.text-input.is-nav-search.is-l { padding-left: calc(51 * var(--em-px)); }
+.text-input.text-input.is-nav-search.is-m { padding-left: calc(44 * var(--em-px)); }
+.text-input.text-input.is-nav-search.is-s { padding-left: calc(34 * var(--em-px)); }
+
+.text-input.is-l ~ .search-icon-wr { --input-lift: var(--input-l-lift); padding-left: calc(20 * var(--em-px)); }
+.text-input.is-m ~ .search-icon-wr { --input-lift: var(--input-m-lift); padding-left: calc(16 * var(--em-px)); }
+.text-input.is-s ~ .search-icon-wr { --input-lift: var(--input-s-lift); padding-left: calc(12 * var(--em-px)); }
+
+.text-input.is-l ~ .search-icon-wr .search-icon { width: calc(21 * var(--em-px)); }
+.text-input.is-m ~ .search-icon-wr .search-icon { width: calc(18 * var(--em-px)); }
+.text-input.is-s ~ .search-icon-wr .search-icon { width: calc(14 * var(--em-px)); }
+
+.text-input:is(.is-l, .is-m, .is-s) ~ .search-icon-wr {
+  pointer-events: none;
+  transition: transform var(--input-out) var(--input-ease);
+}
+
+.text-input:is(.is-l, .is-m, .is-s):focus ~ .search-icon-wr {
+  transform: translateY(var(--input-lift));
+  transition-duration: var(--input-in);
+}
+
+/* ---------- Textarea: keeps radius and side padding, grows to several lines ---------- */
+
+.textarea-input.textarea-input:is(.is-l, .is-m, .is-s) {
+  height: auto;
+  padding-top: var(--input-pad-y);
+  padding-bottom: var(--input-pad-y);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.textarea-input.textarea-input.is-l { min-height: calc(128 * var(--em-px)); }
+.textarea-input.textarea-input.is-m { min-height: calc(104 * var(--em-px)); }
+.textarea-input.textarea-input.is-s { min-height: calc(80 * var(--em-px)); }
+
+/* ---------- Select: native element, brand chevron, scaled with the size ---------- */
+
+.text-input.text-input.is-select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237c4dff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+.text-input.text-input.is-select.is-l {
+  padding-right: calc(52 * var(--em-px));
+  background-position: right calc(20 * var(--em-px)) center;
+  background-size: calc(18 * var(--em-px));
+}
+
+.text-input.text-input.is-select.is-m {
+  padding-right: calc(44 * var(--em-px));
+  background-position: right calc(16 * var(--em-px)) center;
+  background-size: calc(16 * var(--em-px));
+}
+
+.text-input.text-input.is-select.is-s {
+  padding-right: calc(34 * var(--em-px));
+  background-position: right calc(12 * var(--em-px)) center;
+  background-size: calc(14 * var(--em-px));
+}
+
+/* ---------- Attention: a light beam runs along the border ----------
+   One per screen at most (hero subscribe). The beam needs the real field width,
+   taken as 100cqw, so the field must be the ONLY child of a size container:
+     <div class="input-wr"><input class="text-input is-l is-attention" /></div>
+   .input-wr takes the room of the field in a row (flex: 1), the button stays beside it.
+   On focus the regular focus takes over, error paints the border red, disabled and
+   reduced motion get a still line. Full reasoning: InputsProtoPage.module.css. */
+
+@property --attention-t {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --attention-fill {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #f0ebff;
+}
+
+@keyframes input-attention-beam {
+  to {
+    --attention-t: 1;
+  }
+}
+
+.input-wr {
+  container-type: inline-size;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.text-input.text-input.is-attention {
+  --attention-fill: var(--input-bg);
+  --attention-line: var(--input-border);
+  --attention-w: 100cqw;
+  --attention-o: calc(var(--attention-b) / 2);
+  --attention-rr: calc(var(--attention-r) - var(--attention-o));
+  --attention-s1: calc(var(--attention-w) - 2 * var(--attention-r));
+  --attention-s2: calc(var(--attention-h) - 2 * var(--attention-r));
+  --attention-a: calc(1.5707963 * var(--attention-rr));
+  --attention-p: calc(2 * var(--attention-s1) + 2 * var(--attention-s2) + 4 * var(--attention-a));
+  --attention-d: calc(var(--attention-t) * var(--attention-p));
+  --attention-c1: clamp(0px, var(--attention-d), var(--attention-s1));
+  --attention-c2: clamp(0px, var(--attention-d) - var(--attention-s1), var(--attention-a));
+  --attention-c3: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-a), var(--attention-s2));
+  --attention-c4: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-s2) - var(--attention-a), var(--attention-a));
+  --attention-c5: clamp(0px, var(--attention-d) - var(--attention-s1) - var(--attention-s2) - 2 * var(--attention-a), var(--attention-s1));
+  --attention-c6: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - var(--attention-s2) - 2 * var(--attention-a), var(--attention-a));
+  --attention-c7: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - var(--attention-s2) - 3 * var(--attention-a), var(--attention-s2));
+  --attention-c8: clamp(0px, var(--attention-d) - 2 * var(--attention-s1) - 2 * var(--attention-s2) - 3 * var(--attention-a), var(--attention-a));
+  --attention-k: calc(16 * 1.0032043);
+  --attention-q: calc(16 * var(--attention-rr));
+  --attention-angle: calc(
+    -90deg + var(--attention-k) *
+      (atan2(var(--attention-c2), var(--attention-q)) + atan2(var(--attention-c4), var(--attention-q)) +
+        atan2(var(--attention-c6), var(--attention-q)) + atan2(var(--attention-c8), var(--attention-q)))
+  );
+  --attention-x: calc(
+    var(--attention-r) + var(--attention-c1) - var(--attention-c5) +
+      var(--attention-rr) * cos(var(--attention-angle))
+  );
+  --attention-y: calc(
+    var(--attention-r) + var(--attention-c3) - var(--attention-c7) +
+      var(--attention-rr) * sin(var(--attention-angle))
+  );
+  --attention-beam: radial-gradient(
+    ellipse calc(1.6 * var(--attention-h)) calc(0.92 * var(--attention-h)) at var(--attention-x) var(--attention-y),
+    var(--primary) 0%,
+    #9c78ff 40%,
+    #7c4dff00 100%
+  );
+  /* 2px border = the 2px focus border of L and M, so no rim is needed. */
+  --input-rim-size: 0px;
+  --attention-h: var(--input-h);
+  --attention-r: var(--input-r);
+  --attention-b: 2px;
+  border-width: 2px;
+  border-color: transparent;
+  background:
+    linear-gradient(var(--attention-fill), var(--attention-fill)) padding-box,
+    var(--attention-beam) border-box,
+    linear-gradient(var(--attention-line), var(--attention-line)) border-box;
+  animation: input-attention-beam 4s linear infinite;
+  transition:
+    border-color var(--input-out) var(--input-ease),
+    box-shadow var(--input-out) var(--input-ease),
+    --attention-fill var(--input-out) var(--input-ease),
+    transform var(--input-out) var(--input-ease);
+}
+
+/* S: 1px beam + 0.5px rim = the 1.5px focus border of the small field.
+   (1.5px border is not an option: Chrome rounds border widths down.) */
+.text-input.text-input.is-attention.is-s {
+  --attention-b: 1px;
+  --input-rim-size: 0.5px;
+  border-width: 1px;
+}
+
+.text-input.text-input.is-attention:hover:not(:focus):not(:disabled):not([aria-invalid="true"]) {
+  --attention-fill: var(--input-bg-hover);
+  border-color: transparent;
+}
+
+/* A solid border paints over the background, so it simply covers the beam. */
+.text-input.text-input.is-attention:focus {
+  --attention-fill: var(--input-bg-focus);
+  border-color: var(--input-border-focus);
+  animation-play-state: paused;
+}
+
+.text-input.text-input.is-attention[aria-invalid="true"] {
+  border-color: var(--input-error);
+  animation-play-state: paused;
+}
+
+.text-input.text-input.is-attention:user-invalid {
+  border-color: var(--input-error);
+  animation-play-state: paused;
+}
+
+.text-input.text-input.is-attention[aria-invalid="true"]:focus {
+  --attention-fill: var(--input-error-bg-focus);
+}
+
+.text-input.text-input.is-attention:disabled {
+  animation: none;
+  --attention-beam: linear-gradient(transparent, transparent);
+}
+
+/* ---------- Reduced motion: colour and shadow stay, the lift and the beam go ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s),
+  .text-input:is(.is-l, .is-m, .is-s) ~ .search-icon-wr {
+    transition: none;
+    transform: none !important;
+  }
+
+  .text-input.text-input.is-attention {
+    animation: none;
+    --attention-line: #7c4dff59;
+    --attention-beam: linear-gradient(transparent, transparent);
+  }
+}
+
 .span-gradient {
   background-image: linear-gradient(to bottom, var(--primary) 33%, #cfc2e7);
   -webkit-text-fill-color: transparent;
