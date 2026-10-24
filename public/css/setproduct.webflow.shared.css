@@ -2678,6 +2678,32 @@ figcaption {
   --ripple-color: var(--btn-ripple-soft);
 }
 
+/* Outlined keeps the same outer height as primary, secondary and the input of its size
+   (L 50, M 40). Its border used to sit on top of the body and made it 4px taller, so a
+   field or another button next to it did not line up. The vertical padding now gives
+   the border width back. --btn-border follows the real border (2px, 1px for M on
+   narrow screens), so the height stays equal on every breakpoint. */
+.button.outlined,
+.button-small.outlined {
+  --btn-border: 2px;
+}
+
+.button.outlined {
+  padding-top: calc(9em - var(--btn-border));
+  padding-bottom: calc(11em - var(--btn-border));
+}
+
+.button-small.outlined {
+  padding-top: calc(6em - var(--btn-border));
+  padding-bottom: calc(7em - var(--btn-border));
+}
+
+@media screen and (max-width: 767px) {
+  .button-small.outlined {
+    --btn-border: 1px;
+  }
+}
+
 /* Hover keeps the edge size; secondary darkens it (10% -> 16%) */
 .button:not(.tab):hover,
 .button-small:not(.tab):hover {

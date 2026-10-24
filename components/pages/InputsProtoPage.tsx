@@ -29,8 +29,8 @@ const SIZES: {
   button: string;
   buttonText: string;
   secondary: string;
-  /* Outlined exists only for L and M. It has a 2px border on top of the body,
-     so today it renders 4px taller than the field (see the sizes overview). */
+  /* Outlined exists only for L and M. Its vertical padding gives the 2px border
+     back, so it has the same height as the field and the other buttons. */
   outlined?: string;
   label: string;
   hint: string;
