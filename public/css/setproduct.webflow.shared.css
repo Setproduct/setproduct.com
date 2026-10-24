@@ -2113,6 +2113,76 @@ textarea.w-input, textarea.w-select {
   --btn-hover-in: 240ms;
   --btn-hover-out: 360ms;
   --btn-hover-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Inputs (see plans/inputs-rollout-plan-2026-10.md, AGENTS.md «Поля ввода»).
+     Tokens only: nothing on the live site reads them until a field gets a size class
+     (.text-input.is-l / .is-m / .is-s). Every state uses the same 3 shadow layers in
+     the same order (inner top, inner rim, outer edge), so the browser can animate them. */
+  --input-bg: #f0ebff;
+  --input-bg-hover: #f4f0ff;
+  --input-bg-focus: #f8f5ff;
+  /* Resting border = the colour the inner top shadow renders as (#7c4dff33 over #f0ebff).
+     Rule: an input at rest has no grey border. */
+  --input-border: #d7ccfc;
+  --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
+  --input-border-focus: var(--primary);
+  /* Outer edge on focus = edge of the outlined push button. */
+  --input-edge: var(--btn-outlined-edge);
+  --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
+  --input-shadow:
+    inset 0 3px 1px #7c4dff33,
+    inset 0 0 0 0 transparent,
+    0 0 0 0 transparent;
+  --input-shadow-hover: var(--input-shadow);
+  --input-placeholder: #19181b8c;
+  --input-placeholder-hover: #19181bb3;
+  --input-error: #e03e3e;
+  --input-error-bg-focus: #fff5f5;
+  /* Rising is quick, settling back into the page is slower and softer. */
+  --input-in: 160ms;
+  --input-out: 260ms;
+  --input-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Input size geometry, paired with the button sizes (px at 1440):
+   size | button          | h  | radius | text | focus edge | lift
+   L    | .button         | 50 | 20     | 18   | 6          | 2
+   M    | .button-small   | 40 | 16     | 16   | 4          | 1.5
+   S    | .button-x-small | 31 | 12     | 14   | 3          | 1
+   Lengths go through --em-px, so they scale with the layout but ignore the field's own
+   font-size. A size class maps these onto --input-h / -r / -px / -fs / -edge-size / -lift.
+   Declared after the --em-px block would also work: custom properties resolve on use. */
+:root {
+  --input-l-h: calc(50 * var(--em-px));
+  --input-l-r: calc(20 * var(--em-px));
+  --input-l-px: calc(20 * var(--em-px));
+  --input-l-pad-y: calc(10.5 * var(--em-px));
+  --input-l-fs: 18em;
+  --input-l-edge-size: calc(6 * var(--em-px));
+  --input-l-lift: calc(-2 * var(--em-px));
+
+  --input-m-h: calc(40 * var(--em-px));
+  --input-m-r: calc(16 * var(--em-px));
+  --input-m-px: calc(16 * var(--em-px));
+  --input-m-pad-y: calc(7 * var(--em-px));
+  --input-m-fs: 16em;
+  --input-m-edge-size: calc(4 * var(--em-px));
+  --input-m-lift: calc(-1.5 * var(--em-px));
+
+  --input-s-h: calc(31 * var(--em-px));
+  --input-s-r: calc(12 * var(--em-px));
+  --input-s-px: calc(12 * var(--em-px));
+  --input-s-pad-y: calc(4 * var(--em-px));
+  --input-s-fs: 14em;
+  --input-s-edge-size: calc(3 * var(--em-px));
+  --input-s-lift: calc(-1 * var(--em-px));
+}
+
+/* On phones .text-size-medium drops to 16em, so .button-small is 6 + 7 + 16 × 1.5 = 37. */
+@media screen and (max-width: 479px) {
+  :root {
+    --input-m-h: calc(37 * var(--em-px));
+  }
 }
 
 .w-form-formradioinput--inputType-custom {

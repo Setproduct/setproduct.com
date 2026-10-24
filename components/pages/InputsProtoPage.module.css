@@ -153,39 +153,11 @@
      It is a static "the field noticed you" cue: the fill clears up towards white,
      the border picks up the brand colour, the placeholder gets a bit darker.
      Every state uses the same 3 shadow layers in the same order, so the browser can
-     interpolate them: 1 inner top, 2 inner rim, 3 outer edge. */
-  --input-bg: #f0ebff;
-  --input-bg-hover: #f4f0ff;
-  --input-bg-focus: #f8f5ff;
-  /* Resting border = the colour the inner top shadow actually renders as:
-     #7c4dff33 (20% brand) laid over the #f0ebff fill gives about #d9cbff. Taking
-     that same colour as the border makes the edge read as a continuation of the
-     shadow instead of a separate grey line. System rule: an input in the resting
-     state has no grey border at all. */
-  --input-border: #d7ccfc;
-  --input-border-hover: color-mix(in srgb, var(--primary) 55%, transparent);
-  --input-border-focus: var(--primary);
+     interpolate them: 1 inner top, 2 inner rim, 3 outer edge.
 
-  /* Outer edge on focus = outlined push button edge. Height follows the button size
-     (L 6, M 4, S 3), set per size below. Written via --em-px because the field has
-     its own font-size and plain em would scale with it. */
-  --input-edge: var(--btn-outlined-edge);
-  --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
-  --input-shadow:
-    inset 0 3px 1px #7c4dff33,
-    inset 0 0 0 0 transparent,
-    0 0 0 0 transparent;
-  --input-shadow-hover: var(--input-shadow);
-
-  --input-placeholder: #19181b8c;
-  --input-placeholder-hover: #19181bb3;
-  --input-error: #e03e3e;
-  --input-error-bg-focus: #fff5f5;
-
-  /* Rising is quick, settling back into the page is slower and softer. */
-  --input-in: 160ms;
-  --input-out: 260ms;
-  --input-ease: cubic-bezier(0.22, 1, 0.36, 1);
+     All --input-* colour, shadow and timing tokens and the per-size geometry
+     (--input-l-*, --input-m-*, --input-s-*) now live in :root of
+     public/css/setproduct.webflow.shared.css. The prototype reads them from there. */
 }
 
 /* ---------- Base ---------- */
@@ -238,49 +210,48 @@
    screens (smaller text makes iOS Safari zoom in), where the text is centred and the
    height stays the same. */
 
+/* A size class only maps the shared per-size tokens onto the generic ones; the
+   geometry itself is written once below. The phone height of M (37) comes from the
+   :root media query in the shared CSS. */
+.proto .f.f.l {
+  --input-h: var(--input-l-h);
+  --input-r: var(--input-l-r);
+  --input-px: var(--input-l-px);
+  --input-pad-y: var(--input-l-pad-y);
+  --input-fs: var(--input-l-fs);
+  --input-edge-size: var(--input-l-edge-size);
+  --input-lift: var(--input-l-lift);
+}
+
+.proto .f.f.m {
+  --input-h: var(--input-m-h);
+  --input-r: var(--input-m-r);
+  --input-px: var(--input-m-px);
+  --input-pad-y: var(--input-m-pad-y);
+  --input-fs: var(--input-m-fs);
+  --input-edge-size: var(--input-m-edge-size);
+  --input-lift: var(--input-m-lift);
+}
+
+.proto .f.f.s {
+  --input-h: var(--input-s-h);
+  --input-r: var(--input-s-r);
+  --input-px: var(--input-s-px);
+  --input-pad-y: var(--input-s-pad-y);
+  --input-fs: var(--input-s-fs);
+  --input-edge-size: var(--input-s-edge-size);
+  --input-lift: var(--input-s-lift);
+}
+
 .proto .f.f.l,
 .proto .f.f.m,
 .proto .f.f.s {
   min-height: 0;
   line-height: normal;
-}
-
-.proto .f.f.l {
-  --input-edge-size: calc(6 * var(--em-px));
-  --input-lift: calc(-2 * var(--em-px));
-  --input-pad-y: calc(10.5 * var(--em-px));
-  font-size: 18em;
-  height: calc(50 * var(--em-px));
-  padding: 0 calc(20 * var(--em-px));
-  border-radius: calc(20 * var(--em-px));
-}
-
-.proto .f.f.m {
-  --input-edge-size: calc(4 * var(--em-px));
-  --input-lift: calc(-1.5 * var(--em-px));
-  --input-pad-y: calc(7 * var(--em-px));
-  font-size: 16em;
-  height: calc(40 * var(--em-px));
-  padding: 0 calc(16 * var(--em-px));
-  border-radius: calc(16 * var(--em-px));
-}
-
-.proto .f.f.s {
-  --input-edge-size: calc(3 * var(--em-px));
-  --input-lift: calc(-1 * var(--em-px));
-  --input-pad-y: calc(4 * var(--em-px));
-  font-size: 14em;
-  height: calc(31 * var(--em-px));
-  padding: 0 calc(12 * var(--em-px));
-  border-radius: calc(12 * var(--em-px));
-}
-
-/* On phones Webflow drops .text-size-medium to 16em, so .button-small shrinks to
-   6 + 7 + 16 × 1.5 = 37. The M field follows it. */
-@media screen and (max-width: 479px) {
-  .proto .f.f.m {
-    height: calc(37 * var(--em-px));
-  }
+  font-size: var(--input-fs);
+  height: var(--input-h);
+  padding: 0 var(--input-px);
+  border-radius: var(--input-r);
 }
 
 @media (pointer: coarse) {
@@ -293,9 +264,9 @@
 }
 
 /* The magnifier is a sibling, it does not inherit the field's --input-lift. */
-.proto .f.f.l ~ :global(.search-icon-wr) { --input-lift: calc(-2 * var(--em-px)); }
-.proto .f.f.m ~ :global(.search-icon-wr) { --input-lift: calc(-1.5 * var(--em-px)); }
-.proto .f.f.s ~ :global(.search-icon-wr) { --input-lift: calc(-1 * var(--em-px)); }
+.proto .f.f.l ~ :global(.search-icon-wr) { --input-lift: var(--input-l-lift); }
+.proto .f.f.m ~ :global(.search-icon-wr) { --input-lift: var(--input-m-lift); }
+.proto .f.f.s ~ :global(.search-icon-wr) { --input-lift: var(--input-s-lift); }
 
 /* Search: room for the magnifier on the left, scaled with the size.
    L: inset 20 + icon 21 + gap 10; M: 16 + 18 + 10; S: 12 + 14 + 8. */
