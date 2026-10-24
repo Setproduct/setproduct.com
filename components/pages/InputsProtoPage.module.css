@@ -48,9 +48,13 @@
   margin-top: 16em;
 }
 
+/* Rule for every horizontal row of fields and buttons: centre line, never the top edge.
+   With equal heights the result is the same, but a field and a button of different
+   sizes (or a taller wrapper) still share one axis. The outer push edge of the button
+   and the focus edge of the field are shadows, they do not take part in alignment. */
 .sizeRow {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12em;
 }
 
@@ -86,9 +90,16 @@
   grid-column: 1 / -1;
 }
 
+/* The field row of the subgrid: the control sits on the centre of the row, so in a row
+   where one cell holds field + button the neighbouring field stays on the same axis. */
+.settingsField > :nth-child(2) {
+  align-self: center;
+}
+
 .settingsActions {
   grid-column: 1 / -1;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 12em;
 }
@@ -96,7 +107,7 @@
 /* Field + button in one line: the field takes the room, the button keeps its width. */
 .inlineRow {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8em;
 }
 
@@ -214,6 +225,7 @@
    geometry itself is written once below. The phone height of M (37) comes from the
    :root media query in the shared CSS. */
 .proto .f.f.l {
+  --input-pb: var(--input-l-pb);
   --input-h: var(--input-l-h);
   --input-r: var(--input-l-r);
   --input-px: var(--input-l-px);
@@ -224,6 +236,7 @@
 }
 
 .proto .f.f.m {
+  --input-pb: var(--input-m-pb);
   --input-h: var(--input-m-h);
   --input-r: var(--input-m-r);
   --input-px: var(--input-m-px);
@@ -234,6 +247,7 @@
 }
 
 .proto .f.f.s {
+  --input-pb: var(--input-s-pb);
   --input-h: var(--input-s-h);
   --input-r: var(--input-s-r);
   --input-px: var(--input-s-px);
@@ -250,7 +264,8 @@
   line-height: normal;
   font-size: var(--input-fs);
   height: var(--input-h);
-  padding: 0 var(--input-px);
+  /* Bottom padding lifts the text exactly as much as the button label is lifted. */
+  padding: 0 var(--input-px) var(--input-pb);
   border-radius: var(--input-r);
 }
 

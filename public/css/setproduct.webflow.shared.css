@@ -2152,7 +2152,15 @@ textarea.w-input, textarea.w-select {
    Lengths go through --em-px, so they scale with the layout but ignore the field's own
    font-size. A size class maps these onto --input-h / -r / -px / -fs / -edge-size / -lift.
    Declared after the --em-px block would also work: custom properties resolve on use. */
+/* --input-*-pb: extra bottom padding that lifts the text by half of it. The button label
+   is not in the geometric centre either: its padding is 9/11 (L), 6/7 (M), 3/4 (S), so the
+   label sits 1 / 0.5 / 0.5 px above the middle. The field copies that offset, so the text
+   in a field and in the button next to it share one line. */
 :root {
+  --input-l-pb: calc(2 * var(--em-px));
+  --input-m-pb: calc(1 * var(--em-px));
+  --input-s-pb: calc(1 * var(--em-px));
+
   --input-l-h: calc(50 * var(--em-px));
   --input-l-r: calc(20 * var(--em-px));
   --input-l-px: calc(20 * var(--em-px));
@@ -4386,6 +4394,8 @@ figcaption {
   grid-column-gap: 16em;
   grid-row-gap: 16em;
   display: flex;
+  /* Search field and button share the centre line, not the top edge. */
+  align-items: center;
 }
 
 .action-par-wr.hide {
