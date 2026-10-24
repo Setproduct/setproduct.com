@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import type { NavData } from "../../lib/nav/types";
@@ -29,6 +29,9 @@ const SIZES: {
   button: string;
   buttonText: string;
   secondary: string;
+  /* Outlined exists only for L and M. It has a 2px border on top of the body,
+     so today it renders 4px taller than the field (see the sizes overview). */
+  outlined?: string;
   label: string;
   hint: string;
 }[] = [
@@ -39,6 +42,7 @@ const SIZES: {
     button: "button",
     buttonText: "text-size-large",
     secondary: "secondary",
+    outlined: "outlined",
     label: "text-size-regular",
     hint: "text-size-small",
   },
@@ -49,6 +53,7 @@ const SIZES: {
     button: "button-small",
     buttonText: "text-size-medium",
     secondary: "secondary",
+    outlined: "outlined",
     label: "text-size-small",
     hint: "text-size-tiny",
   },
@@ -392,10 +397,143 @@ function SizeRows() {
             <button className={`${size.button} ${size.secondary} w-inline-block`} type="button">
               <div className={`${size.buttonText} text-weight-bold`}>Cancel</div>
             </button>
+            {size.outlined && (
+              <button className={`${size.button} ${size.outlined} w-inline-block`} type="button">
+                <div className={`${size.buttonText} text-weight-bold`}>Preview</div>
+              </button>
+            )}
           </div>
         </div>
       ))}
     </div>
+  );
+}
+
+/* ---------- Settings panel: a dense dashboard form, the alignment acceptance test ----------
+   Two columns on a subgrid: every field takes three shared rows (label / field / message),
+   so the fields of one row stay on one line even when one of them has a long error
+   and its neighbour has no hint at all. */
+
+const ROLES = ["Admin", "Editor", "Viewer"];
+const TIMEZONES = ["UTC+3 Moscow", "UTC+0 London", "UTC−5 New York"];
+
+type SettingsFieldProps = {
+  id: string;
+  label: string;
+  labelClass: string;
+  msgClass: string;
+  hint?: string;
+  error?: string;
+  wide?: boolean;
+  children: ReactNode;
+};
+
+function SettingsField({ id, label, labelClass, msgClass, hint, error, wide, children }: SettingsFieldProps) {
+  return (
+    <div className={cx(styles.settingsField, wide && styles.settingsWide)}>
+      <label className={`${labelClass} ${styles.label}`} htmlFor={id}>
+        {label}
+      </label>
+      {children}
+      {error ? (
+        <p className={`${msgClass} ${styles.errorText}`} id={`${id}-msg`}>
+          {error}
+        </p>
+      ) : hint ? (
+        <p className={`${msgClass} ${styles.hint}`} id={`${id}-msg`}>
+          {hint}
+        </p>
+      ) : (
+        <span aria-hidden="true" />
+      )}
+    </div>
+  );
+}
+
+function SettingsPanel({ sizeId }: { sizeId: Size }) {
+  const size = SIZES.find((s) => s.id === sizeId)!;
+  const id = `settings-${size.id}`;
+  const field = cx("text-input w-input", styles.f, styles[size.id]);
+  const common = { labelClass: size.label, msgClass: size.hint };
+
+  return (
+    <form className={`${styles.cell} ${styles.proto}`} noValidate onSubmit={(e) => e.preventDefault()}>
+      <SizeTag size={size} />
+      <div className={styles.settings}>
+        <SettingsField {...common} hint="Shown in the sidebar and on invoices" id={`${id}-name`} label="Workspace name">
+          <input aria-describedby={`${id}-name-msg`} className={field} defaultValue="Setproduct" id={`${id}-name`} type="text" />
+        </SettingsField>
+
+        <SettingsField
+          {...common}
+          error="This email already belongs to another workspace. Use a different address or ask its owner to transfer it."
+          id={`${id}-email`}
+          label="Owner email"
+        >
+          <input
+            aria-describedby={`${id}-email-msg`}
+            aria-invalid
+            autoComplete="email"
+            className={field}
+            defaultValue="roman@setproduct"
+            id={`${id}-email`}
+            type="email"
+          />
+        </SettingsField>
+
+        <SettingsField {...common} id={`${id}-role`} label="Default role">
+          <select className={cx("text-input w-select", styles.f, styles[size.id], styles.select)} defaultValue="Editor" id={`${id}-role`}>
+            {ROLES.map((r) => (
+              <option key={r}>{r}</option>
+            ))}
+          </select>
+        </SettingsField>
+
+        <SettingsField {...common} hint="Used for reports and digests" id={`${id}-tz`} label="Timezone">
+          <select
+            aria-describedby={`${id}-tz-msg`}
+            className={cx("text-input w-select", styles.f, styles[size.id], styles.select)}
+            id={`${id}-tz`}
+          >
+            {TIMEZONES.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </select>
+        </SettingsField>
+
+        <SettingsField {...common} hint="Keep it secret" id={`${id}-key`} label="API key">
+          <div className={styles.inlineRow}>
+            <input aria-describedby={`${id}-key-msg`} className={field} defaultValue="sp_live_4f9a…c21e" id={`${id}-key`} readOnly type="text" />
+            <button className={`${size.button} ${size.secondary} w-inline-block`} type="button">
+              <div className={`${size.buttonText} text-weight-bold`}>Copy</div>
+            </button>
+          </div>
+        </SettingsField>
+
+        <SettingsField {...common} hint="Change it on the billing page" id={`${id}-seats`} label="Seats">
+          <input aria-describedby={`${id}-seats-msg`} className={field} defaultValue={12} disabled id={`${id}-seats`} type="number" />
+        </SettingsField>
+
+        <SettingsField {...common} hint="Up to 280 characters" id={`${id}-about`} label="Description" wide>
+          <textarea
+            aria-describedby={`${id}-about-msg`}
+            className={cx("textarea-input w-input", styles.f, styles[size.id])}
+            id={`${id}-about`}
+            maxLength={280}
+            placeholder="What this workspace is for…"
+          />
+        </SettingsField>
+
+        <div className={styles.settingsActions}>
+          <button className={`${size.button} ${size.secondary} w-inline-block`} type="button">
+            <div className={`${size.buttonText} text-weight-bold`}>Cancel</div>
+          </button>
+          <button className={`${size.button} w-inline-block`} type="submit">
+            <div className={`${size.buttonText} text-weight-bold`}>Save changes</div>
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }
 
@@ -430,6 +568,20 @@ export default function InputsProtoPage({ navData }: Props) {
               </p>
               <div className="spacer-16" />
               <SizeRows />
+
+              <div className="spacer-48" />
+              <h2 className="heading-style-h5">Settings panel (dense dashboard form)</h2>
+              <div className="spacer-4" />
+              <p className={`text-size-regular ${styles.cellLabel}`}>
+                Acceptance test for alignment. Two columns of M and S fields on a shared grid: fields in one row
+                stay on one line even when a neighbour has a long error or no hint. Select, read-only field with a
+                button, disabled field, textarea and the Save / Cancel row all use the same size.
+              </p>
+              <div className="spacer-16" />
+              <div className={styles.row}>
+                <SettingsPanel sizeId="m" />
+                <SettingsPanel sizeId="s" />
+              </div>
 
               <div className="spacer-48" />
               <h2 className="heading-style-h5">Attention field (border beam)</h2>

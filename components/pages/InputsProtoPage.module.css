@@ -59,6 +59,58 @@
   min-width: 0;
 }
 
+/* ---------- Settings panel (dense dashboard form) ----------
+   Each field spans three rows of the parent grid via subgrid: label / field / message.
+   Rows are shared by both columns, so a long error in one column makes the message row
+   taller for both, and the fields themselves stay on one horizontal line.
+   Row gap between field groups (20em) is larger than the focus edge + lift of L (8),
+   so the edge of a focused field never touches the label below. */
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16em;
+  row-gap: 20em;
+}
+
+.settingsField {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 6em;
+  align-content: start;
+  min-width: 0;
+}
+
+.settingsWide {
+  grid-column: 1 / -1;
+}
+
+.settingsActions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12em;
+}
+
+/* Field + button in one line: the field takes the room, the button keeps its width. */
+.inlineRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8em;
+}
+
+.inlineRow > input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .settings {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 991px) {
   .rowWide {
     grid-template-columns: 1fr;
