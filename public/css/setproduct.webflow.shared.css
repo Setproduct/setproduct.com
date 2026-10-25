@@ -3594,6 +3594,128 @@ figcaption {
   }
 }
 
+/* ==========================================================================
+   Form helpers: field group, row, grid (see plans/inputs-rollout-plan-2026-10.md).
+   Copy-paste ready for any dense settings form:
+
+     <form class="form-grid is-m">
+       <div class="field">
+         <label class="field-label" for="name">Workspace name</label>
+         <input class="text-input is-m" id="name" aria-describedby="name-msg" />
+         <p class="field-hint" id="name-msg">Shown on invoices</p>
+       </div>
+       <div class="field">
+         <label class="field-label" for="key">API key</label>
+         <div class="form-row">
+           <input class="text-input is-m" id="key" readonly />
+           <button class="button-small secondary" type="button">…</button>
+         </div>
+         <span aria-hidden="true"></span>   (empty message row keeps the grid)
+       </div>
+       <div class="form-row is-end is-wide">…Cancel / Save…</div>
+     </form>
+
+   Size class on .form-grid (or on a single .field): is-l / is-m / is-s, the same
+   as the fields inside. It only sets the label and message text size.
+   ========================================================================== */
+
+/* ---------- Field group: label / control / message ---------- */
+
+.field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  row-gap: 6em;
+  min-width: 0;
+}
+
+.field-label {
+  display: block;
+  margin: 0;
+  color: var(--black);
+  font-size: 16em;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.field-hint,
+.field-error {
+  margin: 0;
+  font-size: 14em;
+  line-height: 150%;
+}
+
+.field-hint {
+  color: #19181b99;
+}
+
+.field-error {
+  color: var(--input-error);
+}
+
+:is(.form-grid, .field).is-m .field-label,
+:is(.form-grid, .field).is-s .field-label {
+  font-size: 14em;
+}
+
+:is(.form-grid, .field).is-m :is(.field-hint, .field-error),
+:is(.form-grid, .field).is-s :is(.field-hint, .field-error) {
+  font-size: 12em;
+}
+
+/* ---------- Row: fields and buttons on one centre line ----------
+   Never the top edge and never stretch: equal heights come from the size pairs,
+   the centre line keeps them aligned even when something differs. */
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12em;
+  min-width: 0;
+}
+
+.form-row > :is(.text-input, .input-wr) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.form-row.is-end {
+  justify-content: flex-end;
+}
+
+/* ---------- Grid: dense form in two columns ----------
+   Each .field spans 3 shared rows via subgrid (label / control / message). A long
+   error in one column makes the message row taller for both, the controls stay on
+   one line. Row gap 20 > focus edge + lift of L (8), so a focused field never
+   touches the label below. */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16em;
+  row-gap: 20em;
+}
+
+.form-grid > .field {
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+}
+
+/* The control sits on the centre of its shared row. */
+.form-grid > .field > :nth-child(2) {
+  align-self: center;
+}
+
+.form-grid > .is-wide {
+  grid-column: 1 / -1;
+}
+
+@media screen and (max-width: 767px) {
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .span-gradient {
   background-image: linear-gradient(to bottom, var(--primary) 33%, #cfc2e7);
   -webkit-text-fill-color: transparent;
