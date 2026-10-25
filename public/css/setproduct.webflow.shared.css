@@ -3324,6 +3324,27 @@ figcaption {
   background-color: transparent;
 }
 
+/* ---------- type="search" reset (Safari, iOS Safari, Chrome) ----------
+   Safari draws its own rounded search field, an inner left inset and a cancel
+   cross that ignores our padding and pushes the text off the button text line.
+   Webflow only sets -webkit-appearance, so the standard property and the
+   results button are reset here, scoped to the new sizes. Clearing the field
+   is the job of our own button (see /search), never the native cross. */
+.text-input.text-input:is(.is-l, .is-m, .is-s)[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.text-input.text-input:is(.is-l, .is-m, .is-s)[type="search"]::-webkit-search-decoration,
+.text-input.text-input:is(.is-l, .is-m, .is-s)[type="search"]::-webkit-search-cancel-button,
+.text-input.text-input:is(.is-l, .is-m, .is-s)[type="search"]::-webkit-search-results-button,
+.text-input.text-input:is(.is-l, .is-m, .is-s)[type="search"]::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* Smaller text makes iOS Safari zoom in: 16px floor on touch screens only. */
 @media (pointer: coarse) {
   :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s) {
