@@ -7,7 +7,7 @@ slug: chart-ui-design-guide
 date: '2026-11-01'
 author: Roman Kamushken
 category: UI Design
-coverImage: /blog/covers/chart-ui-guide-01-hero.webp
+coverImage: /blog/covers/chart-ui-design-guide.webp
 coverImageAlt: >-
   A wall of dashboard chart cards on a dark surface mixing bars, lines, donuts,
   heatmaps and sparklines
@@ -20,7 +20,7 @@ cardDescription: >-
   40+ chart types grouped by the question they answer, with the anatomy and
   failure mode of each, plus mobile swaps and 14 anti-patterns.
 readingTimeText: 26 min read
-thumbImage: /blog/covers/thumbs/chart-ui-guide-01-hero.webp
+thumbImage: /blog/covers/thumbs/chart-ui-design-guide.webp
 relatedSlugs:
   - dashboard-ui-design
   - data-table-ui-design
@@ -126,7 +126,7 @@ Ask these questions in order and stop at the first yes. Each branch has a typica
 
 ❻ **Does something move between states or stages?** → Flow. Wrong turn: a funnel for a journey where users loop back and skip steps.
 
-![Decision tree pairing six questions with six chart families, a crossed-out wrong turn beside each answer](/blog/assets/chart-ui-design-guide/img-1.webp)
+![Decision tree pairing six questions with six chart families, a crossed-out wrong turn beside each answer](/blog/assets/chart-ui-design-guide/chart-selection-decision-tree.webp)
 
 <p class="blog-figcaption">Answer the question first and the chart family picks itself; the crossed-out specimens are the deadline defaults.</p>
 
@@ -138,7 +138,7 @@ When two answers apply, the earlier question wins.
 
 <div class="blog-img-float blog-img-float--right">
 
-![Bar, grouped bar and dumbbell chart specimens stacked in one frame](/blog/assets/chart-ui-design-guide/img-2.webp)
+![Bar, grouped bar and dumbbell chart specimens stacked in one frame](/blog/assets/chart-ui-design-guide/bar-grouped-dumbbell-chart.webp)
 
 <p class="blog-figcaption">Three ways to compare, all built on length or position along one shared scale.</p>
 
@@ -158,7 +158,7 @@ Comparison is the most common dashboard question, and most charts in this family
 
 <div class="clear-both" />
 
-![Annotated horizontal bar chart with zero baseline, descending sort, direct labels and a target line, plus a crossed-out truncated-axis inset](/blog/assets/chart-ui-design-guide/img-3.webp)
+![Annotated horizontal bar chart with zero baseline, descending sort, direct labels and a target line, plus a crossed-out truncated-axis inset](/blog/assets/chart-ui-design-guide/horizontal-bar-chart-anatomy.webp)
 
 <p class="blog-figcaption">Sorted bars with labels at the ends remove the legend and the gridlines in one move.</p>
 
@@ -196,7 +196,7 @@ Comparison is the most common dashboard question, and most charts in this family
 
 <div class="blog-img-float blog-img-float--right">
 
-![Bullet chart with three stippled bands for poor, fair and good, a green measure bar at 78 and a target line at 75](/blog/assets/chart-ui-design-guide/img-4.webp)
+![Bullet chart with three stippled bands for poor, fair and good, a green measure bar at 78 and a target line at 75](/blog/assets/chart-ui-design-guide/bullet-chart-target-bands.webp)
 
 <p class="blog-figcaption">A bullet chart puts the value next to its target in one thin strip.</p>
 
@@ -234,7 +234,7 @@ Comparison is the most common dashboard question, and most charts in this family
 
 <div class="clear-both" />
 
-![Slope chart ranking six items before and after, one line climbing to fourth and one dropping to sixth](/blog/assets/chart-ui-design-guide/img-5.webp)
+![Slope chart ranking six items before and after, one line climbing to fourth and one dropping to sixth](/blog/assets/chart-ui-design-guide/slope-chart-ranking-shift.webp)
 
 <p class="blog-figcaption">Keep the field hairline thin and give weight to the two lines that changed the ranking; that is the whole slope chart.</p>
 
@@ -244,7 +244,7 @@ Comparison is the most common dashboard question, and most charts in this family
 
 <div class="blog-img-float blog-img-float--right">
 
-![Line chart, area chart and sparkline specimens in one frame](/blog/assets/chart-ui-design-guide/img-6.webp)
+![Line chart, area chart and sparkline specimens in one frame](/blog/assets/chart-ui-design-guide/line-area-sparkline-chart.webp)
 
 <p class="blog-figcaption">Trend charts sell direction first and exact value second.</p>
 
@@ -266,7 +266,7 @@ Time runs left to right, always. Readers catch slope before any single value.
 
 <div class="clear-both" />
 
-![Annotated multi-line chart with direct series labels at line ends and no legend](/blog/assets/chart-ui-design-guide/img-7.webp)
+![Annotated multi-line chart with direct series labels at line ends and no legend](/blog/assets/chart-ui-design-guide/multi-line-chart-direct-labels.webp)
 
 <p class="blog-figcaption">Labels at the line ends save the reader a round trip to the legend for every series.</p>
 
@@ -302,7 +302,7 @@ A sparkline in a table gives every row its own history. The [data table UI desig
 
 **Rule of thumb:** state the scale, shared or independent, in the column header.
 
-![Three table rows with inline sparklines and delta chips beside current values](/blog/assets/chart-ui-design-guide/img-8.webp)
+![Three table rows with inline sparklines and delta chips beside current values](/blog/assets/chart-ui-design-guide/sparkline-table-shared-scale.webp)
 
 <p class="blog-figcaption">A shared y-scale across rows is what makes sparklines comparable instead of decorative.</p>
 
@@ -310,7 +310,7 @@ A sparkline in a table gives every row its own history. The [data table UI desig
 
 <div class="blog-img-float blog-img-float--right">
 
-![Candlestick chart with open, high, low and close labels and a volume strip beneath sharing the x-axis](/blog/assets/chart-ui-design-guide/img-9.webp)
+![Candlestick chart with open, high, low and close labels and a volume strip beneath sharing the x-axis](/blog/assets/chart-ui-design-guide/candlestick-chart-volume-strip.webp)
 
 <p class="blog-figcaption">Fill and color both encode direction, so the chart survives color-blind readers.</p>
 
@@ -330,7 +330,7 @@ A sparkline in a table gives every row its own history. The [data table UI desig
 
 <div class="blog-img-float blog-img-float--right">
 
-![Four-segment donut chart with one dominant 67% share beside the same four values as a 100% stacked bar](/blog/assets/chart-ui-design-guide/img-10.webp)
+![Four-segment donut chart with one dominant 67% share beside the same four values as a 100% stacked bar](/blog/assets/chart-ui-design-guide/donut-vs-stacked-bar-chart.webp)
 
 <p class="blog-figcaption">Same four values, and the stacked bar makes the two close shares readable.</p>
 
@@ -356,7 +356,7 @@ Use these charts only when the parts sum to a meaningful 100%. If categories ove
 
 <div class="blog-img-float blog-img-float--right">
 
-![Waffle chart showing 23 percent beside a Marimekko chart with variable-width columns](/blog/assets/chart-ui-design-guide/img-11.webp)
+![Waffle chart showing 23 percent beside a Marimekko chart with variable-width columns](/blog/assets/chart-ui-design-guide/waffle-vs-marimekko-chart.webp)
 
 <p class="blog-figcaption">The waffle makes one share countable; the Marimekko adds market size as width.</p>
 
@@ -392,7 +392,7 @@ Use these charts only when the parts sum to a meaningful 100%. If categories ove
 
 **Rule of thumb:** show 2 levels and drill down for the rest.
 
-![Treemap with nested rectangles labeled by size and grouped by parent category across two hierarchy levels](/blog/assets/chart-ui-design-guide/img-12.webp)
+![Treemap with nested rectangles labeled by size and grouped by parent category across two hierarchy levels](/blog/assets/chart-ui-design-guide/treemap-chart-nested-rectangles.webp)
 
 <p class="blog-figcaption">Color by parent group and let area carry the value; a rainbow treemap carries neither.</p>
 
@@ -400,7 +400,7 @@ Use these charts only when the parts sum to a meaningful 100%. If categories ove
 
 <div class="blog-img-float blog-img-float--right">
 
-![Two-ring sunburst chart with four parent categories in the inner ring and their children in the outer ring](/blog/assets/chart-ui-design-guide/img-13.webp)
+![Two-ring sunburst chart with four parent categories in the inner ring and their children in the outer ring](/blog/assets/chart-ui-design-guide/sunburst-chart-two-rings.webp)
 
 <p class="blog-figcaption">Two rings read; a third ring turns outer arcs into slivers.</p>
 
@@ -422,7 +422,7 @@ Use these charts only when the parts sum to a meaningful 100%. If categories ove
 
 Averages lie by omission. A distribution chart shows the whole spread of values, including the outliers an average hides.
 
-![Histogram, box plot and violin plot of the same dataset side by side, all showing a long right tail](/blog/assets/chart-ui-design-guide/img-14.webp)
+![Histogram, box plot and violin plot of the same dataset side by side, all showing a long right tail](/blog/assets/chart-ui-design-guide/histogram-box-violin-plot.webp)
 
 <p class="blog-figcaption">One dataset, three views; only the histogram and violin reveal the second peak.</p>
 
@@ -460,7 +460,7 @@ Averages lie by omission. A distribution chart shows the whole spread of values,
 
 <div class="blog-img-float blog-img-float--right">
 
-![Beeswarm plot over four categories with every point visible and a median marker per group](/blog/assets/chart-ui-design-guide/img-15.webp)
+![Beeswarm plot over four categories with every point visible and a median marker per group](/blog/assets/chart-ui-design-guide/beeswarm-plot-categories.webp)
 
 <p class="blog-figcaption">Every dot is one record, which builds trust a box plot cannot.</p>
 
@@ -486,7 +486,7 @@ Averages lie by omission. A distribution chart shows the whole spread of values,
 
 **Rule of thumb:** order ridges by median or by time, never alphabetically.
 
-![Ridgeline plot with six stacked density curves ordered by median on a shared x-axis](/blog/assets/chart-ui-design-guide/img-16.webp)
+![Ridgeline plot with six stacked density curves ordered by median on a shared x-axis](/blog/assets/chart-ui-design-guide/ridgeline-plot-density-curves.webp)
 
 <p class="blog-figcaption">Ordered by median, the ridges show the shift without a single number on screen.</p>
 
@@ -496,7 +496,7 @@ Averages lie by omission. A distribution chart shows the whole spread of values,
 
 These charts show whether measures move together. They say nothing about cause.
 
-![Scatter plot with a fitted trend line, labeled axes with units and one annotated outlier](/blog/assets/chart-ui-design-guide/img-17.webp)
+![Scatter plot with a fitted trend line, labeled axes with units and one annotated outlier](/blog/assets/chart-ui-design-guide/scatter-plot-trend-line-outlier.webp)
 
 <p class="blog-figcaption">The annotated outlier is the reason the chart exists.</p>
 
@@ -514,7 +514,7 @@ These charts show whether measures move together. They say nothing about cause.
 
 <div class="blog-img-float blog-img-float--right">
 
-![Bubble chart with two axes and a third value encoded as bubble area, with a size legend of three reference circles](/blog/assets/chart-ui-design-guide/img-18.webp)
+![Bubble chart with two axes and a third value encoded as bubble area, with a size legend of three reference circles](/blog/assets/chart-ui-design-guide/bubble-chart-size-legend.webp)
 
 <p class="blog-figcaption">Without a size legend, bubble area is a guess.</p>
 
@@ -542,7 +542,7 @@ A heatmap for retention is the cohort grid covered in the KPI section below.
 
 **Rule of thumb:** diverging palettes only when the midpoint means something.
 
-![Weekday by hour heatmap on a single-hue scale from light to dark, with a legend below the grid](/blog/assets/chart-ui-design-guide/img-19.webp)
+![Weekday by hour heatmap on a single-hue scale from light to dark, with a legend below the grid](/blog/assets/chart-ui-design-guide/heatmap-weekday-hour-scale.webp)
 
 <p class="blog-figcaption">A single-hue scale reads as more or less; a rainbow reads as different categories.</p>
 
@@ -550,7 +550,7 @@ A heatmap for retention is the cohort grid covered in the KPI section below.
 
 <div class="blog-img-float blog-img-float--right">
 
-![Six-axis radar chart on a shared 0 to 100 scale comparing one strong filled series against one weak outlined series](/blog/assets/chart-ui-design-guide/img-20.webp)
+![Six-axis radar chart on a shared 0 to 100 scale comparing one strong filled series against one weak outlined series](/blog/assets/chart-ui-design-guide/radar-chart-six-axes.webp)
 
 <p class="blog-figcaption">Radar works for one profile against a benchmark; it lies when used to rank.</p>
 
@@ -580,7 +580,7 @@ A heatmap for retention is the cohort grid covered in the KPI section below.
 
 <div class="blog-img-float blog-img-float--right">
 
-![Force-directed network graph of three clusters with one highlighted hub and its edges emphasized](/blog/assets/chart-ui-design-guide/img-21.webp)
+![Force-directed network graph of three clusters with one highlighted hub and its edges emphasized](/blog/assets/chart-ui-design-guide/network-graph-hub-clusters.webp)
 
 <p class="blog-figcaption">Highlight the hub and fade the rest, or the graph becomes a hairball.</p>
 
@@ -610,7 +610,7 @@ A heatmap for retention is the cohort grid covered in the KPI section below.
 
 Flow charts show where quantities move between stages or states. Hierarchy charts show what contains what.
 
-![Sankey diagram with three source nodes flowing through two middle stages to four outcomes, link width proportional to volume](/blog/assets/chart-ui-design-guide/img-22.webp)
+![Sankey diagram with three source nodes flowing through two middle stages to four outcomes, link width proportional to volume](/blog/assets/chart-ui-design-guide/sankey-diagram-flow-widths.webp)
 
 <p class="blog-figcaption">Color by source and the reader can follow each stream to its outcome.</p>
 
@@ -628,7 +628,7 @@ Flow charts show where quantities move between stages or states. Hierarchy chart
 
 <div class="blog-img-float blog-img-float--right">
 
-![Five-stage funnel from visit to retain, each stage with its absolute count, step conversion and drop-off percentage](/blog/assets/chart-ui-design-guide/img-23.webp)
+![Five-stage funnel from visit to retain, each stage with its absolute count, step conversion and drop-off percentage](/blog/assets/chart-ui-design-guide/funnel-chart-stage-conversion.webp)
 
 <p class="blog-figcaption">Step conversion between stages tells you where to fix; the overall rate tells you how much it matters.</p>
 
@@ -654,7 +654,7 @@ Flow charts show where quantities move between stages or states. Hierarchy chart
 
 **Rule of thumb:** anchor every subtotal to the baseline and give it a neutral color.
 
-![Waterfall chart with an opening bar of 100, five floating up and down deltas and a closing total of 44 anchored to the baseline](/blog/assets/chart-ui-design-guide/img-24.webp)
+![Waterfall chart with an opening bar of 100, five floating up and down deltas and a closing total of 44 anchored to the baseline](/blog/assets/chart-ui-design-guide/waterfall-chart-deltas-total.webp)
 
 <p class="blog-figcaption">Anchored totals and signed labels let the reader audit the bridge in seconds.</p>
 
@@ -668,7 +668,7 @@ Flow charts show where quantities move between stages or states. Hierarchy chart
 
 **Rule of thumb:** group tasks into collapsible phases.
 
-![Gantt chart with task rows grouped into plan, build and close phases, dependency arrows, diamond milestones and a vertical today marker](/blog/assets/chart-ui-design-guide/img-25.webp)
+![Gantt chart with task rows grouped into plan, build and close phases, dependency arrows, diamond milestones and a vertical today marker](/blog/assets/chart-ui-design-guide/gantt-chart-milestones-dependencies.webp)
 
 <p class="blog-figcaption">The today marker answers the only question most viewers bring: are we late.</p>
 
@@ -700,7 +700,7 @@ The normalization trap: raw totals map population. Show per capita or per 1,000 
 
 **Rule of thumb:** normalize every time, no exceptions.
 
-![Choropleth map with per-capita values on a hatched scale, a legend with class breaks from 0 to 20 per 1,000 and diagonally hatched no-data regions](/blog/assets/chart-ui-design-guide/img-26.webp)
+![Choropleth map with per-capita values on a hatched scale, a legend with class breaks from 0 to 20 per 1,000 and diagonally hatched no-data regions](/blog/assets/chart-ui-design-guide/choropleth-map-class-breaks.webp)
 
 <p class="blog-figcaption">Per-capita shading shows the rate; raw totals would only show where people live.</p>
 
@@ -740,7 +740,7 @@ The normalization trap: raw totals map population. Show per capita or per 1,000 
 
 <div class="blog-img-float blog-img-float--right">
 
-![Stat card showing 128 users with a +24% delta chip and a sparkline, beside a semicircle gauge showing the same metric](/blog/assets/chart-ui-design-guide/img-27.webp)
+![Stat card showing 128 users with a +24% delta chip and a sparkline, beside a semicircle gauge showing the same metric](/blog/assets/chart-ui-design-guide/stat-card-vs-gauge-chart.webp)
 
 <p class="blog-figcaption">Same metric, and the stat card adds direction and history in less space.</p>
 
@@ -796,7 +796,7 @@ Cohort grids are a staple of the [SaaS dashboard examples](/blog/saas-dashboard-
 
 **Rule of thumb:** row-normalize to percent and read down a column to compare cohorts.
 
-![Triangular cohort retention grid with eight monthly cohorts as rows, months since signup as columns and a percentage retained in every cell](/blog/assets/chart-ui-design-guide/img-28.webp)
+![Triangular cohort retention grid with eight monthly cohorts as rows, months since signup as columns and a percentage retained in every cell](/blog/assets/chart-ui-design-guide/cohort-retention-grid.webp)
 
 <p class="blog-figcaption">Read down a column to see whether newer cohorts retain better than older ones.</p>
 
@@ -816,7 +816,7 @@ Cohort grids are a staple of the [SaaS dashboard examples](/blog/saas-dashboard-
 
 <div class="blog-img-float blog-img-float--right">
 
-![Phone screen showing one chart, a horizontal bar chart of daily usage by category with a segmented day, week and month control at the bottom](/blog/assets/chart-ui-design-guide/img-29.webp)
+![Phone screen showing one chart, a horizontal bar chart of daily usage by category with a segmented day, week and month control at the bottom](/blog/assets/chart-ui-design-guide/mobile-dashboard-bar-chart.webp)
 
 <p class="blog-figcaption">One chart per screen, labels you can read at arm's length.</p>
 
@@ -840,7 +840,7 @@ For time series, show the last 7 to 14 periods and let the user scroll back hori
 
 <div class="clear-both" />
 
-![Three phone frames showing the same question answered by a different chart: donut to stacked bar, multi-line to small multiples, gauge to stat card](/blog/assets/chart-ui-design-guide/img-30.webp)
+![Three phone frames showing the same question answered by a different chart: donut to stacked bar, multi-line to small multiples, gauge to stat card](/blog/assets/chart-ui-design-guide/mobile-chart-swaps-390px.webp)
 
 <p class="blog-figcaption">Each swap keeps the question and changes the encoding to one a thumb-sized screen can carry.</p>
 
@@ -848,7 +848,7 @@ For time series, show the last 7 to 14 periods and let the user scroll back hori
 
 <div class="blog-img-float blog-img-float--right">
 
-![Phone list of metric rows, each with an inline mini-bar, and one tapped row showing a pinned tooltip with its exact value and date](/blog/assets/chart-ui-design-guide/img-31.webp)
+![Phone list of metric rows, each with an inline mini-bar, and one tapped row showing a pinned tooltip with its exact value and date](/blog/assets/chart-ui-design-guide/mobile-list-sparkline-tooltip.webp)
 
 <p class="blog-figcaption">Tap pins the value; hover never existed on this screen.</p>
 
@@ -920,7 +920,7 @@ For a full system, the [Hyper Charts kit](/templates/hyper-charts) styles every 
 
 Accessible charts are readable charts with a fallback attached.
 
-![The same stacked bar shown three ways for accessibility: pattern fills, heavy contrast outlines, and direct labels inside each segment](/blog/assets/chart-ui-design-guide/img-32.webp)
+![The same stacked bar shown three ways for accessibility: pattern fills, heavy contrast outlines, and direct labels inside each segment](/blog/assets/chart-ui-design-guide/chart-accessibility-pattern-fills.webp)
 
 <p class="blog-figcaption">Patterns and direct labels carry the meaning when color fails.</p>
 
@@ -944,7 +944,7 @@ Accessible charts are readable charts with a fallback attached.
 
 Each of these costs the reader seconds. The worst of them cost the reader the right conclusion.
 
-![Three chart anti-patterns each crossed out in red: a 3D pie chart, a dual y-axis line chart and a rainbow-shaded heatmap](/blog/assets/chart-ui-design-guide/img-33.webp)
+![Three chart anti-patterns each crossed out in red: a 3D pie chart, a dual y-axis line chart and a rainbow-shaded heatmap](/blog/assets/chart-ui-design-guide/chart-anti-patterns-3d-dual-axis.webp)
 
 <p class="blog-figcaption">Each of these trades accuracy for looks, and readers pay the difference.</p>
 
@@ -982,7 +982,7 @@ Each of these costs the reader seconds. The worst of them cost the reader the ri
 
 <div class="blog-img-float blog-img-float--right">
 
-![Chart checklist card with twelve empty green checkboxes for title states finding, type matches data, zero baseline, categories in order, labels on marks, units on numbers, target line shown, eight hues max, reads in gray, contrast 3:1, mobile layout, and empty loading error states](/blog/assets/chart-ui-design-guide/img-34-pre-ship-checklist.webp)
+![Chart checklist card with twelve empty green checkboxes for title states finding, type matches data, zero baseline, categories in order, labels on marks, units on numbers, target line shown, eight hues max, reads in gray, contrast 3:1, mobile layout, and empty loading error states](/blog/assets/chart-ui-design-guide/chart-pre-ship-checklist.webp)
 
 <p class="blog-figcaption">Twelve yes-or-no questions, answered before the chart reaches review.</p>
 
