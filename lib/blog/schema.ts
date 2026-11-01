@@ -1,15 +1,13 @@
 import type { Author, BlogFrontmatter, FaqItem } from "../../types/blog";
 import { getAuthor } from "./authors";
-import { SITE_URL } from "./site-config";
+import { SITE_URL, absoluteUrl } from "./site-config";
 
 export function buildBlogPostingJsonLd(
   frontmatter: BlogFrontmatter,
   pageUrl: string,
   readingTimeMinutes: number
 ): Record<string, unknown> {
-  const absoluteImage = frontmatter.coverImage?.startsWith("http")
-    ? frontmatter.coverImage
-    : `${SITE_URL}${frontmatter.coverImage ?? ""}`;
+  const absoluteImage = absoluteUrl(frontmatter.coverImage);
 
   // Normalise lastUpdated ("YYYY-MM" or "YYYY-MM-DD") to a full ISO date
   // for dateModified. When only the month is given, default to its first day.
@@ -73,9 +71,7 @@ export function buildFaqJsonLd(items: FaqItem[]): Record<string, unknown> {
  * external links as sameAs, so search engines can connect the author entity.
  */
 export function buildPersonJsonLd(author: Author): Record<string, unknown> {
-  const absoluteImage = author.avatar.startsWith("http")
-    ? author.avatar
-    : `${SITE_URL}${author.avatar}`;
+  const absoluteImage = absoluteUrl(author.avatar);
 
   const sameAs = author.links
     ? [

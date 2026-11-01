@@ -9,6 +9,7 @@ import TemplateGrid from "../sections/TemplateGrid";
 import FaqSection from "../sections/FaqSection";
 import { useContactModal } from "../modals/ContactModalContext";
 import { CATEGORY_TABS } from "../../data/categories";
+import { absoluteUrl } from "../../lib/blog/site-config";
 import type { Product } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
 import type {
@@ -93,6 +94,8 @@ function CtaBlock({ titleHtml, bodyHtml }: { titleHtml: string; bodyHtml: string
 export default function DashboardTemplatePage({ data, products, navData }: Props) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  const ogImage = absoluteUrl(data.ogImage);
+
   return (
     <>
       <Head>
@@ -100,11 +103,12 @@ export default function DashboardTemplatePage({ data, products, navData }: Props
         <meta content={data.metaDescription} name="description" />
         <meta content={data.metaTitle} property="og:title" />
         <meta content={data.metaDescription} property="og:description" />
-        <meta content={data.ogImage} property="og:image" />
+        <meta content={ogImage} property="og:image" />
         <meta content={data.metaTitle} property="twitter:title" />
         <meta content={data.metaDescription} property="twitter:description" />
-        <meta content={data.ogImage} property="twitter:image" />
+        <meta content={ogImage} property="twitter:image" />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={data.canonical} />
         <meta content="summary_large_image" name="twitter:card" />
         <link href={data.canonical} rel="canonical" />
       </Head>

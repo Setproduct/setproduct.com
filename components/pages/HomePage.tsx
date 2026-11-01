@@ -12,12 +12,12 @@ import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
+import { absoluteUrl } from "../../lib/blog/site-config";
 import type { BlogPostPreview } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
 
 const HOME_TEMPLATES_INITIAL = 15;
 const HOME_TEMPLATES_PAGE = 15;
-const SITE_URL = "https://www.setproduct.com";
 
 
 type Props = {
@@ -40,11 +40,11 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
         <meta content={meta.description} property="og:description" />
         <meta content="website" property="og:type" />
         <meta content={meta.canonical} property="og:url" />
-        <meta content={`${SITE_URL}${meta.ogImage}`} property="og:image" />
+        <meta content={absoluteUrl(meta.ogImage)} property="og:image" />
         <meta content="summary_large_image" name="twitter:card" />
         <meta content={meta.title} name="twitter:title" />
         <meta content={meta.description} name="twitter:description" />
-        <meta content={`${SITE_URL}${meta.ogImage}`} name="twitter:image" />
+        <meta content={absoluteUrl(meta.ogImage)} name="twitter:image" />
       </Head>
       <SiteHeader navData={navData} blogPosts={blogPosts} />
       <main className="mt-18">

@@ -8,7 +8,7 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import ArrowIcon from "../sections/ArrowIcon";
 import { TwitterIcon, LinkedInIcon, GlobeIcon } from "../layout/FooterSocialIcons";
 import { buildPersonJsonLd } from "../../lib/blog/schema";
-import { SITE_URL } from "../../lib/blog/site-config";
+import { SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { Author } from "../../types/blog";
 import type { BlogPostPreview } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
@@ -30,9 +30,7 @@ export default function AuthorPage({ author, authorPosts, navData }: Props) {
   const metaDescription = `${postCount} ${
     postCount === 1 ? "article" : "articles"
   } by ${author.name} on UI design, design systems, and product UX.`;
-  const absoluteAvatar = author.avatar.startsWith("http")
-    ? author.avatar
-    : `${SITE_URL}${author.avatar}`;
+  const absoluteAvatar = absoluteUrl(author.avatar);
 
   const personJsonLd = buildPersonJsonLd(author);
 

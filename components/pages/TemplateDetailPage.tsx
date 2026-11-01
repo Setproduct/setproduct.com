@@ -7,7 +7,7 @@ import CtaSubscribe from "../sections/CtaSubscribe";
 import FaqSection from "../sections/FaqSection";
 import TemplateStickyCta from "../sections/TemplateStickyCta";
 import { getGumroadLinkProps } from "../../lib/gumroad";
-import { CANONICAL_SITE_URL } from "../../lib/blog/site-config";
+import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { TemplateItem } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
 
@@ -26,6 +26,7 @@ export default function TemplateDetailPage({ item, navData }: Props) {
   const title = item.title;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/templates/${item.slug}`;
+  const ogImage = absoluteUrl(item.ogImage);
 
   return (
     <>
@@ -35,7 +36,13 @@ export default function TemplateDetailPage({ item, navData }: Props) {
         <link href={canonical} rel="canonical" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={item.ogImage} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="product" />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
       </Head>
       <SiteHeader navData={navData} />
       <main className="pt-[70em]">

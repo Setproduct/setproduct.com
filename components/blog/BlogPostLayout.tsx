@@ -16,7 +16,7 @@ import BlogRelatedPosts from "./BlogRelatedPosts";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
-import { SITE_URL } from "../../lib/blog/site-config";
+import { SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
 import type { NavData } from "../../lib/nav/types";
 
@@ -32,9 +32,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const toc = useArticleToc(headings, `blog/${frontmatter.slug}`);
   const canonical = frontmatter.canonical ?? `${SITE_URL}/blog/${frontmatter.slug}`;
-  const absoluteCoverUrl = frontmatter.coverImage?.startsWith("http")
-    ? frontmatter.coverImage
-    : `${SITE_URL}${frontmatter.coverImage ?? ""}`;
+  const absoluteCoverUrl = absoluteUrl(frontmatter.coverImage);
   const jsonLd = buildBlogPostingJsonLd(frontmatter, canonical, readingTimeMinutes);
   const faqJsonLd = frontmatter.faq?.length ? buildFaqJsonLd(frontmatter.faq) : null;
 

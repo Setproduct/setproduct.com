@@ -6,7 +6,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
-import { CANONICAL_SITE_URL } from "../../lib/blog/site-config";
+import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { FreebieItem } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
 
@@ -34,6 +34,7 @@ export default function FreebieDetailPage({ item, navData }: Props) {
   const title = `${item.title} (${suffixForCategory(item.category)})`;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/freebies/${item.slug}`;
+  const ogImage = absoluteUrl(item.image);
 
   return (
     <>
@@ -43,7 +44,13 @@ export default function FreebieDetailPage({ item, navData }: Props) {
         <link href={canonical} rel="canonical" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={item.image} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
       </Head>
       <SiteHeader navData={navData} />
       <main className="pt-[70em]">

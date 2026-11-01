@@ -25,3 +25,14 @@ const normalizeUrl = (value: string | undefined): string | undefined => {
 
 export const SITE_URL =
   normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL) ?? VERCEL_HOST ?? CANONICAL_SITE_URL;
+
+// Turns a root-relative asset path ("/images/foo.webp") into an absolute URL.
+// Open Graph and Twitter require absolute image URLs; a relative path is
+// silently dropped by LinkedIn, Facebook, Telegram and X, leaving the shared
+// card without a preview. Already absolute URLs (http/https, protocol-relative)
+// are passed through untouched, so product data may hold either form.
+export const absoluteUrl = (pathOrUrl: string | undefined): string => {
+  if (!pathOrUrl) return "";
+  if (/^(https?:)?\/\//i.test(pathOrUrl)) return pathOrUrl;
+  return `${SITE_URL}${pathOrUrl.startsWith("/") ? "" : "/"}${pathOrUrl}`;
+};
