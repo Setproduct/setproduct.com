@@ -775,6 +775,35 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
+ * Documentation credit lines in MDX posts.
+ * A `Source: <raw url>` line reads as body copy and, when two of them sit on
+ * consecutive lines, markdown folds them into one paragraph — the second
+ * "Source:" label then looks like part of the first URL. Opt-in via
+ * <p class="blog-source">Docs: <a>…</a> · <a>…</a></p> so the credit reads as
+ * apparatus, not prose: smaller, grey, tight to the block it belongs to.
+ * Sizes use the same `em` system as .blog-figcaption (1em ~= 1px at 1440).
+ */
+.rich-text-18 p.blog-source {
+  color: var(--flowui-component-library-gray-500) !important;
+  font-size: 15em !important;
+  line-height: 150% !important;
+  margin-top: -0.4em !important;
+  margin-bottom: 1.8em !important;
+}
+
+.rich-text-18 p.blog-source a {
+  color: var(--flowui-component-library-gray-500) !important;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.rich-text-18 p.blog-source a:hover {
+  color: var(--primary) !important;
+}
+
+/*
  * Tailwind Preflight removes list markers; MDX renders real <ul>/<ol>.
  * Restore visible bullets/numbers and proper indentation for rich-text content.
  */
