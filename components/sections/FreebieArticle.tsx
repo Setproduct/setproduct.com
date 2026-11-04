@@ -187,7 +187,19 @@ const MATITA_ICONS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-matita", text: "Why it belongs in your stack" },
 ];
 
+const USEANIMATIONS_HEADINGS: ArticleHeading[] = [
+  { id: "what-react-useanimations-does", text: "What react-useanimations actually does" },
+  { id: "why-animated-icons-break", text: "Why animated icons end up as a folder of JSON" },
+  { id: "how-the-player-works", text: "How the player renders an icon" },
+  { id: "six-interactions", text: "Six interactions, one prop" },
+  { id: "what-ships-in-the-package", text: "What ships in the package" },
+  { id: "motion-that-respects-the-user", text: "Motion that respects the user" },
+  { id: "faq-react-useanimations", text: "Frequently asked questions" },
+  { id: "why-it-belongs-useanimations", text: "Why it belongs in your stack" },
+];
+
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
+  "react-useanimations": USEANIMATIONS_HEADINGS,
   "matita-icons": MATITA_ICONS_HEADINGS,
   "driver-js": DRIVER_JS_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
@@ -803,6 +815,344 @@ export default function FreebieArticle({ slug }: Props) {
                   other <Link href="/freebies">free resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "react-useanimations" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  A spinner answers a question before any label does: something is
+                  still loading, and you can stop watching. A checkmark draws
+                  itself and the save is done. Point at a trash icon on
+                  useanimations.com and the lid lifts, so the click feels safe.
+                  react-useanimations ships 300 icons that behave this way out of
+                  the box, as plain React components.
+                </p>
+
+                <h2 id="what-react-useanimations-does">
+                  What react-useanimations actually does
+                </h2>
+                <p>
+                  It is the official React package for useAnimations, a set of
+                  300 animated icons. Each icon carries the interaction it has on
+                  the website, so the hover state is not something you write. You
+                  import a name and render it.
+                </p>
+                <ul>
+                  <li>
+                    <code>npm i react-useanimations</code>
+                  </li>
+                  <li>
+                    <code>
+                      import UseAnimations from "react-useanimations"
+                    </code>
+                  </li>
+                  <li>
+                    <code>
+                      import github from "react-useanimations/lib/github"
+                    </code>
+                  </li>
+                  <li>
+                    <code>{"<UseAnimations animation={github} size={32} />"}</code>
+                  </li>
+                </ul>
+                <p>
+                  Numbers make the case better than adjectives. There is no
+                  runtime dependency at all, and the built-in player weighs about
+                  8 kB gzipped. A median icon adds roughly 2 kB, since each one is
+                  its own module and the bundle keeps only what you imported.
+                </p>
+                <p>
+                  Licensing is MIT. Coverage runs from navigation arrows and
+                  loaders to social marks and media controls, plus the small
+                  utility glyphs that sit in toolbars.
+                </p>
+                <p>
+                  All 300 icons are searchable at{" "}
+                  <a
+                    href="https://useanimations.com/"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    useanimations.com
+                  </a>
+                  . Hover a tile and it plays, which lets you judge the motion
+                  before installing anything. Source lives on{" "}
+                  <a
+                    href="https://github.com/useAnimations/react-useanimations"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  , where the README carries the prop list and the upgrade notes
+                  from version 2.
+                </p>
+
+                <h2 id="why-animated-icons-break">
+                  Why animated icons end up as a folder of JSON
+                </h2>
+                <p>
+                  Most teams start well here. A designer exports a Lottie file for
+                  the loader. An engineer installs a player of a few hundred
+                  kilobytes, points it at the JSON, and the spinner moves. Then
+                  the second icon arrives, and the seams appear.
+                </p>
+                <p>
+                  Color breaks first. Baked fills inside the JSON ignore the text
+                  color around them, so dark mode needs a second export. A hover
+                  state needs an event listener and a replay call, plus a guard
+                  against stutter when the pointer crosses fast. Keyboard focus
+                  needs its own handler. Touch needs a third decision. By the
+                  fifth icon the folder holds five files with five quirks, and
+                  nobody wants to open it again.
+                </p>
+                <p>
+                  I have rebuilt that plumbing on client work more than once, and
+                  it always ends the same way: half the icons get wired, the rest
+                  ship static.
+                </p>
+                <p>
+                  ☞ Packaging is the useful shift. Build the whole set as one
+                  system and the player becomes one file, color comes from the
+                  parent text, and interaction becomes a property instead of a
+                  handler you write.
+                </p>
+
+                <h2 id="how-the-player-works">
+                  How the player renders an icon
+                </h2>
+                <p>
+                  A module like{" "}
+                  <code>react-useanimations/lib/menu</code> exports two things: the
+                  animation data and its default interaction. Then{" "}
+                  <code>UseAnimations</code> reads both, renders the animation as
+                  SVG, and listens for the events that interaction needs. Nothing
+                  else runs on the page.
+                </p>
+                <p>
+                  Stroke color defaults to <code>currentColor</code>, so{" "}
+                  <code>className="text-blue-600"</code> or a plain CSS color rule
+                  recolors the icon, and the built-in rule has zero specificity so
+                  your own styles always win. <code>fillColor</code> follows the
+                  stroke unless you split them, which matters for a heart that
+                  fills when liked.
+                </p>
+                <p>
+                  Some icons cut a notch out of themselves: the slash in{" "}
+                  <code>visibility</code>, the check in <code>download</code>, the
+                  ring around <code>notification3</code>. That notch takes the page
+                  background, white on a light page and dark when{" "}
+                  <code>color-scheme</code> is dark. On a tinted background, set{" "}
+                  <code>--ua-knockout</code> once on the body and the gaps match
+                  the surface.
+                </p>
+
+                <h2 id="six-interactions">Six interactions, one prop</h2>
+                <p>
+                  Each icon arrives with a default interaction, and{" "}
+                  <code>interaction</code> overrides it. Six modes cover what an
+                  interface needs:
+                </p>
+                <ul>
+                  <li>
+                    ❶ <code>hover-replay</code> plays once when the pointer
+                    arrives, as on <code>arrowRight</code> and <code>zap</code>
+                  </li>
+                  <li>
+                    ❷ <code>click-replay</code> replays on every click, which fits{" "}
+                    <code>download</code> and <code>send</code>
+                  </li>
+                  <li>
+                    ❸ <code>click-toggle</code> flips between two states, the
+                    pattern behind <code>menu</code> and <code>heart</code>
+                  </li>
+                  <li>
+                    ❹ <code>loop</code> runs continuously, as on{" "}
+                    <code>loading</code> and <code>activity</code>
+                  </li>
+                  <li>
+                    ❺ <code>hover</code> plays forward on hover and backward on
+                    leave, which is what the lid on <code>trash</code> does
+                  </li>
+                  <li>
+                    ❻ <code>hover-loop</code> loops while the pointer stays and
+                    finishes the cycle when it leaves
+                  </li>
+                </ul>
+                <p>
+                  A toggle icon can also be driven from outside. Pass{" "}
+                  <code>active</code> and the icon follows your state, so a menu
+                  that closes on Escape animates back without a second call. That
+                  is the difference between an animated decoration and a real
+                  control.
+                </p>
+
+                <h2 id="what-ships-in-the-package">
+                  What ships in the package
+                </h2>
+                <p>
+                  This npm package is more than a component. It carries the whole
+                  set in several shapes, which matters when your project is not
+                  React:
+                </p>
+                <ul>
+                  <li>
+                    → One module per icon under{" "}
+                    <code>react-useanimations/lib/</code>, one file per icon name,
+                    and the safe import when your dev server does not tree-shake
+                  </li>
+                  <li>
+                    → A named export from{" "}
+                    <code>react-useanimations/icons</code> for several icons in
+                    one line
+                  </li>
+                  <li>
+                    → <code>catalog.json</code>, one record per icon, holding the
+                    title, the category, the search keywords, the default
+                    interaction, the import line, the preview image
+                  </li>
+                  <li>
+                    → <code>svg.json</code> with the static states, so a non-React
+                    page can render the same shapes
+                  </li>
+                </ul>
+                <p>
+                  Open the catalog first, it is the part worth the time. Keywords
+                  describe what an icon shows, so a search for <code>eye</code>{" "}
+                  finds <code>visibility</code> and <code>bell</code> finds{" "}
+                  <code>notification</code>. You stop scrolling a gallery and start
+                  querying it.
+                </p>
+                <p>
+                  There is a shadcn registry too. One command drops a ready-made
+                  component that already wraps the package:
+                </p>
+                <ul>
+                  <li>
+                    <code>
+                      npx shadcn@latest add
+                      https://useanimations.com/r/checkmark.json
+                    </code>
+                  </li>
+                </ul>
+                <p>
+                  Two names need care. <code>delete</code> and <code>package</code>{" "}
+                  are reserved words in JavaScript, so import them under another
+                  name, the way the README suggests with{" "}
+                  <code>deleteIcon</code>.
+                </p>
+
+                <h2 id="motion-that-respects-the-user">
+                  Motion that respects the user
+                </h2>
+                <p>
+                  Motion is a preference, and the package treats it as one. When
+                  the system reports <code>prefers-reduced-motion: reduce</code>,
+                  looping icons hold their first frame and hover animations do not
+                  play at all. A toggle and a replay jump straight to their end
+                  state. Some products still need a spinning loader, so{" "}
+                  <code>autoplay</code> forces it back on, and that choice stays
+                  yours.
+                </p>
+                <p>
+                  Keyboard users get the same feedback as pointer users. Hover
+                  animations play on focus when the icon or its wrapper can take
+                  focus, and taps on a touch screen are ignored so a finger scroll
+                  does not trigger a dozen animations at once. Looping icons pause
+                  once they scroll out of view, which keeps a long page calm.
+                </p>
+                <p>
+                  For a clickable icon, wrap it in a real interactive element with
+                  the <code>render</code> prop. Then the icon becomes focusable,
+                  the keyboard works, and <code>aria-label</code> names the action.
+                  The{" "}
+                  <a
+                    href="https://www.w3.org/WAI/standards-guidelines/wcag/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WCAG guidelines
+                  </a>{" "}
+                  cover the motion side in success criterion 2.3.3, and the pattern
+                  above satisfies it without extra work.
+                </p>
+                <p>
+                  ☛ Decorative is the right default. Most icons sit next to a
+                  label and should stay invisible to a screen reader. Pass an
+                  accessible name only when the icon is the whole control.
+                </p>
+
+                <h2 id="faq-react-useanimations">
+                  Frequently asked questions
+                </h2>
+                <h3>Do I need lottie-web as well?</h3>
+                <p>
+                  No. This package carries its own player and has zero
+                  dependencies. You install one thing, and the icons render as
+                  SVG. That is why the footprint stays small next to a standalone
+                  animation library plus a folder of JSON files.
+                </p>
+                <h3>Does it work with the Next.js App Router?</h3>
+                <p>
+                  Yes. React 18 and 19, StrictMode, the App Router and server
+                  rendering are all listed as supported, and no{" "}
+                  <code>dynamic</code> import with <code>ssr: false</code> is
+                  needed. It renders on the server and hydrates without a mismatch.
+                </p>
+                <h3>Can I use my own animation files?</h3>
+                <p>
+                  Yes. Pass <code>animation</code> an object holding your{" "}
+                  <code>animationData</code> and an{" "}
+                  <code>interaction</code>. Your Lottie plays through the same
+                  player and accepts the same props, so a custom icon behaves like
+                  the built-in set.
+                </p>
+                <h3>Is it free for client work?</h3>
+                <p>
+                  Yes. License is MIT. Ship it in paid products, modify the icons,
+                  and keep the changes. No account is required, and nothing has to
+                  appear in your interface.
+                </p>
+
+                <h2 id="why-it-belongs-useanimations">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  A product feels alive when small actions get an answer. Most
+                  teams skip that layer because the wiring costs more than the
+                  effect is worth. Here the wiring is already done, once, for 300
+                  icons, and the cost is a few kilobytes per icon you import.
+                </p>
+                <p>
+                  It pairs with the rest of this section. For a still set,{" "}
+                  <Link href="/freebies/matita-icons">Matita icons</Link> draws
+                  with a pencil and{" "}
+                  <Link href="/freebies/runeicons">RuneIcons</Link> keeps the clean
+                  line school. Motion beyond icons is where{" "}
+                  <Link href="/freebies/amicro">Amicro</Link> comes in, with hover,
+                  cursor and scroll effects. For the question of where an animated
+                  cue helps and where a tooltip does the job better, read{" "}
+                  <Link href="/blog/how-to-replace-onboarding-with-contextual-help">
+                    replacing onboarding with contextual help
+                  </Link>
+                  .
+                </p>
+                <p>
+                  To see which patterns are landing in shipped products right now,
+                  browse the{" "}
+                  <a
+                    href="https://app.setproduct.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    AI inspiration gallery
+                  </a>
+                  . When the screens around those icons need a faster start, the
+                  other <Link href="/freebies">free resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for the
+                  same ship-it-yourself workflow.
                 </p>
                   </>
                 )}

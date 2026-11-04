@@ -21,6 +21,20 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "react-useanimations",
+    title: "react-useanimations, 300 animated icons",
+    description:
+      "300 free animated icons for React with hover, click and loop interactions built in. Zero dependencies, an 8 kB player, and reduced-motion support.",
+    thumb: "/freebies/thumbs/freebie-react-useanimations-v2.webp",
+    image: "/freebies/freebie-react-useanimations-cover.webp",
+    category: "Code",
+    previewHref: "/freebies/react-useanimations",
+    duplicateHref: "https://github.com/useAnimations/react-useanimations",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+  },
+  {
     slug: "matita-icons",
     title: "Matita icons, 200 pencil-style glyphs",
     description:
