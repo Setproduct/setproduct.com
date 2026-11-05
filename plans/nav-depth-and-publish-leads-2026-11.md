@@ -228,6 +228,11 @@ flowchart TD
 | 1.1 | Кнопка `Get featured` с чипом `from $288` | `902f89c` |
 | 1.2 | Дефолтный CTA внизу статей SEO, Growth Hacking, Startups & SaaS; UTM `blog_inline` у всех inlineCta | `61b5767` |
 | 1.3 | Карточка паблишинга в сайдбаре тех же категорий вместо подписки | `6a30607` |
+| 1.1b | Чип цены убран из кнопки (слишком широкая), цена осталась в CTA и карточке | `74e4a0f` |
+| 2.1 | Related posts выше нижнего CTA, отступ статьи 112 → 40 | `718067c` |
+| 2.2 | Learn открывается на `Popular` (6 топ-входов из GA4), свежие во вкладке `Latest` | `0bdbefa` |
+| 2.3 | Learn: добавлены SEO и Design & code, убраны Tools и Inspiration | `d28b306` |
+| 2.4 | «Read next» в сайдбаре статьи (3 related), событие `blog_read_next_click` | `0aaee71` |
 
 ### Метрики успеха
 
