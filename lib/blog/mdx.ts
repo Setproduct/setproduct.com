@@ -8,6 +8,7 @@ import rehypeSlug from "rehype-slug";
 import { visit } from "unist-util-visit";
 import type { BlogFrontmatter, BlogHeading, BlogPost, BlogPostMeta } from "../../types/blog";
 import { computeReadingTime } from "./reading-time";
+import { BLOG_POPULAR_SLUGS } from "./popular";
 
 type HastNode = {
   type: string;
@@ -125,8 +126,14 @@ export function getRelatedPosts(
   relatedSlugs?: string[]
 ): BlogPostMeta[] {
   const all = getAllBlogPostsMeta();
-  // Curated slugs go first, in their order; if there are fewer than `limit`,
-  // the list is topped up from the same category, then from the rest.
+  // Curated slugs go first, in their order. If there are fewer than `limit`,
+  // the list is topped up in this order:
+  //   1. popular posts of the same category,
+  //   2. the rest of the same category, newest first,
+  //   3. popular posts of other categories,
+  //   4. everything else, newest first.
+  // Popularity keeps the strongest posts in front; the date beats the old
+  // alphabetical order, which always offered the same "a…" and "b…" posts.
   const curated: BlogPostMeta[] = [];
   if (relatedSlugs && relatedSlugs.length > 0) {
     const metaMap = new Map(all.map(p => [p.frontmatter.slug, p]));
@@ -139,17 +146,24 @@ export function getRelatedPosts(
     }
   }
 
-  const sameCategory = category
-    ? all.filter(
-        (p) =>
-          p.frontmatter.category === category &&
-          p.frontmatter.slug !== currentSlug
-      )
-    : [];
-  const others = all.filter(
-    (p) =>
-      p.frontmatter.slug !== currentSlug && !sameCategory.includes(p)
-  );
-  const fill = [...sameCategory, ...others].filter((p) => !curated.includes(p));
+  const popularRank = new Map(BLOG_POPULAR_SLUGS.map((slug, i) => [slug, i]));
+  const isPopular = (p: BlogPostMeta) => popularRank.has(p.frontmatter.slug);
+  const byPopularity = (a: BlogPostMeta, b: BlogPostMeta) =>
+    (popularRank.get(a.frontmatter.slug) ?? 0) - (popularRank.get(b.frontmatter.slug) ?? 0);
+  // ISO "YYYY-MM-DD" strings sort correctly as text; a missing date goes last.
+  const byDateDesc = (a: BlogPostMeta, b: BlogPostMeta) =>
+    String(b.frontmatter.date ?? "").localeCompare(String(a.frontmatter.date ?? ""));
+
+  const pool = all.filter((p) => p.frontmatter.slug !== currentSlug && !curated.includes(p));
+  const inCategory = (p: BlogPostMeta) => Boolean(category) && p.frontmatter.category === category;
+  const same = pool.filter(inCategory);
+  const other = pool.filter((p) => !inCategory(p));
+
+  const fill = [
+    ...same.filter(isPopular).sort(byPopularity),
+    ...same.filter((p) => !isPopular(p)).sort(byDateDesc),
+    ...other.filter(isPopular).sort(byPopularity),
+    ...other.filter((p) => !isPopular(p)).sort(byDateDesc),
+  ];
   return [...curated, ...fill].slice(0, limit);
 }

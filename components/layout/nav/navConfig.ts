@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import type { InspirationItem, Product } from "../../../types/data";
 import type { BundleItem } from "../../../data/bundles";
 import type { NavBlogPost } from "../../../lib/nav/types";
+import { BLOG_POPULAR_SLUGS } from "../../../lib/blog/popular";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
 export type MenuKey = "inspiration" | "tutorials" | "freebies" | "designKits" | "information";
@@ -71,15 +72,9 @@ export const NAV_INSPIRATION_SAMPLE_COUNT = NAV_INSPIRATION_PREVIEW_COUNT * 3;
 // Learn opens on "Popular" (null keeps it the default tab and the /blog
 // landing link). Most visitors land on one post from Google, so the most-read
 // posts hold a newcomer better than whatever was published last. Fresh posts
-// move to "Latest". Slugs come from GA4 entrances; refresh them each quarter.
-export const NAV_BLOG_POPULAR_SLUGS = [
-  "data-table-ui-design",
-  "liquid-glass-vs-glassmorphism",
-  "tabs-ui-design",
-  "ai-chat-interface-ui-design",
-  "claymorphism-design-guide",
-  "dropdown-ui-design",
-];
+// move to "Latest". The list lives in lib/blog/popular.ts (also used by
+// related posts); refresh it each quarter.
+export const NAV_BLOG_POPULAR_SLUGS = BLOG_POPULAR_SLUGS;
 export const NAV_BLOG_LATEST = "__latest__";
 
 export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
