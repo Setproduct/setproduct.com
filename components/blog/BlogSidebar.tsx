@@ -12,16 +12,19 @@ type BlogSidebarProps = {
   activeId: string;
   onNavigate: (item: BlogHeading, position: number) => void;
   category?: string;
-  /** Related posts of this article; the first three become "Read next". */
+  /** Related posts of this article; the first five become "Read next". */
   readNext?: BlogPostMeta[];
 };
 
 const READ_NEXT_COUNT = 5;
+/** Share of the article body read before "Read next" replaces the TOC. */
+const READ_NEXT_PROGRESS = 0.8;
 
 /**
- * "Read next" takes the TOC's place once the reader is in the last section:
- * the TOC has nothing left to offer there, so nothing loses height. Scrolling
- * back up, or "Back to contents", brings the TOC back.
+ * "Read next" takes the TOC's place near the end of the article (80% read or
+ * the penultimate H2, whichever comes first) and then stays: a fast scroll
+ * would otherwise flash it for a second. Only "Back to contents" brings the
+ * TOC back.
  */
 function ReadNext({ posts, onBack }: { posts: BlogPostMeta[]; onBack?: () => void }) {
   return (
@@ -102,35 +105,70 @@ function PublishCard() {
 export default function BlogSidebar({ headings, activeId, onNavigate, category, readNext = [] }: BlogSidebarProps) {
   const showPublish = isPublishAudienceCategory(category);
   const nextPosts = readNext.slice(0, READ_NEXT_COUNT);
+  const hasToc = headings.length > 0;
+  const asideRef = useRef<HTMLElement>(null);
 
-  // The reader is in the last H2 section (its H3 included).
-  const lastSectionId = useMemo(() => {
+  // Trigger 1: the reader is in the penultimate or last H2 section.
+  const nearEndSectionIds = useMemo(() => {
     const h2 = headings.filter((h) => h.level === 2);
-    return h2.length > 0 ? h2[h2.length - 1].id : "";
+    return new Set(h2.slice(-2).map((h) => h.id));
   }, [headings]);
   const activeParentId = useMemo(
     () => buildTocEntries(headings).find((e) => e.id === activeId)?.parentId ?? "",
     [headings, activeId],
   );
-  const inLastSection = lastSectionId !== "" && activeParentId === lastSectionId;
+  const inNearEndSection = activeParentId !== "" && nearEndSectionIds.has(activeParentId);
 
-  // "Back to contents" pins the TOC until the reader leaves the last section.
-  const [tocPinned, setTocPinned] = useState(false);
+  // Trigger 2: 80% of the article body is read. Same formula as the reading
+  // progress line; the listener goes away once the threshold is crossed.
+  const [pastProgress, setPastProgress] = useState(false);
   useEffect(() => {
-    if (!inLastSection) setTocPinned(false);
-  }, [inLastSection]);
+    if (!hasToc || pastProgress) return;
+    const section = asideRef.current?.parentElement;
+    if (!section) return;
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const rect = section.getBoundingClientRect();
+      const distance = rect.height - window.innerHeight;
+      const progress = distance <= 0 ? 1 : -rect.top / distance;
+      if (progress >= READ_NEXT_PROGRESS) setPastProgress(true);
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", schedule, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [hasToc, pastProgress]);
 
-  const hasToc = headings.length > 0;
+  // Latch: once triggered, "Read next" stays while scrolling either way.
+  const [latched, setLatched] = useState(false);
+  const [trigger, setTrigger] = useState<"progress" | "section" | null>(null);
+  useEffect(() => {
+    if (latched) return;
+    if (pastProgress || inNearEndSection) {
+      setLatched(true);
+      setTrigger(pastProgress ? "progress" : "section");
+    }
+  }, [latched, pastProgress, inNearEndSection]);
+
+  // "Back to contents" is an explicit choice, so it wins for the rest of the visit.
+  const [tocPinned, setTocPinned] = useState(false);
+
   // Without a TOC the column has room, so "Read next" is there from the start.
-  const showReadNext = nextPosts.length > 0 && (!hasToc || (inLastSection && !tocPinned));
+  const showReadNext = nextPosts.length > 0 && (!hasToc || (latched && !tocPinned));
 
   // One "shown" event per page view, the denominator for the click rate.
   const reportedShown = useRef(false);
   useEffect(() => {
     if (!showReadNext || reportedShown.current) return;
     reportedShown.current = true;
-    event("blog_read_next_view", { location: "sidebar", trigger: hasToc ? "last_section" : "no_toc" });
-  }, [showReadNext, hasToc]);
+    event("blog_read_next_view", { location: "sidebar", trigger: hasToc ? trigger : "no_toc" });
+  }, [showReadNext, hasToc, trigger]);
 
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
 
@@ -140,9 +178,9 @@ export default function BlogSidebar({ headings, activeId, onNavigate, category, 
   };
 
   return (
-    <aside id="w-node-sidebar" className="blogpost_content-column1">
-      {/* One slot, two states: the TOC while reading, "Read next" in the last
-          section. They swap instead of stacking, so the TOC never loses
+    <aside ref={asideRef} id="w-node-sidebar" className="blogpost_content-column1">
+      {/* One slot, two states: the TOC while reading, "Read next" near the
+          end. They swap instead of stacking, so the TOC never loses
           height. No divider or spacer: the list dissolves right above the
           block below; its own bottom padding is the gap. */}
       {showReadNext ? (
