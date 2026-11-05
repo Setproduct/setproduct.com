@@ -11,7 +11,8 @@ import MobileTableOfContents from "./MobileTableOfContents";
 import ReadingProgress from "./ReadingProgress";
 import { useArticleToc } from "../../hooks/useArticleToc";
 import BlogFloatingShare from "./BlogFloatingShare";
-import BlogInlineCta from "./BlogInlineCta";
+import BlogInlineCta, { DEFAULT_PUBLISH_CTA } from "./BlogInlineCta";
+import { isPublishAudienceCategory } from "../../lib/publish";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
@@ -35,6 +36,10 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   const absoluteCoverUrl = absoluteUrl(frontmatter.coverImage);
   const jsonLd = buildBlogPostingJsonLd(frontmatter, canonical, readingTimeMinutes);
   const faqJsonLd = frontmatter.faq?.length ? buildFaqJsonLd(frontmatter.faq) : null;
+  // Founder/marketer categories default to the publishing CTA; a post's own
+  // inlineCta always wins, everything else keeps the newsletter.
+  const isPublishAudience = isPublishAudienceCategory(frontmatter.category);
+  const bottomCta = frontmatter.inlineCta ?? (isPublishAudience ? DEFAULT_PUBLISH_CTA : null);
 
   return (
     <>
@@ -106,7 +111,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
             </div>
           </div>
         </div>
-        {frontmatter.inlineCta ? <BlogInlineCta cta={frontmatter.inlineCta} /> : <CtaSubscribe />}
+        {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
         <BlogRelatedPosts posts={relatedPosts} />
       </main>
       <SiteFooter />
