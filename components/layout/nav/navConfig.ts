@@ -85,11 +85,15 @@ export const NAV_BLOG_LATEST = "__latest__";
 export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "Popular", category: null },
   { label: "Latest", category: NAV_BLOG_LATEST },
+  // Labels are sentence case; `category` must match the MDX frontmatter.
+  // SEO feeds the paid publishing funnel. Tools and Inspiration were dropped
+  // to keep the column at nine rows (thin categories; Inspiration also
+  // clashed with the navbar item of the same name).
+  { label: "UI design", category: "UI Design" },
   { label: "Startups & SaaS", category: "Startups & SaaS" },
-  { label: "UI Design", category: "UI Design" },
-  { label: "Growth Hacking", category: "Growth Hacking" },
-  { label: "Inspiration", category: "Inspiration" },
-  { label: "Tools", category: "Tools" },
+  { label: "Growth hacking", category: "Growth Hacking" },
+  { label: "SEO", category: "SEO" },
+  { label: "Design & code", category: "Design & Code" },
   { label: "Technology", category: "Technology" },
   { label: "Research", category: "Research" },
 ];
