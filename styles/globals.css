@@ -2494,3 +2494,44 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 .blog-publish-card .button-small {
   align-self: flex-start;
 }
+
+/*
+ * "Read next" under the sidebar TOC. Text rows only, so the sticky column
+ * keeps fitting the viewport (the TOC is what shrinks). Bottom padding is the
+ * gap to the subscribe / publish block, the same way .blogpost_toc-list does.
+ */
+.blog-read-next {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  padding-bottom: calc(16 * var(--em-px));
+}
+
+.blog-read-next p {
+  margin: 0;
+}
+
+.blog-read-next-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Own font-size via text-size-small, so no em spacing on the link itself. */
+.blog-read-next-link {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--black);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.blog-read-next-link:hover,
+.blog-read-next-link:focus-visible {
+  color: var(--primary);
+}
