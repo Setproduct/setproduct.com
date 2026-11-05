@@ -2653,7 +2653,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
    Справа на мобильном остаётся место под кнопку «наверх». */
 .blog-read-next-bar {
   position: fixed;
-  left: 50%;
+  /* Центровка без translateX(-50%): left/right 0 + margin auto. transform
+     остаётся только для вертикального выезда и не спорит с анимациями. */
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   bottom: 24px;
   z-index: 60;
   display: flex;
@@ -2667,13 +2671,13 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   box-shadow: 0 12px 32px -8px rgba(25, 24, 27, 0.22);
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 16px);
+  transform: translateY(16px);
   transition: opacity 220ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .blog-read-next-bar.is-visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 .blog-read-next-bar-link {
   display: flex;
@@ -2738,6 +2742,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     left: 16px;
     width: auto;
     right: 84px;
+    margin-inline: 0;
     bottom: 16px;
     transform: translateY(16px);
   }
@@ -2759,33 +2764,32 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 }
 
-/* Закрытие плашки крестиком: blur dissolve. Плашка расплывается, чуть
-   раздувается и тает. Анимируются filter, opacity и отдельное свойство
-   scale, поэтому transform с центрированием (-50%) не сбивается. */
+/* Закрытие плашки крестиком: blur dissolve. Плашка стоит на месте
+   (без сдвигов и масштаба) и медленно растворяется в сильном размытии.
+   Кривая ease-out: размытие набирается сразу и мягко дотаивает. */
 .blog-read-next-bar.is-dissolving {
   pointer-events: none;
-  animation: read-next-bar-dissolve 420ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: none;
+  transform: translateY(0);
+  animation: read-next-bar-dissolve 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @keyframes read-next-bar-dissolve {
   0% {
     opacity: 1;
     filter: blur(0);
-    scale: 1;
   }
-  35% {
-    opacity: 0.85;
-    filter: blur(2px);
-    scale: 1.02;
+  40% {
+    opacity: 0.6;
+    filter: blur(14px);
   }
   100% {
     opacity: 0;
-    filter: blur(14px);
-    scale: 1.08;
+    filter: blur(32px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .blog-read-next-bar.is-dissolving {
-    animation: read-next-bar-fade 160ms linear forwards;
+    animation: read-next-bar-fade 200ms linear forwards;
   }
   @keyframes read-next-bar-fade {
     to {
