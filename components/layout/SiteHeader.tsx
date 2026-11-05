@@ -9,7 +9,7 @@ import { useContactModal } from "../modals/ContactModalContext";
 import type { InspirationItem } from "../../types/data";
 import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
 import { getGumroadLinkProps } from "../../lib/gumroad";
-import { getPublishLinkProps } from "../../lib/publish";
+import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
 import { trackNav } from "../../lib/nav/analytics";
 import {
   DESIGN_KITS,
@@ -440,11 +440,12 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
             <NavSearch />
             <div className="relative inline-flex items-center">
               <a
-                className="button-small outlined w-inline-block"
+                className="button-small outlined w-inline-block nav-publish-btn"
                 {...getPublishLinkProps("header")}
-                aria-label="Write for us, publish your article on Setproduct (opens in a new tab)"
+                aria-label={`Get featured on Setproduct, from $${PUBLISH_OFFER.priceFrom} (opens in a new tab)`}
               >
-                <div className="text-size-medium text-weight-bold">Write for us</div>
+                <div className="text-size-medium text-weight-bold">Get featured</div>
+                <span className="nav-publish-price" aria-hidden="true">from ${PUBLISH_OFFER.priceFrom}</span>
               </a>
               {/* Temporarily disabled — kept for potential future use. */}
               {/* <LaunchAppCallout /> */}

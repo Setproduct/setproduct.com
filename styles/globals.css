@@ -2453,3 +2453,28 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     opacity: 0;
   }
 }
+
+/*
+ * Paid publishing CTA in the navbar ("Get featured" + price chip).
+ * Sizes are in em on the Webflow scale (1em ≈ 1px at 1440, fluid below).
+ * The chip sits inside the outlined button-small, so it uses the light
+ * primary tint and a full radius, the same way as other "pill" labels.
+ */
+.nav-publish-btn {
+  grid-column-gap: 8em;
+}
+
+.nav-publish-price {
+  display: inline-flex;
+  align-items: center;
+  /* The chip sets its own font-size, so spacing goes through --em-px
+     (AGENTS.md, «Ловушка em внутри текста»). */
+  padding: calc(2 * var(--em-px)) calc(8 * var(--em-px));
+  border-radius: calc(100 * var(--em-px));
+  background-color: var(--light-primary);
+  color: var(--primary);
+  font-size: 12em;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+}

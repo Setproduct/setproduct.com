@@ -18,6 +18,26 @@ import { event } from "./gtag";
 export const PUBLISH_HOST = "publish.setproduct.com";
 export const PUBLISH_URL = `https://${PUBLISH_HOST}/`;
 
+/** Offer facts shown next to publishing CTAs. Update here only. */
+export const PUBLISH_OFFER = {
+  priceFrom: 288,
+  priceTwoLinks: 348,
+  readersPerMonth: "17,000",
+  domainRating: 42,
+  turnaround: "24 hours",
+} as const;
+
+/**
+ * Blog categories whose readers are founders and marketers, i.e. potential
+ * advertisers. Posts in them get the publishing CTA by default (sidebar card,
+ * and the bottom CTA when the post has no inlineCta of its own).
+ */
+export const PUBLISH_AUDIENCE_CATEGORIES = ["SEO", "Growth Hacking", "Startups & SaaS"];
+
+export function isPublishAudienceCategory(category?: string | null): boolean {
+  return !!category && PUBLISH_AUDIENCE_CATEGORIES.includes(category);
+}
+
 export type PublishLocation =
   | "header"
   | "company_panel"
@@ -25,7 +45,18 @@ export type PublishLocation =
   | "footer"
   | "home_hero"
   | "faq"
+  | "blog_inline"
+  | "blog_sidebar"
   | "content";
+
+export function isPublishHref(href?: string | null): boolean {
+  if (!href) return false;
+  try {
+    return new URL(href).hostname === PUBLISH_HOST;
+  } catch {
+    return false;
+  }
+}
 
 export function getPublishHref(location: PublishLocation): string {
   const params = new URLSearchParams({
