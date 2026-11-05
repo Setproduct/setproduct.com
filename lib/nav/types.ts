@@ -18,7 +18,7 @@ export type NavFreebie = Pick<
  * resources plus the full Inspiration pool load later from a lazy chunk.
  */
 export type NavData = {
-  /** Newest posts of every Learn category (6 each), deduped, newest first. */
+  /** Previews of every Learn tab (Popular, Latest, categories; 6 each), deduped, newest first. */
   blog: NavBlogPost[];
   /** Resources shown under "All topics". */
   freebies: NavFreebie[];

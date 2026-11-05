@@ -68,8 +68,23 @@ export const NAV_INSPIRATION_PREVIEW_COUNT = 6;
 // downloading the full pool; category tabs use the pool once it loads.
 export const NAV_INSPIRATION_SAMPLE_COUNT = NAV_INSPIRATION_PREVIEW_COUNT * 3;
 
+// Learn opens on "Popular" (null keeps it the default tab and the /blog
+// landing link). Most visitors land on one post from Google, so the most-read
+// posts hold a newcomer better than whatever was published last. Fresh posts
+// move to "Latest". Slugs come from GA4 entrances; refresh them each quarter.
+export const NAV_BLOG_POPULAR_SLUGS = [
+  "data-table-ui-design",
+  "liquid-glass-vs-glassmorphism",
+  "tabs-ui-design",
+  "ai-chat-interface-ui-design",
+  "claymorphism-design-guide",
+  "dropdown-ui-design",
+];
+export const NAV_BLOG_LATEST = "__latest__";
+
 export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null }> = [
-  { label: "All topics", category: null },
+  { label: "Popular", category: null },
+  { label: "Latest", category: NAV_BLOG_LATEST },
   { label: "Startups & SaaS", category: "Startups & SaaS" },
   { label: "UI Design", category: "UI Design" },
   { label: "Growth Hacking", category: "Growth Hacking" },
@@ -117,9 +132,20 @@ export const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | n
   { label: "Web design", category: "Web Design" },
 ];
 
-/** Learn: newest posts, optionally narrowed to the hovered category. */
-export function getBlogPreviews<T extends Pick<NavBlogPost, "category">>(posts: T[], category: string | null): T[] {
-  return (category ? posts.filter((p) => p.category === category) : posts).slice(0, NAV_BLOG_PREVIEW_COUNT);
+/**
+ * Learn previews. null → curated popular posts (topped up with the newest if
+ * a slug is missing), NAV_BLOG_LATEST → newest posts, otherwise the newest
+ * posts of that category. `posts` are sorted newest first.
+ */
+export function getBlogPreviews<T extends Pick<NavBlogPost, "category" | "slug">>(posts: T[], category: string | null): T[] {
+  if (category === null) {
+    const bySlug = new Map(posts.map((p) => [p.slug, p]));
+    const popular = NAV_BLOG_POPULAR_SLUGS.map((slug) => bySlug.get(slug)).filter((p): p is T => Boolean(p));
+    const filler = posts.filter((p) => !NAV_BLOG_POPULAR_SLUGS.includes(p.slug));
+    return [...popular, ...filler].slice(0, NAV_BLOG_PREVIEW_COUNT);
+  }
+  if (category === NAV_BLOG_LATEST) return posts.slice(0, NAV_BLOG_PREVIEW_COUNT);
+  return posts.filter((p) => p.category === category).slice(0, NAV_BLOG_PREVIEW_COUNT);
 }
 
 // Narrows the (already shuffled) inspiration pool to the hovered component

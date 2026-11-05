@@ -18,6 +18,7 @@ import {
   INSPIRATION_LABEL_STYLE,
   KIT_PREVIEWS,
   NAV_BLOG_CATEGORIES,
+  NAV_BLOG_LATEST,
   NAV_FREEBIE_CATEGORIES,
   getBlogPreviews,
   getInspirationPreviews,
@@ -209,7 +210,10 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     key: item.label,
     label: item.label,
     value: item.category,
-    href: item.category ? `/blog?category=${encodeURIComponent(item.category)}` : "/blog",
+    href:
+      item.category && item.category !== NAV_BLOG_LATEST
+        ? `/blog?category=${encodeURIComponent(item.category)}`
+        : "/blog",
     isActive: categories.tutorials === item.category,
   }));
 

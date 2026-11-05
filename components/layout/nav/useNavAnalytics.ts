@@ -8,7 +8,7 @@ import {
   parsePrice,
   trackNav,
 } from "../../../lib/nav/analytics";
-import { DESIGN_KITS, NAV_OPEN_TRACK_DELAY_MS } from "./navConfig";
+import { DESIGN_KITS, NAV_BLOG_LATEST, NAV_OPEN_TRACK_DELAY_MS } from "./navConfig";
 import type { CategoryMenuKey } from "./navConfig";
 import type { MegaMenuState, MenuCategories } from "./useMegaMenuState";
 
@@ -18,6 +18,10 @@ function categoryLabel(
   category: string | null,
   inspirationCategories: InspirationCategory[],
 ): string {
+  if (menuKey === "tutorials") {
+    if (category === null) return "popular";
+    if (category === NAV_BLOG_LATEST) return "latest";
+  }
   if (category === null) return "all";
   if (menuKey === "inspiration") {
     return inspirationCategories.find((c) => c.slug === category)?.label ?? category;
