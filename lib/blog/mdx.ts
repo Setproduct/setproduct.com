@@ -124,21 +124,21 @@ export function getRelatedPosts(
   limit = 3,
   relatedSlugs?: string[]
 ): BlogPostMeta[] {
+  const all = getAllBlogPostsMeta();
+  // Curated slugs go first, in their order; if there are fewer than `limit`,
+  // the list is topped up from the same category, then from the rest.
+  const curated: BlogPostMeta[] = [];
   if (relatedSlugs && relatedSlugs.length > 0) {
-    const all = getAllBlogPostsMeta();
     const metaMap = new Map(all.map(p => [p.frontmatter.slug, p]));
-    const result: BlogPostMeta[] = [];
     for (const slug of relatedSlugs) {
       const meta = metaMap.get(slug);
-      if (meta && slug !== currentSlug) {
-        result.push(meta);
-        if (result.length >= limit) break;
+      if (meta && slug !== currentSlug && !curated.includes(meta)) {
+        curated.push(meta);
+        if (curated.length >= limit) return curated;
       }
     }
-    if (result.length > 0) return result;
   }
 
-  const all = getAllBlogPostsMeta();
   const sameCategory = category
     ? all.filter(
         (p) =>
@@ -150,5 +150,6 @@ export function getRelatedPosts(
     (p) =>
       p.frontmatter.slug !== currentSlug && !sameCategory.includes(p)
   );
-  return [...sameCategory, ...others].slice(0, limit);
+  const fill = [...sameCategory, ...others].filter((p) => !curated.includes(p));
+  return [...curated, ...fill].slice(0, limit);
 }

@@ -14,6 +14,7 @@ import BlogFloatingShare from "./BlogFloatingShare";
 import BlogInlineCta, { DEFAULT_PUBLISH_CTA } from "./BlogInlineCta";
 import { isPublishAudienceCategory } from "../../lib/publish";
 import BlogRelatedPosts from "./BlogRelatedPosts";
+import BlogNextArticle from "./BlogNextArticle";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
@@ -40,6 +41,11 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   // inlineCta always wins, everything else keeps the newsletter.
   const isPublishAudience = isPublishAudienceCategory(frontmatter.category);
   const bottomCta = frontmatter.inlineCta ?? (isPublishAudience ? DEFAULT_PUBLISH_CTA : null);
+  // The first related post becomes the "Next article" card; Related posts
+  // show the rest so the same post is not offered twice in a row. With
+  // relatedSlugs of 3 or fewer, Related keeps all of them.
+  const nextArticle = relatedPosts[0];
+  const relatedBelow = relatedPosts.length > 3 ? relatedPosts.slice(1, 4) : relatedPosts;
 
   return (
     <>
@@ -110,6 +116,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
                   <div className="rich-text-18 w-richtext" data-post={frontmatter.slug}>
                     <MDXRemote {...mdxSource} components={blogMdxComponents} />
                   </div>
+                  <BlogNextArticle post={nextArticle} />
                 </div>
               </div>
             </div>
@@ -117,7 +124,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         </div>
         {/* Related first: a finished reader is most likely to click another
             post; the CTA comes after it, right above the footer. */}
-        <BlogRelatedPosts posts={relatedPosts} />
+        <BlogRelatedPosts posts={relatedBelow} />
         {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
       <SiteFooter />
