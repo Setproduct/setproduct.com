@@ -83,7 +83,9 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
           lastUpdated={frontmatter.lastUpdated}
         />
         <div className="section">
-          <div className="section-padding bottom-112">
+          {/* bottom-40: Related posts follow on the same white background and
+              bring their own top-80. */}
+          <div className="section-padding bottom-40">
             <div className="container">
               <div className="blogpost_content-section" ref={contentSectionRef}>
                 <BlogSidebar
@@ -112,8 +114,10 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
             </div>
           </div>
         </div>
-        {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
+        {/* Related first: a finished reader is most likely to click another
+            post; the CTA comes after it, right above the footer. */}
         <BlogRelatedPosts posts={relatedPosts} />
+        {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
       <SiteFooter />
       <BlogFloatingShare url={postUrl} title={frontmatter.title} />
