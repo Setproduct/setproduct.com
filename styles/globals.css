@@ -2658,11 +2658,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   z-index: 60;
   display: flex;
   align-items: center;
-  gap: 4px;
-  width: min(440px, calc(100vw - 48px));
-  padding: 8px 8px 8px 8px;
+  gap: 6px;
+  width: min(572px, calc(100vw - 48px));
+  padding: 10px;
   border: 1px solid var(--light-primary);
-  border-radius: 20px;
+  border-radius: 26px;
   background: var(--white);
   box-shadow: 0 12px 32px -8px rgba(25, 24, 27, 0.22);
   opacity: 0;
@@ -2679,15 +2679,15 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   display: flex;
   flex: 1 1 auto;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   min-width: 0;
   color: var(--black);
   text-decoration: none;
 }
 .blog-read-next-bar-thumb {
   flex: none;
-  width: 56px;
-  height: 42px;
+  width: 72px;
+  height: 54px;
   overflow: hidden;
   background: var(--light-primary);
 }
@@ -2698,10 +2698,16 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 .blog-read-next-bar-eyebrow {
   color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 .blog-read-next-bar-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2710,17 +2716,13 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 .blog-read-next-bar-link:hover .blog-read-next-bar-title {
   color: var(--primary);
 }
-.blog-read-next-bar-arrow {
-  flex: none;
-  color: var(--primary);
-}
 .blog-read-next-bar-close {
   display: flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: 100px;
   background: transparent;
@@ -2738,6 +2740,13 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     right: 84px;
     bottom: 16px;
     transform: translateY(16px);
+  }
+  .blog-read-next-bar-thumb {
+    width: 56px;
+    height: 42px;
+  }
+  .blog-read-next-bar-title {
+    font-size: 15px;
   }
   .blog-read-next-bar.is-visible {
     transform: translateY(0);

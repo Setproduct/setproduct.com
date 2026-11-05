@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { event } from "../../lib/gtag";
-import ArrowIcon from "../sections/ArrowIcon";
 import type { BlogPostMeta } from "../../types/blog";
 
 type BlogReadNextBarProps = {
@@ -32,11 +31,12 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
     const update = () => {
       frame = 0;
       const vh = window.innerHeight;
-      // Article bottom above the upper third: the "Next article" card under
-      // the body is on its way out, so the pill does not duplicate it.
-      const pastArticle = article.getBoundingClientRect().bottom < vh * 0.3;
-      const footerInView = footer ? footer.getBoundingClientRect().top < vh : false;
-      setVisible(pastArticle && !footerInView);
+      // Show as soon as the end of the article text is on screen; hide only
+      // when the footer fills most of the screen, so the pill rides over
+      // Related posts and the CTA instead of flashing past them.
+      const reachedEnd = article.getBoundingClientRect().bottom <= vh;
+      const footerTakesOver = footer ? footer.getBoundingClientRect().top < vh * 0.4 : false;
+      setVisible(reachedEnd && !footerTakesOver);
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(update);
@@ -75,11 +75,8 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
           </span>
         ) : null}
         <span className="blog-read-next-bar-text">
-          <span className="blog-read-next-bar-eyebrow text-size-tiny text-weight-semibold">Read next</span>
-          <span className="blog-read-next-bar-title text-size-small text-weight-semibold">{frontmatter.title}</span>
-        </span>
-        <span className="button-icon is-small w-embed blog-read-next-bar-arrow">
-          <ArrowIcon />
+          <span className="blog-read-next-bar-eyebrow">Read next</span>
+          <span className="blog-read-next-bar-title">{frontmatter.title}</span>
         </span>
       </Link>
       <button
@@ -91,7 +88,7 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
           event("blog_read_next_dismiss", { location: "floating_bar", slug: frontmatter.slug });
         }}
       >
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true">
           <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       </button>
