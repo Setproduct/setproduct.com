@@ -2478,3 +2478,44 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   line-height: 1.3;
   white-space: nowrap;
 }
+
+/*
+ * Publishing card in the blog sidebar (founder/marketer categories).
+ * Replaces the subscribe block for those posts; same column, same rhythm.
+ */
+.blog-publish-card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--em-px));
+  padding: calc(20 * var(--em-px));
+  border: 1px solid var(--input-border, #d7ccfc);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--light-purple);
+}
+
+.blog-publish-card p {
+  margin: 0;
+}
+
+/* Own font-size, so spacing stays out of em (see "em trap" in AGENTS.md). */
+.blog-publish-card-eyebrow {
+  color: var(--primary);
+  font-size: 12em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.blog-publish-card-facts {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-publish-card .button-small {
+  align-self: flex-start;
+}

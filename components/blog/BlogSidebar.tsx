@@ -2,20 +2,50 @@ import type { FormEvent } from "react";
 import type { BlogHeading } from "../../types/blog";
 import { useSubscribe } from "../../hooks/useSubscribe";
 import { event } from "../../lib/gtag";
+import { PUBLISH_OFFER, getPublishLinkProps, isPublishAudienceCategory } from "../../lib/publish";
+import ArrowIcon from "../sections/ArrowIcon";
 import TableOfContents from "./TableOfContents";
 
 type BlogSidebarProps = {
   headings: BlogHeading[];
   activeId: string;
   onNavigate: (item: BlogHeading, position: number) => void;
+  category?: string;
 };
+
+/**
+ * Publishing offer for founder/marketer categories. Takes the place of the
+ * subscribe block: one call to action per column.
+ */
+function PublishCard() {
+  return (
+    <div className="blog-publish-card hide-on-mobile">
+      <p className="blog-publish-card-eyebrow">For founders</p>
+      <p className="text-size-medium text-weight-bold">
+        Launching a product? Get it in front of {PUBLISH_OFFER.readersPerMonth} readers a month
+      </p>
+      <ul className="blog-publish-card-facts text-size-small">
+        <li>Live within {PUBLISH_OFFER.turnaround}</li>
+        <li>Dofollow link, DR {PUBLISH_OFFER.domainRating}</li>
+        <li>From ${PUBLISH_OFFER.priceFrom}</li>
+      </ul>
+      <a className="button-small w-inline-block" {...getPublishLinkProps("blog_sidebar")}>
+        <div className="text-size-medium text-weight-bold">See packages</div>
+        <div className="button-icon is-small w-embed">
+          <ArrowIcon />
+        </div>
+      </a>
+    </div>
+  );
+}
 
 /**
  * Left column of a blog post. Stickiness is pure CSS (position: sticky on
  * .blogpost_content-column1, see globals.css): no scroll listeners, no
  * re-renders while scrolling.
  */
-export default function BlogSidebar({ headings, activeId, onNavigate }: BlogSidebarProps) {
+export default function BlogSidebar({ headings, activeId, onNavigate, category }: BlogSidebarProps) {
+  const showPublish = isPublishAudienceCategory(category);
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -32,6 +62,7 @@ export default function BlogSidebar({ headings, activeId, onNavigate }: BlogSide
           <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
         </>
       ) : null}
+      {showPublish ? <PublishCard /> : (
       <div className="blogpost_content-cta-wr hide-on-mobile">
         <p className="text-size-medium text-weight-bold">Subscribe to new posts</p>
         {!isSubscribed ? (
@@ -74,6 +105,7 @@ export default function BlogSidebar({ headings, activeId, onNavigate }: BlogSide
           <p className="text-size-small" role="status">Thank you! You&apos;re subscribed.</p>
         )}
       </div>
+      )}
     </aside>
   );
 }

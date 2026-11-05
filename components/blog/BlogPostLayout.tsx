@@ -90,6 +90,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
                   headings={toc.items}
                   activeId={toc.activeId}
                   onNavigate={toc.onSidebarNavigate}
+                  category={frontmatter.category}
                 />
                 <div
                   id="w-node-content"
