@@ -65,8 +65,10 @@ export default function BlogNextArticle({ post }: BlogNextArticleProps) {
               {frontmatter.category ? `${frontmatter.category} · ` : ""}
               {post.readingTimeText}
             </span>
-            <span className="blog-next-article-cta text-size-regular text-weight-bold">
-              Read next
+            {/* The icon must not sit inside the text-size span: .button-icon
+                is 14em wide, and under font-size 16em that becomes 224px. */}
+            <span className="blog-next-article-cta">
+              <span className="text-size-regular text-weight-bold">Read next</span>
               <span className="button-icon is-small w-embed">
                 <ArrowIcon />
               </span>
