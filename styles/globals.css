@@ -2797,3 +2797,10 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     }
   }
 }
+
+/* Blog breadcrumbs: Blog / Category / Post. The links never wrap, only the
+   post title does, so the trail stays readable on narrow screens. */
+.blogpost_hero-breadcrump-wr > a {
+  flex-shrink: 0;
+  white-space: nowrap;
+}

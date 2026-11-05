@@ -18,7 +18,8 @@ import BlogNextArticle from "./BlogNextArticle";
 import BlogReadNextBar from "./BlogReadNextBar";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
-import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
+import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
+import { formatCategoryLabel } from "../../lib/search/format";
 import { SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
 import type { NavData } from "../../lib/nav/types";
@@ -38,6 +39,12 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   const absoluteCoverUrl = absoluteUrl(frontmatter.coverImage);
   const jsonLd = buildBlogPostingJsonLd(frontmatter, canonical, readingTimeMinutes);
   const faqJsonLd = frontmatter.faq?.length ? buildFaqJsonLd(frontmatter.faq) : null;
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(
+    frontmatter.title,
+    canonical,
+    frontmatter.category,
+    frontmatter.category ? formatCategoryLabel(frontmatter.category) : undefined
+  );
   // Founder/marketer categories default to the publishing CTA; a post's own
   // inlineCta always wins, everything else keeps the newsletter.
   const isPublishAudience = isPublishAudienceCategory(frontmatter.category);
@@ -68,6 +75,10 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
         {faqJsonLd ? (
           <script

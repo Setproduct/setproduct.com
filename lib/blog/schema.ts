@@ -46,6 +46,37 @@ export function buildBlogPostingJsonLd(
   };
 }
 
+/** Listing URL filtered by a blog category (same format as the mega-menu). */
+export function blogCategoryHref(category: string): string {
+  return `/blog?category=${encodeURIComponent(category)}`;
+}
+
+/**
+ * BreadcrumbList JSON-LD: Blog → Category → Post. Matches the visible
+ * breadcrumbs in BlogHero; Google shows this trail instead of the raw URL.
+ */
+export function buildBreadcrumbJsonLd(
+  title: string,
+  pageUrl: string,
+  category?: string,
+  categoryLabel?: string
+): Record<string, unknown> {
+  const items: Array<{ name: string; item: string }> = [{ name: "Blog", item: `${SITE_URL}/blog` }];
+  if (category) items.push({ name: categoryLabel ?? category, item: `${SITE_URL}${blogCategoryHref(category)}` });
+  items.push({ name: title, item: pageUrl });
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.name,
+      item: entry.item,
+    })),
+  };
+}
+
 /**
  * FAQPage JSON-LD. Rendered alongside BlogPosting when a post defines `faq`
  * items in frontmatter. Drives the FAQ rich result in Google and feeds

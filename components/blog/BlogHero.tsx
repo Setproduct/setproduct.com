@@ -1,5 +1,8 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { formatCategoryLabel } from "../../lib/search/format";
+import { blogCategoryHref } from "../../lib/blog/schema";
 
 type BlogHeroProps = {
   title: string;
@@ -100,18 +103,22 @@ export default function BlogHero({
               </div>
             </div>
             <div className="spacer-40" />
-            <div className="blogpost_hero-breadcrump-wr">
-              <Link href="/blog" className="link-block no-margins w-inline-block">
-                <div className="text-size-regular">Blog</div>
-              </Link>
-              <img
-                src="/images/Icon.svg"
-                loading="lazy"
-                alt=""
-                className="breadcrump-icon"
-              />
-              <p className="text-size-regular">{title}</p>
-            </div>
+            {/* Blog / Category / Post. Mirrors the BreadcrumbList JSON-LD
+                built in lib/blog/schema.ts, so both must stay in sync. */}
+            <nav aria-label="Breadcrumb" className="blogpost_hero-breadcrump-wr">
+              {[
+                { href: "/blog", label: "Blog" },
+                ...(category ? [{ href: blogCategoryHref(category), label: formatCategoryLabel(category) }] : []),
+              ].map((crumb) => (
+                <Fragment key={crumb.href}>
+                  <Link href={crumb.href} className="link-block no-margins w-inline-block">
+                    <div className="text-size-regular">{crumb.label}</div>
+                  </Link>
+                  <img src="/images/Icon.svg" loading="lazy" alt="" className="breadcrump-icon" />
+                </Fragment>
+              ))}
+              <p className="text-size-regular" aria-current="page">{title}</p>
+            </nav>
           </div>
         </div>
       </div>
