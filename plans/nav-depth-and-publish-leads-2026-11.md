@@ -232,7 +232,9 @@ flowchart TD
 | 2.1 | Related posts выше нижнего CTA, отступ статьи 112 → 40 | `718067c` |
 | 2.2 | Learn открывается на `Popular` (6 топ-входов из GA4), свежие во вкладке `Latest` | `0bdbefa` |
 | 2.3 | Learn: добавлены SEO и Design & code, убраны Tools и Inspiration | `d28b306` |
-| 2.4 | «Read next» в сайдбаре статьи (3 related), событие `blog_read_next_click` | `0aaee71` |
+| 2.4 | ~~«Read next» под оглавлением~~ (`0aaee71`): съедал высоту оглавления, откачен в `d9d045b` | `d9d045b` |
+| 2.4a | «Read next» занимает место оглавления, когда читатель в последнем разделе; кнопка «Back to contents»; без оглавления показывается сразу. События `blog_read_next_view` и `blog_read_next_click` (location `sidebar`) | `d814473` |
+| 2.4b | Карточка «Next article» сразу после текста (работает и на мобильных). Related показывает три следующие статьи без дубля; `getRelatedPosts` добивает ручной `relatedSlugs` постами из той же категории. События с location `after_article` | `76603b7` |
 
 ### Метрики успеха
 
