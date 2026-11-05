@@ -16,7 +16,7 @@ type BlogSidebarProps = {
   readNext?: BlogPostMeta[];
 };
 
-const READ_NEXT_COUNT = 3;
+const READ_NEXT_COUNT = 5;
 
 /**
  * "Read next" takes the TOC's place once the reader is in the last section:
@@ -52,7 +52,7 @@ function ReadNext({ posts, onBack }: { posts: BlogPostMeta[]; onBack?: () => voi
                 }
               >
                 {thumb ? (
-                  <span className="blog-read-next-thumb hover-lift-media radius-12">
+                  <span className="blog-read-next-thumb hover-lift-media radius-8">
                     <img alt="" src={thumb} loading="lazy" decoding="async" className="image-cover" />
                   </span>
                 ) : null}

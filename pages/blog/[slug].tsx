@@ -32,8 +32,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   const post = await getBlogPost(slug);
   if (!post) return { notFound: true };
 
-  // 4 = one "Next article" card after the body + three Related posts below it.
-  const relatedPosts = getRelatedPosts(slug, post.frontmatter.category, 4, post.frontmatter.relatedSlugs);
+  // 6: the sidebar "Read next" shows the first five; after the body the first
+  // one becomes the "Next article" card and Related posts take #2–#4.
+  const relatedPosts = getRelatedPosts(slug, post.frontmatter.category, 6, post.frontmatter.relatedSlugs);
   const postUrl = `${SITE_URL}/blog/${slug}`;
   const navData = getNavData();
 
