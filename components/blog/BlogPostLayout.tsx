@@ -15,6 +15,7 @@ import BlogInlineCta, { DEFAULT_PUBLISH_CTA } from "./BlogInlineCta";
 import { isPublishAudienceCategory } from "../../lib/publish";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import BlogNextArticle from "./BlogNextArticle";
+import BlogReadNextBar from "./BlogReadNextBar";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { blogMdxComponents } from "./mdx-components";
 import { buildBlogPostingJsonLd, buildFaqJsonLd } from "../../lib/blog/schema";
@@ -128,6 +129,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
       <SiteFooter />
+      <BlogReadNextBar post={nextArticle} articleRef={contentSectionRef} />
       <BlogFloatingShare url={postUrl} title={frontmatter.title} />
       <ScrollUpButton />
     </>

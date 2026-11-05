@@ -2647,3 +2647,105 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     padding: calc(16 * var(--em-px));
   }
 }
+
+/* Floating "Read next" pill: после конца статьи и до футера, снизу по центру.
+   Как и .template-sticky-cta, живёт в px (fixed-оверлей, не часть вёрстки).
+   Справа на мобильном остаётся место под кнопку «наверх». */
+.blog-read-next-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: min(440px, calc(100vw - 48px));
+  padding: 8px 8px 8px 8px;
+  border: 1px solid var(--light-primary);
+  border-radius: 20px;
+  background: var(--white);
+  box-shadow: 0 12px 32px -8px rgba(25, 24, 27, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 16px);
+  transition: opacity 220ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.blog-read-next-bar.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.blog-read-next-bar-link {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: var(--black);
+  text-decoration: none;
+}
+.blog-read-next-bar-thumb {
+  flex: none;
+  width: 56px;
+  height: 42px;
+  overflow: hidden;
+  background: var(--light-primary);
+}
+.blog-read-next-bar-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.blog-read-next-bar-eyebrow {
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.blog-read-next-bar-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 200ms ease;
+}
+.blog-read-next-bar-link:hover .blog-read-next-bar-title {
+  color: var(--primary);
+}
+.blog-read-next-bar-arrow {
+  flex: none;
+  color: var(--primary);
+}
+.blog-read-next-bar-close {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--grey);
+  cursor: pointer;
+}
+.blog-read-next-bar-close:hover {
+  background: var(--light-grey);
+  color: var(--black);
+}
+@media screen and (max-width: 767px) {
+  .blog-read-next-bar {
+    left: 16px;
+    width: auto;
+    right: 84px;
+    bottom: 16px;
+    transform: translateY(16px);
+  }
+  .blog-read-next-bar.is-visible {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-read-next-bar,
+  .blog-read-next-bar.is-visible {
+    transition: opacity 160ms linear;
+  }
+}
