@@ -13,6 +13,7 @@ import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
 import { absoluteUrl } from "../../lib/blog/site-config";
+import { getPublishLinkProps } from "../../lib/publish";
 import type { BlogPostPreview } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
 
@@ -72,9 +73,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
                     </Link>
                     <a
                       className="button secondary w-inline-block"
-                      href="https://publish.setproduct.com"
-                      rel="noreferrer"
-                      target="_blank"
+                      {...getPublishLinkProps("home_hero")}
                     >
                       <div className="text-size-large text-weight-bold">Publish with Us</div>
                       <div className="button-icon w-embed"><ArrowIcon /></div>

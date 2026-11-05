@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import ArrowIcon from "../../sections/ArrowIcon";
+import { getPublishLinkProps } from "../../../lib/publish";
 import { NavLink } from "./NavLink";
 import { MenuTrigger } from "./MenuTrigger";
 import { handlePanelKeyDown } from "./interaction";
@@ -98,9 +99,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                     </p>
                     <a
                       className="button secondary w-inline-block nav_info-promo-cta"
-                      href="https://publish.setproduct.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...getPublishLinkProps("company_panel")}
                     >
                       <div className="text-size-large text-weight-bold">Advertise with us</div>
                       <div className="button-icon w-embed"><ArrowIcon /></div>
@@ -123,9 +122,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                 </button>
                 <a
                   className="button-small secondary w-inline-block nav_info-promo-mobile-cta"
-                  href="https://publish.setproduct.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...getPublishLinkProps("company_panel_mobile")}
                 >
                   <div className="text-size-medium text-weight-bold">Advertise with us</div>
                 </a>

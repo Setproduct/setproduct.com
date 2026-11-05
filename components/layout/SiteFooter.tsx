@@ -9,9 +9,10 @@ import {
 } from "./FooterSocialIcons";
 import { useContactModal } from "../modals/ContactModalContext";
 import { useSubscribe } from "../../hooks/useSubscribe";
+import { getPublishHref } from "../../lib/publish";
 
 
-type FooterLink = { href: string; label: string; external?: boolean; modal?: boolean };
+type FooterLink = { href: string; label: string; external?: boolean; modal?: boolean; publish?: boolean };
 type FooterColumn = { title: string; titleHref?: string; links: FooterLink[] };
 type SocialLink = { href: string; label: string; Icon: FooterSocialIconComponent };
 
@@ -45,7 +46,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Information",
     links: [
-      { href: "https://publish.setproduct.com/", label: "Write for Us", external: true },
+      { href: getPublishHref("footer"), label: "Write for Us", external: true, publish: true },
       { href: "/testimonials", label: "Testimonials" },
       { href: "/legal/license", label: "License" },
       { href: "/legal/refunds-policy", label: "Refund Policy" },
@@ -118,8 +119,9 @@ export default function SiteFooter() {
                           href={link.href}
                           key={link.href}
                           onClick={link.modal ? (e) => { e.preventDefault(); openContactModal(); } : undefined}
-                          rel={link.external ? "noreferrer" : undefined}
+                          rel={link.external ? "noopener noreferrer" : undefined}
                           target={link.external ? "_blank" : undefined}
+                          data-publish-location={link.publish ? "footer" : undefined}
                         >
                           <div className="text-size-small">{link.label}</div>
                         </a>

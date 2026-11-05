@@ -9,6 +9,7 @@ import { useContactModal } from "../modals/ContactModalContext";
 import type { InspirationItem } from "../../types/data";
 import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
 import { getGumroadLinkProps } from "../../lib/gumroad";
+import { getPublishLinkProps } from "../../lib/publish";
 import { trackNav } from "../../lib/nav/analytics";
 import {
   DESIGN_KITS,
@@ -440,9 +441,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
             <div className="relative inline-flex items-center">
               <a
                 className="button-small outlined w-inline-block"
-                href="https://publish.setproduct.com/"
-                rel="noreferrer"
-                target="_blank"
+                {...getPublishLinkProps("header")}
                 aria-label="Write for Us — publish your article on Setproduct"
               >
                 <div className="text-size-medium text-weight-bold">Write for Us</div>

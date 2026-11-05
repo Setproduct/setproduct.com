@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ContactModalProvider } from "../components/modals/ContactModalContext";
 import { GA_TRACKING_ID, pageview } from "../lib/gtag";
+import { trackPublishClicks } from "../lib/publish";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -24,6 +25,10 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
+
+  // One delegated listener for every link to publish.setproduct.com (header,
+  // nav panels, footer, FAQ, MDX posts): GA4 `publish_cta_click` by location.
+  useEffect(() => trackPublishClicks(), []);
 
   return (
     <ContactModalProvider>

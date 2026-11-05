@@ -142,7 +142,7 @@ const HOME_FAQ: FaqItem[] = [
   {
     question: "Can I write a guest post for your blog?",
     answerHtml:
-      'Yes, we accept guest posts on design and technology topics. Submission guidelines and pricing live on our publishing portal, see <a class="span-link" href="https://publish.setproduct.com/" target="_blank" rel="noopener noreferrer">publish.setproduct.com</a>.',
+      'Yes, we accept guest posts on design and technology topics. Submission guidelines and pricing live on our publishing portal, see <a class="span-link" href="https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish" data-publish-location="faq" target="_blank" rel="noopener noreferrer">publish.setproduct.com</a>.',
   },
 ];
 
