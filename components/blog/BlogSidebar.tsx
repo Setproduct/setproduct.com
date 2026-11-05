@@ -1,6 +1,5 @@
 import type { FormEvent } from "react";
-import Link from "next/link";
-import type { BlogHeading, BlogPostMeta } from "../../types/blog";
+import type { BlogHeading } from "../../types/blog";
 import { useSubscribe } from "../../hooks/useSubscribe";
 import { event } from "../../lib/gtag";
 import { PUBLISH_OFFER, getPublishLinkProps, isPublishAudienceCategory } from "../../lib/publish";
@@ -12,40 +11,7 @@ type BlogSidebarProps = {
   activeId: string;
   onNavigate: (item: BlogHeading, position: number) => void;
   category?: string;
-  /** Related posts of this article; the first three become "Read next". */
-  readNext?: BlogPostMeta[];
 };
-
-const READ_NEXT_COUNT = 3;
-
-/**
- * Compact "Read next" list under the TOC. The sidebar is sticky, so the next
- * step stays in view for the whole article instead of only at the very end
- * (where ~18% of readers arrive). Text rows only: the column is capped at the
- * viewport height and the TOC is the part that shrinks.
- */
-function ReadNext({ posts }: { posts: BlogPostMeta[] }) {
-  return (
-    <nav aria-label="Read next" className="blog-read-next hide-on-mobile">
-      <p className="text-size-medium text-weight-bold">Read next</p>
-      <ol className="blog-read-next-list">
-        {posts.map((post, index) => (
-          <li key={post.frontmatter.slug}>
-            <Link
-              className="blog-read-next-link text-size-small"
-              href={`/blog/${post.frontmatter.slug}`}
-              onClick={() =>
-                event("blog_read_next_click", { position: index + 1, slug: post.frontmatter.slug })
-              }
-            >
-              {post.frontmatter.title}
-            </Link>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
-}
 
 /**
  * Publishing offer for founder/marketer categories. Takes the place of the
@@ -78,9 +44,8 @@ function PublishCard() {
  * .blogpost_content-column1, see globals.css): no scroll listeners, no
  * re-renders while scrolling.
  */
-export default function BlogSidebar({ headings, activeId, onNavigate, category, readNext = [] }: BlogSidebarProps) {
+export default function BlogSidebar({ headings, activeId, onNavigate, category }: BlogSidebarProps) {
   const showPublish = isPublishAudienceCategory(category);
-  const nextPosts = readNext.slice(0, READ_NEXT_COUNT);
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -97,7 +62,6 @@ export default function BlogSidebar({ headings, activeId, onNavigate, category, 
           <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
         </>
       ) : null}
-      {nextPosts.length > 0 ? <ReadNext posts={nextPosts} /> : null}
       {showPublish ? <PublishCard /> : (
       <div className="blogpost_content-cta-wr hide-on-mobile">
         <p className="text-size-medium text-weight-bold">Subscribe to new posts</p>

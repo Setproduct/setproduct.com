@@ -93,7 +93,6 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
                   activeId={toc.activeId}
                   onNavigate={toc.onSidebarNavigate}
                   category={frontmatter.category}
-                  readNext={relatedPosts}
                 />
                 <div
                   id="w-node-content"
