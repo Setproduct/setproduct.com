@@ -95,7 +95,12 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
           <div className="section-padding bottom-40">
             <div className="container">
               <div className="blogpost_content-section" ref={contentSectionRef}>
+                {/* key by slug: Next.js keeps this component mounted when one
+                    post links to another, so the latched Read next state would
+                    carry over. Only the sidebar and the bar are reset; header,
+                    footer and article body are left alone. */}
                 <BlogSidebar
+                  key={frontmatter.slug}
                   headings={toc.items}
                   activeId={toc.activeId}
                   onNavigate={toc.onSidebarNavigate}
@@ -129,7 +134,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
       <SiteFooter />
-      <BlogReadNextBar post={nextArticle} articleRef={contentSectionRef} />
+      <BlogReadNextBar key={frontmatter.slug} post={nextArticle} articleRef={contentSectionRef} />
       <BlogFloatingShare url={postUrl} title={frontmatter.title} />
       <ScrollUpButton />
     </>

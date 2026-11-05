@@ -47,16 +47,5 @@ export default function BlogArticlePage({
   postUrl,
   navData,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  // key by slug: Next.js reuses the page component when navigating between two
-  // posts, so without it per-article state (latched Read next, dismissed bar,
-  // TOC progress) would leak into the next post.
-  return (
-    <BlogPostLayout
-      key={post.frontmatter.slug}
-      post={post}
-      relatedPosts={relatedPosts}
-      postUrl={postUrl}
-      navData={navData}
-    />
-  );
+  return <BlogPostLayout post={post} relatedPosts={relatedPosts} postUrl={postUrl} navData={navData} />;
 }
