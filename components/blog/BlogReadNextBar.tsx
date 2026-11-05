@@ -15,9 +15,14 @@ type BlogReadNextBarProps = {
  * next step on screen through Related posts and the CTA. Hides when the
  * footer comes into view, or for the rest of the visit after "×".
  */
+/** Share of the article body read before the pill slides in. */
+const SHOW_AT_PROGRESS = 0.8;
+
 export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarProps) {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  // "×" first plays the blur dissolve, then unmounts on animationend.
+  const [dissolving, setDissolving] = useState(false);
   const reported = useRef(false);
   const slug = post?.frontmatter.slug;
 
@@ -31,12 +36,14 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
     const update = () => {
       frame = 0;
       const vh = window.innerHeight;
-      // Show as soon as the end of the article text is on screen; hide only
-      // when the footer fills most of the screen, so the pill rides over
-      // Related posts and the CTA instead of flashing past them.
-      const reachedEnd = article.getBoundingClientRect().bottom <= vh;
+      // Slide in at 80% of the article body (same formula as the reading
+      // progress line and the sidebar "Read next"); hide only when the footer
+      // fills most of the screen.
+      const rect = article.getBoundingClientRect();
+      const distance = rect.height - vh;
+      const progress = distance <= 0 ? 1 : -rect.top / distance;
       const footerTakesOver = footer ? footer.getBoundingClientRect().top < vh * 0.4 : false;
-      setVisible(reachedEnd && !footerTakesOver);
+      setVisible(progress >= SHOW_AT_PROGRESS && !footerTakesOver);
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(update);
@@ -63,7 +70,13 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
   const thumb = frontmatter.thumbImage ?? frontmatter.coverImage;
 
   return (
-    <div className={`blog-read-next-bar${visible ? " is-visible" : ""}`} inert={!visible}>
+    <div
+      className={`blog-read-next-bar${visible || dissolving ? " is-visible" : ""}${dissolving ? " is-dissolving" : ""}`}
+      inert={!visible || dissolving}
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget && dissolving) setDismissed(true);
+      }}
+    >
       <Link
         href={`/blog/${frontmatter.slug}`}
         className="blog-read-next-bar-link"
@@ -84,7 +97,7 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
         className="blog-read-next-bar-close"
         aria-label="Hide read next"
         onClick={() => {
-          setDismissed(true);
+          setDissolving(true);
           event("blog_read_next_dismiss", { location: "floating_bar", slug: frontmatter.slug });
         }}
       >

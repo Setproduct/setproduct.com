@@ -2758,3 +2758,38 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     transition: opacity 160ms linear;
   }
 }
+
+/* Закрытие плашки крестиком: blur dissolve. Плашка расплывается, чуть
+   раздувается и тает. Анимируются filter, opacity и отдельное свойство
+   scale, поэтому transform с центрированием (-50%) не сбивается. */
+.blog-read-next-bar.is-dissolving {
+  pointer-events: none;
+  animation: read-next-bar-dissolve 420ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes read-next-bar-dissolve {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    scale: 1;
+  }
+  35% {
+    opacity: 0.85;
+    filter: blur(2px);
+    scale: 1.02;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(14px);
+    scale: 1.08;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-read-next-bar.is-dissolving {
+    animation: read-next-bar-fade 160ms linear forwards;
+  }
+  @keyframes read-next-bar-fade {
+    to {
+      opacity: 0;
+    }
+  }
+}
