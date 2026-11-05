@@ -98,7 +98,7 @@ export const DESIGN_KITS: Array<{ href: string; label: string; category: string 
 export const INFORMATION_LINKS: Array<{ href: string; label: string; modal?: boolean }> = [
   { href: "/testimonials", label: "Testimonials" },
   { href: "/legal/license", label: "License" },
-  { href: "/legal/refunds-policy", label: "Refund Policy" },
+  { href: "/legal/refunds-policy", label: "Refund policy" },
   { href: "#", label: "Contact us", modal: true },
 ];
 

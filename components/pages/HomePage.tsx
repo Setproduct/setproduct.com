@@ -75,7 +75,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
                       className="button secondary w-inline-block"
                       {...getPublishLinkProps("home_hero")}
                     >
-                      <div className="text-size-large text-weight-bold">Publish with Us</div>
+                      <div className="text-size-large text-weight-bold">Publish with us</div>
                       <div className="button-icon w-embed"><ArrowIcon /></div>
                     </a>
                   </div>

@@ -31,7 +31,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     ],
   },
   {
-    title: "Design Kits",
+    title: "Design kits",
     titleHref: "/all",
     links: [
       { href: "/dashboards", label: "Dashboards" },
@@ -46,10 +46,10 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Information",
     links: [
-      { href: getPublishHref("footer"), label: "Write for Us", external: true, publish: true },
+      { href: getPublishHref("footer"), label: "Write for us", external: true, publish: true },
       { href: "/testimonials", label: "Testimonials" },
       { href: "/legal/license", label: "License" },
-      { href: "/legal/refunds-policy", label: "Refund Policy" },
+      { href: "/legal/refunds-policy", label: "Refund policy" },
       { href: "#", label: "Contact us", modal: true },
     ],
   },

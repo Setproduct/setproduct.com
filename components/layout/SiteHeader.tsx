@@ -363,7 +363,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                 <MegaMenuPanel
                   menu="designKits"
                   state={menu}
-                  label="UI Kits"
+                  label="UI kits"
                   isCurrent={isDesignKitsActive}
                   listKeyPrefix="kits"
                   categories={kitCategories}
@@ -442,9 +442,9 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
               <a
                 className="button-small outlined w-inline-block"
                 {...getPublishLinkProps("header")}
-                aria-label="Write for Us — publish your article on Setproduct"
+                aria-label="Write for us, publish your article on Setproduct (opens in a new tab)"
               >
-                <div className="text-size-medium text-weight-bold">Write for Us</div>
+                <div className="text-size-medium text-weight-bold">Write for us</div>
               </a>
               {/* Temporarily disabled — kept for potential future use. */}
               {/* <LaunchAppCallout /> */}
