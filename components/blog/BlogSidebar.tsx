@@ -1,17 +1,72 @@
-import type { FormEvent } from "react";
-import type { BlogHeading } from "../../types/blog";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import type { BlogHeading, BlogPostMeta } from "../../types/blog";
 import { useSubscribe } from "../../hooks/useSubscribe";
 import { event } from "../../lib/gtag";
 import { PUBLISH_OFFER, getPublishLinkProps, isPublishAudienceCategory } from "../../lib/publish";
 import ArrowIcon from "../sections/ArrowIcon";
-import TableOfContents from "./TableOfContents";
+import TableOfContents, { buildTocEntries } from "./TableOfContents";
 
 type BlogSidebarProps = {
   headings: BlogHeading[];
   activeId: string;
   onNavigate: (item: BlogHeading, position: number) => void;
   category?: string;
+  /** Related posts of this article; the first three become "Read next". */
+  readNext?: BlogPostMeta[];
 };
+
+const READ_NEXT_COUNT = 3;
+
+/**
+ * "Read next" takes the TOC's place once the reader is in the last section:
+ * the TOC has nothing left to offer there, so nothing loses height. Scrolling
+ * back up, or "Back to contents", brings the TOC back.
+ */
+function ReadNext({ posts, onBack }: { posts: BlogPostMeta[]; onBack?: () => void }) {
+  return (
+    <nav aria-label="Read next" className="blog-read-next">
+      <div className="blog-read-next-head">
+        <p className="text-size-medium text-weight-bold">Read next</p>
+        {onBack ? (
+          <button type="button" className="blog-read-next-back text-size-tiny" onClick={onBack}>
+            Back to contents
+          </button>
+        ) : null}
+      </div>
+      <ol className="blog-read-next-list">
+        {posts.map((post, index) => {
+          const href = `/blog/${post.frontmatter.slug}`;
+          const thumb = post.frontmatter.thumbImage ?? post.frontmatter.coverImage;
+          return (
+            <li key={post.frontmatter.slug}>
+              <Link
+                className="blog-read-next-item hover-lift"
+                href={href}
+                onClick={() =>
+                  event("blog_read_next_click", {
+                    location: "sidebar",
+                    position: index + 1,
+                    slug: post.frontmatter.slug,
+                  })
+                }
+              >
+                {thumb ? (
+                  <span className="blog-read-next-thumb hover-lift-media radius-12">
+                    <img alt="" src={thumb} loading="lazy" decoding="async" className="image-cover" />
+                  </span>
+                ) : null}
+                <span className="blog-read-next-title hover-lift-title text-size-small text-weight-semibold">
+                  {post.frontmatter.title}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
 
 /**
  * Publishing offer for founder/marketer categories. Takes the place of the
@@ -44,8 +99,39 @@ function PublishCard() {
  * .blogpost_content-column1, see globals.css): no scroll listeners, no
  * re-renders while scrolling.
  */
-export default function BlogSidebar({ headings, activeId, onNavigate, category }: BlogSidebarProps) {
+export default function BlogSidebar({ headings, activeId, onNavigate, category, readNext = [] }: BlogSidebarProps) {
   const showPublish = isPublishAudienceCategory(category);
+  const nextPosts = readNext.slice(0, READ_NEXT_COUNT);
+
+  // The reader is in the last H2 section (its H3 included).
+  const lastSectionId = useMemo(() => {
+    const h2 = headings.filter((h) => h.level === 2);
+    return h2.length > 0 ? h2[h2.length - 1].id : "";
+  }, [headings]);
+  const activeParentId = useMemo(
+    () => buildTocEntries(headings).find((e) => e.id === activeId)?.parentId ?? "",
+    [headings, activeId],
+  );
+  const inLastSection = lastSectionId !== "" && activeParentId === lastSectionId;
+
+  // "Back to contents" pins the TOC until the reader leaves the last section.
+  const [tocPinned, setTocPinned] = useState(false);
+  useEffect(() => {
+    if (!inLastSection) setTocPinned(false);
+  }, [inLastSection]);
+
+  const hasToc = headings.length > 0;
+  // Without a TOC the column has room, so "Read next" is there from the start.
+  const showReadNext = nextPosts.length > 0 && (!hasToc || (inLastSection && !tocPinned));
+
+  // One "shown" event per page view, the denominator for the click rate.
+  const reportedShown = useRef(false);
+  useEffect(() => {
+    if (!showReadNext || reportedShown.current) return;
+    reportedShown.current = true;
+    event("blog_read_next_view", { location: "sidebar", trigger: hasToc ? "last_section" : "no_toc" });
+  }, [showReadNext, hasToc]);
+
   const { isSubscribed, isSubmitting, handleSubscribe } = useSubscribe();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -55,12 +141,14 @@ export default function BlogSidebar({ headings, activeId, onNavigate, category }
 
   return (
     <aside id="w-node-sidebar" className="blogpost_content-column1">
-      {headings.length > 0 ? (
-        <>
-          {/* No divider or spacer: the list dissolves right above the
-              subscribe title; its own bottom padding is the gap. */}
-          <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
-        </>
+      {/* One slot, two states: the TOC while reading, "Read next" in the last
+          section. They swap instead of stacking, so the TOC never loses
+          height. No divider or spacer: the list dissolves right above the
+          block below; its own bottom padding is the gap. */}
+      {showReadNext ? (
+        <ReadNext posts={nextPosts} onBack={hasToc ? () => setTocPinned(true) : undefined} />
+      ) : hasToc ? (
+        <TableOfContents items={headings} activeId={activeId} onNavigate={onNavigate} />
       ) : null}
       {showPublish ? <PublishCard /> : (
       <div className="blogpost_content-cta-wr hide-on-mobile">
