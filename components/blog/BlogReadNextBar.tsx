@@ -27,6 +27,12 @@ const PEEK_FROM_PROGRESS = 0.4;
 const PEEK_UP_DISTANCE = 300;
 /** Downward travel (px) that means the reader is back to reading. */
 const PEEK_HIDE_DISTANCE = 200;
+/**
+ * A single frame that moves more than this share of the viewport is a jump
+ * (Cmd+F, Home without smooth scroll, restored position, TOC pin), never a
+ * reader scrolling back with a wheel or a finger.
+ */
+const JUMP_SHARE = 0.6;
 /** In-page anchor jumps (TOC, footnotes) are not a reader's scroll-up. */
 const ANCHOR_JUMP_MS = 1500;
 
@@ -72,7 +78,7 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       const progress = distance <= 0 ? 1 : -rect.top / distance;
       const footerTakesOver = footer ? footer.getBoundingClientRect().top < vh * 0.4 : false;
 
-      if (performance.now() < ignoreUntil) {
+      if (performance.now() < ignoreUntil || Math.abs(delta) > vh * JUMP_SHARE) {
         upTravel = 0;
         downTravel = 0;
       } else if (delta < 0) {
