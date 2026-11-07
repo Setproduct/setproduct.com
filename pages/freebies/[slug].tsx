@@ -34,6 +34,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
         slug: frontmatter.slug,
         category: frontmatter.category ?? null,
         coverImage: frontmatter.coverImage,
+        thumbImage: frontmatter.thumbImage ?? null,
         coverImageAlt: frontmatter.coverImageAlt ?? null,
         cardDescription: frontmatter.cardDescription ?? null,
         description: frontmatter.description,

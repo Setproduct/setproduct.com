@@ -141,7 +141,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         </div>
         {/* Related first: a finished reader is most likely to click another
             post; the CTA comes after it, right above the footer. */}
-        <BlogRelatedPosts posts={relatedBelow} />
+        <BlogRelatedPosts posts={relatedBelow} eagerFirst={false} />
         {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
       <SiteFooter />

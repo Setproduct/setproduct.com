@@ -60,8 +60,13 @@ export default function BlogRelatedPosts({ posts, title = "Related posts", eager
                               alt={post.frontmatter.coverImageAlt ?? post.frontmatter.title}
                               className="image-cover"
                               loading={index === 0 && eagerFirst ? "eager" : "lazy"}
-                              sizes="100vw"
-                              src={post.frontmatter.coverImage}
+                              decoding="async"
+                              // Small cards are ~200px wide: the 800px thumb is plenty.
+                              src={
+                                index === 0
+                                  ? post.frontmatter.coverImage
+                                  : post.frontmatter.thumbImage ?? post.frontmatter.coverImage
+                              }
                             />
                           )}
                         </Link>
