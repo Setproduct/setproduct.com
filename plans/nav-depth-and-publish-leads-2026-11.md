@@ -244,7 +244,8 @@ flowchart TD
 | 3 | **Отложено (05.11).** Р��шение: заменять Company на Advertise, а не добавлять шестой пункт. Сначала 2 недели данных `publish_cta_click` по `header` и `company_panel` (до ~19.11), потом замена и сравнение тех же 2 недель | — |
 | 6.1 | Крошки `Blog / Категория / Пост` в `BlogHero`, категория ведёт на `/blog?category=…`, `<nav aria-label="Breadcrumb">`, JSON-LD `BreadcrumbList` на всех статьях | `c69d9ad` |
 | 6.2a | Блок «Related articles» на странице ресурса (поле `relatedPosts` в `freebies-listing.ts`, читаются только указанные файлы, картинки lazy). Заполнен для m3e-canvas: design-skills-for-ai-agents-compared, open-source-tools-digest-2026-10, material-nextjs-ui-kit. Тексты статей по решению автора пока не трогаем | `9f93bf9` |
-| 6.2c | `relatedPosts` ещё на 10 ресурсах, следующих за m3e-canvas по входам GA4 (12.07–09.10): ios-datepickers, driver-js, free-ios-ui-kit, website-template, invoice, appbar-ui, fonts-playground, avatar-ui, mobile-tables-several-themes, amicro | см. git log |
+| 6.2c | `relatedPosts` ещё на 10 ресурсах, следующих за m3e-canvas по входам GA4 (12.07–09.10): ios-datepickers, driver-js, free-ios-ui-kit, website-template, invoice, appbar-ui, fonts-playground, avatar-ui, mobile-tables-several-themes, amicro | `2979b8f` |
+| 6.2d | По решению автора во всех 11 блоках только статьи из топ-30 GSC по кликам (`plans/Страницы.csv`), все авторства Roman Kamushken. Из топ-30 исключены издательские (guest posting) и нетематические (looksmax, venice, adobe, crypto). Тема ресурса решает, какие из топа взять | см. git log |
 
 ### Метрики успеха
 
