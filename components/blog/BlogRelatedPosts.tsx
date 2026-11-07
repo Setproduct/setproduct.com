@@ -4,6 +4,9 @@ import ArrowIcon from "../sections/ArrowIcon";
 
 type BlogRelatedPostsProps = {
   posts: BlogPostMeta[];
+  title?: string;
+  /** The first cover loads eagerly by default; pass false when the block sits far below the fold. */
+  eagerFirst?: boolean;
 };
 
 function categoryLabel(cat?: string): string {
@@ -11,7 +14,7 @@ function categoryLabel(cat?: string): string {
   return cat;
 }
 
-export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
+export default function BlogRelatedPosts({ posts, title = "Related posts", eagerFirst = true }: BlogRelatedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
@@ -20,7 +23,7 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
         <div className="container">
           <div className="heading-left-wr">
             <div className="heading-left-text-wr max-width-700">
-              <h2 className="heading-style-h2">Related posts</h2>
+              <h2 className="heading-style-h2">{title}</h2>
             </div>
             <div className="heading-left-text-btn-wr">
               <Link className="button secondary w-inline-block" href="/blog">
@@ -56,7 +59,7 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
                             <img
                               alt={post.frontmatter.coverImageAlt ?? post.frontmatter.title}
                               className="image-cover"
-                              loading={index === 0 ? "eager" : "lazy"}
+                              loading={index === 0 && eagerFirst ? "eager" : "lazy"}
                               sizes="100vw"
                               src={post.frontmatter.coverImage}
                             />

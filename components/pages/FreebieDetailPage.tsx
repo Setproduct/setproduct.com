@@ -6,13 +6,16 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
+import BlogRelatedPosts from "../blog/BlogRelatedPosts";
 import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import type { FreebieItem } from "../../types/data";
+import type { BlogPostMeta } from "../../types/blog";
 import type { NavData } from "../../lib/nav/types";
 
 type Props = {
   item: FreebieItem;
   navData?: NavData;
+  relatedPosts?: BlogPostMeta[];
 };
 
 // «freebie» уходит из суффикса тайтла: раздел теперь называется Resources.
@@ -24,7 +27,7 @@ function suffixForCategory(category: string) {
   return "free Figma file";
 }
 
-export default function FreebieDetailPage({ item, navData }: Props) {
+export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: Props) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Resources", href: "/freebies" },
@@ -93,6 +96,7 @@ export default function FreebieDetailPage({ item, navData }: Props) {
           <div className="spacer-24" />
         </div>
         <FreebieArticle slug={item.slug} />
+        <BlogRelatedPosts posts={relatedPosts} title="Related articles" eagerFirst={false} />
         <FreebiesShowcase excludeSlug={item.slug} />
         <CtaSubscribe />
       </main>

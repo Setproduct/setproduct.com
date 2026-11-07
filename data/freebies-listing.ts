@@ -215,6 +215,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "design-skills-for-ai-agents-compared",
+      "open-source-tools-digest-2026-10",
+      "material-nextjs-ui-kit",
+    ],
   },
   {
     slug: "driver-js",

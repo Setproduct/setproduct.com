@@ -1,13 +1,16 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import FreebieDetailPage from "../../components/pages/FreebieDetailPage";
 import { FREEBIE_PRODUCTS } from "../../data/freebies-listing";
+import { getBlogPostsMetaBySlugs } from "../../lib/blog/mdx";
 import { getNavData } from "../../lib/nav/buildNavData";
 import type { NavData } from "../../lib/nav/types";
+import type { BlogPostMeta } from "../../types/blog";
 import type { FreebieItem } from "../../types/data";
 
 type PageProps = {
   item: FreebieItem;
   navData: NavData;
+  relatedPosts: BlogPostMeta[];
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -22,9 +25,25 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   if (!item) return { notFound: true };
 
-  return { props: { item, navData: getNavData() } };
+  // Only the cards' fields go to the client, so the page payload stays small.
+  const relatedPosts = getBlogPostsMetaBySlugs(item.relatedPosts ?? [])
+    .slice(0, 3)
+    .map(({ frontmatter, readingTimeText }) => ({
+      frontmatter: {
+        title: frontmatter.title,
+        slug: frontmatter.slug,
+        category: frontmatter.category ?? null,
+        coverImage: frontmatter.coverImage,
+        coverImageAlt: frontmatter.coverImageAlt ?? null,
+        cardDescription: frontmatter.cardDescription ?? null,
+        description: frontmatter.description,
+      } as unknown as BlogPostMeta["frontmatter"],
+      readingTimeText,
+    }));
+
+  return { props: { item, navData: getNavData(), relatedPosts } };
 };
 
-export default function FreebieDetailRoute({ item, navData }: PageProps) {
-  return <FreebieDetailPage item={item} navData={navData} />;
+export default function FreebieDetailRoute({ item, navData, relatedPosts }: PageProps) {
+  return <FreebieDetailPage item={item} navData={navData} relatedPosts={relatedPosts} />;
 }

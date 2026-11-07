@@ -119,6 +119,25 @@ export function getAllBlogPostsMeta(): BlogPostMeta[] {
     .filter((post): post is BlogPostMeta => post !== null);
 }
 
+/**
+ * Meta for an explicit list of posts, in the given order. Reads only those
+ * files, so pages outside the blog do not pay for parsing every post.
+ * Unknown slugs are skipped.
+ */
+export function getBlogPostsMetaBySlugs(slugs: string[]): BlogPostMeta[] {
+  const result: BlogPostMeta[] = [];
+  for (const slug of slugs) {
+    const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
+    if (!fs.existsSync(filePath)) continue;
+    const { data, content } = matter(fs.readFileSync(filePath, "utf8"));
+    result.push({
+      frontmatter: data as BlogFrontmatter,
+      readingTimeText: computeReadingTime(content).text,
+    });
+  }
+  return result;
+}
+
 export function getRelatedPosts(
   currentSlug: string,
   category: string | undefined,

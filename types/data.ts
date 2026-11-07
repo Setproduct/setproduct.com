@@ -53,6 +53,8 @@ export type FreebieItem = {
   isFree: boolean;
   ctaLabel?: string;
   menuCtaLabel?: string;
+  /** Blog slugs shown as "Related articles" on the resource page, in order. */
+  relatedPosts?: string[];
 };
 
 export type Testimonial = {
