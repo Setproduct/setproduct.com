@@ -202,9 +202,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
     relatedPosts: [
-      "how-to-3d-animate-scroll",
-      "button-ui-design",
-      "landing-page-design-tips-for-startups",
+      "claymorphism-design-guide",
+      "neumorphism-design-guide",
+      "toggle-switch-ui-design",
     ],
   },
   {
@@ -221,9 +221,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
     relatedPosts: [
-      "design-skills-for-ai-agents-compared",
-      "open-source-tools-digest-2026-10",
-      "material-nextjs-ui-kit",
+      "tabs-ui-design",
+      "ai-chat-interface-ui-design",
+      "chip-ui-design",
     ],
   },
   {
@@ -240,9 +240,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
     relatedPosts: [
-      "how-to-replace-onboarding-with-contextual-help",
-      "tooltip-ui-design",
-      "open-source-tools-digest-2026-10",
+      "steps-ui-design",
+      "notifications-ui-design",
+      "empty-state-ui-design",
     ],
   },
   {
@@ -270,9 +270,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/DAxpyw1NCok6hrgRjkRzBBjr/Invoice/duplicate",
     isFree: true,
     relatedPosts: [
-      "freelance-paperwork-without-printer",
-      "freelance-hourly-rate",
-      "how-to-get-graphic-design-clients",
+      "data-table-ui-design",
+      "settings-ui-design",
+      "badge-ui-design",
     ],
   },
   {
@@ -286,9 +286,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/Jww9nTpXrIea4XH3jjvX29/Avatars-UI-design/duplicate",
     isFree: true,
     relatedPosts: [
-      "avatar-ui-design",
-      "badge-ui-design",
       "chip-ui-design",
+      "badge-ui-design",
+      "user-profile-templates",
     ],
   },
   {
@@ -302,9 +302,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/X25RJI0WIGBRPc49kMvpf7/App-Bar-UI-design-guidelines/duplicate",
     isFree: true,
     relatedPosts: [
-      "appbar-ui-design",
-      "sidebar-navigation-ui-design",
       "tabs-ui-design",
+      "dropdown-ui-design",
+      "breadcrumbs-ui-design",
     ],
   },
   {
@@ -318,9 +318,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/wzpBLnFVlrMdsJtA9nZqJg/Figma-Fonts-Playground-System/duplicate",
     isFree: true,
     relatedPosts: [
-      "best-fonts-pairing",
-      "how-to-design-a-ui-kit-foundation",
+      "liquid-glass-design-explained-a-practical-guide",
       "retro-brutalist-ui-design-2026",
+      "complete-guide-to-blueprint-grid-design",
     ],
   },
   {
@@ -334,9 +334,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/PqSfLOUh5DvGCKDQYR9IEi/Creative-Website-Template-for-Figma/duplicate",
     isFree: true,
     relatedPosts: [
-      "landing-page-design-tips-for-startups",
-      "why-landing-page-optimization-is-essential",
-      "how-to-design-landing",
+      "claymorphism-design-guide",
+      "retro-brutalist-ui-design-2026",
+      "complete-guide-to-blueprint-grid-design",
     ],
   },
   {
@@ -416,9 +416,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/wg137YA5IznyciTyh5prJR/Full-iOS-design-system-(Free)/duplicate",
     isFree: true,
     relatedPosts: [
-      "choosing-right-ios-kit",
-      "depth-in-ios-design",
+      "liquid-glass-vs-glassmorphism",
       "liquid-glass-design-explained-a-practical-guide",
+      "toggle-switch-ui-design",
     ],
   },
   {
@@ -564,9 +564,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/ARYvgo05kkUhHF5PltU7l1/iOS-tables/duplicate",
     isFree: true,
     relatedPosts: [
-      "figma-tables-data-grid-design",
       "data-table-ui-design",
-      "tables-design-system",
+      "pagination-ui-design",
+      "filter-ui-design",
     ],
   },
   {
@@ -624,9 +624,9 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     duplicateHref: "https://www.figma.com/file/v6qXVivwjwDHQh2Tp2pnqb/iOS-datepicker/duplicate",
     isFree: true,
     relatedPosts: [
-      "date-picker-ui-design",
-      "calendar-ui-design",
-      "form-controls-reference-2026",
+      "dropdown-ui-design",
+      "toggle-switch-ui-design",
+      "input-ui-design",
     ],
   },
   {
