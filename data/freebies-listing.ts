@@ -201,6 +201,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "how-to-3d-animate-scroll",
+      "button-ui-design",
+      "landing-page-design-tips-for-startups",
+    ],
   },
   {
     slug: "m3e-canvas",
@@ -234,6 +239,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "how-to-replace-onboarding-with-contextual-help",
+      "tooltip-ui-design",
+      "open-source-tools-digest-2026-10",
+    ],
   },
   {
     slug: "pdfcn",
@@ -259,6 +269,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/invoice",
     duplicateHref: "https://www.figma.com/file/DAxpyw1NCok6hrgRjkRzBBjr/Invoice/duplicate",
     isFree: true,
+    relatedPosts: [
+      "freelance-paperwork-without-printer",
+      "freelance-hourly-rate",
+      "how-to-get-graphic-design-clients",
+    ],
   },
   {
     slug: "avatar-ui",
@@ -270,6 +285,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/avatar-ui",
     duplicateHref: "https://www.figma.com/file/Jww9nTpXrIea4XH3jjvX29/Avatars-UI-design/duplicate",
     isFree: true,
+    relatedPosts: [
+      "avatar-ui-design",
+      "badge-ui-design",
+      "chip-ui-design",
+    ],
   },
   {
     slug: "appbar-ui",
@@ -281,6 +301,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/appbar-ui",
     duplicateHref: "https://www.figma.com/file/X25RJI0WIGBRPc49kMvpf7/App-Bar-UI-design-guidelines/duplicate",
     isFree: true,
+    relatedPosts: [
+      "appbar-ui-design",
+      "sidebar-navigation-ui-design",
+      "tabs-ui-design",
+    ],
   },
   {
     slug: "fonts-playground",
@@ -292,6 +317,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/fonts-playground",
     duplicateHref: "https://www.figma.com/file/wzpBLnFVlrMdsJtA9nZqJg/Figma-Fonts-Playground-System/duplicate",
     isFree: true,
+    relatedPosts: [
+      "best-fonts-pairing",
+      "how-to-design-a-ui-kit-foundation",
+      "retro-brutalist-ui-design-2026",
+    ],
   },
   {
     slug: "website-template",
@@ -303,6 +333,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/website-template",
     duplicateHref: "https://www.figma.com/file/PqSfLOUh5DvGCKDQYR9IEi/Creative-Website-Template-for-Figma/duplicate",
     isFree: true,
+    relatedPosts: [
+      "landing-page-design-tips-for-startups",
+      "why-landing-page-optimization-is-essential",
+      "how-to-design-landing",
+    ],
   },
   {
     slug: "android-ui-kit",
@@ -380,6 +415,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/free-ios-ui-kit",
     duplicateHref: "https://www.figma.com/file/wg137YA5IznyciTyh5prJR/Full-iOS-design-system-(Free)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "choosing-right-ios-kit",
+      "depth-in-ios-design",
+      "liquid-glass-design-explained-a-practical-guide",
+    ],
   },
   {
     slug: "mobile-x-ui-kit",
@@ -523,6 +563,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/mobile-tables-several-themes",
     duplicateHref: "https://www.figma.com/file/ARYvgo05kkUhHF5PltU7l1/iOS-tables/duplicate",
     isFree: true,
+    relatedPosts: [
+      "figma-tables-data-grid-design",
+      "data-table-ui-design",
+      "tables-design-system",
+    ],
   },
   {
     slug: "12-free-mobile-templates",
@@ -578,6 +623,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/ios-datepickers",
     duplicateHref: "https://www.figma.com/file/v6qXVivwjwDHQh2Tp2pnqb/iOS-datepicker/duplicate",
     isFree: true,
+    relatedPosts: [
+      "date-picker-ui-design",
+      "calendar-ui-design",
+      "form-controls-reference-2026",
+    ],
   },
   {
     slug: "segment-ui-kit",
