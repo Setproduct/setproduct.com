@@ -37,8 +37,10 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
   const [dismissed, setDismissed] = useState(false);
   // "×" first plays the blur dissolve, then unmounts on animationend.
   const [dissolving, setDissolving] = useState(false);
-  const reported = useRef(false);
-  // Why the pill is on screen now; read by the view and click events.
+  // One view event per trigger: a pill first shown by scroll-up must still
+  // report "progress" when the reader later reaches 80%.
+  const reported = useRef<Set<Trigger>>(new Set());
+  // Why the pill is on screen now; read by the click event.
   const triggerRef = useRef<Trigger>("progress");
   const slug = post?.frontmatter.slug;
 
@@ -86,7 +88,14 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
 
       const byProgress = progress >= SHOW_AT_PROGRESS;
       const show = (byProgress || peeking) && !footerTakesOver;
-      if (show) triggerRef.current = byProgress ? "progress" : "scroll_up";
+      if (show) {
+        const trigger: Trigger = byProgress ? "progress" : "scroll_up";
+        triggerRef.current = trigger;
+        if (!reported.current.has(trigger)) {
+          reported.current.add(trigger);
+          event("blog_read_next_view", { location: "floating_bar", slug, trigger });
+        }
+      }
       setVisible(show);
     };
     const schedule = () => {
@@ -109,12 +118,6 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [slug, dismissed, articleRef]);
-
-  useEffect(() => {
-    if (!visible || !slug || reported.current) return;
-    reported.current = true;
-    event("blog_read_next_view", { location: "floating_bar", slug, trigger: triggerRef.current });
-  }, [visible, slug]);
 
   if (!post || dismissed) return null;
 
