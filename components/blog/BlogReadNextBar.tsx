@@ -33,8 +33,12 @@ const PEEK_HIDE_DISTANCE = 200;
  * reader scrolling back with a wheel or a finger.
  */
 const JUMP_SHARE = 0.6;
-/** In-page anchor jumps (TOC, footnotes) are not a reader's scroll-up. */
-const ANCHOR_JUMP_MS = 1500;
+/**
+ * In-page anchor jumps (TOC, footnotes, the "up" button) and Home/End are
+ * not a reader's scroll-up. With `scroll-behavior: smooth` they animate for
+ * an unknown time, so they are ignored until scrolling stays quiet this long.
+ */
+const SETTLE_MS = 150;
 
 type Trigger = "progress" | "scroll_up";
 
@@ -61,7 +65,20 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
     let upTravel = 0;
     let downTravel = 0;
     let peeking = false;
-    let ignoreUntil = 0;
+    let ignoring = false;
+    let settleTimer = 0;
+    const armSettle = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        ignoring = false;
+        lastY = window.scrollY;
+      }, SETTLE_MS);
+    };
+    const startIgnoring = () => {
+      ignoring = true;
+      peeking = false;
+      armSettle();
+    };
 
     const update = () => {
       frame = 0;
@@ -78,7 +95,7 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       const progress = distance <= 0 ? 1 : -rect.top / distance;
       const footerTakesOver = footer ? footer.getBoundingClientRect().top < vh * 0.4 : false;
 
-      if (performance.now() < ignoreUntil || Math.abs(delta) > vh * JUMP_SHARE) {
+      if (ignoring || Math.abs(delta) > vh * JUMP_SHARE) {
         upTravel = 0;
         downTravel = 0;
       } else if (delta < 0) {
@@ -105,22 +122,26 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       setVisible(show);
     };
     const schedule = () => {
+      if (ignoring) armSettle();
       if (!frame) frame = window.requestAnimationFrame(update);
     };
     const onClick = (e: MouseEvent) => {
-      const link = (e.target as Element | null)?.closest?.('a[href^="#"]');
-      if (!link) return;
-      ignoreUntil = performance.now() + ANCHOR_JUMP_MS;
-      peeking = false;
+      if ((e.target as Element | null)?.closest?.('a[href^="#"]')) startIgnoring();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Home" || e.key === "End") startIgnoring();
     };
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     document.addEventListener("click", onClick, true);
+    document.addEventListener("keydown", onKey, true);
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       document.removeEventListener("click", onClick, true);
+      document.removeEventListener("keydown", onKey, true);
+      window.clearTimeout(settleTimer);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [slug, dismissed, articleRef]);
