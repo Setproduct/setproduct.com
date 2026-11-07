@@ -14,9 +14,23 @@ type BlogReadNextBarProps = {
  * By then the sidebar has scrolled away with the article, so this keeps the
  * next step on screen through Related posts and the CTA. Hides when the
  * footer comes into view, or for the rest of the visit after "×".
+ *
+ * It also peeks earlier when a reader past 40% scrolls back up: that gesture
+ * usually means "looking for where to go next". The header stays put, so the
+ * publishing button in it is never hidden.
  */
 /** Share of the article body read before the pill slides in. */
 const SHOW_AT_PROGRESS = 0.8;
+/** Scroll-up peek works only after this share of the article. */
+const PEEK_FROM_PROGRESS = 0.4;
+/** Upward travel (px) that counts as "looking for the next step". */
+const PEEK_UP_DISTANCE = 300;
+/** Downward travel (px) that means the reader is back to reading. */
+const PEEK_HIDE_DISTANCE = 200;
+/** In-page anchor jumps (TOC, footnotes) are not a reader's scroll-up. */
+const ANCHOR_JUMP_MS = 1500;
+
+type Trigger = "progress" | "scroll_up";
 
 export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarProps) {
   const [visible, setVisible] = useState(false);
@@ -24,6 +38,8 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
   // "×" first plays the blur dissolve, then unmounts on animationend.
   const [dissolving, setDissolving] = useState(false);
   const reported = useRef(false);
+  // Why the pill is on screen now; read by the view and click events.
+  const triggerRef = useRef<Trigger>("progress");
   const slug = post?.frontmatter.slug;
 
   useEffect(() => {
@@ -33,9 +49,19 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
     if (!article) return;
 
     let frame = 0;
+    let lastY = window.scrollY;
+    let upTravel = 0;
+    let downTravel = 0;
+    let peeking = false;
+    let ignoreUntil = 0;
+
     const update = () => {
       frame = 0;
       const vh = window.innerHeight;
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+
       // Slide in at 80% of the article body (same formula as the reading
       // progress line and the sidebar "Read next"); hide only when the footer
       // fills most of the screen.
@@ -43,17 +69,43 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       const distance = rect.height - vh;
       const progress = distance <= 0 ? 1 : -rect.top / distance;
       const footerTakesOver = footer ? footer.getBoundingClientRect().top < vh * 0.4 : false;
-      setVisible(progress >= SHOW_AT_PROGRESS && !footerTakesOver);
+
+      if (performance.now() < ignoreUntil) {
+        upTravel = 0;
+        downTravel = 0;
+      } else if (delta < 0) {
+        upTravel -= delta;
+        downTravel = 0;
+        if (upTravel >= PEEK_UP_DISTANCE) peeking = true;
+      } else if (delta > 0) {
+        downTravel += delta;
+        upTravel = 0;
+        if (downTravel >= PEEK_HIDE_DISTANCE) peeking = false;
+      }
+      if (progress < PEEK_FROM_PROGRESS) peeking = false;
+
+      const byProgress = progress >= SHOW_AT_PROGRESS;
+      const show = (byProgress || peeking) && !footerTakesOver;
+      if (show) triggerRef.current = byProgress ? "progress" : "scroll_up";
+      setVisible(show);
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(update);
     };
+    const onClick = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest?.('a[href^="#"]');
+      if (!link) return;
+      ignoreUntil = performance.now() + ANCHOR_JUMP_MS;
+      peeking = false;
+    };
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
+    document.addEventListener("click", onClick, true);
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
+      document.removeEventListener("click", onClick, true);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [slug, dismissed, articleRef]);
@@ -61,7 +113,7 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
   useEffect(() => {
     if (!visible || !slug || reported.current) return;
     reported.current = true;
-    event("blog_read_next_view", { location: "floating_bar", slug });
+    event("blog_read_next_view", { location: "floating_bar", slug, trigger: triggerRef.current });
   }, [visible, slug]);
 
   if (!post || dismissed) return null;
@@ -80,7 +132,14 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       <Link
         href={`/blog/${frontmatter.slug}`}
         className="blog-read-next-bar-link"
-        onClick={() => event("blog_read_next_click", { location: "floating_bar", position: 1, slug: frontmatter.slug })}
+        onClick={() =>
+          event("blog_read_next_click", {
+            location: "floating_bar",
+            position: 1,
+            slug: frontmatter.slug,
+            trigger: triggerRef.current,
+          })
+        }
       >
         {thumb ? (
           <span className="blog-read-next-bar-thumb radius-8">
