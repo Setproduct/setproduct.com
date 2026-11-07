@@ -245,7 +245,8 @@ flowchart TD
 | 6.1 | Крошки `Blog / Категория / Пост` в `BlogHero`, категория ведёт на `/blog?category=…`, `<nav aria-label="Breadcrumb">`, JSON-LD `BreadcrumbList` на всех статьях | `c69d9ad` |
 | 6.2a | Блок «Related articles» на странице ресурса (поле `relatedPosts` в `freebies-listing.ts`, читаются только указанные файлы, картинки lazy). Заполнен для m3e-canvas: design-skills-for-ai-agents-compared, open-source-tools-digest-2026-10, material-nextjs-ui-kit. Тексты статей по решению автора пока не трогаем | `9f93bf9` |
 | 6.2c | `relatedPosts` ещё на 10 ресурсах, следующих за m3e-canvas по входам GA4 (12.07–09.10): ios-datepickers, driver-js, free-ios-ui-kit, website-template, invoice, appbar-ui, fonts-playground, avatar-ui, mobile-tables-several-themes, amicro | `2979b8f` |
-| 6.2d | По решению автора во всех 11 блоках только статьи из топ-30 GSC по кликам (`plans/Страницы.csv`), все авторства Roman Kamushken. Из топ-30 исключены издательские (guest posting) и нетематические (looksmax, venice, adobe, crypto). Тема ресурса решает, какие из топа взять | см. git log |
+| 6.2d | По решению автора во всех 11 блоках только статьи из топ-30 GSC по кликам (`plans/Страницы.csv`), все авторства Roman Kamushken. Из топ-30 исключены издательские (guest posting) и нетематические (looksmax, venice, adobe, crypto). Тема ресурса решает, какие из топа взять | `0c07c6c` |
+| 6.2e | Тот же принцип на остальных 48 ресурсах: теперь `relatedPosts` есть у всех 59. Используются 36 статей из топ-GSC (все Roman Kamushken), чаще всего dashboard-ui-design (12 страниц) и tabs-ui-design (11). Исключение по теме: compositor → how-to-cancel-adobe-subscription-without-fees (бесплатная замена Photoshop) | см. git log |
 
 ### Метрики успеха
 
