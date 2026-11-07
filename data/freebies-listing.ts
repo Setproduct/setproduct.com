@@ -33,6 +33,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "toggle-switch-ui-design",
+      "button-group-guide",
+      "chip-ui-design",
+    ],
   },
   {
     slug: "matita-icons",
@@ -47,6 +52,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "retro-brutalist-ui-design-2026",
+      "claymorphism-design-guide",
+      "badge-ui-design",
+    ],
   },
   {
     slug: "cleanyourtv",
@@ -61,6 +71,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "settings-ui-design",
+      "notifications-ui-design",
+      "carousel-ui-design",
+    ],
   },
   {
     slug: "gr8r-task-management",
@@ -75,6 +90,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "tabs-ui-design",
+      "filter-ui-design",
+      "dashboard-ui-design",
+    ],
   },
   {
     slug: "spectrum-ui",
@@ -89,6 +109,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "claymorphism-design-guide",
+      "button-group-guide",
+      "carousel-ui-design",
+    ],
   },
   {
     slug: "compositor",
@@ -103,6 +128,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "how-to-cancel-adobe-subscription-without-fees",
+      "liquid-glass-design-explained-a-practical-guide",
+      "neumorphism-design-guide",
+    ],
   },
   {
     slug: "mailcheap",
@@ -117,6 +147,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "notifications-ui-design",
+      "input-ui-design",
+      "empty-state-ui-design",
+    ],
   },
   {
     slug: "liquid-glass",
@@ -131,6 +166,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "liquid-glass-vs-glassmorphism",
+      "liquid-glass-design-explained-a-practical-guide",
+      "neumorphism-design-guide",
+    ],
   },
   {
     slug: "rea",
@@ -145,6 +185,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "ai-chat-interface-ui-design",
+      "chinese-ai-models-vs-american-2026",
+      "ai-agent-ui-design-patterns",
+    ],
   },
   {
     slug: "fsearch",
@@ -159,6 +204,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "filter-ui-design",
+      "dropdown-ui-design",
+      "input-ui-design",
+    ],
   },
   {
     slug: "sfinterface-numbers",
@@ -173,6 +223,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "dashboard-ui-design",
+      "badge-ui-design",
+      "stepper-ui-design",
+    ],
   },
   {
     slug: "runeicons",
@@ -187,6 +242,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "tabs-ui-design",
+      "chip-ui-design",
+      "badge-ui-design",
+    ],
   },
   {
     slug: "amicro",
@@ -258,6 +318,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     isFree: true,
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "pagination-ui-design",
+      "dropdown-ui-design",
+      "slider-ui-design",
+    ],
   },
   {
     slug: "invoice",
@@ -349,6 +414,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/android-ui-kit",
     duplicateHref: "https://www.figma.com/file/9SVBCR2rbaJyYOIxwmbwGV/Figma-Android-UI-kit---Kanban-Project-management/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "steps-ui-design",
+      "chip-ui-design",
+    ],
   },
   {
     slug: "figma-ios-ui-kit",
@@ -360,6 +430,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/figma-ios-ui-kit",
     duplicateHref: "https://www.figma.com/file/7JEsgG701agVb4BCd2wQsq/iOS-design-system-%E2%80%94-Figma-UI-kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "liquid-glass-vs-glassmorphism",
+      "toggle-switch-ui-design",
+      "settings-ui-design",
+    ],
   },
   {
     slug: "material-x-starter",
@@ -371,6 +446,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/material-x-starter",
     duplicateHref: "https://www.figma.com/file/NZGoq5K6esdjlDSxcF4R0t/Material-X-UI-kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "data-table-ui-design",
+      "button-group-guide",
+      "chip-ui-design",
+    ],
   },
   {
     slug: "radar-chart",
@@ -382,6 +462,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/radar-chart",
     duplicateHref: "https://www.figma.com/file/R7D7rDPWSrEc7yaTLwRP6D/Figma-Charts-UI-kit---Radar-template/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "top-dashboard-design-examples-ideas",
+      "saas-dashboard-examples",
+    ],
   },
   {
     slug: "rome-ui-kit-lite",
@@ -393,6 +478,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/rome-ui-kit-lite",
     duplicateHref: "https://www.figma.com/file/HIeyxrE4vWLb5WayReH6w4/Rome---Dashboard-UI-Kit-(Lite)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dropdown-ui-design",
+      "input-ui-design",
+      "checkbox-ui-design",
+    ],
   },
   {
     slug: "xela-ui-kit-starter",
@@ -404,6 +494,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/xela-ui-kit-starter",
     duplicateHref: "https://www.figma.com/file/PTLM9g778K5IvQhI3Znza1/XELA---Community/duplicate",
     isFree: true,
+    relatedPosts: [
+      "button-group-guide",
+      "radio-button-ui-design",
+      "checkbox-ui-design",
+    ],
   },
   {
     slug: "free-ios-ui-kit",
@@ -431,6 +526,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/mobile-x-ui-kit",
     duplicateHref: "https://www.figma.com/file/1lILyv4s9TXvmJzGX2GKHf/Mobile-X-design-system-lite/duplicate",
     isFree: true,
+    relatedPosts: [
+      "steps-ui-design",
+      "toggle-switch-ui-design",
+      "slider-ui-design",
+    ],
   },
   {
     slug: "accordion-guide",
@@ -442,6 +542,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/accordion-guide",
     duplicateHref: "https://www.figma.com/file/cFANne9CCCOMACP3TEso8p/Accordion-UI-design-guidelines/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "settings-ui-design",
+      "dropdown-ui-design",
+    ],
   },
   {
     slug: "eclipse-ui-kit",
@@ -453,6 +558,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/eclipse-ui-kit",
     duplicateHref: "https://www.figma.com/file/0bXou4jpPZbcjUXjb0NhV9/Eclipse-UI-kit---design-system-starter/duplicate",
     isFree: true,
+    relatedPosts: [
+      "button-group-guide",
+      "input-ui-design",
+      "breadcrumbs-ui-design",
+    ],
   },
   {
     slug: "appka-ios-ui-kit",
@@ -464,6 +574,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/appka-ios-ui-kit",
     duplicateHref: "https://www.figma.com/file/MJb5f6UIoigfGueMCZIyXl/Appka.-iOS-Design-UI-Kit-(Free)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "liquid-glass-design-explained-a-practical-guide",
+      "settings-ui-design",
+      "carousel-ui-design",
+    ],
   },
   {
     slug: "nav-templates",
@@ -475,6 +590,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/nav-templates",
     duplicateHref: "https://www.figma.com/file/2VwYyliScRSEsD3O0h1mgB/XELA---Community-2/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "breadcrumbs-ui-design",
+      "pagination-ui-design",
+    ],
   },
   {
     slug: "dark-charts-ui-kit",
@@ -486,6 +606,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/dark-charts-ui-kit",
     duplicateHref: "https://www.figma.com/file/VSAzjbWZ04yeSxKrDhH1f6MH/Dark-Chart-Templates/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "top-dashboard-design-examples-ideas",
+      "saas-dashboard-examples",
+    ],
   },
   {
     slug: "figma-email-templates",
@@ -497,6 +622,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/figma-email-templates",
     duplicateHref: "https://www.figma.com/file/UxUylqu9GKJIMKsyKOzGCT/Setproduct-Email-Templates/duplicate",
     isFree: true,
+    relatedPosts: [
+      "notifications-ui-design",
+      "empty-state-ui-design",
+      "button-group-guide",
+    ],
   },
   {
     slug: "charts-widgets-dark-light",
@@ -508,6 +638,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/charts-widgets-dark-light",
     duplicateHref: "https://www.figma.com/file/Pj6KsldvwBKJNaisDitcSc/Charts-design-widgets-%F0%9F%93%88/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "bento-grid-layout-design-guide",
+      "saas-dashboard-examples",
+    ],
   },
   {
     slug: "shopping-layout-for-web-app",
@@ -519,6 +654,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/shopping-layout-for-web-app",
     duplicateHref: "https://www.figma.com/file/g1owQrbQ9zyB1GJ51Pk7Ly/Ecommerce-Desktop-Template/duplicate",
     isFree: true,
+    relatedPosts: [
+      "filter-ui-design",
+      "dropdown-ui-design",
+      "pagination-ui-design",
+    ],
   },
   {
     slug: "orion-dark-templates",
@@ -530,6 +670,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/orion-dark-templates",
     duplicateHref: "https://www.figma.com/file/DQaMAFsipldH7YfAwYnhpS/Orion-Charts-UI-kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "data-table-ui-design",
+      "top-dashboard-design-examples-ideas",
+    ],
   },
   {
     slug: "responsive-imagery-cards",
@@ -541,6 +686,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/responsive-imagery-cards",
     duplicateHref: "https://www.figma.com/file/HOw6dxTvps3V6EfDG151jH/Figma-Card-Templates/duplicate",
     isFree: true,
+    relatedPosts: [
+      "liquid-glass-vs-glassmorphism",
+      "carousel-ui-design",
+      "bento-grid-layout-design-guide",
+    ],
   },
   {
     slug: "landing-page-web-blocks",
@@ -552,6 +702,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/landing-page-web-blocks",
     duplicateHref: "https://www.figma.com/file/HqFaicUnfCG0swdUtkOnF8/Zeus-UI-(community)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "retro-brutalist-ui-design-2026",
+      "complete-guide-to-blueprint-grid-design",
+      "bento-grid-layout-design-guide",
+    ],
   },
   {
     slug: "mobile-tables-several-themes",
@@ -579,6 +734,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/12-free-mobile-templates",
     duplicateHref: "https://www.figma.com/file/KfknKQuugP0N8b4Huupc7K/Mobile-UI-kit-for-Figma/duplicate",
     isFree: true,
+    relatedPosts: [
+      "liquid-glass-vs-glassmorphism",
+      "tabs-ui-design",
+      "empty-state-ui-design",
+    ],
   },
   {
     slug: "calendars-date-picker-templates",
@@ -590,6 +750,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/calendars-date-picker-templates",
     duplicateHref: "https://www.figma.com/file/mjj01Uk7fwfQN35jrFDoYY/Calendar-UI-design-templates/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dropdown-ui-design",
+      "input-ui-design",
+      "calendar-ui-design",
+    ],
   },
   {
     slug: "schedule-events-template",
@@ -601,6 +766,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/schedule-events-template",
     duplicateHref: "https://www.figma.com/file/k3aJE7v3JJLhuQYpqv1CNZ/Landing-page-template-based-on-Zeus-Web-UI-kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "dashboard-ui-design",
+      "calendar-ui-design",
+    ],
   },
   {
     slug: "material-you-for-web-apps",
@@ -612,6 +782,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/material-you-for-web-apps",
     duplicateHref: "https://www.figma.com/file/Cv7VEQMi7aLumtOVc3hSSk/Material-Me-Lite/duplicate",
     isFree: true,
+    relatedPosts: [
+      "chip-ui-design",
+      "toggle-switch-ui-design",
+      "button-group-guide",
+    ],
   },
   {
     slug: "ios-datepickers",
@@ -639,6 +814,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/segment-ui-kit",
     duplicateHref: "https://www.figma.com/file/1rtds7BSrlFryO1D9r2F3k/Segment---Free-UI-Kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "button-group-guide",
+      "toggle-switch-ui-design",
+    ],
   },
   {
     slug: "figma-react-ui-kit",
@@ -650,6 +830,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/figma-react-ui-kit",
     duplicateHref: "https://www.figma.com/file/gNPVChja64KSH48H4zDfV3/Figma-React-UI-kit-(Free)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "input-ui-design",
+      "checkbox-ui-design",
+      "radio-button-ui-design",
+    ],
   },
   {
     slug: "messenger-app-desktop-template",
@@ -661,6 +846,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/messenger-app-desktop-template",
     duplicateHref: "https://www.figma.com/file/iofH3CMGRWgqpjtlmhhXTA/Messenger-UI-design-template/duplicate",
     isFree: true,
+    relatedPosts: [
+      "ai-chat-interface-ui-design",
+      "notifications-ui-design",
+      "badge-ui-design",
+    ],
   },
   {
     slug: "zeus-ui-free-website-template",
@@ -672,6 +862,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/zeus-ui-free-website-template",
     duplicateHref: "https://www.figma.com/file/k3aJE7v3JJLhuQYpqv1CNZ/Landing-page-template-based-on-Zeus-Web-UI-kit/duplicate",
     isFree: true,
+    relatedPosts: [
+      "claymorphism-design-guide",
+      "retro-brutalist-ui-design-2026",
+      "bento-grid-layout-design-guide",
+    ],
   },
   {
     slug: "design-system-starter",
@@ -683,6 +878,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/design-system-starter",
     duplicateHref: "https://www.figma.com/file/4FgwyPERZehFWdfy6HVpYL/Figma-design-system-template-setproduct.com/duplicate",
     isFree: true,
+    relatedPosts: [
+      "neumorphism-design-guide",
+      "complete-guide-to-blueprint-grid-design",
+      "liquid-glass-design-explained-a-practical-guide",
+    ],
   },
   {
     slug: "navigation-layout-4-samples",
@@ -694,6 +894,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/navigation-layout-4-samples",
     duplicateHref: "https://www.figma.com/file/CjynFrHuBv0fOZgc6NOil2/Navigation-UI-design-components/duplicate",
     isFree: true,
+    relatedPosts: [
+      "tabs-ui-design",
+      "badge-ui-design",
+      "breadcrumbs-ui-design",
+    ],
   },
   {
     slug: "chart-cards",
@@ -705,6 +910,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/chart-cards",
     duplicateHref: "https://www.figma.com/file/9LP39ZeqrUdIGVGH7JJg4q/Figma-Charts-%26-Infographics-UI-kit-(Community)/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "bento-grid-layout-design-guide",
+      "top-dashboard-design-examples-ideas",
+    ],
   },
   {
     slug: "material-ui-styled",
@@ -716,6 +926,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/material-ui-styled",
     duplicateHref: "https://www.figma.com/file/brrB3vjxYf1mkh6zcbklpB/Material-Design-UI-kit---Components-library/duplicate",
     isFree: true,
+    relatedPosts: [
+      "chip-ui-design",
+      "radio-button-ui-design",
+      "checkbox-ui-design",
+    ],
   },
   {
     slug: "hyper-charts",
@@ -727,6 +942,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/hyper-charts",
     duplicateHref: "https://www.figma.com/file/vEyW2W0vQgeE8AXbPeonBX/Hyper-Charts-%E2%9C%A6-FREE/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "saas-dashboard-examples",
+      "top-dashboard-design-examples-ideas",
+    ],
   },
   {
     slug: "search-inputs",
@@ -738,6 +958,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/search-inputs",
     duplicateHref: "https://www.figma.com/file/652eskZ40cSr0XXjrSn0dA/Search-Inputs/duplicate",
     isFree: true,
+    relatedPosts: [
+      "input-ui-design",
+      "dropdown-ui-design",
+      "filter-ui-design",
+    ],
   },
   {
     slug: "figma-grid-layouts",
@@ -749,6 +974,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/figma-grid-layouts",
     duplicateHref: "https://www.figma.com/file/wpoGA2o6slPKnHJiVyXBJX/Figma-grid-layout/duplicate",
     isFree: true,
+    relatedPosts: [
+      "complete-guide-to-blueprint-grid-design",
+      "bento-grid-layout-design-guide",
+      "dashboard-ui-design",
+    ],
   },
   {
     slug: "panda-dashboard-template",
@@ -760,6 +990,11 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/panda-dashboard-template",
     duplicateHref: "https://www.figma.com/file/aTfDaTCZMycugJPBGj24bD/Panda-Design-System-for-Community/duplicate",
     isFree: true,
+    relatedPosts: [
+      "dashboard-ui-design",
+      "data-table-ui-design",
+      "saas-dashboard-examples",
+    ],
   },
   {
     slug: "orion-dataviz-templates",
@@ -771,5 +1006,10 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     previewHref: "/freebies/orion-dataviz-templates",
     duplicateHref: "https://www.figma.com/file/4OQBqLHei1o0kgVAlR012G/Figma-UI-kit-%E2%9C%A6-Orion-dashboard-templates/duplicate",
     isFree: true,
+    relatedPosts: [
+      "top-dashboard-design-examples-ideas",
+      "dashboard-ui-design",
+      "filter-ui-design",
+    ],
   },
 ];
