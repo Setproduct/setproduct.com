@@ -279,9 +279,9 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                 {!hideSubscribe ? (
                   <div className="footer_cta-wr">
                     <div className={`footer_cta-active${isSubscribed ? " hidden" : ""}`}>
-                      <p className="heading-style-h4">Weekly design and growth notes</p>
+                      <p className="heading-style-h4">Weekly notes on building and growing tech companies</p>
                       <div className="spacer-12" />
-                      <p className="text-size-small">New posts, free resources and releases. One email a week.</p>
+                      <p className="text-size-small">New posts, free resources and design kit releases.</p>
                       <div className="spacer-24" />
                       <div className="form-block w-form">
                         <form className="form-cta" onSubmit={handleSubscribe}>
