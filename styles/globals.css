@@ -2261,6 +2261,21 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   text-align: left;
 }
 
+/* Desktop split of the footer card: links 60%, logo and subscribe 40%.
+   flex-basis 0 with grow 3:2 divides the space left after the gap, so the
+   ratio holds at any card width. */
+@media screen and (min-width: 992px) {
+  .footer .footer-card > .footer_links-wr {
+    flex: 3 1 0;
+    min-width: 0;
+  }
+
+  .footer .footer-card > .footer_logo-cta-wr {
+    flex: 2 1 0;
+    min-width: 0;
+  }
+}
+
 /* Without the subscribe form the right column only holds the logo. */
 .footer .footer-card.is-compact .footer_logo-cta-wr {
   width: auto;
