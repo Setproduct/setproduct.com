@@ -1153,7 +1153,7 @@ export default function SearchPage({ items, navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

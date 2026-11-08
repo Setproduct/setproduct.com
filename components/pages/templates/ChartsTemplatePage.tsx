@@ -164,7 +164,7 @@ export default function ChartsTemplatePage({ item, navData }: Props) {
         <FaqSection items={chartsContent.faq} />
 
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <TemplateStickyCta
         item={item}
         price={chartsContent.pricing.cards[0]?.price}

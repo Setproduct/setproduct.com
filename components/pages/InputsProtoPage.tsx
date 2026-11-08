@@ -650,7 +650,7 @@ export default function InputsProtoPage({ navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
     </>
   );
 }

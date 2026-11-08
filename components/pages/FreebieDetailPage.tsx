@@ -100,7 +100,7 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
         <FreebiesShowcase excludeSlug={item.slug} />
         <CtaSubscribe />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hideSubscribe />
       <ScrollUpButton />
     </>
   );

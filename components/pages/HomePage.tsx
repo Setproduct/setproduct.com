@@ -110,7 +110,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
           <FaqSection items={faq} title="Your questions answered" />
         )}
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} blogPosts={blogPosts} />
       <ScrollUpButton />
     </>
   );

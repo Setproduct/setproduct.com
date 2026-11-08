@@ -91,7 +91,7 @@ export default function LicensePage({ navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

@@ -58,7 +58,7 @@ export default function RefundsPolicyPage({ navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

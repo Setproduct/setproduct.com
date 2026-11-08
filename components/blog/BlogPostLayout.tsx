@@ -12,7 +12,7 @@ import ReadingProgress from "./ReadingProgress";
 import { useArticleToc } from "../../hooks/useArticleToc";
 import BlogFloatingShare from "./BlogFloatingShare";
 import BlogInlineCta, { DEFAULT_PUBLISH_CTA } from "./BlogInlineCta";
-import { isPublishAudienceCategory } from "../../lib/publish";
+import { isPublishAudienceCategory, isPublishHref } from "../../lib/publish";
 import BlogRelatedPosts from "./BlogRelatedPosts";
 import BlogNextArticle from "./BlogNextArticle";
 import BlogReadNextBar from "./BlogReadNextBar";
@@ -49,6 +49,8 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   // inlineCta always wins, everything else keeps the newsletter.
   const isPublishAudience = isPublishAudienceCategory(frontmatter.category);
   const bottomCta = frontmatter.inlineCta ?? (isPublishAudience ? DEFAULT_PUBLISH_CTA : null);
+  // The footer drops whichever offer the page has just made above it.
+  const bottomCtaIsPublish = Boolean(bottomCta && isPublishHref(bottomCta.buttonLink));
   // The first related post becomes the "Next article" card; Related posts
   // show the rest so the same post is not offered twice in a row. With
   // relatedSlugs of 3 or fewer, Related keeps all of them.
@@ -144,7 +146,7 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         <BlogRelatedPosts posts={relatedBelow} eagerFirst={false} />
         {bottomCta ? <BlogInlineCta cta={bottomCta} /> : <CtaSubscribe />}
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hidePublish={bottomCtaIsPublish} hideSubscribe={!bottomCta} />
       <BlogReadNextBar key={frontmatter.slug} post={nextArticle} articleRef={contentSectionRef} />
       <BlogFloatingShare url={postUrl} title={frontmatter.title} />
       <ScrollUpButton />

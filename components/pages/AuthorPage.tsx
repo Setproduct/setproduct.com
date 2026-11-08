@@ -202,7 +202,7 @@ export default function AuthorPage({ author, authorPosts, navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

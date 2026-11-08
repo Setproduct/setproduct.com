@@ -173,7 +173,7 @@ export default function DashboardTemplatePage({ data, products, navData }: Props
 
         <FaqSection items={data.faq} />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

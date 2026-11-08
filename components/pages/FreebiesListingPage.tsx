@@ -236,7 +236,7 @@ export default function FreebiesListingPage({ navData }: Props) {
         </div>
         <CtaSubscribe />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hideSubscribe />
       <ScrollUpButton />
     </>
   );

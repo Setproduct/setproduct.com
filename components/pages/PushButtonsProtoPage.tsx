@@ -161,7 +161,7 @@ export default function PushButtonsProtoPage({ navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
     </>
   );
 }

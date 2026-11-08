@@ -128,7 +128,7 @@ export default function DashboardsPage({ navData }: Props) {
 
         {faq.length > 0 && <FaqSection items={faq} />}
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hideSubscribe />
       <ScrollUpButton />
     </>
   );

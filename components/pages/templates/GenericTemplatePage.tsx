@@ -300,7 +300,7 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
         )}
 
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <TemplateStickyCta
         item={item}
         price={content.pricing?.cards[0]?.price}

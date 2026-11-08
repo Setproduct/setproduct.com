@@ -123,7 +123,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} />
       <ScrollUpButton />
     </>
   );

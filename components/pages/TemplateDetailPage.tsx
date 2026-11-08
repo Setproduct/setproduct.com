@@ -125,7 +125,7 @@ export default function TemplateDetailPage({ item, navData }: Props) {
 
         <CtaSubscribe />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hideSubscribe />
       <TemplateStickyCta item={item} />
       <ScrollUpButton />
     </>

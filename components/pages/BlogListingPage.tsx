@@ -179,7 +179,7 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
         </div>
         <CtaSubscribe />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} blogPosts={blogPosts} hideSubscribe />
       <ScrollUpButton />
     </>
   );

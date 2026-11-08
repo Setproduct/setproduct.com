@@ -60,7 +60,7 @@ export default function BundlePage({ navData }: Props) {
         <CtaSubscribe />
         <FaqSection items={faq} />
       </main>
-      <SiteFooter />
+      <SiteFooter navData={navData} hideSubscribe />
       <ScrollUpButton />
     </>
   );
