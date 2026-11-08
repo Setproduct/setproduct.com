@@ -106,9 +106,9 @@ export const PAGE_META: Record<string, PageMeta> = {
     canonical: "https://www.setproduct.com/legal/refunds-policy",
   },
   "terms-of-paid-posts": {
-    title: "Terms of Service for Advertisement Paid Posts on Setproduct Design Blog",
+    title: "Paid post terms of service for advertisers on Setproduct blog",
     description:
-      "By utilizing the Advertisement Paid Post feature on Setproduct Design Blog, you agree to the terms outlined below.",
+      "What you agree to when you buy a paid post on the Setproduct blog. Read how payment and edits work and how long your post stays live.",
     ogImage:
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com/legal/terms-of-paid-posts",

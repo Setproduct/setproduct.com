@@ -48,6 +48,7 @@ export type PublishLocation =
   | "faq"
   | "blog_inline"
   | "blog_sidebar"
+  | "terms_page"
   | "content";
 
 export function isPublishHref(href?: string | null): boolean {
