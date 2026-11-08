@@ -6,23 +6,24 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import { useArticleToc } from "../../hooks/useArticleToc";
-import { getPublishLinkProps } from "../../lib/publish";
+import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
 import type { BlogHeading } from "../../types/blog";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import type { NavData } from "../../lib/nav/types";
 
 const TOC_ITEMS: BlogHeading[] = [
-  { id: "your-content", text: "Content you submit", level: 2 },
-  { id: "payment", text: "Payment", level: 2 },
-  { id: "rights", text: "Rights to your content", level: 2 },
-  { id: "edits", text: "Edits before publishing", level: 2 },
-  { id: "duration", text: "How long your post stays live", level: 2 },
-  { id: "results", text: "Traffic and results", level: 2 },
-  { id: "removal", text: "Removing a post", level: 2 },
-  { id: "refunds", text: "Refunds", level: 2 },
-  { id: "liability", text: "Limitation of liability", level: 2 },
-  { id: "changes", text: "Changes to these terms", level: 2 },
+  { id: "plans", text: "Plans and prices", level: 2 },
+  { id: "after-payment", text: "What happens after you pay", level: 2 },
+  { id: "turnaround", text: "Turnaround time", level: 2 },
+  { id: "what-we-accept", text: "What we accept", level: 2 },
+  { id: "prohibited", text: "Topics we don't accept", level: 2 },
+  { id: "edits", text: "Edits and review", level: 2 },
+  { id: "labels", text: "Sponsored labels", level: 2 },
+  { id: "payment", text: "Payment and refunds", level: 2 },
+  { id: "removal", text: "Removal of published posts", level: 2 },
+  { id: "ownership", text: "Who owns the content", level: 2 },
+  { id: "full-terms", text: "Full terms and contact", level: 2 },
 ];
 
 type Props = {
@@ -50,7 +51,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
             <div className="container">
               <div className="heading-left-text-wr">
                 <h1 className="heading-style-h1">Paid post terms of service</h1>
-                <div className="heading-style-h5">What you agree to when you publish a sponsored story on the Setproduct blog</div>
+                <div className="heading-style-h5">What you get, what we accept and what we don't when you publish a paid article on the Setproduct blog</div>
               </div>
               <div className="spacer-64"></div>
               <div className="blogpost_content-section">
@@ -70,84 +71,145 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                   />
                   <div className="rich-text-18 w-richtext">
                     <p>
-                      These terms apply when you buy a paid post on the Setproduct blog through{" "}
-                      <a {...publishLink}>publish.setproduct.com</a>. By paying for a post, you accept every section
-                      below.
+                      This page explains how paid publishing works on the Setproduct blog. Packages and prices live
+                      on <a {...publishLink}>publish.setproduct.com</a>, and the legal text that governs the
+                      service is the Terms of Service on the same site.
                     </p>
 
-                    <h2 id="your-content">Content you submit</h2>
+                    <h2 id="plans">Plans and prices</h2>
                     <p>
-                      You are responsible for the accuracy and completeness of the content you send us. It should be
-                      relevant to design and tech, the two topics the blog covers.
+                      Both plans publish your article on the Setproduct blog, which reaches{" "}
+                      {PUBLISH_OFFER.readersPerMonth} readers a month at DR {PUBLISH_OFFER.domainRating}.
                     </p>
+                    <div className="blog-fit-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>What you get</th>
+                            <th>Accelerate</th>
+                            <th>Maximize</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Price per article</td>
+                            <td>${PUBLISH_OFFER.priceFrom}</td>
+                            <td>${PUBLISH_OFFER.priceTwoLinks}</td>
+                          </tr>
+                          <tr>
+                            <td>Do-follow links</td>
+                            <td>One</td>
+                            <td>Two</td>
+                          </tr>
+                          <tr>
+                            <td>Published within</td>
+                            <td>3 days</td>
+                            <td>24 hours</td>
+                          </tr>
+                          <tr>
+                            <td>Word count</td>
+                            <td>Up to 3,000</td>
+                            <td>Up to 5,000</td>
+                          </tr>
+                          <tr>
+                            <td>Placement</td>
+                            <td>Blog</td>
+                            <td>Blog, plus the homepage</td>
+                          </tr>
+                          <tr>
+                            <td>Newsletter promotion</td>
+                            <td>No</td>
+                            <td>Yes, to 7,000 subscribers</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                     <p>
-                      We may ask for revisions, or decline a post that misses our editorial standards or contains
-                      offensive material.
-                    </p>
-
-                    <h2 id="payment">Payment</h2>
-                    <p>
-                      You pay the full price before the post goes live. Payments are processed by{" "}
-                      <a href="https://gumroad.com/" target="_blank" rel="noreferrer">
-                        Gumroad
-                      </a>
-                      .
-                    </p>
-
-                    <h2 id="rights">Rights to your content</h2>
-                    <p>
-                      You confirm that you own the content or have permission to publish it. Ownership stays with you.
-                    </p>
-                    <p>
-                      You grant Setproduct a non-exclusive, worldwide license to use and display the content
-                      to promote your post.
-                    </p>
-
-                    <h2 id="edits">Edits before publishing</h2>
-                    <p>
-                      We may fix formatting and add visuals so the post matches the style of the blog. You review and
-                      approve the final version before it goes live.
-                    </p>
-
-                    <h2 id="duration">How long your post stays live</h2>
-                    <p>
-                      Each package states how long the post stays on the blog. Check that period before you buy, because
-                      it is part of what you pay for.
-                    </p>
-
-                    <h2 id="results">Traffic and results</h2>
-                    <p>
-                      We promote every paid post, yet we can&apos;t guarantee a specific amount of traffic or
-                      conversions. Results depend on what readers are looking for and on market conditions outside our
-                      control.
-                    </p>
-
-                    <h2 id="removal">Removing a post</h2>
-                    <p>
-                      We may remove a paid post if it breaks these terms, or for another reason we consider necessary. In
-                      that case we may offer a partial refund for the unused period, depending on the circumstances.
-                    </p>
-
-                    <h2 id="refunds">Refunds</h2>
-                    <p>
-                      Apart from the removal case above, payments for paid posts are non-refundable. Every post takes
-                      manual editing and publishing work on our side.
+                      No-follow links are free. A free submission goes through the same moderation as a paid one,
+                      and its review can take up to 30 days.
                     </p>
 
-                    <h2 id="liability">Limitation of liability</h2>
+                    <h2 id="after-payment">What happens after you pay</h2>
                     <p>
-                      Setproduct is not liable for any direct, indirect, incidental, consequential or special damages
-                      arising from the use of the paid post service, the inability to use it, or any content published on
-                      the blog.
+                      Payment opens the member zone, where you manage the post from draft to publication. Inside it
+                      you can:
+                    </p>
+                    <ul>
+                      <li>Insert your draft and edit it as needed.</li>
+                      <li>Add your anchor text and target keywords.</li>
+                      <li>Upload images and other media.</li>
+                      <li>Preview and finalize the post before it goes live.</li>
+                      <li>Track the status, from review to publication.</li>
+                      <li>Talk to our team through the support system.</li>
+                      <li>Read analytics and tracking data, on the Maximize plan only.</li>
+                    </ul>
+
+                    <h2 id="turnaround">Turnaround time</h2>
+                    <p>
+                      We start working from the prepayment. In most cases a paid post goes live within 24 hours
+                      after you pay. Each plan sets the outer limit: Accelerate publishes within 3 days, Maximize
+                      within 24 hours.
                     </p>
 
-                    <h2 id="changes">Changes to these terms</h2>
+                    <h2 id="what-we-accept">What we accept</h2>
                     <p>
-                      We may update these terms at any time and will notify clients about the changes. If you keep using
-                      the paid post service after an update, you accept the new version.
+                      Original articles about tech that have not been published elsewhere. We check grammar and
+                      formatting before publishing, and we may ask you to tighten structure or tone.
+                    </p>
+
+                    <h2 id="prohibited">Topics we don't accept</h2>
+                    <p>We do not publish content that promotes or relates to:</p>
+                    <ul>
+                      <li>Betting and casino gambling.</li>
+                      <li>CBD or cannabis products.</li>
+                      <li>Adult or explicit content.</li>
+                      <li>Illicit or controlled substances.</li>
+                      <li>Hate speech or discriminatory language.</li>
+                      <li>Spam or low-quality content.</li>
+                    </ul>
+                    <p>We reserve the right to reject or remove any content that falls into these categories.</p>
+
+                    <h2 id="edits">Edits and review</h2>
+                    <p>
+                      We may fix small copy issues ourselves and we may ask you for changes before we accept a
+                      draft. We also may reject a submission that does not meet our standards. What we do not do is
+                      publish a post that we consider spam, or one that breaks the rules above.
+                    </p>
+
+                    <h2 id="labels">Sponsored labels</h2>
+                    <p>
+                      By default we do not add a sponsored tag to a paid post. If you want a label or a disclosure
+                      line next to your article, tell us before publication and we add the wording you need.
+                    </p>
+
+                    <h2 id="payment">Payment and refunds</h2>
+                    <p>
+                      You pay in advance through <a {...publishLink}>publish.setproduct.com</a>, which accepts
+                      several payment methods. Payments are not refundable. What we guarantee instead is that your
+                      post is published within the timeframe of the plan you bought.
+                    </p>
+
+                    <h2 id="removal">Removal of published posts</h2>
+                    <p>
+                      We can remove a post, or close an account, if the content or the account breaks these rules
+                      or the Terms of Service on the publishing portal. Payments stay non-refundable, as described
+                      above.
+                    </p>
+
+                    <h2 id="ownership">Who owns the content</h2>
+                    <p>
+                      You keep ownership of your article. By submitting it, you give Setproduct a license to use,
+                      modify and distribute it on the blog.
+                    </p>
+
+                    <h2 id="full-terms">Full terms and contact</h2>
+                    <p>
+                      The Terms of Service on publish.setproduct.com is the binding document. It covers accounts,
+                      warranties, liability and termination. Read it before you pay.
                     </p>
                     <p>
-                      Packages and prices are listed on <a {...publishLink}>publish.setproduct.com</a>.
+                      If your case is not covered here, write to{" "}
+                      <a href="mailto:hello@setproduct.com">hello@setproduct.com</a> and we answer before you buy.
                     </p>
                   </div>
                 </div>
