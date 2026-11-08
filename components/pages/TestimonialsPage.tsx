@@ -155,7 +155,7 @@ export default function TestimonialsPage({ navData }: Props) {
             </div>
           </div>
         </div>
-        <div className="section background-color-light-primary">
+        <div className="section">
           <div className="section-padding top-80 bottom-80">
             <div className="container">
               <div className="main_cta-section">
