@@ -16,12 +16,13 @@ const TOC_ITEMS: BlogHeading[] = [
   { id: "plans", text: "Plans and prices", level: 2 },
   { id: "after-payment", text: "What happens after you pay", level: 2 },
   { id: "turnaround", text: "Turnaround time", level: 2 },
+  { id: "indexing", text: "Google indexing", level: 2 },
   { id: "what-we-accept", text: "What we accept", level: 2 },
   { id: "prohibited", text: "Topics we don't accept", level: 2 },
   { id: "edits", text: "Edits and review", level: 2 },
   { id: "labels", text: "Sponsored labels", level: 2 },
   { id: "payment", text: "Payment and refunds", level: 2 },
-  { id: "removal", text: "Removal of published posts", level: 2 },
+  { id: "duration", text: "How long the post stays online", level: 2 },
   { id: "ownership", text: "Who owns the content", level: 2 },
   { id: "full-terms", text: "Full terms and contact", level: 2 },
 ];
@@ -151,6 +152,13 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       within 24 hours.
                     </p>
 
+                    <h2 id="indexing">Google indexing</h2>
+                    <p>
+                      We guarantee that the post gets indexed by Google, and in most cases that happens within 48
+                      hours of publication. Indexing is the part we control. Ranking for a specific keyword is not
+                      something we promise.
+                    </p>
+
                     <h2 id="what-we-accept">What we accept</h2>
                     <p>
                       Original articles about tech that have not been published elsewhere. We check grammar and
@@ -167,13 +175,16 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       <li>Hate speech or discriminatory language.</li>
                       <li>Spam or low-quality content.</li>
                     </ul>
-                    <p>We reserve the right to reject or remove any content that falls into these categories.</p>
+                    <p>
+                      When a draft falls into these categories we reject the submission and do not publish it. A
+                      declined draft does not close your account.
+                    </p>
 
                     <h2 id="edits">Edits and review</h2>
                     <p>
                       We may fix small copy issues ourselves and we may ask you for changes before we accept a
-                      draft. We also may reject a submission that does not meet our standards. What we do not do is
-                      publish a post that we consider spam, or one that breaks the rules above.
+                      draft. Once the post is live, you can still ask for changes to the text or to a link, and we
+                      make them free of charge.
                     </p>
 
                     <h2 id="labels">Sponsored labels</h2>
@@ -184,16 +195,15 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
 
                     <h2 id="payment">Payment and refunds</h2>
                     <p>
-                      You pay in advance through <a {...publishLink}>publish.setproduct.com</a>, which accepts
-                      several payment methods. Payments are not refundable. What we guarantee instead is that your
-                      post is published within the timeframe of the plan you bought.
+                      You pay the full price in advance through <a {...publishLink}>publish.setproduct.com</a>,
+                      which accepts several payment methods. Payments are not refundable. What we guarantee
+                      instead is that your post is published within the timeframe of the plan you bought.
                     </p>
 
-                    <h2 id="removal">Removal of published posts</h2>
+                    <h2 id="duration">How long the post stays online</h2>
                     <p>
-                      We can remove a post, or close an account, if the content or the account breaks these rules
-                      or the Terms of Service on the publishing portal. Payments stay non-refundable, as described
-                      above.
+                      A published paid post stays on the blog permanently. We do not take paid posts down once
+                      they are live.
                     </p>
 
                     <h2 id="ownership">Who owns the content</h2>
