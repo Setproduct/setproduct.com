@@ -131,12 +131,12 @@ export const chartsContent = {
     {
       question: "I have a project. Can I hire you?",
       answerHtml:
-        'We\'re open-minded to your custom design & development projects. We can create complex templates based on our Figma libraries and code them in the production using a wide variety of popular frameworks and technologies.<br/><br/>If you have a project to design & develop, simply <a data-remodal-target="modal2" href="#"><span class="span-link">contact us</span></a> describing your brief, budget, and expectations.',
+        'We\'re open-minded to your custom design & development projects. We can create complex templates based on our Figma libraries and code them in the production using a wide variety of popular frameworks and technologies.<br/><br/>If you have a project to design & develop, simply <a data-contact href="#"><span class="span-link">contact us</span></a> describing your brief, budget, and expectations.',
     },
     {
       question: "I 💜 Your designs, but can I have a discount?",
       answerHtml:
-        'We provide discounts for those, who scrolled to the bottom and revealed our proposal. Just <a data-remodal-target="modal2" href="#"><span class="span-link">drop us a message</span></a> with a short story about how you plan to use our product and we will give you a ✨<strong>30% off coupon</strong> for the upcoming purchase. Please, provide a specific product name you\'ve put your eye on.',
+        'We provide discounts for those, who scrolled to the bottom and revealed our proposal. Just <a data-contact href="#"><span class="span-link">drop us a message</span></a> with a short story about how you plan to use our product and we will give you a ✨<strong>30% off coupon</strong> for the upcoming purchase. Please, provide a specific product name you\'ve put your eye on.',
     },
   ],
 };
