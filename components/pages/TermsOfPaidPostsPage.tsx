@@ -146,10 +146,18 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                     </ul>
 
                     <h2 id="turnaround">Turnaround time</h2>
+                    <p>The clock starts when your prepayment clears. From there the order is the same on both plans:</p>
+                    <ol>
+                      <li>You pay, and the member zone opens for you.</li>
+                      <li>You add the draft, the anchor text and the images, then finalize the post.</li>
+                      <li>We review it and ask for changes if something needs tightening.</li>
+                      <li>The post goes live, and we tell you it is up.</li>
+                    </ol>
                     <p>
-                      We start working from the prepayment. In most cases a paid post goes live within 24 hours
-                      after you pay. Each plan sets the outer limit: Accelerate publishes within 3 days, Maximize
-                      within 24 hours.
+                      Most paid posts go live within 24 hours of payment. Treat that as the normal speed. What we
+                      guarantee per plan is the outer limit: Accelerate within 3 days, Maximize within 24 hours.
+                      Send the draft together with the payment, otherwise the review cannot start and the timing
+                      above does not hold.
                     </p>
 
                     <h2 id="indexing">Google indexing</h2>
