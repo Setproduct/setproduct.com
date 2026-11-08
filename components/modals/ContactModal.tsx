@@ -1,16 +1,27 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import {
+  trackContactFormError,
+  trackContactFormStart,
+  trackContactFormSubmit,
+  type ContactLocation,
+} from "../../lib/contact";
 
 type ContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  /** Where the user opened the modal from. Splits the funnel in GA4. */
+  location: ContactLocation;
 };
 
-export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
+export default function ContactModal({ isOpen, onClose, location }: ContactModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [csrf, setCsrf] = useState<{ token: string; timestamp: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  // contact_form_start must fire once per modal session, not on every focus
+  // change between the email field and the textarea.
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -30,6 +41,17 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     };
   }, [isOpen]);
 
+  // A new modal session starts every time the modal opens.
+  useEffect(() => {
+    if (isOpen) hasStartedRef.current = false;
+  }, [isOpen]);
+
+  const handleFieldFocus = () => {
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
+    trackContactFormStart(location);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -39,6 +61,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     const email = formData.get("Email") as string;
     const message = formData.get("Message") as string;
     const website = formData.get("website") as string;
+
+    let reported = false;
 
     try {
       const response = await fetch("/api/contact", {
@@ -56,12 +80,19 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
+        const reason = data?.error || `http_${response.status}`;
+        setErrorMessage(reason);
+        trackContactFormError(location, reason);
+        reported = true;
+        return;
       }
 
+      trackContactFormSubmit(location, message.length);
       setIsSubmitted(true);
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Something went wrong");
+      const reason = error instanceof Error ? error.message : "unknown";
+      setErrorMessage(reason);
+      if (!reported) trackContactFormError(location, reason);
     } finally {
       setIsSubmitting(false);
     }
@@ -120,6 +151,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       disabled={isSubmitting}
                       maxLength={256}
                       name="Email"
+                      onFocus={handleFieldFocus}
                       placeholder="Whats your e-mail"
                       required
                       type="email"
@@ -133,6 +165,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       disabled={isSubmitting}
                       maxLength={5000}
                       name="Message"
+                      onFocus={handleFieldFocus}
                       placeholder="Type your message..."
                       required
                     />

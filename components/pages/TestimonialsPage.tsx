@@ -169,7 +169,7 @@ export default function TestimonialsPage({ navData }: Props) {
                     </div>
                   </div>
                   <div className="btn-link-align-center">
-                    <a href="#" className="button w-inline-block" onClick={(e) => { e.preventDefault(); openContactModal(); }}>
+                    <a href="#" className="button w-inline-block" onClick={(e) => { e.preventDefault(); openContactModal("testimonials_page"); }}>
                       <div className="text-size-large text-weight-bold">Let&rsquo;s connect</div>
                     </a>
                   </div>

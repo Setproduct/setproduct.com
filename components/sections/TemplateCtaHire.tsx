@@ -26,7 +26,7 @@ export default function TemplateCtaHire({
               <div className="btn-link-align-center">
                 <button
                   className="button w-inline-block"
-                  onClick={openContactModal}
+                  onClick={() => openContactModal("template_hire")}
                   type="button"
                 >
                   <div className="text-size-large text-weight-bold">Let's connect</div>

@@ -262,7 +262,7 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                     className="link-block footer-link-button"
                     onClick={() => {
                       trackNav("footer_click", { group: "company", link_text: "Contact us", page_path: window.location.pathname });
-                      openContactModal();
+                      openContactModal("footer");
                     }}
                     type="button"
                   >

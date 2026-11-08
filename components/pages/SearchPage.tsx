@@ -935,7 +935,7 @@ export default function SearchPage({ items, navData }: Props) {
                       </p>
                       <button
                         type="button"
-                        onClick={openContactModal}
+                        onClick={() => openContactModal("search_page")}
                         className="button secondary w-inline-block cursor-pointer shrink-0"
                       >
                         <div className="text-size-large text-weight-bold">Contact us</div>

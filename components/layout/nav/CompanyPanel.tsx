@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import ArrowIcon from "../../sections/ArrowIcon";
 import { getPublishLinkProps } from "../../../lib/publish";
+import type { ContactLocation } from "../../../lib/contact";
 import { NavLink } from "./NavLink";
 import { MenuTrigger } from "./MenuTrigger";
 import { handlePanelKeyDown } from "./interaction";
@@ -11,7 +12,7 @@ type CompanyPanelProps = {
   state: MegaMenuState;
   /** The current route is one of the Company pages. */
   isCurrent: boolean;
-  onContact: () => void;
+  onContact: (location: ContactLocation) => void;
 };
 
 /**
@@ -59,7 +60,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                         className="link-block w-inline-block"
                         href={link.href}
                         key={link.label}
-                        onClick={(e) => { e.preventDefault(); onContact(); }}
+                        onClick={(e) => { e.preventDefault(); onContact("company_panel_desktop"); }}
                       >
                         <div className="text-size-regular">{link.label}</div>
                       </a>
@@ -83,7 +84,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                     <button
                       type="button"
                       className="button w-inline-block nav_info-promo-cta"
-                      onClick={() => onContact()}
+                      onClick={() => onContact("company_panel_desktop")}
                     >
                       <div className="text-size-large text-weight-bold">Get a quote</div>
                     </button>
@@ -116,7 +117,7 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                 <button
                   type="button"
                   className="button-small w-inline-block nav_info-promo-mobile-cta"
-                  onClick={() => onContact()}
+                  onClick={() => onContact("company_panel_mobile")}
                 >
                   <div className="text-size-medium text-weight-bold">Get a quote</div>
                 </button>

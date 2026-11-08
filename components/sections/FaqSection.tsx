@@ -39,7 +39,7 @@ export default function FaqSection({ items, title = "FAQs" }: Props) {
       const link = (e.target as HTMLElement).closest("a[data-contact]");
       if (link) {
         e.preventDefault();
-        openContactModal();
+        openContactModal("faq");
       }
     },
     [openContactModal],

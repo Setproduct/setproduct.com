@@ -77,7 +77,7 @@ function CtaBlock({ titleHtml, bodyHtml }: { titleHtml: string; bodyHtml: string
               <div className="btn-link-align-center">
                 <button
                   className="button w-inline-block"
-                  onClick={openContactModal}
+                  onClick={() => openContactModal("dashboard_cta")}
                   type="button"
                 >
                   <div className="text-size-large text-weight-bold">Let&rsquo;s connect</div>

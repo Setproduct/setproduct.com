@@ -140,7 +140,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          openContactModal();
+                          openContactModal("terms_page");
                         }}
                       >
                         contact form
