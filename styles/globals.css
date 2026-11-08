@@ -2141,6 +2141,227 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   color: var(--grey);
 }
 
+/* --- Footer v2: publish band, popular reads, accordion ------------------ */
+
+/* Publish band above the footer card. White with a thin border, so it
+   never merges with the lilac card below or a section above. */
+.footer-publish {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32em;
+  width: 100%;
+  padding: 32em 40em;
+  border: 1px solid var(--input-border, #d7ccfc);
+  border-radius: calc(24 * var(--em-px));
+  background-color: var(--white);
+}
+
+.footer-publish p {
+  margin: 0;
+}
+
+.footer-publish-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12em;
+  min-width: 0;
+}
+
+.footer-publish-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8em;
+  margin: 4em 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-publish-facts li {
+  padding: 6em 12em;
+  border-radius: 100em;
+  background-color: var(--light-purple);
+  border: 1px solid var(--light-primary);
+  color: var(--dark-primary);
+}
+
+.footer-publish-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8em;
+  flex: none;
+}
+
+/* Four columns once Popular reads is there; it gets the widest track
+   because post titles are longer than category names. */
+.footer .footer_links-wr.has-popular {
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+}
+
+.footer .footer_column {
+  min-width: 0;
+}
+
+.footer .footer-link-title-link {
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.footer .footer-link-title-link:hover {
+  color: var(--primary);
+}
+
+/* Accordion toggle exists only on phones (see the 479px block below). */
+.footer .footer-link-toggle {
+  display: none;
+}
+
+.footer .footer-post-link .text-size-small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.footer .footer-all-link {
+  color: var(--primary);
+}
+
+/* "Contact us" is an action, so it is a <button>; it must look like the
+   links around it. */
+.footer .footer-link-button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+/* Without the subscribe form the right column only holds the logo. */
+.footer .footer-card.is-compact .footer_logo-cta-wr {
+  width: auto;
+  flex: none;
+}
+
+.footer .footer-credits-link {
+  color: var(--grey);
+  transition: color 0.2s ease;
+}
+
+.footer .footer-credits-link:hover {
+  color: var(--primary);
+}
+
+@media screen and (max-width: 991px) {
+  .footer-publish {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-publish-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .footer .footer-card {
+    flex-direction: column;
+    row-gap: 40em;
+  }
+
+  .footer .footer-card.is-compact .footer_logo-cta-wr {
+    width: 100%;
+  }
+
+  .footer .footer_links-wr.has-popular {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer .footer_credits {
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 16em;
+  }
+
+  .footer .footer_credits-text {
+    flex-wrap: wrap;
+    column-gap: 16em;
+    row-gap: 8em;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .footer-publish {
+    padding: 20em 16em;
+    gap: 20em;
+  }
+
+  .footer-publish-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  /* Links first, logo and subscribe after them (Webflow had it reversed). */
+  .footer .footer-card {
+    flex-direction: column;
+  }
+
+  .footer .footer_links-wr.has-popular {
+    grid-template-columns: 1fr;
+    row-gap: 8em;
+  }
+
+  .footer .footer_column.is-collapsible .footer-link-title {
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .footer .footer-link-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40em;
+    height: 40em;
+    margin: -10em -10em -10em 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .footer .footer-link-toggle .footer-link-dropdown-icon {
+    transition: transform 0.2s ease;
+  }
+
+  .footer .footer_column.is-open .footer-link-toggle .footer-link-dropdown-icon {
+    transform: rotate(180deg);
+  }
+
+  .footer .footer_column.is-collapsible:not(.is-open) .footer-links {
+    display: none;
+  }
+
+  .footer .footer_column.is-collapsible.is-open .footer-links {
+    margin-top: 8em;
+  }
+
+  .footer .footer_column {
+    padding-bottom: 8em;
+    border-bottom: 1px solid var(--black-transparent);
+  }
+
+  .footer .footer_credits {
+    align-items: center;
+  }
+
+  .footer .footer_credits-text {
+    justify-content: center;
+  }
+}
+
 /* --- Nav search: wider field, smaller font, cross-fading placeholder ---- */
 
 /* The Webflow base sets `.text-input { font-size: 18em }` (where body
