@@ -655,11 +655,16 @@ inlineCta:
 | [`BlogHero`](components/blog/BlogHero.tsx) | Hero статьи с обложкой и метой |
 | [`BlogAuthor`](components/blog/BlogAuthor.tsx) | Карточка автора (резолвится через [`getAuthor`](lib/blog/authors.ts:66)) |
 | [`BlogMeta`](components/blog/BlogMeta.tsx) | Дата + время чтения + категория |
-| [`BlogSidebar`](components/blog/BlogSidebar.tsx) | Сайдбар с TOC и кнопками шеринга (использует [`useStickyInContainer`](hooks/useStickyInContainer.ts)) |
-| [`BlogTableOfContents`](components/blog/BlogTableOfContents.tsx) | Оглавление по заголовкам H2/H3 |
-| [`BlogShareLinks`](components/blog/BlogShareLinks.tsx) | Кнопки соцсетей для шеринга |
+| [`BlogSidebar`](components/blog/BlogSidebar.tsx) | Десктопный сайдбар статьи: оглавление + шеринг, sticky-позиционирование через CSS |
+| [`TableOfContents`](components/blog/TableOfContents.tsx) | Оглавление по H2/H3 (десктоп), индикатор через [`useTocIndicator`](hooks/useTocIndicator.ts) |
+| [`MobileTableOfContents`](components/blog/MobileTableOfContents.tsx) | Мобильная панель оглавления, открывается по кнопке |
+| [`BlogFloatingShare`](components/blog/BlogFloatingShare.tsx) | Плавающие кнопки шеринга на мобильных |
+| [`ReadingProgress`](components/blog/ReadingProgress.tsx) | Полоса прогресса чтения статьи |
+| [`BlogNextArticle`](components/blog/BlogNextArticle.tsx) | Блок «следующая статья» в конце текста |
+| [`BlogReadNextBar`](components/blog/BlogReadNextBar.tsx) | Sticky-полоса «что читать дальше» |
 | [`BlogInlineCta`](components/blog/BlogInlineCta.tsx) | Кастомный CTA-блок внутри статьи (из frontmatter) |
 | [`BlogRelatedPosts`](components/blog/BlogRelatedPosts.tsx) | Блок связанных статей |
+| [`CodeBlock`](components/blog/CodeBlock.tsx) | Обёртка над блоком кода (подсветка из `rehype-highlight`) |
 | [`MDXImage`](components/blog/MDXImage.tsx) | Замена `<img>` в MDX |
 | [`mdx-components.tsx`](components/blog/mdx-components.tsx) | Маппинг HTML-тегов → React в MDX |
 
@@ -914,17 +919,27 @@ inlineCta:
 
 ## 4. Кастомные хуки
 
-В проекте всего **2 кастомных хука** в [`hooks/`](hooks):
+В проекте **4 кастомных хука** в [`hooks/`](hooks): три обслуживают оглавление статьи, один — форму подписки.
 
-### [`useStickyInContainer`](hooks/useStickyInContainer.ts:10)
-Реализует sticky-позиционирование сайдбара относительно конкретного контейнера, а не всей страницы. Имеет три состояния:
-- `static` — сайдбар в обычном потоке (контейнер выше viewport-top + offset)
-- `fixed` — прилип к верху viewport во время скролла внутри контейнера
-- `stuck` — упёрся в нижнюю границу контейнера, дальше не идёт
+### [`useActiveHeading`](hooks/useActiveHeading.ts:38)
+Scroll-spy для оглавления. Активным считается последний заголовок, чья верхняя кромка уже перешла «линию чтения» (её задаёт `scroll-margin-top` самого заголовка). Один passive-слушатель `scroll`, троттлинг через `requestAnimationFrame`, `setState` только при смене id — оглавление перерисовывается несколько раз за статью, а не каждый кадр.
 
-Используется в [`BlogSidebar`](components/blog/BlogSidebar.tsx) — TOC и share-кнопки следят за прокруткой статьи, но не выходят за пределы тела поста.
+Возвращает `{ activeId, selectHeading }`. `selectHeading` дополнительно ведёт собственный «гладкий» скролл через rAF (не нативный `scroll-behavior: smooth`), потому что ленивые картинки догружаются на ходу и меняют высоту документа, а нативный скролл не пересчитывает цель. Любое реальное действие пользователя (колесо, касание, клавиши) прерывает этот проезд.
 
-Параметры: `topOffset` (по умолчанию 80px — учёт навбара), `enabled` (для отключения на мобильных).
+Используется в [`BlogSidebar`](components/blog/BlogSidebar.tsx), [`MobileTableOfContents`](components/blog/MobileTableOfContents.tsx), [`TableOfContents`](components/blog/TableOfContents.tsx) — но не напрямую: см. `useArticleToc`.
+
+### [`useArticleToc`](hooks/useArticleToc.ts:14)
+Общая обвязка страниц статьи (блог, ресурсы, лицензия):
+1. Отбрасывает короткие статьи: если H2 меньше `MIN_TOC_SECTIONS` (3), возвращает пустой список и оглавление не рендерится.
+2. Запускает `useActiveHeading` один раз на обе версии оглавления (десктопный сайдбар и мобильная панель), чтобы не держать два слушателя скролла.
+3. Шлёт в GA4 `toc_click` с параметрами `location` (`sidebar` / `mobile`), `page`, `heading_id`, `heading_level`, `position`, `total`, и `toc_open` при открытии мобильной панели.
+
+Возвращает `{ items, activeId, onSidebarNavigate, onMobileNavigate, onMobileOpen }`.
+
+### [`useTocIndicator`](hooks/useTocIndicator.ts:27)
+Двигает один общий элемент-индикатор к активному пункту списка («focus relay»). Хук только измеряет: пишет CSS-переменные `--x`, `--y`, `--w`, `--h` на индикатор и переключает класс `is-visible`, а сама анимация — это CSS-transition в [`styles/globals.css`](styles/globals.css). Так один и тот же хук обслуживает индикатор-пилюлю и боковую линию, которым нужны разные наборы из этих четырёх значений.
+
+Слушателя скролла нет: индикатор живёт внутри скроллящегося списка и едет вместе с пунктами. Пересчёт — на каждый коммит (через `useLayoutEffect`), при `ResizeObserver` на списке и его детях, и покадрово в течение 340 мс после начала анимации раскрытия группы H3 (параметр `followKey`).
 
 ### [`useSubscribe`](hooks/useSubscribe.ts:3)
 Хук для формы email-подписки с:
@@ -935,7 +950,35 @@ inlineCta:
 
 Используется в [`CtaSubscribe`](components/sections/CtaSubscribe.tsx:4) и в футере.
 
-❌ **Хуков для модалок, табов, аккордеонов, lightbox — нет**. Их состояние локально внутри компонентов через `useState` ([`FaqSection`](components/sections/FaqSection.tsx:29), [`HomePage`](components/pages/HomePage.tsx:28)).
+❌ **Хуков для модалок, табов, аккордеонов, lightbox — нет**. Их состояние локально внутри компонентов через `useState` ([`FaqSection`](components/sections/FaqSection.tsx:23), [`HomePage`](components/pages/HomePage.tsx:28)). Модалка контакта — исключение: её состояние живёт в контексте [`ContactModalContext`](components/modals/ContactModalContext.tsx), а не в хуке.
+
+---
+
+## 4а. События GA4: реестр и правила
+
+Все события отправляются через [`event()`](lib/gtag.ts:17) из `lib/gtag.ts`. Домены разнесены по префиксам, чтобы не слипались в списке: `nav_*`, `publish_*`, `contact_*`, `toc_*`.
+
+### Контактная воронка ([`lib/contact.ts`](lib/contact.ts:1))
+
+| Событие | Когда | Параметры |
+|---|---|---|
+| `contact_cta_click` | Любой клик, открывающий модалку. Отправляется внутри [`openContactModal`](components/modals/ContactModalContext.tsx:32), поэтому новая точка входа не может забыть инструментарий | `location`, `page_path` |
+| `contact_form_start` | Первый фокус в любом поле, один раз за открытие модалки (флаг `hasStartedRef`) | `location`, `page_path` |
+| `contact_form_submit` | `/api/contact` ответил успехом | `location`, `message_length`, `page_path` |
+| `contact_form_error` | `/api/contact` ответил ошибкой | `location`, `reason` (обрезан до 100 символов), `page_path` |
+
+Значения `location` (тип [`ContactLocation`](lib/contact.ts:21)): `company_panel_desktop`, `company_panel_mobile`, `template_hire`, `dashboard_cta`, `testimonials_page`, `search_page`, `faq`, `refunds_policy`, `terms_page`, `footer`. Если передать `undefined`, уйдёт `unknown` — так забытая точка входа видна в отчёте, а не растворяется в общей массе.
+
+### Оглавление статьи ([`hooks/useArticleToc.ts`](hooks/useArticleToc.ts:14))
+
+`toc_click` (`location` = `sidebar` / `mobile`, `page`, `heading_id`, `heading_level`, `position`, `total`) и `toc_open` (открытие мобильной панели).
+
+### Правило добавления нового события
+
+1. Имя — `snake_case`, с префиксом домена (`contact_`, `nav_`, `publish_`).
+2. Никаких хардкод-строк `gtag(...)` в компонентах — только через хелпер в `lib/`.
+3. Строковые параметры обрезать, числовые не приводить к строке: GA4 хранит их в разных типах и путает отчёты.
+4. Новое значение `location` — сначала добавить в union-тип, потом использовать: TypeScript не даст опечататься.
 
 ---
 
@@ -1505,18 +1548,11 @@ const STATIC_PATHS = [
 
 ---
 
-## 4. `test-next-redirect.js` / `test-redirect.js`
+## 4. Брошенные черновики редиректов — удалены
 
-| Файл | Содержимое | Что это |
-|---|---|---|
-| [`test-next-redirect.js`](test-next-redirect.js:1) | Одна импортная строка `require('next/dist/lib/load-custom-routes')` + комментарий «Actually it's easier to just look at next.config.js and simplify it». | **Брошенный черновик.** Автор начал писать тест редиректов, передумал. |
-| [`test-redirect.js`](test-redirect.js:1) | Проверяет регексп `/:path+.html` через `pathToRegexp` из Next.js. Печатает true/false для `/legal/license.html`, `/blog/my-post.html`, `/about.html`, `/index.html`. | **Дебаг-снипет** для проверки правила в [`next.config.js`](next.config.js:18) (тот самый редирект `.html` → без `.html`). |
+Раньше в корне лежали `test-next-redirect.js` и `test-redirect.js` — разовые REPL-снипеты для проверки правила `/:path+.html` → `/:path+` из [`next.config.js`](next.config.js:18). Это были не тесты (в проекте нет jest/vitest/playwright), а ручные прогоны `pathToRegexp`. Файлы удалены.
 
-Это **не тесты в смысле test-runner** (нет jest/vitest/playwright). Это два разовых REPL-снипета.
-
-### Что делать
-
-❌ В обычной разработке **не нужны**. Можно удалить или перенести в `scripts/dev/`. Если хочется реальные тесты — нужно ставить Vitest/Playwright и писать с нуля (в проекте тестов нет вообще).
+Реальных тестов в проекте по-прежнему **нет вообще**. Если понадобятся — нужно ставить Vitest/Playwright и писать с нуля.
 
 ---
 
@@ -1622,14 +1658,15 @@ npx next lint  # создаст .eslintrc.json интерактивно
 | [`scripts/convert-*.js`](scripts/convert-to-webp.js:1), [`scripts/update-references.js`](scripts/update-references.js:1) | Webflow-миграция | ❌ Деструктивно | ✅ Можно (или перенести в `legacy/`) |
 | [`scripts/fix-*.mjs`](scripts/fix-broken-image-links.mjs:1), [`scripts/verify-*.mjs`](scripts/verify-image-link-fix.mjs:1) | MDX-патчи + проверка | По необходимости (с `--dry`) | ⚠️ Сохранить для истории |
 | `scripts/report.json`, `scripts/report.md` | Артефакт прогона `check-site.mjs` (в `.gitignore`, не в репозитории) | — | ✅ Регенерируется |
-| [`test-next-redirect.js`](test-next-redirect.js:1) | Брошенный черновик | ❌ | ✅ Да |
-| [`test-redirect.js`](test-redirect.js:1) | Дебаг регекспа редиректа | ❌ | ✅ Да |
+| `test-next-redirect.js`, `test-redirect.js` | Брошенные черновики | — | ✅ Уже удалены |
+| `public/js/webflow.js` | Наследие Webflow, нигде не подключался | — | ✅ Уже удалён |
+| `public/assets/*.js` (5 файлов) | Наследие Webflow, нигде не подключались | — | ✅ Уже удалены (папка `placeholders/` оставлена) |
 | [`.vscode/settings.json`](.vscode/settings.json:1) | Подавление git warning | — | ❌ Оставить |
 
 ## Главные выводы
 
 1. **Подписчики никуда не сохраняются.** Эндпоинт `/api/subscribe` только шлёт письмо админу. Если нужна реальная рассылка — нужно интегрировать Resend Audiences или внешний сервис.
-2. **В корне накоплен мусор миграции** (`check_images*.js`, `fix_images.js`, `test-*.js`) — безопасно вычистить или перенести в `scripts/legacy/`.
+2. **В корне остался мусор миграции** (`check_images.js`, `check_images2.js`, `fix_images.js`) — безопасно вычистить или перенести в `scripts/legacy/`. Брошенные черновики `test-*.js` и наследие Webflow (`public/js/webflow.js`, пять скриптов в `public/assets/`) уже удалены.
 3. **`scripts/` — это смесь полезного и одноразового.** Самое ценное — [`scripts/check-site.mjs`](scripts/check-site.mjs:1) для health-check перед релизом и [`scripts/generate-blog-thumbs.js`](scripts/generate-blog-thumbs.js:1) (уже в `package.json`). Остальное — Webflow-миграционные артефакты.
 4. **Линтера и форматтера НЕТ.** `npm run lint` — это `tsc --noEmit`, не ESLint. Перед коммитом достаточно `npm run lint && npm run build`. Pre-commit хуков нет, CI-проверок (кроме Vercel-билда) тоже нет.
 5. **`.vscode/` минимален.** Один лайн про git limit warning. Имеет смысл добавить `extensions.json` с рекомендациями Tailwind IntelliSense + MDX.
