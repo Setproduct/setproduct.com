@@ -43,6 +43,7 @@ export type PublishLocation =
   | "company_panel"
   | "company_panel_mobile"
   | "footer"
+  | "footer_band"
   | "home_hero"
   | "faq"
   | "blog_inline"
