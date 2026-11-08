@@ -2177,7 +2177,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   list-style: none;
 }
 
-.footer-publish-facts li {
+.footer-publish-facts {
+  align-items: center;
+}
+
+.footer-publish-fact {
   padding: 6em 12em;
   border-radius: 100em;
   background-color: var(--light-purple);
@@ -2185,11 +2189,29 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   color: var(--dark-primary);
 }
 
+/* Quiet link right after the price chip: terms qualify the price, so they
+   sit next to it instead of competing with the main button. */
+.footer-publish-terms {
+  margin-left: 8em;
+}
+
+.footer-publish-terms a {
+  color: var(--grey);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+
+.footer-publish-terms a:hover {
+  color: var(--primary);
+}
+
+/* One action only, vertically centred against the whole text block. */
 .footer-publish-actions {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8em;
+  align-self: center;
   flex: none;
 }
 
@@ -2261,8 +2283,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 
   .footer-publish-actions {
-    flex-direction: row;
-    flex-wrap: wrap;
+    align-self: flex-start;
   }
 
   .footer .footer-card {
@@ -2298,9 +2319,16 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 
   .footer-publish-actions {
-    flex-direction: column;
-    align-items: stretch;
+    align-self: stretch;
+  }
+
+  .footer-publish-actions .button {
     width: 100%;
+    justify-content: center;
+  }
+
+  .footer-publish-terms {
+    margin-left: 4em;
   }
 
   /* Links first, logo and subscribe after them (Webflow had it reversed). */

@@ -179,10 +179,15 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                   <p className="heading-style-h4">Tell {PUBLISH_OFFER.readersPerMonth} readers about your product</p>
                   <ul className="footer-publish-facts">
                     {PUBLISH_FACTS.map((fact) => (
-                      <li key={fact}>
+                      <li className="footer-publish-fact" key={fact}>
                         <div className="text-size-small text-weight-bold">{fact}</div>
                       </li>
                     ))}
+                    <li className="footer-publish-terms">
+                      <Link className="text-size-small" href="/legal/terms-of-paid-posts">
+                        Read the terms
+                      </Link>
+                    </li>
                   </ul>
                 </div>
                 <div className="footer-publish-actions">
@@ -192,9 +197,6 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                       <ArrowIcon />
                     </div>
                   </a>
-                  <Link className="button-x-small is-text w-inline-block" href="/legal/terms-of-paid-posts">
-                    <div className="text-size-regular text-weight-bold">Read the terms</div>
-                  </Link>
                 </div>
               </div>
             ) : null}
