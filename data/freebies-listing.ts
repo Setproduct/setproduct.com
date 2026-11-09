@@ -21,6 +21,25 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "looseleaf",
+    title: "Looseleaf, 123 hand-drawn shadcn/ui components",
+    description:
+      "Every shadcn/ui part redrawn as paper and ink, with 123 components, 61 blocks, 160 icons. Installs as source through the shadcn registry, MIT licensed.",
+    thumb: "/freebies/thumbs/freebie-looseleaf.webp",
+    image: "/freebies/freebie-looseleaf.webp",
+    category: "Code",
+    previewHref: "/freebies/looseleaf",
+    duplicateHref: "https://github.com/kevintngo/looseleaf",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "liftkit-open-source-design-system-for-figma-react",
+      "design-to-code-ai-agents-guide",
+      "open-source-tools-digest-2026-10",
+    ],
+  },
+  {
     slug: "react-useanimations",
     title: "react-useanimations, 300 animated icons",
     description:
