@@ -106,8 +106,8 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                           </tr>
                           <tr>
                             <td>Published within</td>
-                            <td>3 days</td>
                             <td>24 hours</td>
+                            <td>4 hours</td>
                           </tr>
                           <tr>
                             <td>Word count</td>
@@ -144,7 +144,10 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                     </ul>
 
                     <h2 id="turnaround">Turnaround time</h2>
-                    <p>The clock starts when your prepayment clears. From there the order is the same on both plans:</p>
+                    <p>
+                      The clock starts once your payment has cleared and the finalized draft is in the member zone.
+                      From there the order is the same on both plans:
+                    </p>
                     <ol>
                       <li>You pay, and the member zone opens for you.</li>
                       <li>You add the draft, the anchor text and the images, then finalize the post.</li>
@@ -152,10 +155,10 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       <li>The post goes live, and we tell you it is up.</li>
                     </ol>
                     <p>
-                      Most paid posts go live within 24 hours of payment. Treat that as the normal speed. What we
-                      guarantee per plan is the outer limit: Accelerate within 3 days, Maximize within 24 hours.
-                      Send the draft together with the payment, otherwise the review cannot start and the timing
-                      above does not hold.
+                      Accelerate goes live within 24 hours. Maximize is the urgent option and goes live within 4
+                      hours, because we start reviewing it the moment the draft lands. Both limits count from the
+                      finalized draft, so upload it right after you pay. If we ask for changes, the clock pauses
+                      until you send the updated version.
                     </p>
 
                     <h2 id="indexing">Google indexing</h2>
