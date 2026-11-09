@@ -10,7 +10,7 @@ export default function FreebieTemplateCard({ item }: Props) {
     <div className="template-list-item hover-lift is-large">
       <Link className="template-list-item-img-wr w-inline-block hover-lift-media" href={item.previewHref}>
         <img
-          alt={item.title}
+          alt={item.imageAlt ?? item.title}
           src={item.thumb}
           className="image-cover is-fit-top-left"
         />

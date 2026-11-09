@@ -82,7 +82,7 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
           </div>
           <div className="section-bg-image-wr">
             <img
-              alt={title}
+              alt={item.imageAlt ?? title}
               className="image-cover"
               loading="eager"
               sizes="100vw"

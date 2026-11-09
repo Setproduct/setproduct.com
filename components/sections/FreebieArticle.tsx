@@ -49,6 +49,28 @@ const M3E_CANVAS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs-m3e", text: "Why it belongs in your workflow" },
 ];
 
+const DESIGMA_HEADINGS: ArticleHeading[] = [
+  { id: "what-desigma-does", text: "What desigma actually does" },
+  {
+    id: "why-native-rust",
+    text: "Why a native editor in Rust changes the feel",
+  },
+  { id: "figma-files", text: "How Figma files come across" },
+  { id: "what-ships-desigma", text: "What ships in the box" },
+  {
+    id: "components-variables",
+    text: "Components and variables",
+  },
+  { id: "motion-and-decks", text: "Prototyping and motion" },
+  {
+    id: "live-collaboration",
+    text: "Live collaboration without a server",
+  },
+  { id: "where-it-does-not-fit", text: "Where it does not fit yet" },
+  { id: "faq-desigma", text: "Frequently asked questions" },
+  { id: "why-it-belongs-desigma", text: "Why it belongs in your stack" },
+];
+
 const PDFCN_HEADINGS: ArticleHeading[] = [
   { id: "what-pdfcn-does", text: "What pdfcn actually does" },
   { id: "why-pdf-in-react", text: "Why PDF in React is harder than it looks" },
@@ -211,6 +233,7 @@ const USEANIMATIONS_HEADINGS: ArticleHeading[] = [
 ];
 
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
+  desigma: DESIGMA_HEADINGS,
   looseleaf: LOOSELEAF_HEADINGS,
   "react-useanimations": USEANIMATIONS_HEADINGS,
   "matita-icons": MATITA_ICONS_HEADINGS,
@@ -4183,6 +4206,386 @@ export default function FreebieArticle({ slug }: Props) {
                   </a>{" "}
                   collects the press coverage and the community projects built
                   on top of the toolkit.
+                </p>
+                  </>
+                )}
+
+                {slug === "desigma" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  Figma holds your files, and it also holds the renewal date for
+                  them. desigma answers a narrower question. Can a design tool
+                  live on your own machine, open the files your team already has,
+                  and keep working when the network drops? The project is a
+                  native desktop editor written in Rust, dual-licensed under MIT
+                  or Apache-2.0, and still labelled early alpha by the people who
+                  build it.
+                </p>
+
+                <h2 id="what-desigma-does">What desigma actually does</h2>
+                <p>
+                  desigma is a design app for macOS, Windows and Linux, written
+                  in Rust with no Electron and no embedded web view. Frames, auto
+                  layout, components with variants, prototyping, variables with
+                  modes, motion, whiteboards, decks and vector editing all live in
+                  one desktop window.
+                </p>
+                <p>
+                  It reads more than its own format. From Figma you open REST
+                  JSON or a <code>.fig</code> file saved locally. From Pencil you
+                  open <code>.pen</code> files. Everything you draw is stored as{" "}
+                  <code>.desigma</code>, and an import never writes back to the
+                  source file.
+                </p>
+                <p>
+                  The code sits on{" "}
+                  <a
+                    href="https://github.com/deepfounder-ai/desigma"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub
+                  </a>
+                  , where the README is the most complete document about the
+                  editor. Builds come from the{" "}
+                  <a
+                    href="https://github.com/deepfounder-ai/desigma/releases"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    releases page
+                  </a>
+                  : a <code>.dmg</code> for macOS, a <code>-setup.exe</code> or a
+                  portable zip for Windows, and a <code>.tar.gz</code> with an
+                  installer script for Linux.
+                </p>
+
+                <MDXImage
+                  src="/freebies/desigma-editor.webp"
+                  alt="The desigma editor on a mobile banking file, with four phone screens on the canvas, the Home frame selected and the inspector showing its auto layout"
+                  width={1600}
+                  height={1000}
+                  caption="Four screens from one file, with the inspector reading auto layout off the selected frame."
+                />
+
+                <h2 id="why-native-rust">
+                  Why a native editor in Rust changes the feel
+                </h2>
+                <p>
+                  Most design tools released in the last decade are web pages
+                  wearing a desktop shell. Electron loads a browser, and every
+                  frame of your canvas travels the same rendering path as a news
+                  site.
+                </p>
+                <p>
+                  desigma renders on the CPU with tiny-skia, keeps a spatial index
+                  over the document, and caches 256 px tiles in parallel. Panning
+                  and dragging on a page with 5,000 layers stays under a frame,
+                  which is the number the authors report. A wgpu renderer exists
+                  with a CPU fallback, so a machine without a usable GPU still
+                  draws the file.
+                </p>
+                <p>
+                  That choice shows up in small moments. Opening a file, changing
+                  pages, dragging a frame across a zoomed-out canvas. The window
+                  answers immediately because there is no browser between your
+                  pointer and the document.
+                </p>
+
+                <h2 id="figma-files">How Figma files come across</h2>
+                <p>
+                  A <code>.fig</code> file is a zip wrapper around a kiwi-encoded
+                  document, compressed with deflate or zstd. desigma unpacks it,
+                  decodes the schema, and maps node changes, embedded images,
+                  shared styles, instance overrides, layout grids and prototype
+                  links into its own document model.
+                </p>
+                <p>
+                  The same model takes the body of <code>GET /v1/files/:key</code>
+                  , the REST response you can save straight out of Figma. With the
+                  optional <code>net</code> feature, desigma fetches that response
+                  with a personal access token, and the token only travels as a
+                  request header. It is never logged or stored.
+                </p>
+                <p>
+                  One caveat comes straight from the README. The <code>.fig</code>{" "}
+                  format is undocumented, so the decoder follows community reverse
+                  engineering and is tested against synthetic files. Real-world
+                  files will hit gaps, and reports are welcome. Import is also one
+                  way. Save writes <code>.desigma</code>, so the Figma file you
+                  started from stays exactly as it was.
+                </p>
+
+                <h2 id="what-ships-desigma">What ships in the box</h2>
+                <p>
+                  The feature list is long for an alpha, and the parts that matter
+                  to a working designer are all there:
+                </p>
+                <ul>
+                  <li>
+                    ❶ Drawing tools for frame, section, rectangle, ellipse,
+                    polygon, star, image, pen, pencil and text, with snapping,
+                    smart guides and distance labels
+                  </li>
+                  <li>
+                    ❷ Auto layout with direction, wrap, gap, padding, alignment
+                    and hug, fill or fixed sizing, plus drag to reorder
+                  </li>
+                  <li>
+                    ❸ Vector networks with point editing, bend, paint bucket,
+                    marquee and lasso selection, shape builder, outline stroke,
+                    flatten and simplify
+                  </li>
+                  <li>
+                    ❹ Shared styles for color, text and effects, plus libraries
+                    that publish components and variables to other files
+                  </li>
+                  <li>
+                    ❺ Export to PNG, JPG, SVG and PDF, copy as PNG, SVG or CSS,
+                    and Dev mode code for CSS, Tailwind, SwiftUI, Jetpack Compose
+                    or React
+                  </li>
+                </ul>
+                <p>
+                  Type gets the same treatment. Inter ships inside the binary as a
+                  variable font, any other open-licensed family a file uses is
+                  fetched from Fontsource and cached, and proprietary fonts map to
+                  metric-compatible open alternatives. A Figma file built on a
+                  licensed family keeps its proportions on a machine that does not
+                  have it.
+                </p>
+
+                <MDXImage
+                  src="/freebies/desigma-components.webp"
+                  alt="A button instance selected on a welcome screen, with the inspector showing the component set, Type and Size variant pickers, a label property and a show icon toggle"
+                  width={1600}
+                  height={1000}
+                  caption="An instance with its variant pickers, a text property and the overrides on this copy."
+                />
+
+                <h2 id="components-variables">
+                  Components and variables
+                </h2>
+                <p>
+                  <code>Ctrl</code> + <code>Alt</code> + <code>K</code> turns any
+                  layer into a component. Instances drop from the Assets panel,
+                  and editing the main component updates every copy in a single
+                  undo step while each instance keeps its own overrides. Boolean,
+                  text, variant and instance-swap properties are editable, and
+                  Combine as variants, Go to main component, Reset all changes and
+                  Detach are all undoable.
+                </p>
+                <p>
+                  Variables come in four types: color, number, string and boolean.
+                  Each lives in a collection with modes. Bind a color to a fill, a
+                  number to a radius or a gap, switch a frame to the Dark mode, and
+                  everything bound to it follows. Library variables and color
+                  styles appear in the same pickers, and using one copies it into
+                  the file in the same undo step.
+                </p>
+
+                <MDXImage
+                  src="/freebies/desigma-variables.webp"
+                  alt="The variables view on a Theme collection, with Light and Dark mode columns and color variables grouped as surface, text, border, brand and status"
+                  width={1600}
+                  height={1000}
+                  caption="One collection, two modes, and aliases that point at the primitive colors."
+                />
+
+                <h2 id="motion-and-decks">Prototyping and motion</h2>
+                <p>
+                  The prototype tab works the way you would guess. Drag from a
+                  hotspot to a frame, then set triggers, actions, overlays and
+                  transitions with curves or springs. Present plays the flow back
+                  with Smart Animate, which pairs layers by name, and variables
+                  drive conditional logic through Set variable, Set variable mode
+                  and If, Else if and Else branches.
+                </p>
+                <p>
+                  Motion is in beta and free like the rest of the app. A toolbar
+                  button turns the page into a timeline with keyframe tracks on
+                  position, scale, rotation, size, opacity, radius, fill, shadow
+                  and blur, easing made of curves or springs, and 41 presets that
+                  become clips you retime. The export writes GIF, WebM encoded in
+                  pure Rust, or a PNG sequence. Keyframe tracks from Figma Motion
+                  files import as editable desigma motion.
+                </p>
+                <p>
+                  Decks reuse the same canvas. <code>File</code> then{" "}
+                  <code>New deck</code> gives you 16:9 frames, slide thumbnails,
+                  speaker notes and a full-screen Present mode. Slide and deck PDF
+                  export is high-resolution raster for now, so the text in it is
+                  not selectable.
+                </p>
+
+                <MDXImage
+                  src="/freebies/desigma-motion.webp"
+                  alt="Motion mode with an animated onboarding card on the canvas, a timeline of keyframe bars below and the animation section of the inspector on the right"
+                  width={1600}
+                  height={1088}
+                  caption="The timeline under the canvas, with the Motion inspector on the right."
+                />
+
+                <h2 id="live-collaboration">
+                  Live collaboration without a server
+                </h2>
+                <p>
+                  Sharing here needs no account and no hosted workspace. Click
+                  Share, copy a <code>desigma://join/</code> link, and send it.
+                  Your copy hosts the session while the file stays open, and edits
+                  travel peer to peer over iroh QUIC with NAT traversal. When a
+                  direct connection fails, traffic falls back to a public relay and
+                  stays end-to-end encrypted.
+                </p>
+                <p>
+                  Edits merge per property, so two people changing the color and
+                  the position of the same layer both keep their change. Your undo
+                  only undoes your own edits. Cursors and selections appear in
+                  each person's color, and clicking an avatar follows that view.
+                </p>
+                <p>
+                  The host keeps control. There is an optional password, approval
+                  of each joiner, edit or view-only access, and a stop sharing
+                  button. The session ends when the host closes the file, and
+                  guests can save a copy before that.
+                </p>
+
+                <h2 id="where-it-does-not-fit">Where it does not fit yet</h2>
+                <p>
+                  The README is unusually direct about this, and the page should
+                  be too. desigma is early alpha. Much of the everyday Figma
+                  surface exists, and the authors still say it is not ready to
+                  replace professional daily work.
+                </p>
+                <ul>
+                  <li>
+                    → PDF export produces raster pages, so text and vector shapes
+                    inside the file are not selectable
+                  </li>
+                  <li>
+                    → Plugins run in a narrow bridge that allows SVG insertion and
+                    local storage, with nothing else exposed
+                  </li>
+                  <li>
+                    → Collaboration is beta, and fonts are not sent over a session
+                    yet, so a guest without the family sees a substitute
+                  </li>
+                  <li>
+                    → Release builds are not code-signed, so the first launch
+                    shows a warning on macOS and Windows
+                  </li>
+                  <li>
+                    → Some <code>.fig</code> features have not been exercised by
+                    real files, and the team asks for reports with the OS and a
+                    sample file
+                  </li>
+                </ul>
+                <p>
+                  The project is independent as well. Figma and Pencil are
+                  trademarks of their owners, named here to describe file
+                  compatibility, and neither company sponsors or endorses desigma.
+                </p>
+
+                <h2 id="faq-desigma">Frequently asked questions</h2>
+                <h3>Does desigma open my existing Figma files?</h3>
+                <p>
+                  Two paths. Open a local <code>.fig</code> copy from{" "}
+                  <code>File</code> then <code>Save local copy</code>, or open the
+                  JSON body of a file request from the Figma REST API. Components,
+                  instance overrides, styles and prototype links come across, and
+                  Save writes a <code>.desigma</code> file, so the original stays
+                  untouched.
+                </p>
+                <h3>Is it really free?</h3>
+                <p>
+                  Yes. The code is dual-licensed under MIT or Apache-2.0, so you
+                  pick the terms that suit the project and use it in commercial
+                  work. Those licenses cover the code, and the name and logo stay
+                  with the project, which means a fork ships under its own
+                  branding.
+                </p>
+                <h3>Do I need an account or an internet connection?</h3>
+                <p>
+                  Not for the editor. Download a build and work offline, with files
+                  autosaving into a local projects library. Collaboration skips
+                  accounts too, since it shares a link instead of inviting people
+                  to a workspace. The network is used for Fontsource when a file
+                  needs an open font that is not cached yet.
+                </p>
+                <h3>Does it run on Windows and Linux?</h3>
+                <p>
+                  Yes. Each platform gets a native build from the releases page.
+                  macOS ships one <code>.dmg</code> that covers Apple Silicon and
+                  Intel, Windows gets a <code>-setup.exe</code> or a portable zip,
+                  and Linux gets a <code>.tar.gz</code> with an installer script.
+                </p>
+
+                <h2 id="why-it-belongs-desigma">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  If you design for a living and want a second editor that opens
+                  your files without a subscription, desigma earns an afternoon of
+                  testing. It reads <code>.fig</code>, keeps components and
+                  variables intact, runs offline, and hands you CSS, SwiftUI,
+                  Compose or React from Dev mode.
+                </p>
+                <p>
+                  The MCP server adds a second angle. It exposes 16 tools for
+                  importing a file, inspecting layers and tokens, generating code,
+                  editing with undo and saving a new document, so an agent can work
+                  on the same design you have open. That is the handoff described
+                  in the{" "}
+                  <Link href="/blog/design-to-code-ai-agents-guide">
+                    guide to design-to-code with AI agents
+                  </Link>
+                  , running on a tool you host yourself.
+                </p>
+
+                <MDXImage
+                  src="/freebies/desigma-dev-mode.webp"
+                  alt="SwiftUI code generated in Dev mode for a selected balance card, next to the box model and annotation panels"
+                  width={1600}
+                  height={1000}
+                  caption="Generated SwiftUI, with the same card measured in the box model."
+                />
+
+                <p>
+                  The reading on this site pairs with it.{" "}
+                  <Link href="/blog/liftkit-open-source-design-system-for-figma-react">
+                    LiftKit for Figma and React
+                  </Link>{" "}
+                  covers another open source design system, and the{" "}
+                  <Link href="/blog/open-source-tools-digest-2026-10">
+                    open source tools digest
+                  </Link>{" "}
+                  collects the rest of the stack around it. When the debate turns
+                  to layout, the{" "}
+                  <Link href="/blog/figma-auto-layout-debate">
+                    auto layout debate
+                  </Link>{" "}
+                  explains the model desigma implements, and{" "}
+                  <Link href="/blog/dark-side-of-figmas-updates">
+                    the cost of Figma updates
+                  </Link>{" "}
+                  covers the reason people look for a local tool in the first
+                  place.
+                </p>
+                <p>
+                  To see which interface patterns are landing in shipped products
+                  right now, browse the{" "}
+                  <a
+                    href="https://app.setproduct.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    AI inspiration gallery
+                  </a>
+                  . When you need screens to bring into the editor, the{" "}
+                  <Link href="/templates/mobile-x">mobile UI kits</Link> and the
+                  rest of the <Link href="/freebies">free resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for the
+                  same ship-it-yourself workflow.
                 </p>
                   </>
                 )}

@@ -47,6 +47,8 @@ export type FreebieItem = {
   description: string;
   image: string;
   thumb: string;
+  /** Alt text for the cover and the card thumb. Falls back to `title`. */
+  imageAlt?: string;
   category: string;
   previewHref: string;
   duplicateHref: string;

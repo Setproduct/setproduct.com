@@ -21,6 +21,27 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "desigma",
+    title: "desigma, a design tool written in Rust",
+    description:
+      "Open source design tool in Rust for macOS, Windows and Linux. Opens real Figma files, keeps components and variables, and runs offline with no account.",
+    thumb: "/freebies/thumbs/freebie-desigma.webp",
+    image: "/freebies/freebie-desigma.webp",
+    imageAlt:
+      "desigma launch cover with the headline the design tool you actually own, a download button, the editor on four phone screens and a layers panel",
+    category: "Code",
+    previewHref: "/freebies/desigma",
+    duplicateHref: "https://github.com/deepfounder-ai/desigma",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "liftkit-open-source-design-system-for-figma-react",
+      "open-source-tools-digest-2026-10",
+      "design-to-code-ai-agents-guide",
+    ],
+  },
+  {
     slug: "looseleaf",
     title: "Looseleaf, 123 hand-drawn shadcn/ui components",
     description:
