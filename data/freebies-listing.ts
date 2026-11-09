@@ -22,7 +22,7 @@ export const FREEBIES_CATEGORIES: string[] = [
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
     slug: "desigma",
-    title: "desigma, a design tool written in Rust",
+    title: "Desigma, a design tool written in Rust",
     description:
       "Open source design tool in Rust for macOS, Windows and Linux. Opens real Figma files, keeps components and variables, and runs offline with no account.",
     thumb: "/freebies/thumbs/freebie-desigma.webp",

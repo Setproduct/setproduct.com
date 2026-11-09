@@ -50,7 +50,7 @@ const M3E_CANVAS_HEADINGS: ArticleHeading[] = [
 ];
 
 const DESIGMA_HEADINGS: ArticleHeading[] = [
-  { id: "what-desigma-does", text: "What desigma actually does" },
+  { id: "what-desigma-does", text: "What Desigma actually does" },
   {
     id: "why-native-rust",
     text: "Why a native editor in Rust changes the feel",
@@ -4214,7 +4214,7 @@ export default function FreebieArticle({ slug }: Props) {
                   <>
                 <p className="blog_big-paragraph">
                   Figma holds your files, and it also holds the renewal date for
-                  them. desigma answers a narrower question. Can a design tool
+                  them. Desigma answers a narrower question. Can a design tool
                   live on your own machine, open the files your team already has,
                   and keep working when the network drops? The project is a
                   native desktop editor written in Rust, dual-licensed under MIT
@@ -4222,9 +4222,17 @@ export default function FreebieArticle({ slug }: Props) {
                   build it.
                 </p>
 
-                <h2 id="what-desigma-does">What desigma actually does</h2>
+                <h2 id="what-desigma-does">What Desigma actually does</h2>
+                <MDXImage
+                  src="/freebies/desigma-editor.webp"
+                  alt="The Desigma editor on a mobile banking file, with four phone screens on the canvas, the Home frame selected and the inspector showing its auto layout"
+                  width={1600}
+                  height={1000}
+                  caption="Four screens from one file, with the inspector reading auto layout off the selected frame."
+                  float="right"
+                />
                 <p>
-                  desigma is a design app for macOS, Windows and Linux, written
+                  Desigma is a design app for macOS, Windows and Linux, written
                   in Rust with no Electron and no embedded web view. Frames, auto
                   layout, components with variants, prototyping, variables with
                   modes, motion, whiteboards, decks and vector editing all live in
@@ -4260,14 +4268,6 @@ export default function FreebieArticle({ slug }: Props) {
                   installer script for Linux.
                 </p>
 
-                <MDXImage
-                  src="/freebies/desigma-editor.webp"
-                  alt="The desigma editor on a mobile banking file, with four phone screens on the canvas, the Home frame selected and the inspector showing its auto layout"
-                  width={1600}
-                  height={1000}
-                  caption="Four screens from one file, with the inspector reading auto layout off the selected frame."
-                />
-
                 <h2 id="why-native-rust">
                   Why a native editor in Rust changes the feel
                 </h2>
@@ -4278,7 +4278,7 @@ export default function FreebieArticle({ slug }: Props) {
                   site.
                 </p>
                 <p>
-                  desigma renders on the CPU with tiny-skia, keeps a spatial index
+                  Desigma renders on the CPU with tiny-skia, keeps a spatial index
                   over the document, and caches 256 px tiles in parallel. Panning
                   and dragging on a page with 5,000 layers stays under a frame,
                   which is the number the authors report. A wgpu renderer exists
@@ -4295,7 +4295,7 @@ export default function FreebieArticle({ slug }: Props) {
                 <h2 id="figma-files">How Figma files come across</h2>
                 <p>
                   A <code>.fig</code> file is a zip wrapper around a kiwi-encoded
-                  document, compressed with deflate or zstd. desigma unpacks it,
+                  document, compressed with deflate or zstd. Desigma unpacks it,
                   decodes the schema, and maps node changes, embedded images,
                   shared styles, instance overrides, layout grids and prototype
                   links into its own document model.
@@ -4303,7 +4303,7 @@ export default function FreebieArticle({ slug }: Props) {
                 <p>
                   The same model takes the body of <code>GET /v1/files/:key</code>
                   , the REST response you can save straight out of Figma. With the
-                  optional <code>net</code> feature, desigma fetches that response
+                  optional <code>net</code> feature, Desigma fetches that response
                   with a personal access token, and the token only travels as a
                   request header. It is never logged or stored.
                 </p>
@@ -4355,17 +4355,17 @@ export default function FreebieArticle({ slug }: Props) {
                   have it.
                 </p>
 
+                <h2 id="components-variables">
+                  Components and variables
+                </h2>
                 <MDXImage
                   src="/freebies/desigma-components.webp"
                   alt="A button instance selected on a welcome screen, with the inspector showing the component set, Type and Size variant pickers, a label property and a show icon toggle"
                   width={1600}
                   height={1000}
                   caption="An instance with its variant pickers, a text property and the overrides on this copy."
+                  float="right"
                 />
-
-                <h2 id="components-variables">
-                  Components and variables
-                </h2>
                 <p>
                   <code>Ctrl</code> + <code>Alt</code> + <code>K</code> turns any
                   layer into a component. Instances drop from the Assets panel,
@@ -4384,15 +4384,15 @@ export default function FreebieArticle({ slug }: Props) {
                   the file in the same undo step.
                 </p>
 
+                <h2 id="motion-and-decks">Prototyping and motion</h2>
                 <MDXImage
                   src="/freebies/desigma-variables.webp"
                   alt="The variables view on a Theme collection, with Light and Dark mode columns and color variables grouped as surface, text, border, brand and status"
                   width={1600}
                   height={1000}
                   caption="One collection, two modes, and aliases that point at the primitive colors."
+                  float="right"
                 />
-
-                <h2 id="motion-and-decks">Prototyping and motion</h2>
                 <p>
                   The prototype tab works the way you would guess. Drag from a
                   hotspot to a frame, then set triggers, actions, overlays and
@@ -4408,7 +4408,7 @@ export default function FreebieArticle({ slug }: Props) {
                   and blur, easing made of curves or springs, and 41 presets that
                   become clips you retime. The export writes GIF, WebM encoded in
                   pure Rust, or a PNG sequence. Keyframe tracks from Figma Motion
-                  files import as editable desigma motion.
+                  files import as editable Desigma motion.
                 </p>
                 <p>
                   Decks reuse the same canvas. <code>File</code> then{" "}
@@ -4418,17 +4418,17 @@ export default function FreebieArticle({ slug }: Props) {
                   not selectable.
                 </p>
 
+                <h2 id="live-collaboration">
+                  Live collaboration without a server
+                </h2>
                 <MDXImage
                   src="/freebies/desigma-motion.webp"
                   alt="Motion mode with an animated onboarding card on the canvas, a timeline of keyframe bars below and the animation section of the inspector on the right"
                   width={1600}
                   height={1088}
                   caption="The timeline under the canvas, with the Motion inspector on the right."
+                  float="right"
                 />
-
-                <h2 id="live-collaboration">
-                  Live collaboration without a server
-                </h2>
                 <p>
                   Sharing here needs no account and no hosted workspace. Click
                   Share, copy a <code>desigma://join/</code> link, and send it.
@@ -4453,7 +4453,7 @@ export default function FreebieArticle({ slug }: Props) {
                 <h2 id="where-it-does-not-fit">Where it does not fit yet</h2>
                 <p>
                   The README is unusually direct about this, and the page should
-                  be too. desigma is early alpha. Much of the everyday Figma
+                  be too. Desigma is early alpha. Much of the everyday Figma
                   surface exists, and the authors still say it is not ready to
                   replace professional daily work.
                 </p>
@@ -4483,11 +4483,11 @@ export default function FreebieArticle({ slug }: Props) {
                 <p>
                   The project is independent as well. Figma and Pencil are
                   trademarks of their owners, named here to describe file
-                  compatibility, and neither company sponsors or endorses desigma.
+                  compatibility, and neither company sponsors or endorses Desigma.
                 </p>
 
                 <h2 id="faq-desigma">Frequently asked questions</h2>
-                <h3>Does desigma open my existing Figma files?</h3>
+                <h3>Does Desigma open my existing Figma files?</h3>
                 <p>
                   Two paths. Open a local <code>.fig</code> copy from{" "}
                   <code>File</code> then <code>Save local copy</code>, or open the
@@ -4525,7 +4525,7 @@ export default function FreebieArticle({ slug }: Props) {
                 </h2>
                 <p>
                   If you design for a living and want a second editor that opens
-                  your files without a subscription, desigma earns an afternoon of
+                  your files without a subscription, Desigma earns an afternoon of
                   testing. It reads <code>.fig</code>, keeps components and
                   variables intact, runs offline, and hands you CSS, SwiftUI,
                   Compose or React from Dev mode.
@@ -4548,8 +4548,8 @@ export default function FreebieArticle({ slug }: Props) {
                   width={1600}
                   height={1000}
                   caption="Generated SwiftUI, with the same card measured in the box model."
+                  float="right"
                 />
-
                 <p>
                   The reading on this site pairs with it.{" "}
                   <Link href="/blog/liftkit-open-source-design-system-for-figma-react">
@@ -4564,7 +4564,7 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/blog/figma-auto-layout-debate">
                     auto layout debate
                   </Link>{" "}
-                  explains the model desigma implements, and{" "}
+                  explains the model Desigma implements, and{" "}
                   <Link href="/blog/dark-side-of-figmas-updates">
                     the cost of Figma updates
                   </Link>{" "}
