@@ -9,7 +9,6 @@ import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import { useArticleToc } from "../../hooks/useArticleToc";
 import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
-import { useContactModal } from "../modals/ContactModalContext";
 import type { BlogHeading } from "../../types/blog";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
@@ -39,7 +38,6 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
   const breadcrumbs = PAGE_BREADCRUMBS["terms-of-paid-posts"] ?? [];
   const toc = useArticleToc(TOC_ITEMS, "legal/terms-of-paid-posts");
   const publishLink = getPublishLinkProps("terms_page");
-  const { openContactModal } = useContactModal();
 
   return (
     <>
@@ -129,24 +127,6 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                         </tbody>
                       </table>
                     </div>
-                    <p>
-                      No-follow links are free. A free submission goes through the same moderation as a paid one,
-                      and its review can take up to 30 days. Publication is not guaranteed: we publish a free post
-                      only when the topic is genuinely interesting to our readers, and most drafts we get are not.
-                    </p>
-                    <p>
-                      Want to try your luck with a free placement? Send your draft through our{" "}
-                      <a
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          openContactModal("terms_page");
-                        }}
-                      >
-                        contact form
-                      </a>{" "}
-                      and we will tell you whether it fits the blog.
-                    </p>
 
                     <h2 id="after-payment">What happens after you pay</h2>
                     <p>
