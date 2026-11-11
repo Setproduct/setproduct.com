@@ -21,6 +21,27 @@ export const FREEBIES_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "ramka",
+    title: "Ramka, the headless lightbox for React",
+    description:
+      "Headless lightbox primitives for React with View Transition morphs, native scroll swiping and pinch to zoom. MIT licensed, zero runtime dependencies.",
+    thumb: "/freebies/thumbs/freebie-ramka.webp",
+    image: "/freebies/freebie-ramka.webp",
+    imageAlt:
+      "Masonry photo grid of landscape shots, a husky portrait and bokeh lights, with a plus two counter on the last tile",
+    category: "Code",
+    previewHref: "/freebies/ramka",
+    duplicateHref: "https://github.com/arturbien/ramka",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "case-study-design-image-upload-component",
+      "carousel-ui-design",
+      "slider-ui-design",
+    ],
+  },
+  {
     slug: "desigma",
     title: "Desigma, a design tool written in Rust",
     description:

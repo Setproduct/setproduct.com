@@ -27,6 +27,17 @@ const DRIVER_JS_HEADINGS: ArticleHeading[] = [
   { id: "why-it-belongs", text: "Why it belongs in your stack" },
 ];
 
+const RAMKA_HEADINGS: ArticleHeading[] = [
+  { id: "what-ramka-does", text: "What Ramka actually does" },
+  { id: "why-lightboxes-fail", text: "Why most lightboxes feel wrong" },
+  { id: "how-parts-compose", text: "How the parts compose" },
+  { id: "morph-transitions", text: "The morph that sells the click" },
+  { id: "gestures-and-weight", text: "Gestures, and where it stops" },
+  { id: "wiring-into-react-app", text: "Wiring it into your own app" },
+  { id: "faq-ramka", text: "Frequently asked questions" },
+  { id: "why-it-belongs-ramka", text: "Why it belongs in your stack" },
+];
+
 const LOOSELEAF_HEADINGS: ArticleHeading[] = [
   { id: "what-looseleaf-does", text: "What Looseleaf actually does" },
   { id: "why-hand-drawn-works", text: "Why hand-drawn stopped looking like a joke" },
@@ -238,6 +249,7 @@ const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
   "react-useanimations": USEANIMATIONS_HEADINGS,
   "matita-icons": MATITA_ICONS_HEADINGS,
   "driver-js": DRIVER_JS_HEADINGS,
+  ramka: RAMKA_HEADINGS,
   "m3e-canvas": M3E_CANVAS_HEADINGS,
   pdfcn: PDFCN_HEADINGS,
   amicro: AMICRO_HEADINGS,
@@ -1354,6 +1366,305 @@ export default function FreebieArticle({ slug }: Props) {
                   <Link href="/freebies">free Figma files</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for
                   the same fast, solo-founder workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "ramka" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  The gallery ships. Thumbnails load. A visitor taps a photo and
+                  a white overlay throws the image into the middle of the screen,
+                  with a close button parked in the corner. The picture opened.
+                  The feel did not. That gap between opening and feeling is where
+                  galleries lose people, and it is the gap Ramka was built to
+                  close.
+                </p>
+
+                <h2 id="what-ramka-does">What Ramka actually does</h2>
+                <p>
+                  Ramka is a lightbox for React, published as{" "}
+                  <code>@ramka/react</code> under the MIT license. The name is
+                  Polish for &ldquo;frame&rdquo;, which is what the component
+                  gives you: a frame that holds any media and gets out of the way.
+                </p>
+                <p>
+                  The library is headless. It handles the dialog, the focus trap,
+                  the gestures and the transitions, and it ships no visual style
+                  at all. You compose the parts you need, name them yourself, and
+                  write the CSS. The only dependencies are <code>react</code> and{" "}
+                  <code>react-dom</code> at version 18 or newer, and both React
+                  18.3 and React 19 are tested in CI.
+                </p>
+                <p>
+                  Install it in one line, then import a namespace for the part you
+                  are building:
+                </p>
+                <ul>
+                  <li>
+                    <code>npm i @ramka/react</code>
+                  </li>
+                  <li>
+                    <code>{"import * as Lightbox from '@ramka/react/lightbox'"}</code>
+                  </li>
+                </ul>
+
+                <h2 id="why-lightboxes-fail">Why most lightboxes feel wrong</h2>
+                <p>
+                  Two technical decisions cause most of the damage, and neither
+                  one shows up in a screenshot.
+                </p>
+                <p>
+                  The first is the scroll. Plenty of galleries emulate swiping by
+                  translating a strip of slides with CSS transforms. It works on a
+                  desktop trackpad and falls apart on a phone, because the browser
+                  no longer owns the momentum. The swipe fights the finger.
+                </p>
+                <p>
+                  The second is the opening. A lightbox that appears as a new
+                  state on top of the page reads as a page change. The eye has to
+                  rebuild the scene: where the photo was, where it went, what just
+                  happened. Shared-element transitions fix that by keeping one
+                  object on screen the whole time.
+                </p>
+                <p>
+                  Ramka takes the honest version of both. Slides ride real CSS
+                  scroll snapping, so the swipe is native because it is native.
+                  The morph is a real shared-element transition rather than a
+                  crossfade pretending to be one.
+                </p>
+                <p>
+                  ☞ A lightbox is a gesture before it is a modal. Every decision
+                  that treats it as a modal leaks.
+                </p>
+
+                <h2 id="how-parts-compose">How the parts compose</h2>
+                <p>
+                  The API follows the pattern you already know from Radix UI and
+                  Base UI. Each piece has one job and you decide the order:
+                  <code>Root</code>, <code>Trigger</code>, <code>Portal</code>,{" "}
+                  <code>Backdrop</code>, <code>Content</code>, <code>Slides</code>,{" "}
+                  <code>Slide</code>, <code>Item</code>, <code>Zoom</code>,{" "}
+                  <code>Media</code>, <code>Caption</code>,{" "}
+                  <code>ThumbnailGroup</code>, <code>Counter</code>,{" "}
+                  <code>Previous</code>, <code>Next</code> and <code>Close</code>.
+                  Nothing renders until you render it, and nothing has a color
+                  until you give it one.
+                </p>
+                <p>
+                  One detail is worth copying into your own components. Ramka
+                  exports no prebuilt namespace object, because bundlers cannot
+                  shake a package that hands you one. Accessing{" "}
+                  <code>Lightbox.Root</code> stays statically visible to esbuild,
+                  so unused parts drop out of the bundle. Destructuring the
+                  namespace into local names keeps every part, which is exactly
+                  the kind of quiet regression nobody notices until a bundle
+                  report lands.
+                </p>
+                <p>
+                  Since the parts carry no styling, the fastest way in is a
+                  preset. A copy-paste default preset gives you a working look in
+                  a few minutes, and colors and radii are tuned through documented{" "}
+                  <code>--lightbox-*</code> custom properties, so your preset and
+                  your tokens stay in one place.
+                </p>
+
+                <h2 id="morph-transitions">The morph that sells the click</h2>
+                <p>
+                  The morph is the part people notice, even if they never name it.
+                  The clicked tile and the fullscreen version share an element, so
+                  the browser interpolates position, size and corner radius in one
+                  motion. Going back reverses it, and the photo lands exactly where
+                  the visitor left it.
+                </p>
+                <p>
+                  Anything can morph. Images, video, a 3D model and plain
+                  HTML all work, which means the same component covers a product
+                  gallery, a design portfolio and a screenshot viewer without a
+                  second library. Browsers without the View Transitions API get a
+                  clean crossfade, so the fallback is boring rather than broken.
+                </p>
+                <p>
+                  That fallback matters more than it sounds. A transition that
+                  degrades into a flash of white is worse than no transition,
+                  because the visitor reads it as a bug. A crossfade reads as a
+                  fade.
+                </p>
+
+                <h2 id="gestures-and-weight">
+                  Gestures, and where it stops
+                </h2>
+                <p>
+                  The gesture set is what you would expect from a native photo
+                  app, and the source of a few pleasant surprises:
+                </p>
+                <ul>
+                  <li>
+                    ❶ Swipe between slides on touch, with scroll snapping doing
+                    the work
+                  </li>
+                  <li>
+                    ❷ Pinch on a touchscreen or a trackpad, double-tap to zoom,
+                    and ctrl plus scroll to zoom at the cursor
+                  </li>
+                  <li>
+                    ❸ Pan with a finger, a mouse or the arrow keys
+                  </li>
+                  <li>
+                    ❹ Pull down, or scroll a trackpad, to dismiss
+                  </li>
+                  <li>
+                    ❺ Tab through the controls with the focus trapped inside the
+                    dialog
+                  </li>
+                </ul>
+                <p>
+                  Pull to dismiss is elastic and interruptible, and it checks the
+                  zoom level and any swipe still in flight before it closes. Small
+                  detail, large effect: a dismiss gesture that ignores the current
+                  zoom will eat the photo the visitor was trying to inspect.
+                </p>
+                <p>
+                  Every gesture above is documented with a live example at{" "}
+                  <a
+                    href="https://ramka.dev/"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    ramka.dev
+                  </a>
+                  , where the docs run from the lightbox overview through view
+                  transitions and gestures to the full API reference. Try the pull
+                  gesture on a trackpad before you read the props table, because
+                  the feel is the part a spec sheet cannot carry.
+                </p>
+                <p>
+                  Weight is the other argument. There are no runtime
+                  dependencies, the zoom, morph and pull engines load on demand,
+                  and a full gallery ships about 19 KB gzipped up front. For a
+                  component that only appears after a click, that number is the
+                  difference between adding it and skipping it.
+                </p>
+                <p>
+                  ☛ Where it stops. Ramka is pre-1.0, so pin the version. It ships
+                  no user-facing copy, so{" "}
+                  <code>Close</code>, <code>Previous</code>, <code>Next</code> and
+                  the zoom controls arrive without an <code>aria-label</code>. Give
+                  each one a label or your own visible text, or the dialog opens
+                  nameless and a development warning fires. If you need a player
+                  with ads, chapters and analytics hooks, keep your video platform.
+                  Ramka frames media, it does not manage it.
+                </p>
+
+                <h2 id="wiring-into-react-app">
+                  Wiring it into your own app
+                </h2>
+                <p>
+                  The setup is short enough to describe as a list:
+                </p>
+                <ul>
+                  <li>❶ Install the package and import the lightbox namespace</li>
+                  <li>
+                    ❷ Wrap each grid tile in a <code>Trigger</code> and pass the
+                    image ref it hands back
+                  </li>
+                  <li>
+                    ❸ Put <code>Content</code>, <code>Slides</code> and{" "}
+                    <code>Zoom</code> in a portal
+                  </li>
+                  <li>
+                    ❹ Write the CSS, or start from the preset and override the
+                    variables
+                  </li>
+                  <li>
+                    ❺ Add a label to every icon-only control before you ship
+                  </li>
+                </ul>
+                <p>
+                  Images accept <code>srcset</code> and work with{" "}
+                  <code>next/image</code> out of the box, and RTL layouts are
+                  handled by the component rather than by your overrides. If your
+                  gallery uses a masonry grid, the trigger side is unchanged: the
+                  morph starts from whatever element you point at.
+                </p>
+                <p>
+                  Security teams get their own section in the README. The library
+                  runs under a strict style policy with{" "}
+                  <code>style-src 'self'</code> and{" "}
+                  <code>style-src-attr 'none'</code>, with no{" "}
+                  <code>unsafe-inline</code> and no nonce to configure, because its
+                  styles arrive as constructed stylesheets and CSSOM writes rather
+                  than markup. Every release is published from GitHub Actions with
+                  npm trusted publishing, so each tarball carries a signed
+                  provenance attestation, and a CycloneDX SBOM ships inside the
+                  package. For a component that handles user photos, that paper
+                  trail is worth more than a feature list.
+                </p>
+                <p>
+                  The article on{" "}
+                  <Link href="/blog/case-study-design-image-upload-component">
+                    designing an image upload component
+                  </Link>{" "}
+                  covers the state model that sits on the other side of this
+                  handoff, and the{" "}
+                  <Link href="/blog/carousel-ui-design">
+                    carousel design guide
+                  </Link>{" "}
+                  explains why snapping beats transform tricks for touch
+                  interfaces. If your gallery sits inside a slider, the{" "}
+                  <Link href="/blog/slider-ui-design">slider rules</Link> apply to
+                  the same interaction budget.
+                </p>
+
+                <h2 id="faq-ramka">Frequently asked questions</h2>
+
+                <h3>Does Ramka work in browsers without View Transitions?</h3>
+                <p>
+                  Yes. The morph falls back to a crossfade, and every other part,
+                  including scroll snapping, zoom and pull to dismiss, keeps
+                  working. Nothing in the component depends on the API being
+                  present.
+                </p>
+
+                <h3>Is it a whole gallery or just the overlay?</h3>
+                <p>
+                  It is both, in pieces. The overlay, the slide track,
+                  thumbnails, the counter and the navigation are separate parts,
+                  so a single-image viewer and a hundred-photo gallery use the same
+                  import with different composition.
+                </p>
+
+                <h3>Can I use it with next/image and responsive sources?</h3>
+                <p>
+                  Yes. The media parts take a normal image element, so{" "}
+                  <code>srcset</code> and <code>next/image</code> both fit without
+                  a wrapper, and the trigger passes back the ref the morph needs.
+                </p>
+
+                <h3>What does headless cost me in setup time?</h3>
+                <p>
+                  One styling pass. The default preset is copy-paste and close to
+                  production ready, and the documented CSS variables cover the
+                  rest. Expect an afternoon for a custom look, not a sprint.
+                </p>
+
+                <h2 id="why-it-belongs-ramka">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  You already have a gallery. What you probably do not have is a
+                  viewer that feels native on a phone, keeps the photo in place
+                  through the transition, and ships less code than the average
+                  modal wrapper. Ramka is that piece, and it is small enough to
+                  try without a meeting.
+                </p>
+                <p>
+                  Start from the GitHub repository, read the license, and point it
+                  at your three most viewed images. If the morph lands, keep going.
+                  When you want the grid around it to match, our{" "}
+                  <Link href="/freebies">free Figma files</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> are built for the
+                  same fast, small-team workflow.
                 </p>
                   </>
                 )}
