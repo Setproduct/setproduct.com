@@ -54,6 +54,32 @@ function rehypeCollectHeadings(target: BlogHeading[]) {
   };
 }
 
+type MdxJsxNode = {
+  type: string;
+  name?: string | null;
+  attributes?: Array<{ type: string; name: string; value: string }>;
+};
+
+/**
+ * `<inlineCTA>…</inlineCTA>` in a post body is not a React component: MDX
+ * treats a lowercase-initial tag as a literal HTML element, so it would reach
+ * the page as an unknown tag. This rewrites it to a styled div at compile
+ * time, which keeps the block readable in the MDX source and valid in HTML.
+ * Styles live in styles/globals.css under `.blog-inline-cta`.
+ */
+function remarkInlineCtaBlock() {
+  return (tree: unknown) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    visit(tree as any, "mdxJsxFlowElement", (node: MdxJsxNode) => {
+      if (node.name !== "inlineCTA") return;
+      node.name = "div";
+      node.attributes = [
+        { type: "mdxJsxAttribute", name: "className", value: "blog-inline-cta" },
+      ];
+    });
+  };
+}
+
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 
 export function getAllBlogSlugs(): string[] {
@@ -76,7 +102,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const headings: BlogHeading[] = [];
     const mdxSource = await serialize(content, {
       mdxOptions: {
-        remarkPlugins: [remarkGfm],
+        remarkPlugins: [remarkGfm, remarkInlineCtaBlock],
         rehypePlugins: [
           rehypeSlug,
           rehypeCleanIds,

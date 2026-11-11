@@ -1126,6 +1126,29 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 }
 
+/*
+ * In-body call to action written in MDX as `<inlineCTA>…</inlineCTA>`.
+ * remarkInlineCtaBlock in lib/blog/mdx.ts rewrites that tag to this div at
+ * compile time. Sizes use --em-px, because the paragraph inside carries
+ * `font-size: 18em` and plain `em` would be multiplied by it.
+ */
+.rich-text-18 .blog-inline-cta {
+  margin: calc(32 * var(--em-px)) 0 0;
+  padding: calc(20 * var(--em-px)) calc(24 * var(--em-px));
+  border: 1px solid var(--input-border, #d7ccfc);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--light-purple);
+}
+
+.rich-text-18 .blog-inline-cta p {
+  margin-bottom: 0;
+}
+
+.rich-text-18 .blog-inline-cta a {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 @media (min-width: 991px) {
   .section.is-height-100vh {
     height: calc(100dvh - 70em);

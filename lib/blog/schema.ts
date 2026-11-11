@@ -1,4 +1,4 @@
-import type { Author, BlogFrontmatter, FaqItem } from "../../types/blog";
+import type { Author, BlogFrontmatter, FaqItem, HowTo } from "../../types/blog";
 import { getAuthor } from "./authors";
 import { SITE_URL, absoluteUrl } from "./site-config";
 
@@ -93,6 +93,34 @@ export function buildFaqJsonLd(items: FaqItem[]): Record<string, unknown> {
         "@type": "Answer",
         text: item.answer,
       },
+    })),
+  };
+}
+
+/**
+ * HowTo JSON-LD. Rendered when a post defines `howTo` in frontmatter.
+ * Google retired the HowTo rich result in 2023, so this markup earns no
+ * special snippet there; it still describes the step sequence to other
+ * parsers and to AI answer engines.
+ */
+export function buildHowToJsonLd(
+  howTo: HowTo,
+  pageUrl: string,
+  image?: string
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: howTo.name,
+    ...(howTo.description ? { description: howTo.description } : {}),
+    ...(image ? { image } : {}),
+    mainEntityOfPage: pageUrl,
+    step: howTo.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.url ? { url: step.url } : {}),
     })),
   };
 }

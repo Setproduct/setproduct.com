@@ -21,6 +21,19 @@ export type FaqItem = {
   answer: string;
 };
 
+export type HowToStep = {
+  name: string;
+  text: string;
+  /** Optional absolute URL of the step (a live demo page, an anchor). */
+  url?: string;
+};
+
+export type HowTo = {
+  name: string;
+  description?: string;
+  steps: HowToStep[];
+};
+
 export type Author = {
   slug: string;
   name: string;
@@ -48,6 +61,8 @@ export type BlogFrontmatter = {
   readingTimeText?: string;
   relatedSlugs?: string[];
   faq?: FaqItem[];
+  /** Step list for HowTo JSON-LD. Optional; only posts that teach a sequence define it. */
+  howTo?: HowTo;
   /** ISO date 'YYYY-MM' or 'YYYY-MM-DD' of the last content refresh. Drives the freshness signal in BlogHero/BlogMeta (rendering TODO Wave 5). */
   lastUpdated?: string;
 };
