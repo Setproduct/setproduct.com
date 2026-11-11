@@ -116,18 +116,20 @@ export const INFORMATION_LINKS: Array<{ href: string; label: string; modal?: boo
   { href: "#", label: "Contact us", modal: true },
 ];
 
-// Curated subset of freebies categories surfaced in the nav dropdown. Like
-// DESIGN_KITS, we don't list every taxonomy entry — only the well-populated,
-// recognisable ones — so each hovered tab yields a full preview grid. `label`
-// is sentence-case for display; `category` must match FREEBIE_PRODUCTS exactly.
-// «Desktop utilities» и «Self-hosted apps» сюда не входят: по две карточки
-// не заполнят сетку из NAV_FREEBIE_PREVIEW_COUNT, они живут только в листинге.
+// Categories surfaced in the nav dropdown. The list mirrors FREEBIES_CATEGORIES
+// one to one, so the mega-menu never hides a category the listing shows.
+// `label` is sentence-case for display; `category` must match FREEBIE_PRODUCTS
+// exactly. Tabs with fewer than NAV_FREEBIE_PREVIEW_COUNT items render a short
+// grid: getFreebiePreviews pads nothing, because mixing another category into
+// "Self-hosted apps" would mislabel it.
 export const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "All topics", category: null },
   { label: "Figma templates", category: "Figma templates" },
   { label: "UI components", category: "UI components" },
   { label: "Icons and animations", category: "Icons and animations" },
   { label: "Design and AI tools", category: "Design and AI tools" },
+  { label: "Desktop utilities", category: "Desktop utilities" },
+  { label: "Self-hosted apps", category: "Self-hosted apps" },
 ];
 
 /**
