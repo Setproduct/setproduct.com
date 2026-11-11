@@ -355,7 +355,7 @@ Two costs stay on the bill. The poster is 1 px shorter than the viewport, `heigh
 
 The [web.dev guide to LCP](https://web.dev/articles/lcp) lists full-viewport elements among those Chrome may treat as background. That rule was inferred from a probe and may change between Chrome versions.
 
-The second cost is the missing build step. Nothing is tree-shaken, and Lighthouse reports 45% of three.js as unused by this scene.
+The second cost is the missing build step. Nothing is tree-shaken, and Lighthouse reports 45% of three.js as unused by this scene. That was a deliberate constraint of the brief, not an oversight.
 
 ## The known failure on a real iPhone
 
@@ -405,7 +405,7 @@ Answer each with yes or no.
 
 • **The skills repo is days old.** It was created on 31 October 2026, so the lab pins one commit.
 
-• **The dependencies arrive before the first skill runs.** Playwright, then Pillow, with ffmpeg on the PATH.
+• **The dependencies are heavy.** Playwright, Pillow and ffmpeg must all exist before the first skill runs, and none of them is a browser feature.
 
 • **Exploded views depend on mesh quality.** Fused or decimated meshes explode badly.
 
@@ -441,9 +441,9 @@ The gap between stage 0 and stage 8 is 186 draw calls and about 7.5 ms a frame. 
 
 Agents are good at execution and indifferent to taste. Give them the direction, then measure what they built, on real hardware if you can get it. The lab's final stage failed on an iPhone X, and that stays an open defect until someone holds the phone and reads the console.
 
-This lab is exactly the kind of subject the blog takes guest posts on.
-
 Slop is a missing decision. Make the decision first and the render follows.
+
+This lab is the kind of subject Setproduct takes guest posts on, if you build things like it.
 
 <inlineCTA>
 The whole lab is public: nine stages, the method and every number, including the ones that failed. [Read the lab notes →](https://coffee-grinder-3d.netlify.app/FACTS.md) · [Open the repo →](https://github.com/kamushken/coffee-grinder-3d)
