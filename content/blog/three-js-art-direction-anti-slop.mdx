@@ -8,7 +8,7 @@ date: '2026-11-11'
 lastUpdated: '2026-11-11'
 author: Roman Kamushken
 category: UI Design
-tags: []
+tags: ['three.js', '3d', 'webgl', 'art direction', 'webgl performance', 'frontend']
 coverImage: /blog/covers/three-js-art-direction-anti-slop.webp
 coverImageAlt: >-
   Final Three.js frame of a manual coffee grinder on a walnut tray at golden
@@ -51,8 +51,7 @@ faq:
     answer: >-
       Build from code when the object is mechanical, made of lathed and extruded
       parts. The lab's grinder is 10 procedural parts with no model or texture
-      files. Load a model for organic shapes such as a face or a shoe, where
-      procedural geometry cannot match a 3D artist.
+      files. Load a model for organic shapes such as a face or a shoe.
   - question: How do you keep a 3D hero fast on mobile?
     answer: >-
       Paint a poster image first and start WebGL later, on a low quality tier
@@ -132,6 +131,10 @@ Four disclosures before the first stage.
 
 → The final stage fails to start on one real phone. That defect has its own section near the end.
 
+## What you need to follow along
+
+Node 22.20 or newer, Python 3.9 or newer with Playwright and Pillow, ffmpeg on the PATH, and a clone of the [repo](https://github.com/kamushken/coffee-grinder-3d). No npm install and no build step anywhere in it. Four skills also want a paid image or video API and are marked `DOCUMENTED-NOT-RUN` below.
+
 ## Why generated 3D looks generated
 
 Four causes, and the model is to blame for none of them.
@@ -170,7 +173,7 @@ It is the cheapest stage in the lab: 34 draw calls and 1.40 ms a frame.
 
 ☞ An agent follows a direction document closely. It does not write one unless asked.
 
-Collecting references with intent is the same discipline, covered in [how to use AI UI inspiration to design faster without copying blindly](/blog/how-to-use-ai-ui-inspiration-to-design-faster-without-copying-blindly).
+The same discipline drives [how to use AI UI inspiration to design faster without copying blindly](/blog/how-to-use-ai-ui-inspiration-to-design-faster-without-copying-blindly).
 
 ## Stage 2, light as drama
 
@@ -213,19 +216,17 @@ The flat-screen cousin of the glass hopper is covered in [liquid glass design](/
 
 ![Final Three.js frame, the coffee grinder on a walnut tray placed on the right third with a long golden hour shadow](https://coffee-grinder-3d.netlify.app/captures/stage-8.webp)
 
-The frame above is the final stage, which keeps this composition.
+The lab deviates from its skill, which suggests a hero direction of (0.42, 0.34, 1). At that pitch the horizon sat in the top tenth of the frame and the sky disappeared, so the lab uses 0.17 and backs the camera off to 0.74 m.
 
-The lab deviates from its skill here. The skill suggests a hero direction of (0.42, 0.34, 1), which put the horizon in the top tenth of the frame and lost the sky. The lab uses 0.17 and backs the camera off to 0.74 m.
-
-Still layouts follow the same logic, covered in [visual dynamics for design layouts](/blog/design-tricks-for-static-prototypes).
+Still layouts follow the same logic, covered in [layout tricks for static prototypes](/blog/design-tricks-for-static-prototypes).
 
 ## Stage 5, motion from a recording
 
 [Stage 5](https://coffee-grinder-3d.netlify.app/stage-5/) is a scroll-scrubbed film. The footage is the lab's own 60 fps recording of stage 8, cut to 10 seconds and encoded at 800 px and 15 fps: 150 frames in 1.1 MB.
 
-It is the same family of effect as the AirPods-style page in [how to make a 3D animation effect on scroll](/blog/how-to-3d-animate-scroll), with a video seeking where that tutorial draws images on a canvas. With reduced motion on, the film jumps between key frames instead of scrubbing.
+It shares a family with the AirPods-style page in [how to make a 3D animation effect on scroll](/blog/how-to-3d-animate-scroll), with a video seeking where that tutorial draws images on a canvas. With reduced motion on, the film jumps between key frames.
 
-Three parts of the motion pack exist only on paper here, with no measurements and no claim about their quality.
+Three parts of the motion pack exist only on paper, unmeasured.
 
 ### Cursor rig
 
@@ -291,6 +292,10 @@ The lab recorded 12 seconds each of stage 0 and stage 8 at 1920×1080, then stac
 
 Record the baseline the day you build it. The real pair is the fastest way to show a client what direction bought.
 
+<inlineCTA>
+Writing about 3D, WebGL or front-end performance? Setproduct takes guest posts from people who build things. [See the plans →](https://publish.setproduct.com)
+</inlineCTA>
+
 ## Shipping checks beyond performance
 
 Five defects surfaced during the checks, and only the first shows up as frame time.
@@ -322,7 +327,7 @@ First, what direction costs in rendering, at 1440×900 and a pixel ratio of 1.
 
 </div>
 
-Now the number that flatters the page. Both columns are the deployed final stage in Lighthouse 12.8.2, the median of 5 runs with the range in brackets.
+Now the number that flatters the page, from the deployed final stage in Lighthouse 12.8.2, the median of 5 runs with the range in brackets.
 
 <div class="blog-fit-table">
 
@@ -334,7 +339,7 @@ Now the number that flatters the page. Both columns are the deployed final stage
 
 </div>
 
-The page scores 100 only because WebGL startup waits behind a 1200 ms floor on phones, and without the floor the same code scores 83. The floor moves the shader compile outside the window Lighthouse measures. The work still happens.
+The page scores 100 only because WebGL startup waits behind a 1200 ms floor on phones, and without the floor the same code scores 83. The floor moves the shader compile outside the window Lighthouse measures.
 
 The 89 ms median has a tail. Five consecutive runs on one browser profile read 109, 650, 23, 29 and 24 ms, so one run in five lands near 650 ms. The lab reproduced it without tracing the cause.
 
@@ -346,11 +351,11 @@ The bigger lesson is where the score came from. On a local server without compre
 
 The lab never decomposed the two runs, so read that as a measured difference in input.
 
-Two costs stay on the bill. The poster is 1 px shorter than the viewport, `height: calc(100% - 1px)`, because in the lab's probe Chrome stopped counting a full-viewport image as an LCP candidate. The [web.dev guide to LCP](https://web.dev/articles/lcp) lists full-viewport elements among those Chrome may treat as background.
+Two costs stay on the bill. The poster is 1 px shorter than the viewport, `height: calc(100% - 1px)`, because in the lab's probe Chrome stopped counting a full-viewport image as an LCP candidate.
 
-That fix is a hack. The rule was inferred from a probe, and it may change between Chrome versions.
+The [web.dev guide to LCP](https://web.dev/articles/lcp) lists full-viewport elements among those Chrome may treat as background. That rule was inferred from a probe and may change between Chrome versions.
 
-The second cost is the missing build step. Nothing is tree-shaken, and Lighthouse reports 45% of three.js as unused by this scene. That was a deliberate constraint of the brief.
+The second cost is the missing build step. Nothing is tree-shaken, and Lighthouse reports 45% of three.js as unused by this scene.
 
 ## The known failure on a real iPhone
 
@@ -398,11 +403,11 @@ Answer each with yes or no.
 
 ## Where this workflow breaks
 
-• **The skills repo is days old.** It was created on 31 October 2026, so the lab pins commit `53beb89`.
+• **The skills repo is days old.** It was created on 31 October 2026, so the lab pins one commit.
 
-• **The dependencies are heavy.** The scripts need Python 3.9 or newer with Playwright, plus ffmpeg on the PATH. Four of the eight skills also need a paid generation API and stayed `DOCUMENTED-NOT-RUN`.
+• **The dependencies arrive before the first skill runs.** Playwright, then Pillow, with ffmpeg on the PATH.
 
-• **Exploded views depend on mesh quality.** Separate parts explode well, and fused or decimated meshes do not.
+• **Exploded views depend on mesh quality.** Fused or decimated meshes explode badly.
 
 • **Procedural geometry has a ceiling.** Lathes and extrusions build a grinder. A face or a sneaker still needs a 3D artist.
 
@@ -420,7 +425,7 @@ One warm key light low to the horizon, with a cool sky as fill. The lab uses a s
 
 ### ❸ Should you load a model or build geometry from code?
 
-Build from code when the object is mechanical, made of lathed and extruded parts. The lab's grinder is 10 procedural parts with no model or texture files. Load a model for organic shapes such as a face or a shoe, where procedural geometry cannot match a 3D artist.
+Build from code when the object is mechanical, made of lathed and extruded parts. The lab's grinder is 10 procedural parts with no model or texture files. Load a model for organic shapes such as a face or a shoe.
 
 ### ❹ How do you keep a 3D hero fast on mobile?
 
@@ -435,6 +440,8 @@ Only when it blocks content. The lab's final page scored 100 for Lighthouse SEO,
 The gap between stage 0 and stage 8 is 186 draw calls and about 7.5 ms a frame. Almost none of the visible difference comes from that budget. It comes from a one-page document, a low sun, a material rule and a camera that sits off centre.
 
 Agents are good at execution and indifferent to taste. Give them the direction, then measure what they built, on real hardware if you can get it. The lab's final stage failed on an iPhone X, and that stays an open defect until someone holds the phone and reads the console.
+
+This lab is exactly the kind of subject the blog takes guest posts on.
 
 Slop is a missing decision. Make the decision first and the render follows.
 
