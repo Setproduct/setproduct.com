@@ -10,21 +10,51 @@ import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebieTemplateCard from "../sections/FreebieTemplateCard";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
-import { FREEBIE_PRODUCTS, FREEBIES_CATEGORIES } from "../../data/freebies-listing";
+import { FREEBIE_CODE_CATEGORIES, FREEBIE_PRODUCTS, FREEBIES_CATEGORIES } from "../../data/freebies-listing";
 import type { NavData } from "../../lib/nav/types";
 
 const PAGE_SIZE = 9;
 const ALL_TOPICS = "All topics";
 
+// Прежние адреса вида ?category=Code уже разошлись по закладкам и мега-меню,
+// а самих категорий Code и Design & Code больше нет. Поэтому каждый старый
+// ключ раскрывается в набор актуальных категорий, а не отбрасывается.
+const LEGACY_FREEBIE_GROUPS: Record<string, string[]> = {
+  Code: FREEBIE_CODE_CATEGORIES,
+  "Design & Code": FREEBIE_CODE_CATEGORIES,
+  Components: ["Figma templates"],
+  "Free UI kits": ["Figma templates"],
+  "Mobile Templates": ["Figma templates"],
+  "Desktop templates": ["Figma templates"],
+  "Data visualization": ["Figma templates"],
+  "Web Design": ["Figma templates"],
+  "Global Styles": ["Figma templates"],
+  "Grid Layouts": ["Figma templates"],
+  "Tutorials & Education": ["Figma templates"],
+  "Dashboard Templates": ["Figma templates"],
+  "Card Templates": ["Figma templates"],
+  "Chart Templates": ["Figma templates"],
+  "Email Templates": ["Figma templates"],
+};
+
+// У legacy-ключа своей категории нет, поэтому в дропдауне показываем
+// название набора, а не имя удалённого фильтра.
+const LEGACY_FREEBIE_LABELS: Record<string, string> = {
+  Code: "Open source code",
+  "Design & Code": "Open source code",
+};
+
 // Map a `?category=` value onto a known category: exact match first, then
-// case-insensitive (so `mobile templates` still resolves to "Mobile Templates").
-// Unknown or missing values fall back to the full list.
+// case-insensitive, then a legacy group. Unknown values fall back to the full list.
 function resolveCategory(raw: string | string[] | undefined): string {
   const value = (Array.isArray(raw) ? raw[0] : raw)?.trim();
   if (!value) return ALL_TOPICS;
   if (FREEBIES_CATEGORIES.includes(value)) return value;
   const lower = value.toLowerCase();
-  return FREEBIES_CATEGORIES.find((category) => category.toLowerCase() === lower) ?? ALL_TOPICS;
+  const current = FREEBIES_CATEGORIES.find((category) => category.toLowerCase() === lower);
+  if (current) return current;
+  const legacy = Object.keys(LEGACY_FREEBIE_GROUPS).find((key) => key.toLowerCase() === lower);
+  return legacy ?? ALL_TOPICS;
 }
 
 type Props = {
@@ -41,12 +71,21 @@ export default function FreebiesListingPage({ navData }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const activeCategoryLabel = activeCategory === ALL_TOPICS ? "All" : activeCategory;
+
+  // null означает «All topics»: фильтровать не нужно. Legacy-ключ даёт набор
+  // категорий, обычная категория — набор из одной.
+  const activeCategories = useMemo(() => {
+    if (activeCategory === ALL_TOPICS) return null;
+    return LEGACY_FREEBIE_GROUPS[activeCategory] ?? [activeCategory];
+  }, [activeCategory]);
+
+  const activeCategoryLabel =
+    activeCategory === ALL_TOPICS ? "All" : LEGACY_FREEBIE_LABELS[activeCategory] ?? activeCategory;
 
   const filteredProducts = useMemo(
     () =>
       FREEBIE_PRODUCTS.filter((item) => {
-        const matchesCategory = activeCategory === ALL_TOPICS || item.category === activeCategory;
+        const matchesCategory = activeCategories === null || activeCategories.includes(item.category);
         const matchesQuery =
           normalizedQuery.length === 0 ||
           item.title.toLowerCase().includes(normalizedQuery) ||
@@ -55,7 +94,7 @@ export default function FreebiesListingPage({ navData }: Props) {
 
         return matchesCategory && matchesQuery;
       }),
-    [activeCategory, normalizedQuery],
+    [activeCategories, normalizedQuery],
   );
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;

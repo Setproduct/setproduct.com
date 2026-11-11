@@ -120,15 +120,14 @@ export const INFORMATION_LINKS: Array<{ href: string; label: string; modal?: boo
 // DESIGN_KITS, we don't list every taxonomy entry — only the well-populated,
 // recognisable ones — so each hovered tab yields a full preview grid. `label`
 // is sentence-case for display; `category` must match FREEBIE_PRODUCTS exactly.
+// «Desktop utilities» и «Self-hosted apps» сюда не входят: по две карточки
+// не заполнят сетку из NAV_FREEBIE_PREVIEW_COUNT, они живут только в листинге.
 export const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
   { label: "All topics", category: null },
-  { label: "Code", category: "Code" },
-  { label: "Components", category: "Components" },
-  { label: "Free UI kits", category: "Free UI kits" },
-  { label: "Mobile templates", category: "Mobile Templates" },
-  { label: "Desktop templates", category: "Desktop templates" },
-  { label: "Data visualization", category: "Data visualization" },
-  { label: "Web design", category: "Web Design" },
+  { label: "Figma templates", category: "Figma templates" },
+  { label: "UI components", category: "UI components" },
+  { label: "Icons and animations", category: "Icons and animations" },
+  { label: "Design and AI tools", category: "Design and AI tools" },
 ];
 
 /**

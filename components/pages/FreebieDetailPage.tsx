@@ -8,6 +8,7 @@ import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
 import BlogRelatedPosts from "../blog/BlogRelatedPosts";
 import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
+import { FREEBIE_CODE_CATEGORIES } from "../../data/freebies-listing";
 import type { FreebieItem } from "../../types/data";
 import type { BlogPostMeta } from "../../types/blog";
 import type { NavData } from "../../lib/nav/types";
@@ -21,10 +22,10 @@ type Props = {
 // «freebie» уходит из суффикса тайтла: раздел теперь называется Resources.
 // «Figma» остаётся у Figma-файлов, иначе пропадает соответствие запросам
 // вида «free figma ios ui kit», по которым эти страницы и ранжируются.
+// Категорий кода теперь пять, поэтому проверяем вхождение в список,
+// а не сравниваем с двумя строками.
 function suffixForCategory(category: string) {
-  if (category === "Code" || category === "Design & Code") return "free open source code";
-  if (category === "Tutorials & Education") return "free UI tutorial";
-  return "free Figma file";
+  return FREEBIE_CODE_CATEGORIES.includes(category) ? "free open source code" : "free Figma file";
 }
 
 export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: Props) {
