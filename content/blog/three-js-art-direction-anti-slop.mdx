@@ -9,10 +9,10 @@ lastUpdated: '2026-11-11'
 author: Roman Kamushken
 category: UI Design
 tags: ['three.js', '3d', 'webgl', 'art direction', 'webgl performance', 'frontend']
-coverImage: /blog/covers/three-js-art-direction-anti-slop.webp
+coverImage: /blog/covers/three-js-art-direction-anti-slop-nine-stages.webp
 coverImageAlt: >-
-  Final Three.js frame of a manual coffee grinder on a walnut tray at golden
-  hour, composed on the right third of the screen
+  Grid of six Three.js stages on dark cards: a grey grinder on black, then the
+  same grinder lit, shadowed, materialled, composed on a tray and moved as a film
 canonical: https://www.setproduct.com/blog/three-js-art-direction-anti-slop
 subtitle: >-
   One procedural coffee grinder taken through nine frozen stages, with every
@@ -27,7 +27,7 @@ relatedSlugs:
   - how-to-3d-animate-scroll
   - liquid-glass-design-explained-a-practical-guide
   - how-to-get-better-at-ui-design-by-studying-ai-generated-examples
-thumbImage: /blog/covers/thumbs/three-js-art-direction-anti-slop.webp
+thumbImage: /blog/covers/thumbs/three-js-art-direction-anti-slop-nine-stages.webp
 inlineCta:
   title: Need 3D in a layout without a render loop?
   description: >-
@@ -276,8 +276,6 @@ On stage 8, at 1440×900 and a pixel ratio of 2, the high tier costs 38.72 ms a 
 
 Below the tiers sits a poster. It covers a missing or lost WebGL 2 context, plus an explicit `?quality=poster`. With [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion) set, the camera flight is skipped and orbit damping turns off.
 
-{/* IMAGE: stage 8 hero in Chrome DevTools, iPhone 16 portrait mode */}
-
 On the final stage, phones boot differently. Under 600 px wide, with Save-Data on, or on a 2G or 3G connection, the page paints the poster first and starts WebGL later on the fast tier. That delay produces the most flattering number in the lab, tabled below.
 
 ## Stage 8, capture before and after
@@ -358,6 +356,8 @@ The [web.dev guide to LCP](https://web.dev/articles/lcp) lists full-viewport ele
 The second cost is the missing build step. Nothing is tree-shaken, and Lighthouse reports 45% of three.js as unused by this scene. That was a deliberate constraint of the brief, not an oversight.
 
 ## The known failure on a real iPhone
+
+![Stage 8 in a mobile viewport, the full grinder on its tray above the control panel, with the tier reading high and the explode slider closed](/blog/assets/three-js-art-direction-anti-slop/mobile-stage-8.webp "float")
 
 Everything above was measured on a MacBook Pro M1 Pro, in headless Chromium and Playwright WebKit. The lab notes say it plainly: no real phone was used.
 

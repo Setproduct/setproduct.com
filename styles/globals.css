@@ -721,6 +721,26 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
+ * Three.js post: the iPhone screenshot is portrait (712x1530), but MDXImage
+ * writes width/height 1600x900 unless markdown supplies real dimensions, and
+ * the browser then lays the image out at 16:9. Restore the true aspect ratio
+ * and narrow the float so the tall screenshot does not swallow the column.
+ */
+@media (min-width: 768px) {
+  .rich-text-18[data-post="three-js-art-direction-anti-slop"]
+    .blog-img-float--right:has(img[src*="mobile-stage-8"]) {
+    width: 32%;
+  }
+}
+
+.rich-text-18[data-post="three-js-art-direction-anti-slop"]
+  .blog-img-float--right:has(img[src*="mobile-stage-8"]) img {
+  height: auto;
+  aspect-ratio: 712 / 1530;
+  object-fit: contain;
+}
+
+/*
  * Contains a float image locally within its own subsection so it never
  * bleeds past its own block into the next heading, no matter how short the
  * accompanying text is relative to the image height. Establishes a new
