@@ -28,13 +28,26 @@ const STATIC_PATHS = [
 
 type Entry = { loc: string; lastmod?: string };
 
-function readPostDate(filePath: string): string | undefined {
+// lastmod is only emitted when we actually know when a page changed. Google
+// ignores lastmod site-wide once it notices the values are not trustworthy
+// (for example "today" on every URL), so pages without a real date get none.
+function toIsoDay(value: unknown): string | undefined {
+  if (typeof value !== "string" && !(value instanceof Date)) return undefined;
+  // lastUpdated may be "YYYY-MM"; treat it as the first day of that month,
+  // the same way lib/blog/schema.ts builds dateModified.
+  const raw = typeof value === "string" && /^\d{4}-\d{2}$/.test(value) ? `${value}-01` : value;
+  const d = new Date(raw);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString().slice(0, 10);
+}
+
+function readPostLastmod(filePath: string): string | undefined {
   try {
     const { data } = matter(fs.readFileSync(filePath, "utf8"));
-    const date = (data as { date?: string }).date;
-    if (!date) return undefined;
-    const d = new Date(date);
-    return Number.isNaN(d.getTime()) ? undefined : d.toISOString().slice(0, 10);
+    const fm = data as { date?: unknown; lastUpdated?: unknown };
+    const published = toIsoDay(fm.date);
+    const updated = toIsoDay(fm.lastUpdated);
+    if (updated && (!published || updated > published)) return updated;
+    return published;
   } catch {
     return undefined;
   }
@@ -47,41 +60,41 @@ function readBlogEntries(): Entry[] {
   for (const file of fs.readdirSync(dir)) {
     if (!file.endsWith(".mdx")) continue;
     const slug = file.replace(/\.mdx$/, "");
-    entries.push({ loc: `${SITE_URL}/blog/${slug}`, lastmod: readPostDate(path.join(dir, file)) });
+    entries.push({ loc: `${SITE_URL}/blog/${slug}`, lastmod: readPostLastmod(path.join(dir, file)) });
   }
-  entries.push({ loc: `${SITE_URL}/blog` });
   return entries;
 }
 
 function buildEntries(): Entry[] {
-  const today = new Date().toISOString().slice(0, 10);
+  const blogEntries = readBlogEntries();
+
+  // The blog listing changes whenever a post is published or updated.
+  const newestPost = blogEntries
+    .map((e) => e.lastmod)
+    .filter((d): d is string => Boolean(d))
+    .sort()
+    .pop();
 
   const staticEntries: Entry[] = STATIC_PATHS.map((p) => ({
     loc: p === "/" ? `${SITE_URL}/` : `${SITE_URL}${p}`,
-    lastmod: today,
+    lastmod: p === "/blog" ? newestPost : undefined,
   }));
 
   const templateEntries: Entry[] = TEMPLATE_PRODUCTS.map((t) => ({
     loc: `${SITE_URL}/templates/${t.slug}`,
-    lastmod: today,
   }));
 
   const freebieEntries: Entry[] = FREEBIE_PRODUCTS.map((f) => ({
     loc: `${SITE_URL}/freebies/${f.slug}`,
-    lastmod: today,
   }));
 
   const dashboardEntries: Entry[] = DASHBOARD_TEMPLATES.map((d) => ({
     loc: `${SITE_URL}/dashboard-templates/${d.slug}`,
-    lastmod: today,
   }));
 
   const authorEntries: Entry[] = Object.keys(AUTHORS).map((slug) => ({
     loc: `${SITE_URL}/authors/${slug}`,
-    lastmod: today,
   }));
-
-  const blogEntries = readBlogEntries();
 
   const all = [
     ...staticEntries,
