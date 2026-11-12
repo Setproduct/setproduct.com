@@ -4425,6 +4425,21 @@ figcaption {
   display: flex;
   position: absolute;
   inset: auto auto 20em -24em;
+  /* Ported from splide-core.min.css (CDN sheet removed): the only Splide
+     rules SliderPagination relies on. */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  pointer-events: none;
+}
+
+.splide__pagination li {
+  display: inline-block;
+  line-height: 1;
+  list-style-type: none;
+  margin: 0;
+  pointer-events: auto;
 }
 
 .splide__pagination__page {
