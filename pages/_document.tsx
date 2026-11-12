@@ -21,9 +21,6 @@ export default function Document() {
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <link href="/css/normalize.css" rel="stylesheet" />
-        <link href="/css/webflow.css" rel="stylesheet" />
-        <link href="/css/setproduct.webflow.shared.css" rel="stylesheet" />
       </Head>
       <body>
         <Main />

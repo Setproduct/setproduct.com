@@ -1,3 +1,9 @@
+// Webflow base sheets go through the Next build (hashed, immutable, one
+// request with globals.css) instead of three uncached <link> tags. Order
+// matters: normalize → webflow → shared → globals.
+import "../public/css/normalize.css";
+import "../public/css/webflow.css";
+import "../public/css/setproduct.webflow.shared.css";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
