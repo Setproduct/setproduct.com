@@ -31,42 +31,6 @@ export { xela_reactContent } from "./xela-react";
 export { xela_swiftContent } from "./xela-swift";
 export { zeusContent } from "./zeus";
 
-// Content map by slug
-export const templateContentMap: Record<string, unknown> = {
-  "charts": undefined, // Uses dedicated ChartsTemplatePage
-  "android-ui-kit": undefined,
-  "claylo": undefined,
-  "appka-ios-ui-kit": undefined,
-  "eclipse": undefined,
-  "full-ios": undefined,
-  "hyper-charts": undefined,
-  "ios-ui-kit": undefined,
-  "landing": undefined,
-  "levitate": undefined,
-  "material": undefined,
-  "material-desktop": undefined,
-  "material-x": undefined,
-  "material-you": undefined,
-  "mobile-x": undefined,
-  "most": undefined,
-  "neolex-dashboard": undefined,
-  "nocra": undefined,
-  "nucleus-ui": undefined,
-  "oe-enterprise": undefined,
-  "orion": undefined,
-  "panda": undefined,
-  "react-ui-kit": undefined,
-  "rome": undefined,
-  "s8": undefined,
-  "website": undefined,
-  "xela": undefined,
-  "xela-android": undefined,
-  "xela-flutter": undefined,
-  "xela-react": undefined,
-  "xela-swift": undefined,
-  "zeus": undefined,
-};
-
 // Lazy load content to avoid bundling everything
 export async function getTemplateContent(slug: string) {
   switch (slug) {
