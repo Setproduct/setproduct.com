@@ -36,7 +36,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
                   tabIndex={0}
                   style={{ cursor: "pointer" }}
                 >
-                  <p className="text-size-small text-weight-bold">Recent Publications</p>
+                  <p className="text-size-small text-weight-bold">Recent publications</p>
                 </div>
               </div>
               {categories.map((cat) => (
@@ -98,7 +98,7 @@ export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) 
 
         <div className="main_blog-liist2-btn-wr">
           <Link className="button-small w-inline-block" href="/blog">
-            <div className="text-size-medium text-weight-bold">Read All</div>
+            <div className="text-size-medium text-weight-bold">Read all</div>
             <div className="button-icon is-small w-embed"><ArrowIcon /></div>
           </Link>
         </div>

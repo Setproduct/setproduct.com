@@ -256,7 +256,7 @@ export default function FreebiesListingPage({ navData }: Props) {
                               setVisibleCount((count) => count + PAGE_SIZE);
                             }}
                           >
-                            <div className="text-size-medium text-weight-bold">Load More</div>
+                            <div className="text-size-medium text-weight-bold">Load more</div>
                           </a>
                         </div>
                       </div>

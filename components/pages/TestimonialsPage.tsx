@@ -132,7 +132,7 @@ export default function TestimonialsPage({ navData }: Props) {
                     <div style={{ display: "flex", justifyContent: "center", marginTop: "32px" }}>
                       <a
                         href="#"
-                        aria-label="Next Page"
+                        aria-label="Load more testimonials"
                         onClick={(e) => {
                           e.preventDefault();
                           setVisiblePages((p) => p + 1);

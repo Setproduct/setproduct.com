@@ -114,7 +114,7 @@ export const PAGE_META: Record<string, PageMeta> = {
     canonical: "https://www.setproduct.com/legal/terms-of-paid-posts",
   },
   search: {
-    title: "Search Results",
+    title: "Search results",
     description:
       "Search Setproduct for Figma templates, UI kits, design systems, and design articles.",
     ogImage:

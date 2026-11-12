@@ -28,7 +28,7 @@ export default function FreebieTemplateCard({ item }: Props) {
       </div>
       <div className="template-list-btn-wr">
         <Link className="button-small w-inline-block" href={item.previewHref}>
-          <div className="text-size-medium text-weight-bold">More Preview</div>
+          <div className="text-size-medium text-weight-bold">More preview</div>
         </Link>
         <a className="button-small outlined w-inline-block" href={item.duplicateHref} target="_blank" rel="noopener noreferrer">
           <div className="text-size-medium text-weight-bold">{item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>

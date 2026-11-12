@@ -34,7 +34,7 @@ export default function TemplateCard({ product, imgHeight = "480" }: Props) {
           <div className="button-icon is-small w-embed"><ArrowIcon /></div>
         </a>
         <Link className="button-small outlined w-inline-block" href={`/templates/${product.slug}`}>
-          <div className="text-size-medium text-weight-bold">Learn More</div>
+          <div className="text-size-medium text-weight-bold">Learn more</div>
           <div className="button-icon is-small w-embed"><ArrowIcon /></div>
         </Link>
       </div>

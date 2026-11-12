@@ -97,7 +97,7 @@ export default function TemplateStickyCta({ item, price, buyHref }: Props) {
           "button w-inline-block template-sticky-cta-btn"
         )}
       >
-        <div className="text-size-large text-weight-bold">Get Started</div>
+        <div className="text-size-large text-weight-bold">Get started</div>
         {displayPrice && (
           <div className="text-size-large text-weight-bold template-sticky-cta-price">
             {displayPrice}

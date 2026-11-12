@@ -166,7 +166,7 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
                           href="#"
                           onClick={(e) => { e.preventDefault(); setVisibleCount((c) => c + PAGE_SIZE); }}
                         >
-                          <div className="text-size-medium text-weight-bold">Load More</div>
+                          <div className="text-size-medium text-weight-bold">Load more</div>
                         </a>
                       </div>
                     )}

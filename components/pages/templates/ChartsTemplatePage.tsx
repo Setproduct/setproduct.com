@@ -64,7 +64,7 @@ export default function ChartsTemplatePage({ item, navData }: Props) {
                       href={item.buyHref}
                       {...getGumroadLinkProps(item.buyHref, "button secondary w-inline-block")}
                     >
-                      <div className="text-size-large text-weight-bold">Get Started</div>
+                      <div className="text-size-large text-weight-bold">Get started</div>
                     </a>
                     <a
                       className="button w-inline-block"

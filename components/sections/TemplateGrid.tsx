@@ -34,7 +34,7 @@ export default function TemplateGrid({ products, visibleCount, onLoadMore, varia
                 onLoadMore();
               }}
             >
-              <div className="text-size-medium text-weight-bold">Load More</div>
+              <div className="text-size-medium text-weight-bold">Load more</div>
             </a>
           </div>
         </>
