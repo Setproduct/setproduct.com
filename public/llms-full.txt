@@ -166,7 +166,6 @@ Blog: https://www.setproduct.com/blog
 - [8 stories of Indie Hackers going all-in](https://www.setproduct.com/blog/8-designers-developers-success): How 8 designers and developers bootstrapped their side projects to success.
 - [Your design asset will help someone speed up their work](https://www.setproduct.com/blog/how-to-sell-design-system): Boost productivity and earn rewards by selling design assets.
 - [Monetizing the design: a year of UI grinding](https://www.setproduct.com/blog/monetizing-the-design-one-year): 15 key insights for successful digital products from a UI designer.
-- [From Figma to React: material design buttons](https://www.setproduct.com/blog/figma-to-react-buttons): Enhancing Material Design components for performance, usability, and appeal.
 
 ## Resources
 
