@@ -1110,6 +1110,103 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 }
 
+/* ------------------------------------------------------------------
+   Светлый hero страниц /freebies/[slug] (компонент ResourceHeroImage).
+   Общие классы section-bg-gradient и template_hero-sect не трогаем:
+   их используют страницы /templates/*, там hero остаётся тёмным.
+   ------------------------------------------------------------------ */
+.section-bg-image-wr.is-light {
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Туман снизу: картинка видна сверху и к тексту растворяется в 100% белом.
+   Много промежуточных точек, чтобы не было полос и «грязной» серой середины. */
+.section-bg-gradient.is-light {
+  background-image: linear-gradient(
+    180deg,
+    #fff0 0%,
+    #ffffff0d 18%,
+    #ffffff33 32%,
+    #ffffff73 46%,
+    #ffffffb8 60%,
+    #ffffffe6 73%,
+    #fff 86%
+  );
+}
+
+.template_hero-sect.is-light {
+  color: var(--black);
+}
+
+.template_hero-sect.is-light .heading-style-h5 {
+  color: #19181bb3;
+}
+
+/* Выход из тумана. Вуаль вдвое выше hero: верхняя четверть — мягкая
+   кромка (от прозрачного к белому), остальное сплошной белый.
+   Старт: сплошная часть закрывает весь hero. Финиш: вуаль целиком ниже
+   hero. Кромка проезжает сверху вниз и открывает обложку. */
+.resource-hero-veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200%;
+  background-image: linear-gradient(
+    180deg,
+    #fff0 0%,
+    #ffffff4d 8%,
+    #ffffffb3 16%,
+    #fff 25%
+  );
+  transform: translate3d(0, -25%, 0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.resource-hero-img {
+  transform: scale(1.03);
+  transform-origin: 50% 0%;
+}
+
+.section-bg-image-wr.is-revealed .resource-hero-veil {
+  transform: translate3d(0, 50%, 0);
+  transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-bg-image-wr.is-revealed .resource-hero-img {
+  transform: scale(1);
+  transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Обложка уже показывалась в этой вкладке: без анимации. */
+.section-bg-image-wr.is-instant .resource-hero-veil {
+  display: none;
+}
+
+.section-bg-image-wr.is-instant .resource-hero-img {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-hero-img,
+  .section-bg-image-wr.is-revealed .resource-hero-img {
+    transform: none;
+    transition: none;
+  }
+
+  .resource-hero-veil {
+    transform: none;
+  }
+
+  .section-bg-image-wr.is-revealed .resource-hero-veil {
+    transform: none;
+    opacity: 0;
+    transition: opacity 200ms linear;
+  }
+}
+
 /* Webflow inline-style helpers from the original site that we didn't port.
    Used by .nav_tabs-list-item titles, slider cards, freebie cards, etc. */
 .text-style-1line {

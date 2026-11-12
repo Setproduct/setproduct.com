@@ -6,6 +6,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
+import ResourceHeroImage from "../sections/ResourceHeroImage";
 import BlogRelatedPosts from "../blog/BlogRelatedPosts";
 import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import { FREEBIE_CODE_CATEGORIES } from "../../data/freebies-listing";
@@ -61,13 +62,13 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
         <div className="section is-height-100vh">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
-              <div className="template_hero-sect">
+              <div className="template_hero-sect is-light">
                 <div className="template_hero-wr">
                   <h1 className="heading-style-h1">{item.title}</h1>
                   <p className="heading-style-h5">{item.description}</p>
                   <div className="template_hero-btn-wr">
                     <a
-                      className="button secondary w-inline-block"
+                      className="button w-inline-block"
                       href={item.duplicateHref}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -81,16 +82,7 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
               </div>
             </div>
           </div>
-          <div className="section-bg-image-wr">
-            <img
-              alt={item.imageAlt ?? title}
-              className="image-cover"
-              loading="eager"
-              sizes="100vw"
-              src={item.image}
-            />
-            <div className="section-bg-gradient" />
-          </div>
+          <ResourceHeroImage key={item.slug} src={item.image} alt={item.imageAlt ?? title} />
         </div>
         <div className="hide-on-mobile">
           <Breadcrumbs items={breadcrumbs} />
