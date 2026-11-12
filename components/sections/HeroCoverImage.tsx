@@ -7,13 +7,6 @@ type Props = {
   alt: string;
 };
 
-type Phase = "pending" | "revealing" | "instant";
-
-// Обложки, которые уже проявлялись в этой вкладке. При возврате на ресурс
-// (кнопка «назад», повторный клик в карусели) картинка лежит в кеше браузера,
-// и проигрывать анимацию заново незачем: показываем её сразу.
-const revealedSources = new Set<string>();
-
 /**
  * Фон hero на /freebies/[slug] и /templates/[slug]: обложка выходит из белого тумана.
  *
@@ -24,16 +17,17 @@ const revealedSources = new Set<string>();
  *
  * Компонент монтируется с key={slug}: при переходе между страницами старая
  * обложка не висит под новым заголовком, а создаётся новый <img>.
+ *
+ * Эффект проигрывается каждый раз при новой навигации, даже если картинка
+ * уже лежит в кеше браузера: навечно «показанных» обложек не запоминаем.
  */
 export default function HeroCoverImage({ src, alt }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
-  const [phase, setPhase] = useState<Phase>(() =>
-    revealedSources.has(src) ? "instant" : "pending",
-  );
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const img = imgRef.current;
-    if (!img || phase !== "pending") return;
+    if (!img || revealed) return;
 
     let cancelled = false;
 
@@ -46,12 +40,12 @@ export default function HeroCoverImage({ src, alt }: Props) {
         .catch(() => undefined)
         .then(() => {
           if (cancelled) return;
-          revealedSources.add(src);
-          setPhase("revealing");
+          setRevealed(true);
         });
     };
 
     // Картинка могла загрузиться раньше гидрации: onLoad тогда уже не придёт.
+    // Это же покрывает повторный визит на обложку из кеша — эффект всё равно сыграет.
     if (img.complete && img.naturalWidth > 0) {
       reveal();
     } else {
@@ -65,13 +59,12 @@ export default function HeroCoverImage({ src, alt }: Props) {
       img.removeEventListener("load", reveal);
       img.removeEventListener("error", reveal);
     };
-  }, [phase, src]);
-
-  const stateClass =
-    phase === "instant" ? " is-instant" : phase === "revealing" ? " is-revealed" : "";
+  }, [revealed, src]);
 
   return (
-    <div className={`section-bg-image-wr is-light${stateClass}`}>
+    <div
+      className={`section-bg-image-wr is-light${revealed ? " is-revealed" : ""}`}
+    >
       <img
         ref={imgRef}
         alt={alt}

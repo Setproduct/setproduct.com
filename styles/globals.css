@@ -1180,15 +1180,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Обложка уже показывалась в этой вкладке: без анимации. */
-.section-bg-image-wr.is-instant .hero-cover-veil {
-  display: none;
-}
-
-.section-bg-image-wr.is-instant .hero-cover-img {
-  transform: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hero-cover-img,
   .section-bg-image-wr.is-revealed .hero-cover-img {
