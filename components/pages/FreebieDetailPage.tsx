@@ -6,7 +6,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import FreebiesShowcase from "../sections/FreebiesShowcase";
 import FreebieArticle from "../sections/FreebieArticle";
-import ResourceHeroImage from "../sections/ResourceHeroImage";
+import HeroCoverImage from "../sections/HeroCoverImage";
 import BlogRelatedPosts from "../blog/BlogRelatedPosts";
 import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
 import { FREEBIE_CODE_CATEGORIES } from "../../data/freebies-listing";
@@ -82,7 +82,7 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
               </div>
             </div>
           </div>
-          <ResourceHeroImage key={item.slug} src={item.image} alt={item.imageAlt ?? title} />
+          <HeroCoverImage key={item.slug} src={item.image} alt={item.imageAlt ?? title} />
         </div>
         <div className="hide-on-mobile">
           <Breadcrumbs items={breadcrumbs} />

@@ -15,17 +15,17 @@ type Phase = "pending" | "revealing" | "instant";
 const revealedSources = new Set<string>();
 
 /**
- * Фон hero на /freebies/[slug]: обложка выходит из белого тумана.
+ * Фон hero на /freebies/[slug] и /templates/[slug]: обложка выходит из белого тумана.
  *
  * Пока картинка грузится, hero целиком закрыт белой вуалью (видны только
  * заголовок, описание и кнопка). После загрузки и декодирования вуаль уезжает
  * вниз, открывая обложку сверху вниз. Двигается только transform, поэтому
  * анимация идёт на видеокарте и не дёргается.
  *
- * Компонент монтируется с key={slug}: при переходе между ресурсами старая
+ * Компонент монтируется с key={slug}: при переходе между страницами старая
  * обложка не висит под новым заголовком, а создаётся новый <img>.
  */
-export default function ResourceHeroImage({ src, alt }: Props) {
+export default function HeroCoverImage({ src, alt }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [phase, setPhase] = useState<Phase>(() =>
     revealedSources.has(src) ? "instant" : "pending",
@@ -75,7 +75,7 @@ export default function ResourceHeroImage({ src, alt }: Props) {
       <img
         ref={imgRef}
         alt={alt}
-        className="image-cover resource-hero-img"
+        className="image-cover hero-cover-img"
         loading="eager"
         fetchPriority="high"
         decoding="async"
@@ -83,10 +83,10 @@ export default function ResourceHeroImage({ src, alt }: Props) {
         src={src}
       />
       <div className="section-bg-gradient is-light" />
-      <div className="resource-hero-veil" aria-hidden="true" />
+      <div className="hero-cover-veil" aria-hidden="true" />
       {/* Без JS вуаль никто не уберёт: прячем её сразу. */}
       <noscript>
-        <style>{".resource-hero-veil{display:none}"}</style>
+        <style>{".hero-cover-veil{display:none}"}</style>
       </noscript>
     </div>
   );

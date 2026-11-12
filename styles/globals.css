@@ -1111,9 +1111,9 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /* ------------------------------------------------------------------
-   Светлый hero страниц /freebies/[slug] (компонент ResourceHeroImage).
-   Общие классы section-bg-gradient и template_hero-sect не трогаем:
-   их используют страницы /templates/*, там hero остаётся тёмным.
+   Светлый hero внутренних страниц /freebies/[slug] и /templates/[slug]
+   (компонент HeroCoverImage). Включается модификатором is-light, исходные
+   классы section-bg-gradient и template_hero-sect остаются тёмными.
    ------------------------------------------------------------------ */
 .section-bg-image-wr.is-light {
   overflow: hidden;
@@ -1147,7 +1147,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
    кромка (от прозрачного к белому), остальное сплошной белый.
    Старт: сплошная часть закрывает весь hero. Финиш: вуаль целиком ниже
    hero. Кромка проезжает сверху вниз и открывает обложку. */
-.resource-hero-veil {
+.hero-cover-veil {
   position: absolute;
   top: 0;
   left: 0;
@@ -1165,42 +1165,42 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   will-change: transform;
 }
 
-.resource-hero-img {
+.hero-cover-img {
   transform: scale(1.03);
   transform-origin: 50% 0%;
 }
 
-.section-bg-image-wr.is-revealed .resource-hero-veil {
+.section-bg-image-wr.is-revealed .hero-cover-veil {
   transform: translate3d(0, 50%, 0);
   transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.section-bg-image-wr.is-revealed .resource-hero-img {
+.section-bg-image-wr.is-revealed .hero-cover-img {
   transform: scale(1);
   transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Обложка уже показывалась в этой вкладке: без анимации. */
-.section-bg-image-wr.is-instant .resource-hero-veil {
+.section-bg-image-wr.is-instant .hero-cover-veil {
   display: none;
 }
 
-.section-bg-image-wr.is-instant .resource-hero-img {
+.section-bg-image-wr.is-instant .hero-cover-img {
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .resource-hero-img,
-  .section-bg-image-wr.is-revealed .resource-hero-img {
+  .hero-cover-img,
+  .section-bg-image-wr.is-revealed .hero-cover-img {
     transform: none;
     transition: none;
   }
 
-  .resource-hero-veil {
+  .hero-cover-veil {
     transform: none;
   }
 
-  .section-bg-image-wr.is-revealed .resource-hero-veil {
+  .section-bg-image-wr.is-revealed .hero-cover-veil {
     transform: none;
     opacity: 0;
     transition: opacity 200ms linear;
