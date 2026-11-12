@@ -158,6 +158,29 @@ export function getAllBlogPostsMeta(): BlogPostMeta[] {
 }
 
 /**
+ * Keeps only the fields that post cards render (related posts, "read next"
+ * block and bar). Full frontmatter carries FAQ, HowTo steps, inline CTA and
+ * related slugs, which are several KB per post and never reach the screen.
+ * Missing optional fields become null, because Next.js cannot serialise
+ * undefined in page props.
+ */
+export function toBlogPostCard({ frontmatter, readingTimeText }: BlogPostMeta): BlogPostMeta {
+  return {
+    frontmatter: {
+      title: frontmatter.title,
+      slug: frontmatter.slug,
+      category: frontmatter.category ?? null,
+      coverImage: frontmatter.coverImage,
+      thumbImage: frontmatter.thumbImage ?? null,
+      coverImageAlt: frontmatter.coverImageAlt ?? null,
+      cardDescription: frontmatter.cardDescription ?? null,
+      description: frontmatter.description,
+    } as unknown as BlogFrontmatter,
+    readingTimeText,
+  };
+}
+
+/**
  * Meta for an explicit list of posts, in the given order. Reads only those
  * files, so pages outside the blog do not pay for parsing every post.
  * Unknown slugs are skipped.

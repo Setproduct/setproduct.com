@@ -6,7 +6,7 @@ import type {
 import BlogPostLayout from "../../components/blog/BlogPostLayout";
 import { getNavData } from "../../lib/nav/buildNavData";
 import type { NavData } from "../../lib/nav/types";
-import { getAllBlogSlugs, getBlogPost, getRelatedPosts } from "../../lib/blog/mdx";
+import { getAllBlogSlugs, getBlogPost, getRelatedPosts, toBlogPostCard } from "../../lib/blog/mdx";
 import { SITE_URL } from "../../lib/blog/site-config";
 import type { BlogPost, BlogPostMeta } from "../../types/blog";
 
@@ -34,7 +34,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 
   // 6: the sidebar "Read next" shows the first five; after the body the first
   // one becomes the "Next article" card and Related posts take #2–#4.
-  const relatedPosts = getRelatedPosts(slug, post.frontmatter.category, 6, post.frontmatter.relatedSlugs);
+  const relatedPosts = getRelatedPosts(slug, post.frontmatter.category, 6, post.frontmatter.relatedSlugs).map(
+    toBlogPostCard
+  );
   const postUrl = `${SITE_URL}/blog/${slug}`;
   const navData = getNavData();
 
