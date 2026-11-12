@@ -17,7 +17,7 @@ const PAGE_SIZE = 9;
 
 type Props = {
   author: Author;
-  authorPosts: BlogPostPreview[];
+  authorPosts: Omit<BlogPostPreview, "thumbImage">[];
   navData?: NavData;
 };
 

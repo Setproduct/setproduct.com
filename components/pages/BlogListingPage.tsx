@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,17 +13,27 @@ import { PAGE_META } from "../../data/pages-meta";
 import { BLOG_CATEGORIES, LEGACY_BLOG_CATEGORIES } from "../../data/blog-categories";
 import type { BlogPostPreview } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
+import { blogThumbPath } from "../../lib/blog/thumb";
 
 const PAGE_SIZE = 8;
 
+/** The listing renders `image`; the thumb path is derived from it. */
+export type BlogListingPost = Omit<BlogPostPreview, "thumbImage">;
+
 type Props = {
-  blogPosts: BlogPostPreview[];
+  blogPosts: BlogListingPost[];
   navData?: NavData;
 };
 
 export default function BlogListingPage({ blogPosts = [], navData }: Props) {
   const meta = PAGE_META.blog;
   const router = useRouter();
+  // navData is built without posts here, so the Learn panel and the footer
+  // read this list. They need the small thumb, which is not sent in props.
+  const navPosts = useMemo(
+    () => blogPosts.map((post) => ({ ...post, thumbImage: blogThumbPath(post.image) })),
+    [blogPosts],
+  );
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -66,7 +76,7 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
         <meta content={meta.description} name="description" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader navData={navData} blogPosts={blogPosts} />
+      <SiteHeader navData={navData} blogPosts={navPosts} />
       <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">
           <div className="section-padding top-80 bottom-80">
@@ -179,7 +189,7 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
         </div>
         <CtaSubscribe />
       </main>
-      <SiteFooter navData={navData} blogPosts={blogPosts} hideSubscribe />
+      <SiteFooter navData={navData} blogPosts={navPosts} hideSubscribe />
       <ScrollUpButton />
     </>
   );

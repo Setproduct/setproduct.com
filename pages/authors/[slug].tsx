@@ -9,7 +9,7 @@ import type { BlogPostPreview } from "../../types/data";
 
 type PageProps = {
   author: Author;
-  authorPosts: BlogPostPreview[];
+  authorPosts: Omit<BlogPostPreview, "thumbImage">[];
   navData: NavData;
 };
 
@@ -27,7 +27,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   return {
     props: {
       author,
-      authorPosts: getBlogPostPreviews({ authorSlug: author.slug }),
+      // The cards render `image` only; thumbImage would be dead weight.
+      authorPosts: getBlogPostPreviews({ authorSlug: author.slug }).map(({ thumbImage: _thumb, ...post }) => post),
       navData: getNavData(),
     },
   };
