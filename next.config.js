@@ -100,6 +100,12 @@ const nextConfig = {
         source: "/assets/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      // Fonts are referenced from every page. Cached for a year, so a changed
+      // font file must get a new file name (same rule as blog images).
+      {
+        source: "/fonts/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
 };
