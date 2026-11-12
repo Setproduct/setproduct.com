@@ -341,6 +341,22 @@ function groupResults(results: SearchableItem[]): Record<SearchGroup, Searchable
 }
 
 export default function SearchPage({ items, navData }: Props) {
+  // The index already holds every post (newest first, with its thumb), so
+  // navData is built without posts and the Learn panel and footer read them
+  // from here instead of getting the same 49 posts twice.
+  const navPosts = useMemo(
+    () =>
+      items
+        .filter((item) => item.type === "blog")
+        .map(({ slug, title, description, category, image }) => ({
+          slug,
+          title,
+          description,
+          category: category ?? "Blog",
+          thumbImage: image ?? "",
+        })),
+    [items],
+  );
   const meta = PAGE_META[SLUG];
   const breadcrumbs = PAGE_BREADCRUMBS[SLUG] ?? [];
   const router = useRouter();
@@ -741,7 +757,7 @@ export default function SearchPage({ items, navData }: Props) {
         <meta content={meta.title} property="twitter:title" />
         <link href={meta.canonical} rel="canonical" />
       </Head>
-      <SiteHeader navData={navData} />
+      <SiteHeader navData={navData} blogPosts={navPosts} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">
@@ -1153,7 +1169,7 @@ export default function SearchPage({ items, navData }: Props) {
           </div>
         </div>
       </main>
-      <SiteFooter navData={navData} />
+      <SiteFooter navData={navData} blogPosts={navPosts} />
       <ScrollUpButton />
     </>
   );

@@ -18,7 +18,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       items: buildSearchIndex(),
-      navData: getNavData(),
+      // Every post is already in `items`; SearchPage feeds the Learn panel from it.
+      navData: getNavData({ blog: false }),
     },
   };
 };
