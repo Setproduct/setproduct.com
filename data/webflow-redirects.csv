@@ -51,7 +51,6 @@ source,target
 /universal-icons/categories,/all
 /universal-icons/_blocks,/all
 /nucleus,/templates/nucleus-ui
-/templates,/all
 /charts/patterns,/templates/charts
 /fullios/pricing,/templates/full-ios
 /system/components,/templates/react-ui-kit
@@ -224,4 +223,4 @@ source,target
 /flexicons/filled,/
 /page33883598.html,/
 /page33693815.html,/
-/old-home,/home-new
+/old-home,/
