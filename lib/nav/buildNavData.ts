@@ -11,7 +11,7 @@ import {
 } from "../../components/layout/nav/navConfig";
 // The server may import the full catalogue directly.
 import { getFreebiePreviews } from "../../components/layout/nav/navPreviews";
-import type { NavData, NavFreebie } from "./types";
+import type { NavBlogPost, NavData, NavFreebie } from "./types";
 
 function toNavFreebie(item: FreebieItem): NavFreebie {
   const out: NavFreebie = {
@@ -41,12 +41,23 @@ type GetNavDataOptions = {
 
 let cached: NavData | null = null;
 
-function build(): NavData {
-  const posts = getBlogPostPreviews();
+/**
+ * Slugs of the posts the Learn panel can show: the previews of every Learn
+ * category. `posts` must be sorted newest first, as getBlogPostPreviews
+ * returns them. The footer's Popular reads are the first previews of the
+ * Popular category, so they are covered too.
+ */
+export function pickNavBlogSlugs(posts: Pick<NavBlogPost, "slug" | "category">[]): Set<string> {
   const picked = new Set<string>();
   for (const { category } of NAV_BLOG_CATEGORIES) {
     for (const post of getBlogPreviews(posts, category)) picked.add(post.slug);
   }
+  return picked;
+}
+
+function build(): NavData {
+  const posts = getBlogPostPreviews();
+  const picked = pickNavBlogSlugs(posts);
   const blog = posts
     .filter((post) => picked.has(post.slug))
     .map(({ slug, title, description, thumbImage, category }) => ({ slug, title, description, thumbImage, category }));

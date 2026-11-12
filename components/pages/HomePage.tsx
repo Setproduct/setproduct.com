@@ -14,15 +14,14 @@ import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
 import { absoluteUrl } from "../../lib/blog/site-config";
 import { getPublishLinkProps } from "../../lib/publish";
-import type { BlogPostPreview } from "../../types/data";
-import type { NavData } from "../../lib/nav/types";
+import type { NavBlogPost, NavData } from "../../lib/nav/types";
 
 const HOME_TEMPLATES_INITIAL = 15;
 const HOME_TEMPLATES_PAGE = 15;
 
 
 type Props = {
-  blogPosts: BlogPostPreview[];
+  blogPosts: NavBlogPost[];
   navData?: NavData;
 };
 

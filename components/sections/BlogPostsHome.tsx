@@ -1,16 +1,17 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import type { BlogPostPreview } from "../../types/data";
+import { HOME_BLOG_POST_LIMIT } from "../../data/blog-categories";
+import type { NavBlogPost } from "../../lib/nav/types";
 import ArrowIcon from "./ArrowIcon";
 import styles from "./BlogPostsHome.module.css";
 
 type Props = {
-  posts: BlogPostPreview[];
+  posts: NavBlogPost[];
   categories: string[];
   limit?: number;
 };
 
-export default function BlogPostsHome({ posts, categories, limit = 16 }: Props) {
+export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POST_LIMIT }: Props) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const filteredPosts = useMemo(() => {

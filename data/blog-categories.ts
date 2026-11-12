@@ -25,6 +25,9 @@ export const HOME_BLOG_CATEGORIES = [
   "Research",
 ];
 
+/** How many cards the home blog section shows per tab (BlogPostsHome). */
+export const HOME_BLOG_POST_LIMIT = 16;
+
 /**
  * Старые slug'и категорий блога, которые могут прийти из закладок и внешних
  * ссылок в query-параметре `?category=`. Ключ — устаревшее значение,

@@ -59,9 +59,11 @@ export function getBlogPostPreviews(options: GetBlogPostPreviewsOptions = {}): B
     ? posts.filter((post) => getAuthor(post.author ?? "").slug === authorFilter)
     : posts;
 
+  // `author` is only needed for the filter above. No card renders it, so it
+  // is dropped here instead of being serialised into every page's props.
   const sortedPosts = filteredPosts
     .sort((a, b) => b.__date.localeCompare(a.__date))
-    .map(({ __date: _date, ...post }) => post);
+    .map(({ __date: _date, author: _author, ...post }) => post);
 
   const maxPerCategory = options.maxPerCategory;
   if (!maxPerCategory || maxPerCategory < 1) {
