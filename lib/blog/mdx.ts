@@ -126,8 +126,17 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
+let allPostsMetaCache: BlogPostMeta[] | null = null;
+
 export function getAllBlogPostsMeta(): BlogPostMeta[] {
-  return getAllBlogSlugs()
+  // getRelatedPosts calls this once per post page. Without the cache a build
+  // parses every post for every post (200 × 200 files). Posts cannot change
+  // during a build, so one pass per worker is enough. In dev every request
+  // should still see fresh posts.
+  const isProduction = process.env.NODE_ENV === "production";
+  if (isProduction && allPostsMetaCache) return allPostsMetaCache;
+
+  const posts = getAllBlogSlugs()
     .map((slug) => {
       const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
       try {
@@ -143,6 +152,9 @@ export function getAllBlogPostsMeta(): BlogPostMeta[] {
       }
     })
     .filter((post): post is BlogPostMeta => post !== null);
+
+  if (isProduction) allPostsMetaCache = posts;
+  return posts;
 }
 
 /**
