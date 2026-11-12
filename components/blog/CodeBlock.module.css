@@ -1,0 +1,74 @@
+/*
+ * highlight.js theme (Material Palenight) for fenced code in blog posts.
+ * Lives here instead of styles/globals.css so the rules ship only with the
+ * article page. Tokens are global hljs classes, scoped under the local .wrap
+ * that CodeBlock renders around every <pre>.
+ */
+.wrap {
+  position: relative;
+}
+
+.wrap pre :global(.hljs),
+.wrap pre code:global(.hljs) {
+  display: block !important;
+  overflow-x: auto;
+  padding: 1rem !important;
+  background-color: #2b2b2b !important;
+  border-radius: 1.25rem !important;
+  color: #d2d2d2;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  white-space: inherit !important;
+}
+
+.wrap pre :global(.hljs)::-webkit-scrollbar {
+  height: 0.9375rem;
+  background-color: transparent;
+  border-top: 0.0625rem solid black;
+}
+.wrap pre :global(.hljs)::-webkit-scrollbar-thumb { background-color: #4d4d4d; }
+.wrap pre :global(.hljs)::-webkit-scrollbar-track { background-color: transparent; }
+
+.wrap :global(.hljs-keyword) { color: #c792ea; }
+.wrap :global(.hljs-built_in) { color: #82b1ff; font-style: italic; }
+.wrap :global(.hljs-type) { color: #82aaff; }
+.wrap :global(.hljs-literal) { color: #ff5874; }
+.wrap :global(.hljs-number) { color: #f77669; }
+.wrap :global(.hljs-regexp) { color: #5ca7e4; }
+.wrap :global(.hljs-string) { color: #c3e88d; }
+.wrap :global(.hljs-subst) { color: #d3423e; }
+.wrap :global(.hljs-symbol) { color: #82aaff; }
+.wrap :global(.hljs-class) { color: #ffcb8b; }
+.wrap :global(.hljs-function) { color: #82aaff; }
+.wrap :global(.hljs-title) { color: #80cbae; }
+.wrap :global(.hljs-params) { color: #e9eded; }
+.wrap :global(.hljs-comment) { color: #546e7a; }
+.wrap :global(.hljs-doctag) { color: #7fdbca; }
+.wrap :global(.hljs-meta) { color: #c792ea; }
+.wrap :global(.hljs-meta-keyword) { color: #82aaff; }
+.wrap :global(.hljs-meta-string) { color: #ecc48d; }
+.wrap :global(.hljs-section) { color: #82b1ff; }
+.wrap :global(.hljs-builtin-name),
+.wrap :global(.hljs-name),
+.wrap :global(.hljs-tag) { color: #80cbc4; }
+.wrap :global(.hljs-attr) { color: #ffcb6b; }
+.wrap :global(.hljs-attribute) { color: #ffcb6b; }
+.wrap :global(.hljs-variable) { color: #82b1ff; }
+.wrap :global(.hljs-bullet) { color: #d9f5dd; }
+.wrap :global(.hljs-code) { color: #80cbc4; }
+.wrap :global(.hljs-emphasis) { color: #c792ea; font-style: italic; }
+.wrap :global(.hljs-strong) { color: #addb67; font-weight: 700; }
+.wrap :global(.hljs-formula) { color: #c792ea; }
+.wrap :global(.hljs-link) { color: #ff869a; }
+.wrap :global(.hljs-quote) { color: #697098; font-style: italic; }
+.wrap :global(.hljs-selector-tag) { color: #ff6363; }
+.wrap :global(.hljs-selector-id) { color: #fad430; }
+.wrap :global(.hljs-selector-class) { color: #decb6b; }
+.wrap :global(.hljs-selector-attr),
+.wrap :global(.hljs-selector-pseudo) { color: #c792ea; font-style: italic; }
+.wrap :global(.hljs-template-tag) { color: #c792ea; }
+.wrap :global(.hljs-template-variable) { color: #addb67; }
+.wrap :global(.hljs-addition) { color: #addb67ff; font-style: italic; }
+.wrap :global(.hljs-deletion) { color: #ef535090; font-style: italic; }
+.wrap :global(.hljs-property) { color: #80cbae; }

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import styles from "./CodeBlock.module.css";
 
 /**
  * Replaces the default <pre> rendering for fenced code blocks in MDX.
@@ -27,7 +28,7 @@ export default function CodeBlock(props: React.HTMLAttributes<HTMLPreElement>) {
   };
 
   return (
-    <div className="code-block-wrap">
+    <div className={`code-block-wrap ${styles.wrap}`}>
       <pre ref={preRef} {...props} />
       <button
         type="button"
