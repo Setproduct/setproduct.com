@@ -230,11 +230,11 @@ export const clayloContent = {
     },
     {
       "question": "I have a project. Can I hire you?",
-      "answerHtml": "We take on custom design and development work. We can extend this template or build new ones and ship them in production with popular frameworks. Just <a data-contact href=\"#\"><span class=\"span-link\">contact us</span></a> with your brief, budget, and expectations."
+      "answerHtml": "We take on custom design and development work. We can extend this template or build new ones and ship them in production with popular frameworks. Just <a data-contact href=\"mailto:hello@setproduct.com\"><span class=\"span-link\">contact us</span></a> with your brief, budget, and expectations."
     },
     {
       "question": "I 💜 it, but can I have a discount?",
-      "answerHtml": "We reward people who scroll to the bottom. <a data-contact href=\"#\"><span class=\"span-link\">Drop us a message</span></a> with a short note on how you plan to use Claylo and we send a ✨<strong>30% off coupon</strong> for your purchase."
+      "answerHtml": "We reward people who scroll to the bottom. <a data-contact href=\"mailto:hello@setproduct.com\"><span class=\"span-link\">Drop us a message</span></a> with a short note on how you plan to use Claylo and we send a ✨<strong>30% off coupon</strong> for your purchase."
     }
   ],
   "ctaHire": {
