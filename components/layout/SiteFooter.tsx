@@ -285,7 +285,16 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                       <div className="spacer-24" />
                       <div className="form-block w-form">
                         <form className="form-cta" onSubmit={handleSubscribe}>
-                          <input name="website" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                          {/* Honeypot: hidden from sight and from assistive tech, but
+                              still submitted so the API can reject bots that fill it. */}
+                          <div aria-hidden="true" style={{ display: "none" }}>
+                            <input
+                              aria-label="Leave this field empty"
+                              autoComplete="off"
+                              name="website"
+                              tabIndex={-1}
+                            />
+                          </div>
                           <input aria-label="Email address" className="text-input w-input" disabled={isSubmitting} maxLength={256} name="Email" placeholder="Enter your email" required type="email" />
                           <div className="button-form-wr">
                             <button className="button outlined w-inline-block disabled:opacity-70" disabled={isSubmitting} type="submit">

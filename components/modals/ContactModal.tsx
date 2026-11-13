@@ -142,7 +142,16 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
             <div className="modal_form-block w-form">
               {!isSubmitted ? (
                 <form className="modal_form" onSubmit={handleSubmit}>
-                  <input name="website" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                  {/* Honeypot: hidden from sight and from assistive tech, but still
+                      submitted so the API can reject bots that fill it in. */}
+                  <div aria-hidden="true" style={{ display: "none" }}>
+                    <input
+                      aria-label="Leave this field empty"
+                      autoComplete="off"
+                      name="website"
+                      tabIndex={-1}
+                    />
+                  </div>
                   <div className="modal_form-item">
                     <p className="text-size-regular">Email</p>
                     <input

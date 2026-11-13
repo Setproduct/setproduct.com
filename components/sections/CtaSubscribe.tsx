@@ -19,7 +19,16 @@ export default function CtaSubscribe() {
                 <div className="actions">
                   <div className="form-block w-form">
                     <form className="form-cta" onSubmit={handleSubscribe}>
-                      <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+                      {/* Honeypot: hidden from sight and from assistive tech, but still
+                          submitted so the API can reject bots that fill it in. */}
+                      <div aria-hidden="true" className="hidden">
+                        <input
+                          aria-label="Leave this field empty"
+                          autoComplete="off"
+                          name="website"
+                          tabIndex={-1}
+                        />
+                      </div>
                       <input
                         aria-label="Email address"
                         className="text-input w-input"
