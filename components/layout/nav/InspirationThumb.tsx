@@ -11,7 +11,7 @@ const revealedInspirationImages = new Set<string>();
 // gets `.is-loaded` on load → shimmer fades out, image blur-fades in. We check
 // `complete` on mount so cached images (which may skip onLoad) reveal at once,
 // and skip the animation entirely for previews already shown earlier.
-export function InspirationThumb({ href, image }: { href: string; image: string }) {
+export function InspirationThumb({ href, image, title }: { href: string; image: string; title: string }) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [loaded, setLoaded] = useState(() => revealedInspirationImages.has(image));
 
@@ -36,7 +36,7 @@ export function InspirationThumb({ href, image }: { href: string; image: string 
     >
       <img
         ref={imgRef}
-        alt=""
+        alt={`${title} preview`}
         src={image}
         loading="lazy"
         onLoad={reveal}

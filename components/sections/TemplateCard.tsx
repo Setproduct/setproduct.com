@@ -15,7 +15,7 @@ export default function TemplateCard({ product, imgHeight = "480" }: Props) {
     <div className="template-list-item hover-lift is-large">
       <Link className={imgClass} href={`/templates/${product.slug}`}>
         <Image
-          alt=""
+          alt={`${product.title} preview`}
           src={product.image}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

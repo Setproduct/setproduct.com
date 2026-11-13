@@ -277,7 +277,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                         title={item.title}
                         description={item.description}
                         external
-                        media={<InspirationThumb href={withUtm(item.href)} image={item.image} />}
+                        media={<InspirationThumb href={withUtm(item.href)} image={item.image} title={item.title} />}
                         actions={
                           <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
                             <div className="text-size-regular text-weight-bold">View</div>
@@ -318,7 +318,13 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       description={item.description}
                       media={
                         <MegaMenuCardMedia href={`/blog/${item.slug}`}>
-                          <img alt="" src={item.thumbImage} loading="lazy" decoding="async" className="image-cover" />
+                          <img
+                            alt={`${item.title} cover`}
+                            src={item.thumbImage}
+                            loading="lazy"
+                            decoding="async"
+                            className="image-cover"
+                          />
                         </MegaMenuCardMedia>
                       }
                       actions={
@@ -347,7 +353,13 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       description={item.description}
                       media={
                         <MegaMenuCardMedia href={item.previewHref}>
-                          <Image alt="" src={item.thumb} fill sizes={CARD_IMAGE_SIZES} className="image-cover" />
+                          <Image
+                            alt={`${item.title} preview`}
+                            src={item.thumb}
+                            fill
+                            sizes={CARD_IMAGE_SIZES}
+                            className="image-cover"
+                          />
                         </MegaMenuCardMedia>
                       }
                       actions={
@@ -381,7 +393,13 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       description={item.description}
                       media={
                         <MegaMenuCardMedia href={item.href}>
-                          <Image alt="" src={item.image} fill sizes={CARD_IMAGE_SIZES} className="image-cover" />
+                          <Image
+                            alt={`${item.title} preview`}
+                            src={item.image}
+                            fill
+                            sizes={CARD_IMAGE_SIZES}
+                            className="image-cover"
+                          />
                         </MegaMenuCardMedia>
                       }
                       actions={

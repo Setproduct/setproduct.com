@@ -9,7 +9,7 @@ export default function BundleCard({ item }: Props) {
     <div className="template-list-item hover-lift is-large scroll-mt-28" id={item.slug}>
       <div className="template-list-item-img-wr is-height-480 hover-lift-media">
         <img
-          alt=""
+          alt={`${item.title} preview`}
           className="image-cover"
           loading="lazy"
           src={item.image}

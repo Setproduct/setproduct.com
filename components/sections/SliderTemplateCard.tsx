@@ -11,7 +11,7 @@ export default function SliderTemplateCard({ product }: Props) {
     <div className="template-list-item hover-lift is-large">
       <Link className="template-list-item-img-wr w-inline-block hover-lift-media" href={`/templates/${product.slug}`}>
         <Image
-          alt=""
+          alt={`${product.title} preview`}
           src={product.image}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

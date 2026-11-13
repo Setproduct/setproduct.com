@@ -146,7 +146,7 @@ export default function AuthorPage({ author, authorPosts, navData }: Props) {
                           href={`/blog/${post.slug}`}
                         >
                           <Image
-                            alt=""
+                            alt={`${post.title} cover`}
                             src={post.image}
                             fill
                             priority={index === 0}

@@ -112,7 +112,7 @@ export default function DashboardsPage({ navData }: Props) {
                 <div className="template-list-item">
                   <div className="template-list-item-is-only-img">
                     <img
-                      alt=""
+                      alt="Preview of Setproduct dashboard UI components"
                       className="image-contain"
                       loading="lazy"
                       src="/images/02-min-1.webp"
