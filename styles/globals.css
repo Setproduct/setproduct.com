@@ -710,6 +710,22 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
+ * SEO audit post: both floats are near-square scanner cards (1280x1115), so at
+ * the default 40% they run taller than the prose beside them and leave a gap
+ * under the last line. 34% brings the card height level with its text block in
+ * the 982px article column. Scoped by slug so other posts keep 40%.
+ *
+ * Must stay inside min-width: 768px. This selector is more specific than the
+ * base `.blog-img-float--right` mobile reset, so an unscoped width would also
+ * apply under 768px and cancel the full-width stacking.
+ */
+@media (min-width: 768px) {
+  .rich-text-18[data-post="seo-check-tool-prompt-rewrite"] .blog-img-float--right {
+    width: 34%;
+  }
+}
+
+/*
  * Command palette post: every teardown h3 subsection carries its own float
  * image, so each heading must start on a clean line below the previous
  * image. Without this, a short block of prose lets the next brand heading
