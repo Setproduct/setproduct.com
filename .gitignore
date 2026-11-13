@@ -11,3 +11,6 @@ npm-debug.log*
 # Regenerable site health reports (scripts/check-site.mjs)
 scripts/report.json
 scripts/report.md
+
+# Regenerable open graph audit (scripts/audit-og-images.mjs)
+scripts/og-audit.json

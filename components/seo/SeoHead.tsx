@@ -24,7 +24,7 @@ type SeoHeadProps = {
 };
 
 /** 1200x630 is the card size Open Graph and Twitter are tuned for. */
-export const DEFAULT_OG_IMAGE = "/images/og-setproduct-home.jpg";
+export const DEFAULT_OG_IMAGE = "/images/og-setproduct-default.jpg";
 const DEFAULT_OG_WIDTH = 1200;
 const DEFAULT_OG_HEIGHT = 630;
 

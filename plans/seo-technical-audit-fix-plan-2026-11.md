@@ -613,7 +613,7 @@ FAQ-ссылки «contact us»: `<button>` внутри текста или `ma
 7. **Tap targets** — расширение до 48px живёт только под `@media (pointer: coarse)`. Десктопный прогон сканера по-прежнему увидит плотные строки: это осознанное решение из ответа 3.
 8. **Structured data** — главная: `Organization` + `WebSite` с `SearchAction` на `/search?query={search_term_string}`. Все детальные страницы шаблонов отдают `Product` (с `Offer` и `Brand`) + `BreadcrumbList` из трёх уровней.
 9. **PWA metadata** — `favicon.ico`, `favicon-32.png`, `favicon-16.png`, `apple-touch-icon.png` 180×180, `site.webmanifest` с иконками 192/512 и `theme-color #ffffff`.
-10. **OG/Twitter** — `og:site_name`, `og:locale`, `og:image` с абсолютным URL, `width` 1200, `height` 630, `alt`, `type`. Twitter-теги отдаются через `name`, а не `property`. Карточка — `/images/og-setproduct-home.jpg` (JPEG, 119 934 байта).
+10. **OG/Twitter** — `og:site_name`, `og:locale`, `og:image` с абсолютным URL, `width` 1200, `height` 630, `alt`, `type`. Twitter-теги отдаются через `name`, а не `property`. Карточка — `/images/og-setproduct-default.jpg` (JPEG, 1200×630, 67.3 КБ), собранная из мастера `setproduct3.jpg` уже в нужной пропорции, поэтому кроп ничего не срезает.
 11. **Link format** — `href="#"` в `components/`, `pages/`, `data/`, `lib/` нет. Единственное вхождение строки — комментарий в `components/layout/nav/navConfig.ts`, объясняющий, почему у пункта модалки нет `href`.
 
 ### 11.3. Проверка JSON-LD на трёх ветках роутинга шаблонов

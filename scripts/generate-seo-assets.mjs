@@ -2,8 +2,8 @@
  * Generates the static SEO assets that search engines, social networks and
  * mobile browsers expect, from the two masters that already exist in the repo:
  *
- *   public/images/setproduct2.webp (1600x1200) -> public/images/og-setproduct-home.jpg (1200x630)
- *   public/images/fav-256.webp     (256x256)   -> favicon PNGs, apple-touch-icon, favicon.ico
+ *   public/images/setproduct3.jpg (1200x630) -> public/images/og-setproduct-default.jpg
+ *   public/images/fav-256.webp    (256x256)  -> favicon PNGs, apple-touch-icon, favicon.ico
  *
  * WHY 1200x630 AND JPG:
  * Open Graph previews want a 1.91:1 image. The old card pointed at a 4:3 WebP,
@@ -12,10 +12,18 @@
  * preview image". 1200x630 is the documented size those crawlers are tuned for,
  * and JPEG is the format every one of them decodes without a plugin.
  *
+ * WHY THE MASTER IS ALREADY 1200x630:
+ * The previous card was a `cover` crop of a 1600x1200 collage, which sliced
+ * about 30% of the source height and cut headlines in half along every edge.
+ * setproduct3.jpg is composed at the target ratio, so no edge is lost and the
+ * resize below is a no-op guard rather than a destructive crop.
+ *
  * WHY A NEW FILE NAME:
  * Browsers, the Vercel CDN and the Next image optimiser cache by URL. Writing
  * new bytes over an existing path means readers keep seeing the old picture, so
  * every generated asset gets a new name and nothing here overwrites a master.
+ * This is why the output is `og-setproduct-default.jpg` and not the retired
+ * `og-setproduct-default.jpg`.
  *
  * Run with: npm run seo:assets
  */
@@ -26,12 +34,13 @@ import sharp from "sharp";
 const ROOT = process.cwd();
 const IMAGES = path.join(ROOT, "public", "images");
 
-const OG_SOURCE = path.join(IMAGES, "setproduct2.webp");
+const OG_SOURCE = path.join(IMAGES, "setproduct3.jpg");
 const ICON_SOURCE = path.join(IMAGES, "fav-256.webp");
 
-// Open Graph / Twitter card master. Centre-cropped to 1.91:1, which keeps the
-// headline card in the middle of the source artwork inside the frame.
-const OG_OUT = path.join(IMAGES, "og-setproduct-home.jpg");
+// Open Graph / Twitter card master. The source is already composed at 1.91:1,
+// so `cover` has nothing to crop; it only guards against someone swapping in a
+// differently sized master later.
+const OG_OUT = path.join(IMAGES, "og-setproduct-default.jpg");
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
 
@@ -92,7 +101,7 @@ async function main() {
 
   const ogMeta = await sharp(OG_OUT).metadata();
   console.log(
-    `og-setproduct-home.jpg  ${ogMeta.width}x${ogMeta.height} ${ogMeta.format}`,
+    `og-setproduct-default.jpg  ${ogMeta.width}x${ogMeta.height} ${ogMeta.format}`,
   );
 
   const pngBufs = new Map();
@@ -118,7 +127,17 @@ async function main() {
   const verify = await readFile(OG_OUT);
   if (verify.length < 10_000) {
     throw new Error(
-      `og-setproduct-home.jpg looks too small (${verify.length} bytes)`,
+      `og-setproduct-default.jpg looks too small (${verify.length} bytes)`,
+    );
+  }
+
+  // The card is the most visible asset in the set, so its exact ratio is
+  // asserted rather than assumed: a wrong ratio is what made social crawlers
+  // crop the old preview.
+  const ratio = ogMeta.width / ogMeta.height;
+  if (Math.abs(ratio - 1.9) > 0.02) {
+    throw new Error(
+      `og card ratio looks wrong: ${ogMeta.width}x${ogMeta.height} (${ratio.toFixed(2)})`,
     );
   }
 }

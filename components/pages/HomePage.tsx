@@ -42,7 +42,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
       <SeoHead
         canonical={meta.canonical}
         description={meta.description}
-        image="/images/og-setproduct-home.jpg"
+        image="/images/og-setproduct-default.jpg"
         imageAlt="Setproduct: Figma templates and UI kits for design systems"
         jsonLd={jsonLd}
         title={meta.title}

@@ -4,6 +4,7 @@
   "description": "Setproduct site migration to Next.js Pages Router",
   "private": true,
   "scripts": {
+    "seo:og-audit": "node scripts/audit-og-images.mjs",
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
