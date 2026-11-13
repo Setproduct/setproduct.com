@@ -171,13 +171,13 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
                     </div>
                     {hasMore && (
                       <div style={{ display: "flex", justifyContent: "center", padding: "40px 0" }}>
-                        <a
+                        <button
                           className="button-small outlined w-inline-block"
-                          href="#"
-                          onClick={(e) => { e.preventDefault(); setVisibleCount((c) => c + PAGE_SIZE); }}
+                          onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                          type="button"
                         >
                           <div className="text-size-medium text-weight-bold">Load more</div>
-                        </a>
+                        </button>
                       </div>
                     )}
                   </div>

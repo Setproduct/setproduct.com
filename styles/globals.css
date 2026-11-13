@@ -2636,6 +2636,17 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   height: 32em;
 }
 
+/* The copy-link control is a real <button> because it acts on the page,
+   while its neighbours are links. Strip the UA button chrome so all four
+   icons render as identical squares. */
+.blog-floating-share button.blogpost_soc-link {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
 /* Hover "even zoom": icon scales up uniformly from its center, no vertical
    shift — matching the footer social icons. Transform lives on the <img> so
    it doesn't fight the cascade transform applied inline on the <a> wrapper. */

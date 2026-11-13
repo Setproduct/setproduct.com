@@ -139,17 +139,14 @@ export default function TestimonialsPage({ navData }: Props) {
                   </div>
                   {hasMore && (
                     <div style={{ display: "flex", justifyContent: "center", marginTop: "32px" }}>
-                      <a
-                        href="#"
+                      <button
+                        type="button"
                         aria-label="Load more testimonials"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setVisiblePages((p) => p + 1);
-                        }}
+                        onClick={() => setVisiblePages((p) => p + 1)}
                         className="button secondary w-inline-block"
                       >
                         <div className="text-size-large text-weight-bold">Load more</div>
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -178,9 +175,9 @@ export default function TestimonialsPage({ navData }: Props) {
                     </div>
                   </div>
                   <div className="btn-link-align-center">
-                    <a href="#" className="button w-inline-block" onClick={(e) => { e.preventDefault(); openContactModal("testimonials_page"); }}>
+                    <button type="button" className="button w-inline-block" onClick={() => openContactModal("testimonials_page")}>
                       <div className="text-size-large text-weight-bold">Let&rsquo;s connect</div>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

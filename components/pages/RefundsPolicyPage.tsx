@@ -38,7 +38,10 @@ export default function RefundsPolicyPage({ navData }: Props) {
 
                   <p className="pt-8">
                     If you&apos;re not satisfied with the product you&apos;ve purchased —{" "}
-                    <a href="#" onClick={(e) => { e.preventDefault(); openContactModal("refunds_policy"); }}>
+                    {/* Real mailto destination so the sentence works without
+                        JS and the link is not empty for crawlers; the click
+                        handler upgrades it to the in-page modal. */}
+                    <a href="mailto:hello@setproduct.com" onClick={(e) => { e.preventDefault(); openContactModal("refunds_policy"); }}>
                       contact us
                     </a>{" "}
                     and provide a trustworthy explanation of why you changed your mind. We do not

@@ -248,16 +248,13 @@ export default function FreebiesListingPage({ navData }: Props) {
                     {hasMore && (
                       <div className="mt-14">
                         <div className="main_blog-liist2-btn-wr">
-                          <a
+                          <button
                             className="button-small outlined w-inline-block"
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setVisibleCount((count) => count + PAGE_SIZE);
-                            }}
+                            onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+                            type="button"
                           >
                             <div className="text-size-medium text-weight-bold">Load more</div>
-                          </a>
+                          </button>
                         </div>
                       </div>
                     )}

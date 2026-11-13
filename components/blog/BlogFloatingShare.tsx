@@ -63,8 +63,10 @@ export default function BlogFloatingShare({ url, title }: BlogFloatingShareProps
       className={`blog-floating-share hide-on-mobile${isVisible ? " is-visible" : ""}`}
       style={{ pointerEvents: isVisible ? "auto" : "none" }}
     >
-      <a
-        href="#"
+      {/* Copying is an in-page action, so this is a <button>; the sibling
+          icons below stay links because they actually navigate. */}
+      <button
+        type="button"
         className="blogpost_soc-link group relative w-inline-block"
         onClick={handleCopy}
         aria-label="Copy link"
@@ -83,7 +85,7 @@ export default function BlogFloatingShare({ url, title }: BlogFloatingShareProps
           {copied ? "✔ Copied!" : "Copy link"}
         </span>
         <img src="/images/Share-Button1.svg" loading="lazy" alt="Copy icon" className="image-cover" />
-      </a>
+      </button>
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
         target="_blank"
