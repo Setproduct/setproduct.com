@@ -2899,8 +2899,15 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   list-style: none;
 }
 
+/*
+ * Full-width button, label and arrow centred as one group.
+ * The card is a column flex container, so align-self: stretch alone makes the
+ * button span the row; .button-small already has justify-content: center and
+ * align-items: center, which keeps label and arrow together in the middle.
+ * Do not add flex-grow here: in a column it would stretch the button's height.
+ */
 .blog-publish-card .button-small {
-  align-self: flex-start;
+  align-self: stretch;
 }
 
 /*

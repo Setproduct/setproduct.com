@@ -86,7 +86,7 @@ function PublishCard() {
     <div className="blog-publish-card hide-on-mobile">
       <p className="blog-publish-card-eyebrow">For founders</p>
       <p className="text-size-medium text-weight-bold">
-        Launching a product? Get it in front of {PUBLISH_OFFER.readersPerMonth} readers a month
+        Launching a product? Get it in front of {PUBLISH_OFFER.readersPerMonth} readers
       </p>
       <ul className="blog-publish-card-facts text-size-small">
         <li>Live within {PUBLISH_OFFER.turnaround}</li>
@@ -94,7 +94,7 @@ function PublishCard() {
         <li>From ${PUBLISH_OFFER.priceFrom}</li>
       </ul>
       <a className="button-small w-inline-block" {...getPublishLinkProps("blog_sidebar")}>
-        <div className="text-size-medium text-weight-bold">See packages</div>
+        <div className="text-size-medium text-weight-bold">Pricing</div>
         <div className="button-icon is-small w-embed">
           <ArrowIcon />
         </div>
