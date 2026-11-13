@@ -1,4 +1,4 @@
-import Head from "next/head";
+import SeoHead from "../../seo/SeoHead";
 import SiteHeader from "../../layout/SiteHeader";
 import SiteFooter from "../../layout/SiteFooter";
 import ScrollUpButton from "../../layout/ScrollUpButton";
@@ -13,7 +13,8 @@ import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
-import { CANONICAL_SITE_URL, absoluteUrl } from "../../../lib/blog/site-config";
+import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
+import { buildPageBreadcrumbJsonLd, buildProductJsonLd } from "../../../lib/seo/schema";
 import type { TemplateItem } from "../../../types/data";
 import type { NavData } from "../../../lib/nav/types";
 
@@ -98,24 +99,31 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
   const title = item.title;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/templates/${item.slug}`;
-  const ogImage = absoluteUrl(item.ogImage);
+
+  // A product page can carry rich results (price, availability) that a plain
+  // page cannot, and the breadcrumb tells Google which listing it belongs to.
+  const jsonLd = [
+    buildProductJsonLd({
+      name: item.title,
+      description: item.description,
+      image: item.ogImage,
+      pageUrl: canonical,
+      price: item.price,
+    }),
+    buildPageBreadcrumbJsonLd(item.title, canonical, { label: "Products", url: "/all" }),
+  ];
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta content={description} name="description" />
-        <link href={canonical} rel="canonical" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:type" content="product" />
-        <meta property="og:image" content={ogImage} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
-      </Head>
+      <SeoHead
+        canonical={canonical}
+        description={description}
+        image={item.ogImage}
+        imageAlt={`${item.title} preview`}
+        jsonLd={jsonLd}
+        ogType="product"
+        title={title}
+      />
       <SiteHeader navData={navData} />
       <main className="pt-[70em]">
         {/* Hero Section */}
