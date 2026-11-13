@@ -30,27 +30,30 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
           <div className="main_blog-liist2-wr2 w-dyn-list">
             <div className="main_blog-liist2-2 w-dyn-items" role="list">
               <div className="w-dyn-item" role="listitem">
-                <div
+                {/* A filter chip changes what is shown in place, so it is a
+                    <button> with aria-pressed rather than a div pretending to
+                    be one: the pressed state is what a screen reader announces.
+                    The label is a <span> because a <button> may only contain
+                    phrasing content. */}
+                <button
+                  aria-pressed={activeCategory === null}
                   className={`button-x-small is-text${activeCategory === null ? " fs-cmsfilter_active" : ""}`}
                   onClick={() => setActiveCategory(null)}
-                  role="button"
-                  tabIndex={0}
-                  style={{ cursor: "pointer" }}
+                  type="button"
                 >
-                  <p className="text-size-small text-weight-bold">Recent publications</p>
-                </div>
+                  <span className="text-size-small text-weight-bold">Recent publications</span>
+                </button>
               </div>
               {categories.map((cat) => (
                 <div key={cat} className="w-dyn-item" role="listitem">
-                  <div
+                  <button
+                    aria-pressed={activeCategory === cat}
                     className={`button-x-small is-text is-main-blog-filter w-radio${activeCategory === cat ? " fs-cmsfilter_active" : ""}`}
                     onClick={() => setActiveCategory(cat)}
-                    role="button"
-                    tabIndex={0}
-                    style={{ cursor: "pointer" }}
+                    type="button"
                   >
                     <span className="text-size-small text-weight-bold w-form-label">{cat}</span>
-                  </div>
+                  </button>
                 </div>
               ))}
             </div>
