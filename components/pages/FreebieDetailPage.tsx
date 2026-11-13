@@ -9,6 +9,7 @@ import FreebieArticle from "../sections/FreebieArticle";
 import HeroCoverImage from "../sections/HeroCoverImage";
 import BlogRelatedPosts from "../blog/BlogRelatedPosts";
 import { CANONICAL_SITE_URL, absoluteUrl } from "../../lib/blog/site-config";
+import { ogImageFor } from "../../lib/seo/og-image";
 import { FREEBIE_CODE_CATEGORIES } from "../../data/freebies-listing";
 import type { FreebieItem } from "../../types/data";
 import type { BlogPostMeta } from "../../types/blog";
@@ -39,7 +40,9 @@ export default function FreebieDetailPage({ item, navData, relatedPosts = [] }: 
   const title = `${item.title} (${suffixForCategory(item.category)})`;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/freebies/${item.slug}`;
-  const ogImage = absoluteUrl(item.image);
+  // Page artwork stays in its own ratio; the social tags use the prepared
+  // 1200x630 card so timelines do not crop a 4:3 screenshot at random.
+  const ogImage = absoluteUrl(ogImageFor(item.image));
 
   return (
     <>

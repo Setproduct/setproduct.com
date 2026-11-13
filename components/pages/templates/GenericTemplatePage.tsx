@@ -14,6 +14,7 @@ import TemplateGallery from "../../sections/TemplateGallery";
 import FaqSection from "../../sections/FaqSection";
 import { getGumroadLinkProps } from "../../../lib/gumroad";
 import { CANONICAL_SITE_URL } from "../../../lib/blog/site-config";
+import { ogImageFor } from "../../../lib/seo/og-image";
 import { buildPageBreadcrumbJsonLd, buildProductJsonLd } from "../../../lib/seo/schema";
 import type { TemplateItem } from "../../../types/data";
 import type { NavData } from "../../../lib/nav/types";
@@ -99,6 +100,9 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
   const title = item.title;
   const description = item.description;
   const canonical = `${CANONICAL_SITE_URL}/templates/${item.slug}`;
+  // Cover art is drawn wide for the page; the social card is the 1200x630
+  // version cut for it, so no timeline has to crop it again.
+  const socialImage = ogImageFor(item.ogImage);
 
   // A product page can carry rich results (price, availability) that a plain
   // page cannot, and the breadcrumb tells Google which listing it belongs to.
@@ -106,7 +110,7 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
     buildProductJsonLd({
       name: item.title,
       description: item.description,
-      image: item.ogImage,
+      image: socialImage,
       pageUrl: canonical,
       price: item.price,
     }),
@@ -118,7 +122,7 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
       <SeoHead
         canonical={canonical}
         description={description}
-        image={item.ogImage}
+        image={socialImage}
         imageAlt={`${item.title} preview`}
         jsonLd={jsonLd}
         ogType="product"

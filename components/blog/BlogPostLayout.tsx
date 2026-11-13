@@ -10,6 +10,7 @@ import BlogSidebar from "./BlogSidebar";
 import MobileTableOfContents from "./MobileTableOfContents";
 import ReadingProgress from "./ReadingProgress";
 import { useArticleToc } from "../../hooks/useArticleToc";
+import { ogImageFor } from "../../lib/seo/og-image";
 import BlogFloatingShare from "./BlogFloatingShare";
 import BlogInlineCta, { DEFAULT_PUBLISH_CTA } from "./BlogInlineCta";
 import { isPublishAudienceCategory, isPublishHref } from "../../lib/publish";
@@ -41,7 +42,10 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const toc = useArticleToc(headings, `blog/${frontmatter.slug}`);
   const canonical = frontmatter.canonical ?? `${SITE_URL}/blog/${frontmatter.slug}`;
+  // The hero shows the original cover; the social tags point at the 1200x630
+  // card prepared for it, so networks have nothing left to crop.
   const absoluteCoverUrl = absoluteUrl(frontmatter.coverImage);
+  const absoluteOgImage = absoluteUrl(ogImageFor(frontmatter.coverImage));
   const jsonLd = buildBlogPostingJsonLd(frontmatter, canonical, readingTimeMinutes);
   const faqJsonLd = frontmatter.faq?.length ? buildFaqJsonLd(frontmatter.faq) : null;
   const howToJsonLd = frontmatter.howTo?.steps?.length
@@ -74,14 +78,14 @@ export default function BlogPostLayout({ post, relatedPosts, postUrl, navData }:
         <meta property="og:type" content="article" />
         <meta property="og:title" content={frontmatter.metaTitle ?? frontmatter.title} />
         <meta property="og:description" content={frontmatter.description} />
-        <meta property="og:image" content={absoluteCoverUrl} />
+        <meta property="og:image" content={absoluteOgImage} />
         <meta property="og:url" content={canonical} />
         <meta property="article:published_time" content={frontmatter.date} />
         <meta property="article:author" content={frontmatter.author} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={frontmatter.metaTitle ?? frontmatter.title} />
         <meta name="twitter:description" content={frontmatter.description} />
-        <meta name="twitter:image" content={absoluteCoverUrl} />
+        <meta name="twitter:image" content={absoluteOgImage} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
