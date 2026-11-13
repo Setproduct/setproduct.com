@@ -14,8 +14,9 @@ type SeoHeadProps = {
   /** Width/height of `image`; social crawlers use them to reserve the card slot. */
   imageWidth?: number;
   imageHeight?: number;
-  /** "website" for landing pages, "article" for blog posts. */
-  ogType?: "website" | "article";
+  /** "website" for landing pages, "article" for blog posts, "product" for a
+   *  single template. */
+  ogType?: "website" | "article" | "product";
   /** Set to false on utility pages and on filtered/sorted duplicates. */
   index?: boolean;
   /** Structured data blocks rendered as separate <script type="application/ld+json">. */
@@ -75,7 +76,10 @@ export default function SeoHead({
       <meta property="og:image:alt" content={resolvedImageAlt} />
       <meta property="og:image:width" content={String(imageWidth)} />
       <meta property="og:image:height" content={String(imageHeight)} />
-      <meta property="og:image:type" content={imageUrl.endsWith(".jpg") ? "image/jpeg" : "image/png"} />
+      <meta
+        property="og:image:type"
+        content={imageUrl.endsWith(".jpg") ? "image/jpeg" : imageUrl.endsWith(".webp") ? "image/webp" : "image/png"}
+      />
 
       {/* Twitter reads `name`, not `property`. */}
       <meta name="twitter:card" content="summary_large_image" />

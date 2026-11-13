@@ -72,30 +72,28 @@ export function buildWebSiteJsonLd(): Record<string, unknown> {
 }
 
 /**
- * BreadcrumbList for a flat, non-blog page: Home → Page. Blog posts build their
- * own trail (Blog → Category → Post) in `lib/blog/schema.ts`.
+ * BreadcrumbList for a non-blog page. Pass `parent` to describe a deeper trail
+ * (Home → Products → Template). Blog posts build their own trail
+ * (Blog → Category → Post) in `lib/blog/schema.ts`.
  */
 export function buildPageBreadcrumbJsonLd(
   label: string,
   pageUrl: string,
+  parent?: { label: string; url: string },
 ): Record<string, unknown> {
+  const trail = [{ name: "Home", item: SITE_URL }];
+  if (parent) trail.push({ name: parent.label, item: absoluteUrl(parent.url) });
+  trail.push({ name: label, item: pageUrl });
+
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: SITE_URL,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: label,
-        item: pageUrl,
-      },
-    ],
+    itemListElement: trail.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.name,
+      item: entry.item,
+    })),
   };
 }
 
