@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "thumbs:blog": "node scripts/generate-blog-thumbs.js",
+    "seo:assets": "node scripts/generate-seo-assets.mjs",
     "llms": "node scripts/generate-llms-full.js",
     "scrape:inspiration": "node scripts/scrape-inspiration.mjs"
   },

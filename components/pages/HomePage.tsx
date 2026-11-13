@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Head from "next/head";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
@@ -8,11 +7,12 @@ import TemplateGrid from "../sections/TemplateGrid";
 import BlogPostsHome from "../sections/BlogPostsHome";
 import FaqSection from "../sections/FaqSection";
 import ArrowIcon from "../sections/ArrowIcon";
+import SeoHead from "../seo/SeoHead";
 import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
-import { absoluteUrl } from "../../lib/blog/site-config";
+import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "../../lib/seo/schema";
 import { getPublishLinkProps } from "../../lib/publish";
 import type { NavBlogPost, NavData } from "../../lib/nav/types";
 
@@ -30,22 +30,23 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
   const faq = PAGE_FAQ.index ?? [];
   const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
 
+  // Organization and WebSite describe the whole site, so they belong to the
+  // home page only; every other URL gets its own local schema instead.
+  const jsonLd = useMemo(
+    () => [buildOrganizationJsonLd(), buildWebSiteJsonLd()],
+    [],
+  );
+
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-        <meta content={meta.title} property="og:title" />
-        <meta content={meta.description} property="og:description" />
-        <meta content="website" property="og:type" />
-        <meta content={meta.canonical} property="og:url" />
-        <meta content={absoluteUrl(meta.ogImage)} property="og:image" />
-        <meta content="summary_large_image" name="twitter:card" />
-        <meta content={meta.title} name="twitter:title" />
-        <meta content={meta.description} name="twitter:description" />
-        <meta content={absoluteUrl(meta.ogImage)} name="twitter:image" />
-      </Head>
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        image="/images/og-setproduct-home.jpg"
+        imageAlt="Setproduct: Figma templates and UI kits for design systems"
+        jsonLd={jsonLd}
+        title={meta.title}
+      />
       <SiteHeader navData={navData} blogPosts={blogPosts} />
       <main className="mt-18">
         <div className="section">
