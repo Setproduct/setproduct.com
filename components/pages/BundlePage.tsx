@@ -1,4 +1,4 @@
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
@@ -25,11 +25,12 @@ export default function BundlePage({ navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="The Setproduct design bundle"
+        title={meta.title}
+      />
       <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <Breadcrumbs items={breadcrumbs} />

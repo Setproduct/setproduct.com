@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -750,14 +750,16 @@ export default function SearchPage({ items, navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta content={meta.description} name="description" />
-        <meta content="noindex" name="robots" />
-        <meta content={meta.title} property="og:title" />
-        <meta content={meta.title} property="twitter:title" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      {/* Search results are never a landing page: every query would otherwise
+          compete with the real listings for the same terms. The canonical
+          points at the unfiltered search URL and robots stay noindex. */}
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="Search Setproduct templates, UI kits and articles"
+        index={false}
+        title={pageTitle}
+      />
       <SiteHeader navData={navData} blogPosts={navPosts} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}

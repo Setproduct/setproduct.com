@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -71,11 +71,16 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      {/* A category filter is a query string on the same listing, so the
+          filtered view keeps the unfiltered canonical and asks not to be
+          indexed separately. */}
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="Setproduct blog: articles on UI design, startups and growth"
+        index={!activeCategory}
+        title={meta.title}
+      />
       <SiteHeader navData={navData} blogPosts={navPosts} />
       <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
         <div className="section">

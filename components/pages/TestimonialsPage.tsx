@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import Image from "next/image";
 import AppLightbox, { preloadLightbox } from "../ui/AppLightbox";
 import SiteHeader from "../layout/SiteHeader";
@@ -85,11 +85,12 @@ export default function TestimonialsPage({ navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="Customer testimonials about Setproduct design kits"
+        title={meta.title}
+      />
       <SiteHeader navData={navData} />
       <main>
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}

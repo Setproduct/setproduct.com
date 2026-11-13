@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
@@ -45,11 +45,12 @@ export default function CategoryPage({
 
   return (
     <>
-      <Head>
-        <title>{metaTitle}</title>
-        <meta content={metaDescription} name="description" />
-        <link href={canonical} rel="canonical" />
-      </Head>
+      <SeoHead
+        canonical={canonical}
+        description={metaDescription}
+        imageAlt={`${title}: Setproduct templates and UI kits`}
+        title={metaTitle}
+      />
       <SiteHeader navData={navData} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}

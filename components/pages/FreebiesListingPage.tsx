@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import { useRouter } from "next/router";
 import styles from "./FreebiesListingPage.module.css";
 import SiteHeader from "../layout/SiteHeader";
@@ -146,11 +146,16 @@ export default function FreebiesListingPage({ navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      {/* Filtered lists are the same page with a query string, so they keep the
+          unfiltered canonical and stay out of the index. `null` means "All
+          topics", which is the page as published. */}
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="Free Figma resources and open-source UI kits"
+        index={activeCategories === null}
+        title={meta.title}
+      />
       <SiteHeader navData={navData} />
       <main className="mt-22.5">
         {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}

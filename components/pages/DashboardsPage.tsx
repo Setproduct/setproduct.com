@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Head from "next/head";
+import SeoHead from "../seo/SeoHead";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
@@ -57,11 +57,12 @@ export default function DashboardsPage({ navData }: Props) {
 
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta content={meta.description} name="description" />
-        <link href={meta.canonical} rel="canonical" />
-      </Head>
+      <SeoHead
+        canonical={meta.canonical}
+        description={meta.description}
+        imageAlt="Dashboard templates and UI kits by Setproduct"
+        title={meta.title}
+      />
       <SiteHeader navData={navData} />
       <main className="mt-22.5">
         <Breadcrumbs items={breadcrumbs} />
