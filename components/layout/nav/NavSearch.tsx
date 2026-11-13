@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SEARCH_PLACEHOLDERS, SEARCH_PLACEHOLDER_INTERVAL_MS } from "./navConfig";
+import { SearchIcon } from "../../icons/DecorativeIcons";
 
 /**
  * Desktop navbar search with a rotating placeholder hinting that search covers
@@ -65,7 +66,7 @@ export function NavSearch() {
       </span>
       <input className="hide w-button" type="submit" value="Search" />
       <div className="search-icon-wr">
-        <img alt="" className="search-icon" loading="lazy" src="/images/search.svg" />
+        <SearchIcon className="search-icon" />
       </div>
     </form>
   );

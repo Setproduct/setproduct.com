@@ -56,7 +56,13 @@ function ReadNext({ posts, onBack }: { posts: BlogPostMeta[]; onBack?: () => voi
               >
                 {thumb ? (
                   <span className="blog-read-next-thumb hover-lift-media radius-8">
-                    <img alt="" src={thumb} loading="lazy" decoding="async" className="image-cover" />
+                    <img
+                      alt={`${post.frontmatter.title} cover`}
+                      src={thumb}
+                      loading="lazy"
+                      decoding="async"
+                      className="image-cover"
+                    />
                   </span>
                 ) : null}
                 <span className="blog-read-next-title hover-lift-title text-size-small text-weight-semibold">

@@ -36,6 +36,7 @@ import { CompanyPanel } from "./nav/CompanyPanel";
 import { NavSearch } from "./nav/NavSearch";
 import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
+import { CloseIcon, MenuIcon, SearchIcon } from "../icons/DecorativeIcons";
 
 /** `sizes` of the next/image thumbs in the Resources and UI kits cards. */
 const CARD_IMAGE_SIZES = "158px";
@@ -244,7 +245,14 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
       <div className="container">
         <div className="nav-wrapper div-block">
           <div className="brand">
-            <img alt="" className="nav_logo-image" loading="lazy" src="/images/Vectors-Wrapper.svg" />
+            <img
+              alt="Setproduct"
+              className="nav_logo-image"
+              height={56}
+              loading="lazy"
+              src="/images/Vectors-Wrapper.svg"
+              width={137}
+            />
             <NavLink className="brand-link w-inline-block" href="/" aria-label="Setproduct home" />
           </div>
 
@@ -432,7 +440,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                     type="search"
                   />
                   <button aria-label="Search" className="nav-menu-mob-search-btn" type="submit">
-                    <img alt="" className="search-icon" loading="lazy" src="/images/search.svg" />
+                    <SearchIcon className="search-icon" />
                   </button>
                 </form>
               </div>
@@ -453,8 +461,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
             }}
           >
             <div className="menu-button-img-wr">
-              <img alt="" className="menu-button-img is-burger" loading="lazy" src="/images/menu.svg" />
-              <img alt="" className="menu-button-img is-close" loading="lazy" src="/images/close.svg" />
+              <MenuIcon className="menu-button-img is-burger" />
+              <CloseIcon className="menu-button-img is-close" />
             </div>
           </button>
 

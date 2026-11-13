@@ -10,6 +10,7 @@ import {
   type FooterSocialIconComponent,
 } from "./FooterSocialIcons";
 import ArrowIcon from "../sections/ArrowIcon";
+import { FooterCaretIcon } from "../icons/DecorativeIcons";
 import { useContactModal } from "../modals/ContactModalContext";
 import { useSubscribe } from "../../hooks/useSubscribe";
 import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
@@ -126,7 +127,7 @@ function FooterColumn({ id, group, title, titleHref, collapsible = false, isOpen
             onClick={() => onToggle(id)}
             type="button"
           >
-            <img alt="" className="footer-link-dropdown-icon" loading="lazy" src="/images/Mask.svg" />
+            <FooterCaretIcon className="footer-link-dropdown-icon" />
           </button>
         ) : null}
       </div>
@@ -273,7 +274,14 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
 
               <div className="footer_logo-cta-wr">
                 <div className="footer_logo-wr">
-                  <img alt="" className="footer_logo-img" height={56} loading="lazy" src="/images/Vectors-Wrapper_1.svg" width={137} />
+                  <img
+                    alt="Setproduct"
+                    className="footer_logo-img"
+                    height={56}
+                    loading="lazy"
+                    src="/images/Vectors-Wrapper_1.svg"
+                    width={137}
+                  />
                   <Link aria-label="Setproduct home" className="brand-link w-inline-block" href="/" />
                 </div>
                 {!hideSubscribe ? (

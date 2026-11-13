@@ -15,6 +15,15 @@ type Photo = { src: string; width: number; height: number };
 
 const CDN_PREFIX = "/testimonials/";
 
+// Screenshots are named after the person who wrote them (`Tim_Rupper_-_Jul_2_2`).
+// Deriving the name from the file gives each image a meaningful alt without
+// hand-writing 44 labels that would drift from the files, and everything after
+// the separator is a date stamp that adds nothing for a reader.
+function testimonialAuthor(src: string): string {
+  const base = src.replace(/\.webp$/i, "").split(/_-_|_/)[0];
+  return base.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim() || "Customer";
+}
+
 const TESTIMONIAL_PAGES: Photo[][] = [
   [
     { src: "Tim_Rupper_-_Jul_2_2.webp", width: 755, height: 195 },
@@ -119,7 +128,7 @@ export default function TestimonialsPage({ navData }: Props) {
                             src={photo.src}
                             width={photo.width}
                             height={photo.height}
-                            alt=""
+                            alt={`Customer testimonial from ${testimonialAuthor(photo.src)}`}
                             priority={index < 3}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="image-cover block w-full h-auto"

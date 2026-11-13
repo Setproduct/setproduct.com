@@ -173,7 +173,13 @@ export default function BlogReadNextBar({ post, articleRef }: BlogReadNextBarPro
       >
         {thumb ? (
           <span className="blog-read-next-bar-thumb radius-16">
-            <img alt="" src={thumb} loading="lazy" decoding="async" className="image-cover" />
+            <img
+              alt={`${frontmatter.title} cover`}
+              src={thumb}
+              loading="lazy"
+              decoding="async"
+              className="image-cover"
+            />
           </span>
         ) : null}
         <span className="blog-read-next-bar-text">

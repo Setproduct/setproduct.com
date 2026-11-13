@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatCategoryLabel } from "../../lib/search/format";
 import { blogCategoryHref } from "../../lib/blog/schema";
+import { BreadcrumbIcon } from "../icons/DecorativeIcons";
 
 type BlogHeroProps = {
   title: string;
@@ -114,7 +115,7 @@ export default function BlogHero({
                   <Link href={crumb.href} className="link-block no-margins w-inline-block">
                     <div className="text-size-regular">{crumb.label}</div>
                   </Link>
-                  <img src="/images/Icon.svg" loading="lazy" alt="" className="breadcrump-icon" />
+                  <BreadcrumbIcon className="breadcrump-icon" />
                 </Fragment>
               ))}
               <p className="text-size-regular" aria-current="page">{title}</p>

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BreadcrumbItem } from "../../types/data";
+import { BreadcrumbIcon } from "../icons/DecorativeIcons";
 
 type Props = { items: BreadcrumbItem[] };
 
@@ -11,14 +12,7 @@ export default function Breadcrumbs({ items }: Props) {
         <div className="breadcrump-wr">
           {items.map((item, i) => (
             <React.Fragment key={i}>
-              {i > 0 && (
-                <img
-                  alt=""
-                  className="breadcrump-icon"
-                  loading="lazy"
-                  src="/images/Icon.svg"
-                />
-              )}
+              {i > 0 && <BreadcrumbIcon className="breadcrump-icon" />}
               {item.href ? (
                 <Link className="link-block no-margins w-inline-block" href={item.href}>
                   <div className="text-size-regular">{item.label}</div>

@@ -129,13 +129,13 @@ export default function TemplateBeforeAfter({
         <div className="splitter_handle-wrapper">
           <div className="circle-wrapper">
             <img
-              alt=""
+              alt="Drag to compare the before and after views"
               className="image-cover hide-on-mobile"
               loading="lazy"
               src="/images/Buttons.svg"
             />
             <img
-              alt=""
+              alt="Drag to compare the before and after views"
               className="image-cover hide-on-desktop"
               loading="lazy"
               src="/images/Buttons2.svg"

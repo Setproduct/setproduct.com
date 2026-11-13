@@ -34,6 +34,7 @@ import {
 } from "../../lib/search/highlight";
 import { formatCategoryLabel } from "../../lib/search/format";
 import { SEARCH_SUGGESTIONS } from "../../data/search-suggestions";
+import { SearchIcon } from "../icons/DecorativeIcons";
 import { event as gtagEvent } from "../../lib/gtag";
 import type { NavData } from "../../lib/nav/types";
 
@@ -216,7 +217,7 @@ function ResultRow({
         <div className="hover-lift-media relative w-18 h-18 md:w-32 md:h-24 radius-12 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
-              alt=""
+              alt={`${item.title} cover`}
               fill
               src={item.image}
               sizes="(min-width: 768px) 128px, 72px"
@@ -291,7 +292,7 @@ function TopResultCard({ item, re }: { item: SearchableItem; re: RegExp | null }
         <div className="hover-lift-media relative w-18 h-18 md:w-full md:h-auto md:aspect-video radius-16 shrink-0 overflow-hidden bg-(--light-primary)">
           {item.image ? (
             <Image
-              alt=""
+              alt={`${item.title} cover`}
               fill
               src={item.image}
               sizes="(min-width: 768px) 33vw, 72px"
@@ -819,12 +820,7 @@ export default function SearchPage({ items, navData }: Props) {
                     value="Search"
                   />
                   <div className="search-icon-wr">
-                    <img
-                      alt=""
-                      className="search-icon"
-                      loading="lazy"
-                      src="/images/search.svg"
-                    />
+                    <SearchIcon className="search-icon" />
                   </div>
                 </form>
                 </div>
