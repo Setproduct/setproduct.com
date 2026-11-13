@@ -2647,6 +2647,59 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   cursor: pointer;
 }
 
+/*
+ * Touch target size.
+ *
+ * WCAG 2.2 AA asks for 24x24 CSS px; Lighthouse and this audit use the 48px
+ * figure from the "tap targets" guideline. The desktop design is deliberately
+ * denser than 48px in a few places (the blog category filter, the footer link
+ * list, the share icons), and inflating those boxes on a mouse-driven screen
+ * would visibly change the layout for no benefit.
+ *
+ * So the padding that grows the hit area is applied only under
+ * `(pointer: coarse)`, which is where a finger is actually doing the tapping.
+ * `min-height` keeps a 48px row without pushing siblings apart: the extra
+ * space is transparent padding, not margin.
+ *
+ * Icons inside a decorative wrapper (breadcrumb chevrons, the footer dropdown
+ * carets) are deliberately excluded: they are not interactive, so there is
+ * nothing to tap.
+ */
+@media (pointer: coarse) {
+  /* Blog and freebies category filters: a 48px row, label stays centred. */
+  .blog_list-filters-item,
+  .fs-select_list-1 .link-block,
+  .button-x-small.is-text,
+  .w-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+  }
+
+  /* Footer link columns. On touch the rows tile without gaps and the target
+     is the full width of the column. */
+  .footer .link-block,
+  .footer .footer-link-button {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Share icons and the scroll-up button are square; give them a square 48px
+     box instead of padding, otherwise the icon drifts off centre. */
+  .blogpost_soc-link,
+  .blog-floating-share .blogpost_soc-link {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Text links inside article prose are inline, so padding is what works. */
+  .rich-text-18 a,
+  .freebies_rich-text-component a {
+    padding-block: 6px;
+  }
+}
+
 /* Hover "even zoom": icon scales up uniformly from its center, no vertical
    shift — matching the footer social icons. Transform lives on the <img> so
    it doesn't fight the cascade transform applied inline on the <a> wrapper. */
