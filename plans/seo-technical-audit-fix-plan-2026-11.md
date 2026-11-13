@@ -572,8 +572,64 @@ JSON-LD блоков на главной.
 
 Итог: 2 Errors → 0, 9 Warnings → 2 неустранимых кодом + 1 частичный.
 
-### 10.5. Вопросы к автору (без изменений, из 9.2)
+### 10.5. Вопросы к автору (закрыты ответами)
 
-1. FAQ-ссылки «contact us»: `<button>` внутри текста или `mailto:`?
-2. OG-картинка 1200×630 и иконки: делаешь сам или агент собирает через sharp?
-3. Tap targets: только сенсорные экраны или и десктоп?
+1. FAQ-ссылки «contact us» → **реальные ссылки** `mailto:hello@setproduct.com`.
+2. OG-картинка 1200×630 и иконки → **агент собирает автоматически** через sharp.
+3. Tap targets → **только сенсорные экраны** (`@media (pointer: coarse)`).
+
+Оригинальные формулировки вопросов, на которые давались эти ответы:
+FAQ-ссылки «contact us»: `<button>` внутри текста или `mailto:`? · OG-картинка и иконки: делает автор или агент через sharp? · Tap targets: только сенсорные или и десктоп?
+
+---
+
+## 11. Что фактически сделано (журнал выполнения)
+
+Раздел фиксирует результат, а не намерения. Каждый пункт проверен сборкой `npm run build` и HTTP-запросом к `next start`.
+
+### 11.1. Коммиты
+
+| Коммит | Что закрывает |
+|---|---|
+| `a1d92e5` | Остальные `href="#"` → `<button>` / `mailto`, сброс оформления для кнопки-иконки шеринга |
+| `3a8e564` | `SiteHeader` → `<header>`, `SiteFooter` → `<footer>` (landmarks) |
+| `c887beb` | `SeoHead`, OG-карточка 1200×630, набор PNG/ICO-иконок, `site.webmanifest`, `theme-color` |
+| `2e14b8a` | Метаданные всех контентных страниц переведены на `SeoHead` |
+| `81dd482` | Product + BreadcrumbList JSON-LD в `GenericTemplatePage` |
+| `2082a4d` | `ogType: "product"`, `og:image:type` для webp, вложенный breadcrumb-трейл |
+| `7662d5a` | Tap targets под `@media (pointer: coarse)` |
+| `d4ee804` | Чипы-фильтры главной → `<button aria-pressed>` |
+
+### 11.2. Проверенные факты по 11 пунктам
+
+Прогон на локальной сборке (`npx next start -p 3111`), не на прод-домене.
+
+1. **Image alt (Error)** — на главной 57 `<img>`, из них без `alt` — 0. Декоративные иконки (поиск, меню, закрытие, крошка, карет футера) заменены на inline SVG с `aria-hidden`.
+2. **Render-blocking** — принятый риск. Четыре CSS-чанка идут `<link rel="stylesheet">` в `<head>`; менять на inline-критический CSS без пересборки Tailwind-пайплайна нельзя.
+3. **Compression** — ложное срабатывание. Проверка `Accept-Encoding: gzip, br` в заголовке ответа `content-encoding` на локальном `next start` не возвращает; сжатие делает edge Vercel, локально его нет по определению.
+4. **Robots meta** — есть на всех страницах. Индексируемые: `index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1`. `/search` отдаёт `noindex, follow`.
+5. **Form labels (Error)** — honeypot `website` в четырёх формах обёрнут в `aria-hidden` контейнер и получил `aria-label`.
+6. **Landmarks** — на главной ровно по одному `<header>`, `<footer>`, `<main>`, `<nav>`.
+7. **Tap targets** — расширение до 48px живёт только под `@media (pointer: coarse)`. Десктопный прогон сканера по-прежнему увидит плотные строки: это осознанное решение из ответа 3.
+8. **Structured data** — главная: `Organization` + `WebSite` с `SearchAction` на `/search?query={search_term_string}`. Все детальные страницы шаблонов отдают `Product` (с `Offer` и `Brand`) + `BreadcrumbList` из трёх уровней.
+9. **PWA metadata** — `favicon.ico`, `favicon-32.png`, `favicon-16.png`, `apple-touch-icon.png` 180×180, `site.webmanifest` с иконками 192/512 и `theme-color #ffffff`.
+10. **OG/Twitter** — `og:site_name`, `og:locale`, `og:image` с абсолютным URL, `width` 1200, `height` 630, `alt`, `type`. Twitter-теги отдаются через `name`, а не `property`. Карточка — `/images/og-setproduct-home.jpg` (JPEG, 119 934 байта).
+11. **Link format** — `href="#"` в `components/`, `pages/`, `data/`, `lib/` нет. Единственное вхождение строки — комментарий в `components/layout/nav/navConfig.ts`, объясняющий, почему у пункта модалки нет `href`.
+
+### 11.3. Проверка JSON-LD на трёх ветках роутинга шаблонов
+
+Роут `/templates/[slug]` рендерит три разных компонента, поэтому проверены все три:
+
+| URL | Компонент | `@type` в ответе |
+|---|---|---|
+| `/templates/eclipse` | `GenericTemplatePage` | `Product`, `Offer` ($88.00 USD), `Brand`, `BreadcrumbList` (3 записи) |
+| `/templates/charts` | `ChartsTemplatePage` | то же |
+| `/templates/landing` | `TemplateDetailPage` | то же |
+
+### 11.4. Известное ограничение
+
+`/blog?category=...` и `/freebies?category=...` в статическом HTML отдают `index`, потому что выбранная категория появляется только после гидратации (`useState` + `useEffect`). На SSG-этапе состояние всегда `null`. Смягчение — канонический URL фильтрованной страницы указывает на чистый листинг, поэтому дубли не накапливаются. Полное решение потребовало бы читать query на сервере, то есть перевести листинги на SSR или ISR.
+
+### 11.5. Воспроизводимость ассетов
+
+`npm run seo:assets` пересобирает OG-карточку и весь набор иконок из `public/images/setproduct2.webp`. Скрипт идемпотентен, ICO собирается вручную (6-байтный заголовок + 16-байтная запись + вложенный PNG). Новые иконки руками не рисуются.
