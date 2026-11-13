@@ -169,7 +169,10 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
   };
 
   return (
-    <div className="section">
+    // A real <footer> element exposes the contentinfo landmark that the
+    // accessibility audit looks for; the outer class only adds position:
+    // relative, so swapping the tag changes nothing visually.
+    <footer className="section">
       <div className="section-padding bottom-80">
         <div className="container">
           <div className="footer" onClick={handleFooterClick}>
@@ -367,6 +370,6 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }

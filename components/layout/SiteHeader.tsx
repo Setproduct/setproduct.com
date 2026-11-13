@@ -80,7 +80,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const [catalogue, setCatalogue] = useState<NavCatalogue | null>(null);
   const catalogueRequestedRef = useRef(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const navbarRef = useRef<HTMLDivElement | null>(null);
+  const navbarRef = useRef<HTMLElement | null>(null);
   const { openContactModal } = useContactModal();
   const router = useRouter();
   const currentPath = router.pathname;
@@ -236,11 +236,13 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   }));
 
   return (
-    <div
+    // A real <header> element carries the banner landmark on its own, so the
+    // explicit role="banner" is both redundant and rejected by validators when
+    // combined with a landmark-bearing element.
+    <header
       ref={navbarRef}
       className={`navbar w-nav${isMobileNavOpen ? " is-mobile-open" : ""}${menu.isSwitching ? " is-switching" : ""}`}
       data-collapse="medium"
-      role="banner"
     >
       <div className="container">
         <div className="nav-wrapper div-block">
@@ -482,6 +484,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
