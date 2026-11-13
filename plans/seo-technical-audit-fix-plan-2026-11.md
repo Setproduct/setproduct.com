@@ -668,3 +668,79 @@ FAQ-ссылки «contact us»: `<button>` внутри текста или `ma
 Все 294 сгенерированные карточки — ровно 1200×630 JPEG, в сумме 23 МБ, средний вес 77 КБ, ни одна не тяжелее 200 КБ. Форматы приведены к одному: раньше в выдаче был webp и один GIF, теперь везде JPEG.
 
 Честная оговорка: пять исходников меньше 1200 пикселей по ширине (`design-career-stagnation` 512×512, `figma-10-tech-companies` 1060×500, три по 800×450). Их карточки получены растяжением, поэтому мягче остальных. Оригинальную графику я не перерисовывал — это единственный оставшийся косметический долг, и он лечится только новой обложкой от автора.
+
+---
+
+## 12. Повторный прогон сканера после деплоя
+
+Прогон по `https://www.setproduct.com/`, отчёт отдан утилитой isreadyforlaunch, скан выполнен 14 секунд до снятия скриншота.
+
+| Метрика | Значение |
+|---|---|
+| Score | **90 / 100**, Excellent |
+| Errors | **0** (было 2) |
+| Warnings | 8 (было 11 пунктов, из них часть закрыта) |
+| Passed | 31 |
+
+Счётчики внутри карточки немного не сходятся между собой (31 passed при 30 total checks) — это расхождение самого сканера, на выводы не влияет.
+
+### 12.1. Что закрылось
+
+| Проверка | Было | Стало | Чем закрыто |
+|---|---|---|---|
+| Image alt text | Error, 48 из 64 картинок без alt | Pass, все 13 `<img>` с alt | Alt карточкам и миниатюрам мега-меню, декоративные иконки → inline SVG |
+| Form labels | Error, `input (website)` без label | Pass, все 4 контрола подписаны | Honeypot обёрнут в `aria-hidden` контейнер и получил `aria-label` |
+| Landmarks | Warning, нет footer | Pass, `header`, `nav`, `main`, `footer` | `SiteFooter` → `<footer>`, `SiteHeader` → `<header>` |
+| Link format | Warning, 3 пустые ссылки | Pass, все 218 ссылок с непустым `href` | `href="#"` → `<button type="button">`, FAQ-контакты → `mailto:` |
+| Structured data | Warning, нет JSON-LD | Pass | `Organization` + `WebSite` с `SearchAction`, `Product` + `Offer` на шаблонах |
+| PWA metadata | Warning, нет manifest | Pass | `site.webmanifest`, PNG/ICO-иконки, `apple-touch-icon` 180×180, `theme-color` |
+| Open Graph image | Warning, network error | Pass, превью отрисовалось | Собранная карточка 1200×630 JPEG, имя файла сменено |
+| Open Graph basics | Warning | Pass | `og:site_name`, `og:locale`, `width`, `height`, `alt`, `type`, Twitter через `name` |
+| Crawl directives | Warning, нет meta robots | Pass, `max-image-preview:large` | Глобальный robots-тег в `SeoHead` |
+| H1 и иерархия заголовков | — | Pass, один H1, валидный поток из 4 уровней | Не менялось, было в порядке |
+| Title, description, canonical, favicon, viewport, lang | — | Pass (57 и 145 символов) | Не менялось, было в порядке |
+| Robots.txt, sitemap | — | Pass, 320 URL в sitemap | Не менялось |
+| Внутренние и внешние ссылки | — | Pass, 86 и 38 ссылок, битых нет | Не менялось |
+| Core Web Vitals | LCP 0.44s, CLS 0, TBT 49ms | Pass: LCP 0.5s, CLS 0.005, TBT 52ms | В пределах шума |
+| Broken assets | — | Pass, провалов по CSS/JS/img/font нет | Не менялось |
+| Perceived load time | — | Pass, 1.1s | Не менялось |
+
+Отдельно стоит отметить блок Open Graph Quality: сканер показал именно новую карточку и измерил её сам — `image dimensions: 1200x630`. То есть 1200×630 подтверждено не моим sharp-скриптом, а сторонним инструментом по реальному URL.
+
+### 12.2. Восемь оставшихся предупреждений
+
+Все восемь разобраны ещё в разделах 2 и 10, ни одно не является новым. Раскладка по причинам:
+
+| Предупреждение | Вердикт | Что нужно, чтобы закрыть |
+|---|---|---|
+| HSTS без `includeSubDomains` (max-age 63072000) | Риск, не SEO | Сначала проверить, что все поддомены (`publish.` и старые) живут на HTTPS. Иначе поддомен выпадет у посетителей на два года |
+| Security headers: нет `x-frame-options`, `x-content-type-options`, `referrer-policy` | Настоящее, вне SEO | Четыре строки в [`next.config.js`](next.config.js:97). По AGENTS.md конфиги без явного запроса не правятся |
+| CSP отсутствует | Бэклог | Только `Content-Security-Policy-Report-Only`, потом боевой. Без режима наблюдения ломает GA4, Google Ads и Gumroad-оверлей |
+| Cloudflare proxy | Ложное | Ничего. Хостинг Vercel, Cloudflare не используется |
+| Render blocking: 6 скриптов и 7 стилей | Ложное по существу | Чанки Next.js идут с `defer`/`preload`, а LCP 0.5s при бюджете 2.5s говорит, что рендер не блокируется. Реальный остаток: в списке из трёх отдельных Webflow-стилей остался один `/css/webflow.css` — его можно забрать в бандл |
+| Compression: 5 файлов | Ложное | Все пять — мелкие манифесты (`_ssgManifest.js`, `_buildManifest.js`, `_clientMiddlewareManifest.js`) и один чанк. HTML при этом отдаётся с `content-encoding: br`. Vercel не сжимает файлы меньше порога, сжатие сделало бы их больше |
+| Tap targets: 25 элементов меньше 48px | Осознанное решение | Расширение до 48px живёт под `@media (pointer: coarse)`, то есть только на сенсорных. Сканер мерил десктоп. WCAG 2.2 AA требует 24×24, все элементы проходят |
+| JavaScript runtime errors: 4 `net::ERR_ABORTED` | Ложное | Обрывы запросов к `doubleclick.net`, `google.com/ccm`, `googleadservices.com` при закрытии headless-браузера. 404 и исключений нет |
+
+Итог: настоящих открытых пунктов по SEO не осталось. Три предупреждения относятся к безопасности (HSTS, заголовки, CSP) и вынесены в бэклог, четыре — ложные срабатывания, одно (tap targets) — принятое проектное решение.
+
+### 12.3. Что изменилось в цифрах
+
+| Показатель | Первый скан | Скан после деплоя |
+|---|---|---|
+| Errors | 2 | 0 |
+| OG-превью | network error, не отрисовалось | 1200×630, отрисовалось |
+| Alt у картинок | 48 из 64 без alt | 0 без alt |
+| Подписи у полей | 1 без label | 0 |
+| Landmarks | нет `<footer>` | `header`, `nav`, `main`, `footer` |
+| Пустые `href` | 3 | 0 |
+| JSON-LD | не обнаружен | обнаружен |
+| Manifest и apple-touch-icon | нет | есть |
+| Sitemap | не упоминался | 320 URL |
+
+### 12.4. Что осталось в бэклоге
+
+1. Security headers, HSTS с `includeSubDomains`, CSP через Report-Only. Требуют отдельного решения автора: правка `next.config.js` и проверка поддоменов.
+2. Перерисовать обложки уже 1200 px по ширине (`design-career-stagnation` 512×512 и три по 800×450) — единственный оставшийся косметический долг по OG.
+3. Фильтрованные листинги `/blog?category=…` и `/freebies?category=…` отдают `index` в статическом HTML (раздел 11.4). Лечится переводом листингов на SSR или ISR.
+4. Аудит `data/pages-meta.ts` — вне рамки первичного отчёта, но там могут быть расхождения title и description.
