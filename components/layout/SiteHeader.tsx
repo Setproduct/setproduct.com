@@ -93,7 +93,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     currentPath.startsWith("/templates/");
   const isFreebiesActive = currentPath === "/freebies" || currentPath.startsWith("/freebies/");
   const isInformationActive = INFORMATION_LINKS.some(
-    (link) => !link.modal && link.href !== "#" && isPathActive(link.href),
+    (link) => !link.modal && isPathActive(link.href),
   );
 
   // Lock body scroll while the drawer is open, expose the live navbar height

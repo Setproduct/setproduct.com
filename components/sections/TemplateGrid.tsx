@@ -26,16 +26,13 @@ export default function TemplateGrid({ products, visibleCount, onLoadMore, varia
         <>
           <div className="spacer-40" />
           <div className="main_blog-liist2-btn-wr">
-            <a
+            <button
               className="button-small outlined w-inline-block"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onLoadMore();
-              }}
+              onClick={onLoadMore}
+              type="button"
             >
               <div className="text-size-medium text-weight-bold">Load more</div>
-            </a>
+            </button>
           </div>
         </>
       )}

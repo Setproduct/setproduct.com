@@ -109,11 +109,18 @@ export const DESIGN_KITS: Array<{ href: string; label: string; category: string 
   { href: "/bundle", label: "Bundle", category: BUNDLE_CATEGORY },
 ];
 
-export const INFORMATION_LINKS: Array<{ href: string; label: string; modal?: boolean }> = [
+// An entry either navigates (`href`) or opens the contact modal (`modal: true`).
+// The modal entry has no href on purpose: a placeholder `href="#"` renders an
+// empty link that crawlers and screen readers both treat as broken.
+export type InformationLink =
+  | { href: string; label: string; modal?: false }
+  | { label: string; modal: true };
+
+export const INFORMATION_LINKS: InformationLink[] = [
   { href: "/testimonials", label: "Testimonials" },
   { href: "/legal/license", label: "License" },
   { href: "/legal/refunds-policy", label: "Refund policy" },
-  { href: "#", label: "Contact us", modal: true },
+  { label: "Contact us", modal: true },
 ];
 
 // Categories surfaced in the nav dropdown. The list mirrors FREEBIES_CATEGORIES

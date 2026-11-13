@@ -56,14 +56,14 @@ export function CompanyPanel({ state, isCurrent, onContact }: CompanyPanelProps)
                 <div className="nav-links is-1-column">
                   {INFORMATION_LINKS.map((link) =>
                     link.modal ? (
-                      <a
+                      <button
                         className="link-block w-inline-block"
-                        href={link.href}
                         key={link.label}
-                        onClick={(e) => { e.preventDefault(); onContact("company_panel_desktop"); }}
+                        onClick={() => onContact("company_panel_desktop")}
+                        type="button"
                       >
                         <div className="text-size-regular">{link.label}</div>
-                      </a>
+                      </button>
                     ) : (
                       <NavLink className="link-block w-inline-block" href={link.href} key={link.label}>
                         <div className="text-size-regular">{link.label}</div>
