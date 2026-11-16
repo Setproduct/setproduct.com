@@ -3559,6 +3559,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     gap: calc(48 * var(--em-px));
   }
 
+  /* Nine cards: 2 columns still lands on a clean 4 rows + 1. */
   .home-resources {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -17,7 +17,7 @@ export default function HomeResources({ items }: Props) {
             <div>
               <h2 className="heading-style-h2">Free resources</h2>
               <div className="spacer-8" />
-              <p className="text-size-large">Figma files, components and open source tools you can use today.</p>
+              <p className="text-size-large">Components, icons and open source tools you can use today.</p>
             </div>
             <Link className="button secondary w-inline-block" href="/freebies">
               <div className="text-size-large text-weight-bold">All resources</div>

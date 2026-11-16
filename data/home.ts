@@ -16,17 +16,28 @@ export const HOME_MOST_READ_COUNT = 6;
 export const HOME_KITS_COUNT = 6;
 
 /**
- * Resources shown on the home page, ordered by GA4 entrances (12.07–09.10.2026).
- * Slugs from data/freebies-listing.ts.
+ * Resources shown on the home page: the newest additions, nine of them.
+ *
+ * Two rules, both from the author (16.11.2026):
+ * 1. No Figma files at all. The catalogue keeps them under "Figma templates",
+ *    but the home page sends people to tools, components and apps instead.
+ * 2. Newest first. `data/freebies-listing.ts` has no date field, so the order
+ *    below is the git history of that file (date a slug was first added).
+ *
+ * When you add a resource, put its slug at the top of this list and drop the
+ * last one. A new Figma file does not go here at all.
  */
 export const HOME_FREEBIE_SLUGS = [
-  "m3e-canvas",
-  "ios-datepickers",
-  "driver-js",
-  "free-ios-ui-kit",
-  "website-template",
-  "appbar-ui",
-];
+  "ramka", // 11.11.2026
+  "desigma", // 09.11.2026
+  "looseleaf", // 09.11.2026
+  "react-useanimations", // 04.11.2026
+  "matita-icons", // 23.10.2026
+  "cleanyourtv", // 21.10.2026
+  "gr8r-task-management", // 16.10.2026
+  "spectrum-ui", // 14.10.2026
+  "compositor", // 12.10.2026
+] as const;
 
 /**
  * Index of the component guides (content/blog/*-ui-design.mdx), alphabetical.

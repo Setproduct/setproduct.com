@@ -16,7 +16,7 @@ import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_KITS_COUNT } from "../../data/home";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "../../lib/seo/schema";
-import { getPublishLinkProps, PUBLISH_OFFER } from "../../lib/publish";
+import { getPublishLinkProps } from "../../lib/publish";
 import { handleHomeAuxClick, handleHomeClick, useHomeSectionViews } from "../../lib/home/analytics";
 import type { NavBlogPost, NavData } from "../../lib/nav/types";
 import type { FreebieItem } from "../../types/data";
@@ -97,14 +97,10 @@ export default function HomePage({
                       <div className="button-icon w-embed"><ArrowIcon /></div>
                     </a>
                   </div>
-                  <div className="spacer-12" />
-                  <p className="text-size-small text-align-center">
-                    Paid posts from ${PUBLISH_OFFER.priceFrom}, live within {PUBLISH_OFFER.turnaround}
-                  </p>
                 </div>
               </div>
 
-              <div className="spacer-40" />
+              <div className="spacer-24" />
 
               <div data-home-section="feed">
                 <BlogPostsHome posts={feedPosts} />
