@@ -78,6 +78,40 @@ export function buildBreadcrumbJsonLd(
 }
 
 /**
+ * CollectionPage JSON-LD for the /ui-guides hub. The ItemList carries every
+ * guide in page order, which is how the page actually renders them, so a
+ * crawler sees the same 42 links a reader does.
+ */
+export function buildUiGuidesJsonLd(
+  pageUrl: string,
+  data: {
+    startHere: Array<{ slug: string; title: string }>;
+    groups: Array<{ title: string; guides: Array<{ slug: string; title: string }> }>;
+  },
+): Record<string, unknown> {
+  const items = data.groups.flatMap((group) =>
+    group.guides.map((guide) => ({ ...guide, groupTitle: group.title })),
+  );
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "UI design guides",
+    url: pageUrl,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((guide, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: guide.title,
+        url: `${SITE_URL}/blog/${guide.slug}`,
+      })),
+    },
+  };
+}
+
+/**
  * FAQPage JSON-LD. Rendered alongside BlogPosting when a post defines `faq`
  * items in frontmatter. Drives the FAQ rich result in Google and feeds
  * AI Overview extraction.

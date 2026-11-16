@@ -121,4 +121,12 @@ export const PAGE_META: Record<string, PageMeta> = {
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com/search",
   },
+  "ui-guides": {
+    title: "UI design guides for 35 components and 7 visual styles in 2026",
+    description:
+      "Find the right UI design guide in one click. Anatomy, states and accessibility for 35 components and 7 visual styles, with real product examples.",
+    ogImage:
+      "/images/setproduct2.webp",
+    canonical: "https://www.setproduct.com/ui-guides",
+  },
 };

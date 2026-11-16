@@ -23,6 +23,7 @@ const STATIC_PATHS = [
   "/legal/terms-of-paid-posts",
   "/mobile",
   "/testimonials",
+  "/ui-guides",
   "/websites",
 ];
 
