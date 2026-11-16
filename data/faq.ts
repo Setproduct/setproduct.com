@@ -58,7 +58,54 @@ const DASHBOARDS_EXTRA_FAQ: FaqItem[] = [
   },
 ];
 
+// Home page FAQ: the journal first, the publishing offer third (people who
+// scroll this far are deciding whether to trust the site), kits last.
 const HOME_FAQ: FaqItem[] = [
+  {
+    question: "What is Setproduct?",
+    answerHtml:
+      'Setproduct is an independent magazine about building and growing tech products. We publish practical guides on UI design, startups, growth and AI, and we make Figma UI kits and free resources for product teams. About 17,000 people read the <a class="span-link" href="/blog">blog</a> every month.',
+  },
+  {
+    question: "Who writes the articles?",
+    answerHtml:
+      'Most guides are written by <a class="span-link" href="/authors/roman-kamushken">Roman Kamushken</a>, the product designer behind the Setproduct UI kits, together with a small group of practitioners. Every article is edited for one thing: you should be able to use it at work the same day.',
+  },
+  {
+    question: "How can I publish an article about my product?",
+    answerHtml:
+      'Pick a package on <a class="span-link" href="https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish" data-publish-location="faq" target="_blank" rel="noopener noreferrer">publish.setproduct.com</a>, upload your draft and your post goes live within 24 hours. One dofollow link costs $288, two links cost $348, and the blog has a domain rating of 42. The full rules are in the <a class="span-link" href="/legal/terms-of-paid-posts">terms of paid posts</a>.',
+  },
+  {
+    question: "What topics does the blog cover?",
+    answerHtml:
+      'Component guides (buttons, tabs, tables, date pickers and 30 more), design trends, running a SaaS, growth on a small budget, SEO and AI tools for product teams. Pick a topic on the <a class="span-link" href="/blog">blog</a> or start with the most read posts above.',
+  },
+  {
+    question: "Do you offer a free Figma UI kit?",
+    answerHtml:
+      'Yes. The <a class="span-link" href="/freebies">resources</a> section has free Figma files, components and open source tools. Duplicate them into your own Figma account at no cost and check the build quality before buying a full kit.',
+  },
+  {
+    question: "Which UI kit should I start with?",
+    answerHtml:
+      'Start with the kit that matches your product. For SaaS, try <a class="span-link" href="/templates/material-you">Material You</a> or <a class="span-link" href="/templates/eclipse">Eclipse</a>. For an AI product, <a class="span-link" href="/templates/nocra">Nocra</a>. For mobile, <a class="span-link" href="/templates/mobile-x">Mobile X</a>. For data viz, <a class="span-link" href="/templates/charts">Charts</a>. Browse everything in the <a class="span-link" href="/all">full catalog</a>.',
+  },
+  {
+    question: "Can I build commercial projects with your kits?",
+    answerHtml:
+      'Yes. One kit covers an unlimited number of commercial projects for a single person or company, with no per-project fee. Pick the license tier that matches your team size, details are on the <a class="span-link" href="/legal/license">license page</a>.',
+  },
+  {
+    question: "I have a project. Can I hire you?",
+    answerHtml:
+      'Yes, we take on custom design and development work, often on top of our own Figma libraries. Tell us about your brief, budget and timeline through the <a class="span-link" data-contact href="mailto:hello@setproduct.com">contact form</a>, and we\'ll let you know if it\'s a fit.',
+  },
+];
+
+// Previous home FAQ (AI gallery, kits, payments). Kept for the inspiration
+// and catalogue pages that may want these answers later; not rendered now.
+export const LEGACY_HOME_FAQ: FaqItem[] = [
   // GROUP A — AI UI inspiration gallery
   {
     question: "What is the AI UI inspiration gallery?",
