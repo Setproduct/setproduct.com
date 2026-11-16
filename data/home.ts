@@ -39,41 +39,6 @@ export const HOME_FREEBIE_SLUGS = [
   "compositor", // 12.10.2026
 ] as const;
 
-/**
- * Index of the component guides (content/blog/*-ui-design.mdx), alphabetical.
- * Labels are short component names in sentence case. Add a row when a new
- * guide is published.
- */
-export const HOME_UI_GUIDES: Array<{ slug: string; label: string }> = [
-  { slug: "accordion-ui-design", label: "Accordion" },
-  { slug: "ai-chat-interface-ui-design", label: "AI chat interface" },
-  { slug: "appbar-ui-design", label: "App bar" },
-  { slug: "avatar-ui-design", label: "Avatar" },
-  { slug: "badge-ui-design", label: "Badge" },
-  { slug: "breadcrumbs-ui-design", label: "Breadcrumbs" },
-  { slug: "button-ui-design", label: "Button" },
-  { slug: "calendar-ui-design", label: "Calendar" },
-  { slug: "carousel-ui-design", label: "Carousel" },
-  { slug: "checkbox-ui-design", label: "Checkbox" },
-  { slug: "chip-ui-design", label: "Chip" },
-  { slug: "dashboard-ui-design", label: "Dashboard" },
-  { slug: "data-table-ui-design", label: "Data table" },
-  { slug: "date-picker-ui-design", label: "Date picker" },
-  { slug: "dropdown-ui-design", label: "Dropdown" },
-  { slug: "empty-state-ui-design", label: "Empty state" },
-  { slug: "filter-ui-design", label: "Filter" },
-  { slug: "input-ui-design", label: "Input field" },
-  { slug: "notifications-ui-design", label: "Notifications" },
-  { slug: "pagination-ui-design", label: "Pagination" },
-  { slug: "pricing-ui-design", label: "Pricing page" },
-  { slug: "radio-button-ui-design", label: "Radio button" },
-  { slug: "search-ui-design", label: "Search" },
-  { slug: "settings-ui-design", label: "Settings" },
-  { slug: "sidebar-navigation-ui-design", label: "Sidebar navigation" },
-  { slug: "slider-ui-design", label: "Slider" },
-  { slug: "stepper-ui-design", label: "Stepper" },
-  { slug: "steps-ui-design", label: "Steps" },
-  { slug: "tabs-ui-design", label: "Tabs" },
-  { slug: "toggle-switch-ui-design", label: "Toggle switch" },
-  { slug: "tooltip-ui-design", label: "Tooltip" },
-];
+// The UI guides list that sits under "Most read" now comes from
+// data/ui-guides.ts (UI_COMPONENT_GUIDES), so the home page, the navbar and
+// the /ui-guides hub share one index.

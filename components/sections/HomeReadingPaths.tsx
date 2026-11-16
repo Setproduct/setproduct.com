@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ArrowIcon from "./ArrowIcon";
-import { HOME_UI_GUIDES } from "../../data/home";
+import { UI_COMPONENT_GUIDES } from "../../data/ui-guides";
 import type { NavBlogPost } from "../../lib/nav/types";
 
 type Props = {
@@ -50,12 +50,12 @@ export default function HomeReadingPaths({ mostRead }: Props) {
               <h2 className="heading-style-h3">UI component guides</h2>
               <div className="spacer-8" />
               <p className="text-size-regular">
-                {HOME_UI_GUIDES.length} in-depth guides on anatomy, states and accessibility of the components
-                every product needs.
+                {UI_COMPONENT_GUIDES.length} in-depth guides on anatomy, states and accessibility of the
+                components every product needs.
               </p>
               <div className="spacer-24" />
               <ul className="home-guides">
-                {HOME_UI_GUIDES.map((guide, index) => (
+                {UI_COMPONENT_GUIDES.map((guide, index) => (
                   <li key={guide.slug} data-home-position={index + 1}>
                     <Link className="home-guides-link" href={`/blog/${guide.slug}`}>
                       {guide.label}
