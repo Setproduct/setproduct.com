@@ -63,7 +63,12 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
         <div className="main_blog-liist2-wr w-dyn-list">
           <div className="main_blog-liist2 w-dyn-items" role="list">
             {filteredPosts.map((post, index) => (
-              <div key={post.slug} className="main_blog-liist2-item w-dyn-item hover-lift is-large" role="listitem">
+              <div
+                key={post.slug}
+                className="main_blog-liist2-item w-dyn-item hover-lift is-large"
+                data-home-position={index + 1}
+                role="listitem"
+              >
                 <div className="main_blog-liist2-item-wr hover-lift-media">
                   <div className="main_blog-liist2-item-info">
                     <div className="category-tag">

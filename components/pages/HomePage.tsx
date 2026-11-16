@@ -14,6 +14,7 @@ import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "../../lib/seo/schema";
 import { getPublishLinkProps } from "../../lib/publish";
+import { handleHomeAuxClick, handleHomeClick, useHomeSectionViews } from "../../lib/home/analytics";
 import type { NavBlogPost, NavData } from "../../lib/nav/types";
 
 const HOME_TEMPLATES_INITIAL = 15;
@@ -29,6 +30,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
   const meta = PAGE_META.index;
   const faq = PAGE_FAQ.index ?? [];
   const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
+  useHomeSectionViews();
 
   // Organization and WebSite describe the whole site, so they belong to the
   // home page only; every other URL gets its own local schema instead.
@@ -48,11 +50,11 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
         title={meta.title}
       />
       <SiteHeader navData={navData} blogPosts={blogPosts} />
-      <main className="mt-18">
+      <main className="mt-18" onClick={handleHomeClick} onAuxClick={handleHomeAuxClick}>
         <div className="section">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
-              <div className="main_hero-section">
+              <div className="main_hero-section" data-home-section="hero">
                 <div className="heading-center-wr">
                   <div className="max-width-900">
                     <h1 className="heading-style-h1">
@@ -84,12 +86,14 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
 
               <div className="spacer-40" />
 
-              <BlogPostsHome posts={blogPosts} categories={HOME_BLOG_CATEGORIES} />
+              <div data-home-section="feed">
+                <BlogPostsHome posts={blogPosts} categories={HOME_BLOG_CATEGORIES} />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="section">
+        <div className="section" data-home-section="kits">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
               <div className="heading-center-wr mob-align-left">
@@ -107,7 +111,9 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
         </div>
 
         {faq.length > 0 && (
-          <FaqSection items={faq} title="Your questions answered" />
+          <div data-home-section="faq">
+            <FaqSection items={faq} title="Your questions answered" />
+          </div>
         )}
       </main>
       <SiteFooter navData={navData} blogPosts={blogPosts} />

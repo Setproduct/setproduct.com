@@ -45,6 +45,7 @@ export type PublishLocation =
   | "footer"
   | "footer_band"
   | "home_hero"
+  | "home_band"
   | "faq"
   | "blog_inline"
   | "blog_sidebar"
