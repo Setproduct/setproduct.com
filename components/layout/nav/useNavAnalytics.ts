@@ -5,14 +5,15 @@ import {
   NAV_MENU_ID,
   describeHref,
   getNavLinkType,
-  parsePrice,
   trackNav,
 } from "../../../lib/nav/analytics";
-import { DESIGN_KITS, NAV_BLOG_LATEST, NAV_OPEN_TRACK_DELAY_MS } from "./navConfig";
+import { NAV_BLOG_LATEST, NAV_DESIGN_KITS_ROW, NAV_OPEN_TRACK_DELAY_MS } from "./navConfig";
 import type { CategoryMenuKey } from "./navConfig";
 import type { MegaMenuState, MenuCategories } from "./useMegaMenuState";
 
-// Human-readable category for reports (matches what the user saw).
+// Human-readable category for reports (matches what the user saw). The kit
+// shelf inside Resources reports as its own value, so it never mixes with the
+// free categories.
 function categoryLabel(
   menuKey: string,
   category: string | null,
@@ -22,12 +23,10 @@ function categoryLabel(
     if (category === null) return "popular";
     if (category === NAV_BLOG_LATEST) return "latest";
   }
-  if (category === null) return "all";
+  if (category === NAV_DESIGN_KITS_ROW) return "design_kits";
+  if (category === null) return menuKey === "freebies" ? "latest" : "all";
   if (menuKey === "inspiration") {
     return inspirationCategories.find((c) => c.slug === category)?.label ?? category;
-  }
-  if (menuKey === "designKits") {
-    return DESIGN_KITS.find((k) => k.category === category)?.label ?? category;
   }
   return category;
 }
@@ -48,7 +47,6 @@ export function useNavAnalytics(
     inspiration: null,
     tutorials: null,
     freebies: null,
-    designKits: null,
   });
 
   // Count a panel as opened once it has stayed open for a moment. The source
@@ -83,9 +81,6 @@ export function useNavAnalytics(
   useEffect(() => trackCategoryView("freebies", categories.freebies),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [categories.freebies]);
-  useEffect(() => trackCategoryView("designKits", categories.designKits),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [categories.designKits]);
 
   // One delegated capture listener for every link in the navbar menus. Only
   // elements inside a [data-nav-menu] wrapper are tracked, so the logo, search
@@ -128,16 +123,8 @@ export function useNavAnalytics(
       link_url: link?.url,
       outbound: link?.outbound,
     });
-
-    if (menuKey === "designKits" && linkType === "card_cta") {
-      trackNav("nav_buy_click", {
-        menu_name: menuName,
-        category,
-        item_title: itemTitle,
-        value: parsePrice(label),
-        currency: "USD",
-      });
-    }
+    // nav_buy_click retired with the UI kits panel: the kit shelf in Resources
+    // has no price buttons, the buy path lives on the template pages.
   };
 
   return { handleNavClickCapture };

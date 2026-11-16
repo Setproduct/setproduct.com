@@ -4,7 +4,7 @@ import { event } from "../gtag";
  * GA4 instrumentation for the navbar mega-menu.
  *
  * Internal menu keys in SiteHeader are historical ("tutorials", "freebies",
- * "designKits"…). Reports use the stable, user-facing names below so renaming
+ * "information"…). Reports use the stable, user-facing names below so renaming
  * a state key never splits the data.
  */
 export const NAV_MENU_ID: Record<string, string> = {
@@ -13,7 +13,6 @@ export const NAV_MENU_ID: Record<string, string> = {
   tutorials: "magazine",
   guides: "ui_guides",
   freebies: "resources",
-  designKits: "ui_kits",
   information: "company",
 };
 

@@ -8,18 +8,15 @@ import { useContactModal } from "../modals/ContactModalContext";
 // import LaunchAppCallout from "./LaunchAppCallout";
 import type { InspirationItem } from "../../types/data";
 import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
-import { getGumroadLinkProps } from "../../lib/gumroad";
 import { getPublishLinkProps } from "../../lib/publish";
 import { trackNav } from "../../lib/nav/analytics";
 import {
-  DESIGN_KITS,
   INFORMATION_LINKS,
-  INSPIRATION_BADGE_STYLE,
-  INSPIRATION_LABEL_STYLE,
   KIT_PREVIEWS,
   NAV_BLOG_CATEGORIES,
   NAV_BLOG_LATEST,
-  NAV_FREEBIE_CATEGORIES,
+  NAV_DESIGN_KITS_ROW,
+  NAV_RESOURCE_ROWS,
   getBlogPreviews,
   getInspirationPreviews,
   shuffle,
@@ -40,7 +37,7 @@ import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
 import { CloseIcon, MenuIcon, SearchIcon } from "../icons/DecorativeIcons";
 
-/** `sizes` of the next/image thumbs in the Resources and UI kits cards. */
+/** `sizes` of the next/image thumbs in the Resources cards. */
 const CARD_IMAGE_SIZES = "158px";
 
 type SiteHeaderProps = {
@@ -64,14 +61,7 @@ const EMPTY_NAV_DATA: NavData = {
 };
 
 const INSPIRATION_HOME = "https://app.setproduct.com/";
-const INSPIRATION_ARIA_LABEL = "Inspiration — AI UI library (opens in a new tab)";
-
-const inspirationLabel = (
-  <>
-    Inspiration
-    <span style={INSPIRATION_BADGE_STYLE} aria-hidden="true">New</span>
-  </>
-);
+const INSPIRATION_ARIA_LABEL = "Inspiration, AI UI library (opens in a new tab)";
 
 export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }: SiteHeaderProps) {
   const menu = useMegaMenuState();
@@ -105,8 +95,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     (typeof activePostSlug === "string" && UI_GUIDES.some((guide) => guide.slug === activePostSlug));
   const isTutorialsActive =
     currentPath === "/blog" || (currentPath.startsWith("/blog/") && !isGuidesActive);
-  const isDesignKitsActive = DESIGN_KITS.some((k) => isPathActive(k.href)) ||
-    currentPath.startsWith("/templates/");
   const isFreebiesActive = currentPath === "/freebies" || currentPath.startsWith("/freebies/");
   const isInformationActive = INFORMATION_LINKS.some(
     (link) => !link.modal && isPathActive(link.href),
@@ -189,14 +177,14 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
       });
   }, []);
 
-  // Before the catalogue arrives only the "All" sets are known.
-  const getKitSet = (category: string | null): KitPreview[] =>
-    catalogue ? catalogue.getKitPreviews(category) : KIT_PREVIEWS;
+  // Before the catalogue arrives only the "Latest" set is known. The kit
+  // shelf always shows the curated featured six, which ship with the page.
   const getFreebieSet = (category: string | null): NavFreebie[] =>
     catalogue ? catalogue.getFreebiePreviews(category) : navData.freebies;
+  const kitPreviews: KitPreview[] = KIT_PREVIEWS;
 
-  const kitPreviews = getKitSet(categories.designKits);
-  const freebiePreviews = getFreebieSet(categories.freebies);
+  const isKitShelf = categories.freebies === NAV_DESIGN_KITS_ROW;
+  const freebiePreviews = getFreebieSet(isKitShelf ? null : categories.freebies);
 
   // Hover-intent preloading: the pointer reaching a trigger, or settling on a
   // category, starts fetching that set's six images, so they are usually
@@ -207,12 +195,12 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const preloadBlog = (category: string | null) =>
     getBlogPreviews(navBlog, category).forEach((item) => preloadPlainImage(item.thumbImage));
   const preloadFreebies = (category: string | null) => {
+    if (category === NAV_DESIGN_KITS_ROW) {
+      kitPreviews.forEach((item) => preloadNextImage(item.image, CARD_IMAGE_SIZES));
+      return;
+    }
     if (!catalogue && category !== null) return;
     getFreebieSet(category).forEach((item) => preloadNextImage(item.thumb, CARD_IMAGE_SIZES));
-  };
-  const preloadKits = (category: string | null) => {
-    if (!catalogue && category !== null) return;
-    getKitSet(category).forEach((item) => preloadNextImage(item.image, CARD_IMAGE_SIZES));
   };
 
   const inspirationCategories: MegaMenuCategory[] = navData.inspirationCategories.map((cat) => ({
@@ -234,22 +222,92 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     isActive: categories.tutorials === item.category,
   }));
 
-  const freebieCategories: MegaMenuCategory[] = NAV_FREEBIE_CATEGORIES.map((item) => ({
-    key: item.label,
-    label: item.label,
-    value: item.category,
-    href: item.category ? `/freebies?category=${encodeURIComponent(item.category)}` : "/freebies",
-    isActive: categories.freebies === item.category,
+  // The kit shelf row swaps the grid like any category; its link (a click or
+  // a second tap on touch) opens the full kit catalogue at /all.
+  const resourceRows: MegaMenuCategory[] = NAV_RESOURCE_ROWS.map((row) => ({
+    key: row.label,
+    label: row.label,
+    value: row.category,
+    href:
+      row.category === NAV_DESIGN_KITS_ROW
+        ? "/all"
+        : row.category
+          ? `/freebies?category=${encodeURIComponent(row.category)}`
+          : "/freebies",
+    divider: row.divider,
+    isActive: categories.freebies === row.category,
   }));
 
-  // "All" leads to /all, so it is never highlighted as the hovered category.
-  const kitCategories: MegaMenuCategory[] = DESIGN_KITS.map((link) => ({
-    key: link.href,
-    label: link.label,
-    value: link.category,
-    href: link.href,
-    isActive: link.category !== null && categories.designKits === link.category,
-  }));
+  // Kit shelf cards: the same cards as the retired UI kits panel minus the
+  // price button. The nav only shows the kits exist; buying happens on the
+  // template pages.
+  const kitCards = kitPreviews.map((item) => (
+    <MegaMenuCard
+      key={item.href}
+      href={item.href}
+      title={item.title}
+      description={item.description}
+      media={
+        <MegaMenuCardMedia href={item.href}>
+          <Image
+            alt={`${item.title} preview`}
+            src={item.image}
+            fill
+            sizes={CARD_IMAGE_SIZES}
+            className="image-cover"
+          />
+        </MegaMenuCardMedia>
+      }
+      actions={
+        <NavLink className="button-x-small is-text w-inline-block" href={item.href}>
+          <div className="text-size-regular text-weight-bold">Learn more</div>
+        </NavLink>
+      }
+    />
+  ));
+
+  // Inspiration sits after Resources, without the "New" badge: it is a
+  // permanent outbound section now, no longer a launch.
+  const inspirationItem = hasInspiration ? (
+    <MegaMenuPanel
+      menu="inspiration"
+      state={menu}
+      label="Inspiration"
+      // Off-site section: "current" is purely the open-menu highlight.
+      isCurrent={false}
+      external
+      listKeyPrefix="inspiration"
+      categories={inspirationCategories}
+      onIntent={preloadInspiration}
+    >
+      {getInspirationPreviews(shuffledInspiration, categories.inspiration).map((item) => (
+        <MegaMenuCard
+          key={item.id}
+          href={withUtm(item.href)}
+          title={item.title}
+          description={item.description}
+          external
+          media={<InspirationThumb href={withUtm(item.href)} image={item.image} title={item.title} />}
+          actions={
+            <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
+              <div className="text-size-regular text-weight-bold">View</div>
+            </a>
+          }
+        />
+      ))}
+    </MegaMenuPanel>
+  ) : (
+    <a
+      className="nav-link-block w-inline-block"
+      data-nav-menu="inspiration"
+      href={withUtm(INSPIRATION_HOME)}
+      rel="noreferrer"
+      target="_blank"
+      aria-label={INSPIRATION_ARIA_LABEL}
+    >
+      <div className="text-size-regular">Inspiration</div>
+    </a>
+  );
 
   return (
     // A real <header> element carries the banner landmark on its own, so the
@@ -283,50 +341,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
           >
             <div className="nav-menu-inner">
               <div className="nav-menu-links-wr" onMouseMove={menu.trackPointer}>
-                {hasInspiration ? (
-                  <MegaMenuPanel
-                    menu="inspiration"
-                    state={menu}
-                    label={inspirationLabel}
-                    labelStyle={INSPIRATION_LABEL_STYLE}
-                    // Off-site section: "current" is purely the open-menu highlight.
-                    isCurrent={false}
-                    external
-                    listKeyPrefix="inspiration"
-                    categories={inspirationCategories}
-                    onIntent={preloadInspiration}
-                  >
-                    {getInspirationPreviews(shuffledInspiration, categories.inspiration).map((item) => (
-                      <MegaMenuCard
-                        key={item.id}
-                        href={withUtm(item.href)}
-                        title={item.title}
-                        description={item.description}
-                        external
-                        media={<InspirationThumb href={withUtm(item.href)} image={item.image} title={item.title} />}
-                        actions={
-                          <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
-                            <div className="text-size-regular text-weight-bold">View</div>
-                          </a>
-                        }
-                      />
-                    ))}
-                  </MegaMenuPanel>
-                ) : (
-                  <a
-                    className="nav-link-block w-inline-block"
-                    data-nav-menu="inspiration"
-                    href={withUtm(INSPIRATION_HOME)}
-                    rel="noreferrer"
-                    target="_blank"
-                    aria-label={INSPIRATION_ARIA_LABEL}
-                  >
-                    <div className="text-size-regular" style={INSPIRATION_LABEL_STYLE}>
-                      {inspirationLabel}
-                    </div>
-                  </a>
-                )}
-
                 <MegaMenuPanel
                   menu="tutorials"
                   state={menu}
@@ -376,79 +390,43 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   label="Resources"
                   isCurrent={isFreebiesActive}
                   listKeyPrefix="freebies"
-                  categories={freebieCategories}
+                  categories={resourceRows}
                   onIntent={preloadFreebies}
                 >
-                  {freebiePreviews.map((item) => (
-                    <MegaMenuCard
-                      key={item.slug}
-                      href={item.previewHref}
-                      title={item.title}
-                      description={item.description}
-                      media={
-                        <MegaMenuCardMedia href={item.previewHref}>
-                          <Image
-                            alt={`${item.title} preview`}
-                            src={item.thumb}
-                            fill
-                            sizes={CARD_IMAGE_SIZES}
-                            className="image-cover"
-                          />
-                        </MegaMenuCardMedia>
-                      }
-                      actions={
-                        <>
-                          <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
-                            <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
-                          </a>
-                          <NavLink className="button-x-small is-text w-inline-block" href={item.previewHref}>
-                            <div className="text-size-regular text-weight-bold">Preview</div>
-                          </NavLink>
-                        </>
-                      }
-                    />
-                  ))}
+                  {isKitShelf
+                    ? kitCards
+                    : freebiePreviews.map((item) => (
+                        <MegaMenuCard
+                          key={item.slug}
+                          href={item.previewHref}
+                          title={item.title}
+                          description={item.description}
+                          media={
+                            <MegaMenuCardMedia href={item.previewHref}>
+                              <Image
+                                alt={`${item.title} preview`}
+                                src={item.thumb}
+                                fill
+                                sizes={CARD_IMAGE_SIZES}
+                                className="image-cover"
+                              />
+                            </MegaMenuCardMedia>
+                          }
+                          actions={
+                            <>
+                              <a className="button-x-small is-secondary w-inline-block" href={item.duplicateHref} rel="noreferrer" target="_blank">
+                                <div className="text-size-regular text-weight-bold">{item.menuCtaLabel ?? item.ctaLabel ?? (item.isFree ? "Duplicate" : "Buy")}</div>
+                              </a>
+                              <NavLink className="button-x-small is-text w-inline-block" href={item.previewHref}>
+                                <div className="text-size-regular text-weight-bold">Preview</div>
+                              </NavLink>
+                            </>
+                          }
+                        />
+                      ))}
                 </MegaMenuPanel>
 
-                <MegaMenuPanel
-                  menu="designKits"
-                  state={menu}
-                  label="UI kits"
-                  isCurrent={isDesignKitsActive}
-                  listKeyPrefix="kits"
-                  categories={kitCategories}
-                  onIntent={preloadKits}
-                >
-                  {kitPreviews.map((item) => (
-                    <MegaMenuCard
-                      key={item.href}
-                      href={item.href}
-                      title={item.title}
-                      description={item.description}
-                      media={
-                        <MegaMenuCardMedia href={item.href}>
-                          <Image
-                            alt={`${item.title} preview`}
-                            src={item.image}
-                            fill
-                            sizes={CARD_IMAGE_SIZES}
-                            className="image-cover"
-                          />
-                        </MegaMenuCardMedia>
-                      }
-                      actions={
-                        <>
-                          <a href={item.buyHref} {...getGumroadLinkProps(item.buyHref, "button-x-small is-secondary w-inline-block")}>
-                            <div className="text-size-regular text-weight-bold">{item.buyLabel}</div>
-                          </a>
-                          <NavLink className="button-x-small is-text w-inline-block" href={item.href}>
-                            <div className="text-size-regular text-weight-bold">Learn more</div>
-                          </NavLink>
-                        </>
-                      }
-                    />
-                  ))}
-                </MegaMenuPanel>
+                {inspirationItem}
 
                 <CompanyPanel state={menu} isCurrent={isInformationActive} onContact={openContactModal} />
               </div>

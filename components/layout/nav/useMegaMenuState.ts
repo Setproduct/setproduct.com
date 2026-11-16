@@ -20,7 +20,6 @@ const INITIAL_CATEGORIES: MenuCategories = {
   inspiration: null,
   tutorials: null,
   freebies: null,
-  designKits: null,
 };
 
 /**

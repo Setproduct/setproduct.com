@@ -1,14 +1,13 @@
 // Client-safe nav config: small constants and pure helpers only. Heavy
 // catalogues (products, bundles, resources, the Inspiration pool) live in
 // ./navPreviews, which SiteHeader loads lazily.
-import type { CSSProperties } from "react";
 import type { InspirationItem, Product } from "../../../types/data";
 import type { BundleItem } from "../../../data/bundles";
 import type { NavBlogPost } from "../../../lib/nav/types";
 import { BLOG_POPULAR_SLUGS } from "../../../lib/blog/popular";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
-export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "designKits" | "information";
+export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "information";
 /**
  * Dropdowns with a Categories column that swaps the preview cards. Guides and
  * Company render their own layout instead.
@@ -105,6 +104,8 @@ export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null
 // the featured set and duplicates the "All" tab.
 export const BUNDLE_CATEGORY = "__bundles__";
 
+// Kit sections. The top bar no longer has a UI kits item; the list still feeds
+// the footer links and the category pages.
 export const DESIGN_KITS: Array<{ href: string; label: string; category: string | null }> = [
   { href: "/all", label: "All", category: null },
   { href: "/dashboards", label: "Dashboards", category: "dashboards" },
@@ -129,20 +130,39 @@ export const INFORMATION_LINKS: InformationLink[] = [
   { label: "Contact us", modal: true },
 ];
 
-// Categories surfaced in the nav dropdown. The list mirrors FREEBIES_CATEGORIES
-// one to one, so the mega-menu never hides a category the listing shows.
-// `label` is sentence-case for display; `category` must match FREEBIE_PRODUCTS
+/**
+ * Resources row that is not a freebie category: the design kit shelf. UI kits
+ * left the top bar, so the paid kits live here as one row that swaps the grid
+ * to the featured kits (without price buttons).
+ */
+export const NAV_DESIGN_KITS_ROW = "__design_kits__";
+
+export type NavResourceRow = {
+  label: string;
+  category: string | null;
+  /** Hairline above the row: free resources end, the paid shelf begins. */
+  divider?: boolean;
+};
+
+// Rows of the Resources column. The free rows mirror FREEBIES_CATEGORIES one
+// to one, so the mega-menu never hides a category the listing shows. `label`
+// is sentence-case for display; `category` must match FREEBIE_PRODUCTS
 // exactly. Tabs with fewer than NAV_FREEBIE_PREVIEW_COUNT items render a short
 // grid: getFreebiePreviews pads nothing, because mixing another category into
 // "Self-hosted apps" would mislabel it.
-export const NAV_FREEBIE_CATEGORIES: Array<{ label: string; category: string | null }> = [
-  { label: "All topics", category: null },
-  { label: "Figma templates", category: "Figma templates" },
+//
+// Order: fresh tools first, Figma templates last among the free rows (the same
+// "tools before Figma" decision as the home page). The kit shelf sits under a
+// hairline so a reader who came for free stuff is not sold a kit by accident.
+export const NAV_RESOURCE_ROWS: NavResourceRow[] = [
+  { label: "Latest", category: null },
   { label: "UI components", category: "UI components" },
   { label: "Icons and animations", category: "Icons and animations" },
   { label: "Design and AI tools", category: "Design and AI tools" },
   { label: "Desktop utilities", category: "Desktop utilities" },
   { label: "Self-hosted apps", category: "Self-hosted apps" },
+  { label: "Figma templates", category: "Figma templates" },
+  { label: "Design kits", category: NAV_DESIGN_KITS_ROW, divider: true },
 ];
 
 /**
@@ -183,23 +203,6 @@ const INSPIRATION_UTM = "utm_source=setproduct.com&utm_medium=navbar&utm_campaig
 export function withUtm(href: string): string {
   return href.includes("?") ? `${href}&${INSPIRATION_UTM}` : `${href}?${INSPIRATION_UTM}`;
 }
-
-export const INSPIRATION_LABEL_STYLE: CSSProperties = { display: "inline-flex", alignItems: "center" };
-
-export const INSPIRATION_BADGE_STYLE: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  marginLeft: "0.5em",
-  padding: "0.18em 0.5em",
-  borderRadius: "0.35em",
-  backgroundColor: "var(--primary)",
-  color: "var(--white)",
-  fontSize: "0.62em",
-  fontWeight: 700,
-  letterSpacing: "0.06em",
-  lineHeight: 1,
-};
 
 export const SEARCH_PLACEHOLDERS = [
   "Search dashboards…",

@@ -3553,6 +3553,16 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   justify-content: center;
 }
 
+/* --- Navbar: divider rows in a category column ---------------------------- */
+/* Resources holds two kinds of offer: free resources, then the paid kit
+   shelf. A hairline marks the border so a reader scanning for free stuff is
+   not sold a kit by accident. */
+.navbar .nav_radio.is-divided {
+  margin-top: calc(8 * var(--em-px));
+  padding-top: calc(14 * var(--em-px));
+  border-top: 1px solid var(--black-transparent);
+}
+
 /* --- Navbar: UI guides panel -------------------------------------------- */
 /* The panel is an index, not a feed: every guide is a text row, grouped by
    what the component does. Only the three lead guides get a thumb, at 64px so
