@@ -6,6 +6,8 @@ import ScrollUpButton from "../layout/ScrollUpButton";
 import TemplateGrid from "../sections/TemplateGrid";
 import BlogPostsHome from "../sections/BlogPostsHome";
 import FaqSection from "../sections/FaqSection";
+import HomePublishBand from "../sections/HomePublishBand";
+import { PUBLISH_SHOWCASE_SLUGS } from "../../data/publish-showcase";
 import ArrowIcon from "../sections/ArrowIcon";
 import SeoHead from "../seo/SeoHead";
 import { PAGE_META } from "../../data/pages-meta";
@@ -31,6 +33,14 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
   const faq = PAGE_FAQ.index ?? [];
   const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
   useHomeSectionViews();
+
+  const showcase = useMemo(
+    () =>
+      PUBLISH_SHOWCASE_SLUGS.map((slug) => blogPosts.find((post) => post.slug === slug)).filter(
+        (post): post is NavBlogPost => Boolean(post),
+      ),
+    [blogPosts],
+  );
 
   // Organization and WebSite describe the whole site, so they belong to the
   // home page only; every other URL gets its own local schema instead.
@@ -97,6 +107,8 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
           </div>
         </div>
 
+        <HomePublishBand showcase={showcase} />
+
         <div className="section" data-home-section="kits">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
@@ -120,7 +132,8 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
           </div>
         )}
       </main>
-      <SiteFooter navData={navData} blogPosts={blogPosts} />
+      {/* The home page has its own publishing band, so the footer one is hidden. */}
+      <SiteFooter navData={navData} blogPosts={blogPosts} hidePublish />
       <ScrollUpButton />
     </>
   );

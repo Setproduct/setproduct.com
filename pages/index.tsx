@@ -1,6 +1,7 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import HomePage from "../components/pages/HomePage";
 import { HOME_BLOG_CATEGORIES, HOME_BLOG_POST_LIMIT } from "../data/blog-categories";
+import { PUBLISH_SHOWCASE_SLUGS } from "../data/publish-showcase";
 import { getBlogPostPreviews } from "../lib/blog/get-blog-post-previews";
 import { getNavData, pickNavBlogSlugs } from "../lib/nav/buildNavData";
 import type { NavBlogPost, NavData } from "../lib/nav/types";
@@ -25,6 +26,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       .slice(0, HOME_BLOG_POST_LIMIT)
       .forEach((post) => keep.add(post.slug));
   }
+  // Proof cards of the publishing band.
+  PUBLISH_SHOWCASE_SLUGS.forEach((slug) => keep.add(slug));
 
   const blogPosts = posts
     .filter((post) => keep.has(post.slug))

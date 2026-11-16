@@ -3230,3 +3230,182 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   flex-shrink: 0;
   white-space: nowrap;
 }
+
+/* --- Home page: publishing band ----------------------------------------
+   Pitch, facts and steps on the left, proof (own guides on Google page 1)
+   on the right. Sizes via --em-px, so text classes inside never multiply
+   them (see "em trap" in AGENTS.md). */
+.home-publish {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: calc(48 * var(--em-px));
+  padding: calc(48 * var(--em-px));
+  border: 1px solid var(--input-border, #d7ccfc);
+  border-radius: calc(24 * var(--em-px));
+  background-color: var(--light-purple);
+}
+
+.home-publish p,
+.home-publish h2 {
+  margin: 0;
+}
+
+.home-publish-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(12 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-publish-fact {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(16 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--white);
+}
+
+.home-publish-fact-value {
+  color: var(--dark-primary);
+  font-size: calc(24 * var(--em-px));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.home-publish-steps {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-publish-step {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(12 * var(--em-px));
+}
+
+.home-publish-step-num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(28 * var(--em-px));
+  height: calc(28 * var(--em-px));
+  border-radius: 100em;
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: calc(14 * var(--em-px));
+  font-weight: 700;
+}
+
+.home-publish-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(20 * var(--em-px));
+}
+
+.home-publish-terms {
+  color: var(--grey);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+
+.home-publish-terms:hover {
+  color: var(--primary);
+}
+
+.home-publish-proof {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-publish-proof-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-publish-proof-card {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--em-px));
+  padding: calc(8 * var(--em-px));
+  border-radius: calc(24 * var(--em-px));
+  background-color: var(--white);
+  color: var(--black);
+  text-decoration: none;
+}
+
+.home-publish-proof-img {
+  display: block;
+  flex: none;
+  width: calc(128 * var(--em-px));
+  height: calc(88 * var(--em-px));
+  overflow: hidden;
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--light-primary);
+}
+
+.home-publish-proof-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-publish-proof-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(6 * var(--em-px));
+  min-width: 0;
+}
+
+.home-publish-badge {
+  padding: calc(2 * var(--em-px)) calc(8 * var(--em-px));
+  border-radius: 100em;
+  background-color: #e6f6ec;
+  color: #1a7f45;
+}
+
+@media screen and (max-width: 991px) {
+  .home-publish {
+    grid-template-columns: 1fr;
+    padding: calc(32 * var(--em-px));
+  }
+
+  .home-publish-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .home-publish {
+    padding: calc(20 * var(--em-px)) calc(16 * var(--em-px));
+    gap: calc(32 * var(--em-px));
+  }
+
+  .home-publish-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-publish-proof-img {
+    width: calc(96 * var(--em-px));
+    height: calc(72 * var(--em-px));
+    border-radius: calc(12 * var(--em-px));
+  }
+}
