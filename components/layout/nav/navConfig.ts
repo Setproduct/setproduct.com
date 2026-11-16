@@ -8,9 +8,12 @@ import type { NavBlogPost } from "../../../lib/nav/types";
 import { BLOG_POPULAR_SLUGS } from "../../../lib/blog/popular";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
-export type MenuKey = "inspiration" | "tutorials" | "freebies" | "designKits" | "information";
-/** Dropdowns with a Categories column that swaps the preview cards. */
-export type CategoryMenuKey = Exclude<MenuKey, "information">;
+export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "designKits" | "information";
+/**
+ * Dropdowns with a Categories column that swaps the preview cards. Guides and
+ * Company render their own layout instead.
+ */
+export type CategoryMenuKey = Exclude<MenuKey, "information" | "guides">;
 
 export type KitPreview = {
   href: string;

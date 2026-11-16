@@ -128,6 +128,21 @@ export function getGuide(slug: string): UiGuide | undefined {
   return UI_GUIDES.find((guide) => guide.slug === slug);
 }
 
+/**
+ * Grouped form for the navbar panel: one entry per group in UI_GUIDE_GROUPS
+ * order, alphabetical inside each. Built once at module load, so the client
+ * component never re-filters 42 rows on render.
+ */
+export const UI_GUIDES_BY_GROUP: Array<{
+  key: UiGuideGroupKey;
+  title: string;
+  guides: UiGuide[];
+}> = UI_GUIDE_GROUPS.map((group) => ({
+  key: group.key,
+  title: group.title,
+  guides: getGuidesByGroup(group.key),
+}));
+
 /** Anchor of a group on /ui-guides. */
 export function guideGroupAnchor(group: UiGuideGroupKey): string {
   return `#${group}`;

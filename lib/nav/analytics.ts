@@ -10,6 +10,7 @@ import { event } from "../gtag";
 export const NAV_MENU_ID: Record<string, string> = {
   inspiration: "inspiration",
   tutorials: "learn",
+  guides: "ui_guides",
   freebies: "resources",
   designKits: "ui_kits",
   information: "company",

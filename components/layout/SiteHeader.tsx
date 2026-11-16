@@ -33,6 +33,8 @@ import type { MegaMenuCategory } from "./nav/MegaMenuPanel";
 import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
 import { InspirationThumb } from "./nav/InspirationThumb";
 import { CompanyPanel } from "./nav/CompanyPanel";
+import { GuidesPanel } from "./nav/GuidesPanel";
+import { UI_GUIDES, UI_GUIDES_BY_GROUP } from "../../data/ui-guides";
 import { NavSearch } from "./nav/NavSearch";
 import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
@@ -53,7 +55,13 @@ type SiteHeaderProps = {
 
 type NavCatalogue = typeof import("./nav/navPreviews");
 
-const EMPTY_NAV_DATA: NavData = { blog: [], freebies: [], inspiration: [], inspirationCategories: [] };
+const EMPTY_NAV_DATA: NavData = {
+  blog: [],
+  freebies: [],
+  guides: [],
+  inspiration: [],
+  inspirationCategories: [],
+};
 
 const INSPIRATION_HOME = "https://app.setproduct.com/";
 const INSPIRATION_ARIA_LABEL = "Inspiration — AI UI library (opens in a new tab)";
@@ -88,7 +96,15 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const isPathActive = (href: string) =>
     href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
 
-  const isTutorialsActive = currentPath === "/blog" || currentPath.startsWith("/blog/");
+  // On a post route `pathname` is "/blog/[slug]", so the real slug comes from
+  // the query. Guides are blog posts too: the guides panel owns them, and the
+  // blog item stays highlighted for every other post.
+  const activePostSlug = currentPath === "/blog/[slug]" ? router.query.slug : undefined;
+  const isGuidesActive =
+    currentPath === "/ui-guides" ||
+    (typeof activePostSlug === "string" && UI_GUIDES.some((guide) => guide.slug === activePostSlug));
+  const isTutorialsActive =
+    currentPath === "/blog" || (currentPath.startsWith("/blog/") && !isGuidesActive);
   const isDesignKitsActive = DESIGN_KITS.some((k) => isPathActive(k.href)) ||
     currentPath.startsWith("/templates/");
   const isFreebiesActive = currentPath === "/freebies" || currentPath.startsWith("/freebies/");
@@ -345,6 +361,14 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                     />
                   ))}
                 </MegaMenuPanel>
+
+                <GuidesPanel
+                  state={menu}
+                  isCurrent={isGuidesActive}
+                  startHere={navData.guides}
+                  groups={UI_GUIDES_BY_GROUP}
+                  total={UI_GUIDES.length}
+                />
 
                 <MegaMenuPanel
                   menu="freebies"

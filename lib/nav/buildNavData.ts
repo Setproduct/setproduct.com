@@ -1,7 +1,12 @@
 // Server-only: reads the blog from disk. Import it from getStaticProps only;
 // client code should import types from ./types instead.
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
+import { UI_GUIDES, UI_GUIDE_START_HERE } from "../../data/ui-guides";
+import type { BlogFrontmatter } from "../../types/blog";
 import type { FreebieItem } from "../../types/data";
 import {
   NAV_BLOG_CATEGORIES,
@@ -11,7 +16,32 @@ import {
 } from "../../components/layout/nav/navConfig";
 // The server may import the full catalogue directly.
 import { getFreebiePreviews } from "../../components/layout/nav/navPreviews";
-import type { NavBlogPost, NavData, NavFreebie } from "./types";
+import type { NavBlogPost, NavData, NavFreebie, NavGuideStart } from "./types";
+
+const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+
+/**
+ * Label, slug and cover thumb of the lead guides. Only those three fields are
+ * needed by the panel, so the rest of each post's frontmatter stays out of the
+ * page props.
+ */
+function buildGuideStartData(): NavGuideStart[] {
+  return UI_GUIDE_START_HERE.map((slug) => {
+    const guide = UI_GUIDES.find((item) => item.slug === slug);
+    const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
+    if (!guide || !fs.existsSync(filePath)) {
+      throw new Error(`[nav] lead guide "${slug}" is missing from data/ui-guides.ts or content/blog/.`);
+    }
+    const { data } = matter(fs.readFileSync(filePath, "utf8"));
+    const frontmatter = data as BlogFrontmatter;
+    const image = frontmatter.thumbImage ?? frontmatter.coverImage ?? "";
+    return {
+      slug: guide.slug,
+      label: guide.label,
+      thumbImage: image.replace("/blog/covers/", "/blog/covers/thumbs/"),
+    };
+  });
+}
 
 function toNavFreebie(item: FreebieItem): NavFreebie {
   const out: NavFreebie = {
@@ -65,6 +95,7 @@ function build(): NavData {
   return {
     blog,
     freebies: getFreebiePreviews(null).map(toNavFreebie),
+    guides: buildGuideStartData(),
     inspiration: shuffle(INSPIRATION_ITEMS).slice(0, NAV_INSPIRATION_SAMPLE_COUNT),
     inspirationCategories: INSPIRATION_CATEGORIES,
   };

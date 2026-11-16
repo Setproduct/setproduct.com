@@ -12,16 +12,21 @@ export type NavFreebie = Pick<
   menuCtaLabel?: string;
 };
 
+/** Lead guides of the UI guides panel: name plus the small cover thumb. */
+export type NavGuideStart = { slug: string; label: string; thumbImage: string };
+
 /**
  * Compact data the mega-menu needs for the first paint, prepared at build time
  * in getStaticProps (see lib/nav/buildNavData.ts). Category-specific kits and
- * resources plus the full Inspiration pool load later from a lazy chunk.
+ * resources load later from a lazy chunk.
  */
 export type NavData = {
-  /** Previews of every Learn tab (Popular, Latest, categories; 6 each), deduped, newest first. */
+  /** Previews of every Articles tab (Popular, Latest, categories; 6 each), deduped, newest first. */
   blog: NavBlogPost[];
   /** Resources shown under "All topics". */
   freebies: NavFreebie[];
+  /** Three lead guides of the UI guides panel (UI_GUIDE_START_HERE). */
+  guides: NavGuideStart[];
   /** Random Inspiration sample; "All" picks its six from it on mount. */
   inspiration: InspirationItem[];
   inspirationCategories: InspirationCategory[];
