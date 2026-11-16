@@ -9,7 +9,8 @@ import { event } from "../gtag";
  */
 export const NAV_MENU_ID: Record<string, string> = {
   inspiration: "inspiration",
-  tutorials: "learn",
+  // "tutorials" is the historical state key; the item now reads Magazine.
+  tutorials: "magazine",
   guides: "ui_guides",
   freebies: "resources",
   designKits: "ui_kits",

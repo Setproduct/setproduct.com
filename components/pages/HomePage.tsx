@@ -27,7 +27,7 @@ export type HomeResource = Pick<
 >;
 
 type Props = {
-  /** Mega-menu Learn panel and footer Popular reads. */
+  /** Mega-menu Magazine panel and footer Popular reads. */
   blogPosts: NavBlogPost[];
   feedPosts: NavBlogPost[];
   mostRead: NavBlogPost[];

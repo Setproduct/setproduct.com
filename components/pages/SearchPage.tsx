@@ -343,7 +343,7 @@ function groupResults(results: SearchableItem[]): Record<SearchGroup, Searchable
 
 export default function SearchPage({ items, navData }: Props) {
   // The index already holds every post (newest first, with its thumb), so
-  // navData is built without posts and the Learn panel and footer read them
+  // navData is built without posts and the Magazine panel and footer read them
   // from here instead of getting the same 49 posts twice.
   const navPosts = useMemo(
     () =>

@@ -72,11 +72,11 @@ export const NAV_INSPIRATION_PREVIEW_COUNT = 6;
 // downloading the full pool; category tabs use the pool once it loads.
 export const NAV_INSPIRATION_SAMPLE_COUNT = NAV_INSPIRATION_PREVIEW_COUNT * 3;
 
-// Learn opens on "Popular" (null keeps it the default tab and the /blog
-// landing link). Most visitors land on one post from Google, so the most-read
-// posts hold a newcomer better than whatever was published last. Fresh posts
-// move to "Latest". The list lives in lib/blog/popular.ts (also used by
-// related posts); refresh it each quarter.
+// The Magazine panel opens on "Popular" (null keeps it the default tab and the
+// /blog landing link). Most visitors land on one post from Google, so the
+// most-read posts hold a newcomer better than whatever was published last.
+// Fresh posts move to "Latest". The list lives in lib/blog/popular.ts (also
+// used by related posts); refresh it each quarter.
 export const NAV_BLOG_POPULAR_SLUGS = BLOG_POPULAR_SLUGS;
 export const NAV_BLOG_LATEST = "__latest__";
 
@@ -84,15 +84,18 @@ export const NAV_BLOG_CATEGORIES: Array<{ label: string; category: string | null
   { label: "Popular", category: null },
   { label: "Latest", category: NAV_BLOG_LATEST },
   // Labels are sentence case; `category` must match the MDX frontmatter.
-  // SEO feeds the paid publishing funnel. Tools and Inspiration were dropped
-  // to keep the column at nine rows (thin categories; Inspiration also
-  // clashed with the navbar item of the same name).
-  { label: "UI design", category: "UI Design" },
+  // Order follows the money, not traffic share: the business sections
+  // (Startups & SaaS, Growth hacking) and SEO feed the paid publishing funnel,
+  // so they sit above UI design. UI design and Design & code stay near the
+  // bottom because their readers now have their own `UI guides` item in the
+  // bar. Tools and Inspiration were dropped earlier to keep the column at nine
+  // rows.
   { label: "Startups & SaaS", category: "Startups & SaaS" },
   { label: "Growth hacking", category: "Growth Hacking" },
   { label: "SEO", category: "SEO" },
-  { label: "Design & code", category: "Design & Code" },
   { label: "Technology", category: "Technology" },
+  { label: "UI design", category: "UI Design" },
+  { label: "Design & code", category: "Design & Code" },
   { label: "Research", category: "Research" },
 ];
 

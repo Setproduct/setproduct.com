@@ -28,7 +28,7 @@ type Props = {
 export default function BlogListingPage({ blogPosts = [], navData }: Props) {
   const meta = PAGE_META.blog;
   const router = useRouter();
-  // navData is built without posts here, so the Learn panel and the footer
+  // navData is built without posts here, so the Magazine panel and the footer
   // read this list. They need the small thumb, which is not sent in props.
   const navPosts = useMemo(
     () => blogPosts.map((post) => ({ ...post, thumbImage: blogThumbPath(post.image) })),

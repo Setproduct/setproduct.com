@@ -1,6 +1,6 @@
 import type { BlogPostPreview, FreebieItem, InspirationCategory, InspirationItem } from "../../types/data";
 
-/** Blog post fields the Learn panel actually renders. */
+/** Blog post fields the Magazine panel actually renders. */
 export type NavBlogPost = Pick<BlogPostPreview, "slug" | "title" | "description" | "thumbImage" | "category">;
 
 /** Resource fields the Resources panel actually renders. */

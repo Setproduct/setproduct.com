@@ -48,7 +48,7 @@ type SiteHeaderProps = {
   navData?: NavData;
   /**
    * Full post list for pages that already ship it (home, /blog). Used for the
-   * Learn panel when navData was built with `{ blog: false }`.
+   * Magazine panel when navData was built with `{ blog: false }`.
    */
   blogPosts?: NavBlogPost[];
 };
@@ -330,7 +330,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                 <MegaMenuPanel
                   menu="tutorials"
                   state={menu}
-                  label="Learn"
+                  label="Magazine"
                   isCurrent={isTutorialsActive}
                   listKeyPrefix="tutorials"
                   categories={blogCategories}

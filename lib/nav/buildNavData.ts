@@ -72,7 +72,7 @@ type GetNavDataOptions = {
 let cached: NavData | null = null;
 
 /**
- * Slugs of the posts the Learn panel can show: the previews of every Learn
+ * Slugs of the posts the Magazine panel can show: the previews of every Magazine
  * category. `posts` must be sorted newest first, as getBlogPostPreviews
  * returns them. The footer's Popular reads are the first previews of the
  * Popular category, so they are covered too.
