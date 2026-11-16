@@ -22,7 +22,7 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
   return (
     <div className={`main_blog-liist2-section ${styles.homeBlogSection}`}>
       <div className="heading-center-wr mob-align-left">
-        <h2 className="heading-style-h2">What we published this week</h2>
+        <h2 className="heading-style-h2">Fresh from the magazine</h2>
       </div>
 
       <div className="main_blog-liist2-form w-form">

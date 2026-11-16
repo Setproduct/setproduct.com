@@ -13,7 +13,7 @@ import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
 import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "../../lib/seo/schema";
-import { getPublishLinkProps } from "../../lib/publish";
+import { getPublishLinkProps, PUBLISH_OFFER } from "../../lib/publish";
 import { handleHomeAuxClick, handleHomeClick, useHomeSectionViews } from "../../lib/home/analytics";
 import type { NavBlogPost, NavData } from "../../lib/nav/types";
 
@@ -81,6 +81,10 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
                       <div className="button-icon w-embed"><ArrowIcon /></div>
                     </a>
                   </div>
+                  <div className="spacer-12" />
+                  <p className="text-size-small text-align-center">
+                    Paid posts from ${PUBLISH_OFFER.priceFrom}, live within {PUBLISH_OFFER.turnaround}
+                  </p>
                 </div>
               </div>
 
@@ -97,7 +101,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
           <div className="section-padding top-80 bottom-64">
             <div className="container">
               <div className="heading-center-wr mob-align-left">
-                <h2 className="heading-style-h2">Resources for your team</h2>
+                <h2 className="heading-style-h2">Design kits</h2>
               </div>
               <div className="spacer-32" />
               <TemplateGrid
