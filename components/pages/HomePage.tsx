@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
@@ -7,40 +7,46 @@ import TemplateGrid from "../sections/TemplateGrid";
 import BlogPostsHome from "../sections/BlogPostsHome";
 import FaqSection from "../sections/FaqSection";
 import HomePublishBand from "../sections/HomePublishBand";
-import { PUBLISH_SHOWCASE_SLUGS } from "../../data/publish-showcase";
+import HomeReadingPaths from "../sections/HomeReadingPaths";
+import HomeResources from "../sections/HomeResources";
 import ArrowIcon from "../sections/ArrowIcon";
 import SeoHead from "../seo/SeoHead";
 import { PAGE_META } from "../../data/pages-meta";
 import { PRODUCTS } from "../../data/products";
 import { PAGE_FAQ } from "../../data/faq";
-import { HOME_BLOG_CATEGORIES } from "../../data/blog-categories";
+import { HOME_KITS_COUNT } from "../../data/home";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "../../lib/seo/schema";
 import { getPublishLinkProps, PUBLISH_OFFER } from "../../lib/publish";
 import { handleHomeAuxClick, handleHomeClick, useHomeSectionViews } from "../../lib/home/analytics";
 import type { NavBlogPost, NavData } from "../../lib/nav/types";
+import type { FreebieItem } from "../../types/data";
 
-const HOME_TEMPLATES_INITIAL = 15;
-const HOME_TEMPLATES_PAGE = 15;
-
+export type HomeResource = Pick<
+  FreebieItem,
+  "slug" | "title" | "description" | "thumb" | "imageAlt" | "category" | "previewHref"
+>;
 
 type Props = {
+  /** Mega-menu Learn panel and footer Popular reads. */
   blogPosts: NavBlogPost[];
+  feedPosts: NavBlogPost[];
+  mostRead: NavBlogPost[];
+  showcase: NavBlogPost[];
+  resources: HomeResource[];
   navData?: NavData;
 };
 
-export default function HomePage({ blogPosts = [], navData }: Props) {
+export default function HomePage({
+  blogPosts = [],
+  feedPosts = [],
+  mostRead = [],
+  showcase = [],
+  resources = [],
+  navData,
+}: Props) {
   const meta = PAGE_META.index;
   const faq = PAGE_FAQ.index ?? [];
-  const [templatesVisible, setTemplatesVisible] = useState(HOME_TEMPLATES_INITIAL);
   useHomeSectionViews();
-
-  const showcase = useMemo(
-    () =>
-      PUBLISH_SHOWCASE_SLUGS.map((slug) => blogPosts.find((post) => post.slug === slug)).filter(
-        (post): post is NavBlogPost => Boolean(post),
-      ),
-    [blogPosts],
-  );
 
   // Organization and WebSite describe the whole site, so they belong to the
   // home page only; every other URL gets its own local schema instead.
@@ -101,7 +107,7 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
               <div className="spacer-40" />
 
               <div data-home-section="feed">
-                <BlogPostsHome posts={blogPosts} categories={HOME_BLOG_CATEGORIES} />
+                <BlogPostsHome posts={feedPosts} />
               </div>
             </div>
           </div>
@@ -109,19 +115,28 @@ export default function HomePage({ blogPosts = [], navData }: Props) {
 
         <HomePublishBand showcase={showcase} />
 
+        <HomeReadingPaths mostRead={mostRead} />
+
+        <HomeResources items={resources} />
+
         <div className="section" data-home-section="kits">
           <div className="section-padding top-80 bottom-64">
             <div className="container">
-              <div className="heading-center-wr mob-align-left">
-                <h2 className="heading-style-h2">Design kits</h2>
+              <div className="home-section-head">
+                <div>
+                  <h2 className="heading-style-h2">Design kits</h2>
+                  <div className="spacer-8" />
+                  <p className="text-size-large">
+                    {PRODUCTS.length} Figma UI kits and design systems, from dashboards to mobile apps.
+                  </p>
+                </div>
+                <Link className="button secondary w-inline-block" href="/all">
+                  <div className="text-size-large text-weight-bold">See all kits</div>
+                  <div className="button-icon w-embed"><ArrowIcon /></div>
+                </Link>
               </div>
               <div className="spacer-32" />
-              <TemplateGrid
-                products={PRODUCTS}
-                variant="home"
-                visibleCount={templatesVisible}
-                onLoadMore={() => setTemplatesVisible((c) => c + HOME_TEMPLATES_PAGE)}
-              />
+              <TemplateGrid products={PRODUCTS} variant="home" visibleCount={HOME_KITS_COUNT} />
             </div>
           </div>
         </div>

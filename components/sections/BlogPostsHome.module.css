@@ -14,6 +14,13 @@
   width: 100%;
 }
 
+/* Topic chips are a real <ul> of links now: drop the browser list styles. */
+.topicList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .homeBlogSection :global(.main_blog-liist2-2) {
   display: flex;
   flex-wrap: nowrap;

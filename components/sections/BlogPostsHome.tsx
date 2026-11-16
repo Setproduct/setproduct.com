@@ -1,24 +1,23 @@
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import { HOME_BLOG_POST_LIMIT } from "../../data/blog-categories";
+import { NAV_BLOG_CATEGORIES, NAV_BLOG_LATEST } from "../layout/nav/navConfig";
 import type { NavBlogPost } from "../../lib/nav/types";
 import ArrowIcon from "./ArrowIcon";
 import styles from "./BlogPostsHome.module.css";
 
 type Props = {
+  /** Feed posts in display order (pinned first, then newest). */
   posts: NavBlogPost[];
-  categories: string[];
-  limit?: number;
 };
 
-export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POST_LIMIT }: Props) {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+// Same topics as the Learn menu and the footer, so the three never disagree.
+const TOPIC_LINKS = NAV_BLOG_CATEGORIES.filter(
+  (item) => item.category !== null && item.category !== NAV_BLOG_LATEST,
+).map((item) => ({
+  href: `/blog?category=${encodeURIComponent(item.category as string)}`,
+  label: item.label,
+}));
 
-  const filteredPosts = useMemo(() => {
-    const list = activeCategory ? posts.filter((p) => p.category === activeCategory) : posts;
-    return list.slice(0, limit);
-  }, [activeCategory, posts, limit]);
-
+export default function BlogPostsHome({ posts }: Props) {
   return (
     <div className={`main_blog-liist2-section ${styles.homeBlogSection}`}>
       <div className="heading-center-wr mob-align-left">
@@ -26,43 +25,31 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
       </div>
 
       <div className="main_blog-liist2-form w-form">
-        <div className="main_blog-liist2-filters-wr">
+        {/* Topic chips open the filtered blog listing: a filter that only
+            reshuffled the home feed kept people on this page instead of
+            taking them deeper. */}
+        <nav aria-label="Blog topics" className="main_blog-liist2-filters-wr">
           <div className="main_blog-liist2-wr2 w-dyn-list">
-            <div className="main_blog-liist2-2 w-dyn-items" role="list">
-              <div className="w-dyn-item" role="listitem">
-                {/* A filter chip changes what is shown in place, so it is a
-                    <button> with aria-pressed rather than a div pretending to
-                    be one: the pressed state is what a screen reader announces.
-                    The label is a <span> because a <button> may only contain
-                    phrasing content. */}
-                <button
-                  aria-pressed={activeCategory === null}
-                  className={`button-x-small is-text${activeCategory === null ? " fs-cmsfilter_active" : ""}`}
-                  onClick={() => setActiveCategory(null)}
-                  type="button"
-                >
-                  <span className="text-size-small text-weight-bold">Recent publications</span>
-                </button>
-              </div>
-              {categories.map((cat) => (
-                <div key={cat} className="w-dyn-item" role="listitem">
-                  <button
-                    aria-pressed={activeCategory === cat}
-                    className={`button-x-small is-text is-main-blog-filter w-radio${activeCategory === cat ? " fs-cmsfilter_active" : ""}`}
-                    onClick={() => setActiveCategory(cat)}
-                    type="button"
-                  >
-                    <span className="text-size-small text-weight-bold w-form-label">{cat}</span>
-                  </button>
-                </div>
+            <ul className={`main_blog-liist2-2 w-dyn-items ${styles.topicList}`}>
+              <li className="w-dyn-item">
+                <Link className="button-x-small is-text is-active fs-cmsfilter_active" href="/blog">
+                  <span className="text-size-small text-weight-bold">All posts</span>
+                </Link>
+              </li>
+              {TOPIC_LINKS.map((topic) => (
+                <li key={topic.href} className="w-dyn-item">
+                  <Link className="button-x-small is-text is-main-blog-filter" href={topic.href}>
+                    <span className="text-size-small text-weight-bold">{topic.label}</span>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
-        </div>
+        </nav>
 
         <div className="main_blog-liist2-wr w-dyn-list">
           <div className="main_blog-liist2 w-dyn-items" role="list">
-            {filteredPosts.map((post, index) => (
+            {posts.map((post, index) => (
               <div
                 key={post.slug}
                 className="main_blog-liist2-item w-dyn-item hover-lift is-large"
@@ -88,9 +75,11 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
                   <Link
                     className="main_blog-liist2-item-img-wr w-inline-block relative overflow-hidden"
                     href={`/blog/${post.slug}`}
+                    tabIndex={-1}
+                    aria-hidden="true"
                   >
                     <img
-                      alt={post.title}
+                      alt=""
                       src={post.thumbImage}
                       loading={index === 0 ? "eager" : "lazy"}
                       decoding="async"
@@ -107,7 +96,7 @@ export default function BlogPostsHome({ posts, categories, limit = HOME_BLOG_POS
 
         <div className="main_blog-liist2-btn-wr">
           <Link className="button-small w-inline-block" href="/blog">
-            <div className="text-size-medium text-weight-bold">Read all</div>
+            <div className="text-size-medium text-weight-bold">Read all posts</div>
             <div className="button-icon is-small w-embed"><ArrowIcon /></div>
           </Link>
         </div>
