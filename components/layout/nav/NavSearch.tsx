@@ -3,9 +3,10 @@ import { SEARCH_PLACEHOLDERS, SEARCH_PLACEHOLDER_INTERVAL_MS } from "./navConfig
 import { SearchIcon } from "../../icons/DecorativeIcons";
 
 /**
- * Desktop navbar search with a rotating placeholder hinting that search covers
- * kits, blog, dashboards and AI inspiration. Living in its own component keeps
- * the 2.5s rotation from re-rendering the whole header.
+ * Desktop navbar search with a rotating placeholder hinting at what search
+ * covers: articles, the UI guides index, free resources and AI inspiration.
+ * Living in its own component keeps the 2.5s rotation from re-rendering the
+ * whole header.
  */
 export function NavSearch() {
   const [searchPlaceholderIndex, setSearchPlaceholderIndex] = useState(0);

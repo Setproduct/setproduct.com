@@ -46,12 +46,12 @@ export const NAV_MENU_AIM_TOLERANCE_PX = 24;
 // which smooths out single-pixel jitter.
 export const NAV_MENU_AIM_HISTORY = 3;
 // Menu aim for the top bar. With a panel open, a pointer crossing another
-// trigger on its way down into the panel (Learn → card on the right, passing
+// trigger on its way down into the panel (Magazine → card on the right, passing
 // over Resources) keeps the open panel. If it stops on that trigger instead,
 // the switch happens after this delay.
 export const NAV_MENU_SWITCH_AIM_RECHECK_MS = 300;
 // How steeply the pointer must head down to count as aiming at the panel:
-// dy ≥ slope × |dx|. Kept low on purpose: the path from Learn to the top-right
+// dy ≥ slope × |dx|. Kept low on purpose: the path from Magazine to the top-right
 // card on 1440 drops only ~7°, and erring towards "aiming" costs just the
 // delay above, while erring the other way is the bug itself.
 export const NAV_MENU_SWITCH_AIM_SLOPE = 1 / 20;
@@ -152,7 +152,7 @@ export const NAV_RESOURCE_ROWS: NavResourceRow[] = [
 ];
 
 /**
- * Learn previews. null → curated popular posts (topped up with the newest if
+ * Magazine previews. null → curated popular posts (topped up with the newest if
  * a slug is missing), NAV_BLOG_LATEST → newest posts, otherwise the newest
  * posts of that category. `posts` are sorted newest first.
  */
@@ -190,10 +190,12 @@ export function withUtm(href: string): string {
   return href.includes("?") ? `${href}&${INSPIRATION_UTM}` : `${href}?${INSPIRATION_UTM}`;
 }
 
+// The placeholders follow the bar: Magazine, UI guides, Resources and
+// Inspiration. Kit wording is gone with the kit item.
 export const SEARCH_PLACEHOLDERS = [
-  "Search dashboards…",
-  "Search Figma kits…",
-  "Search blog posts…",
+  "Search articles…",
+  "Search UI guides…",
+  "Search free resources…",
   "Search AI UI examples…",
 ];
 
@@ -260,9 +262,9 @@ export const KIT_PREVIEWS: KitPreview[] = [
   },
 ];
 
-// Map a catalogue product onto the mega-menu card shape so the UI kits
-// dropdown can swap its right-hand previews per hovered category — mirroring
-// how Learn filters blog previews by category.
+// Map a catalogue product onto the mega-menu card shape so the Design kits
+// row in Resources can show kit cards on the right, the same way Magazine
+// shows blog previews per category.
 export function kitPreviewFromProduct(product: Product): KitPreview {
   return {
     href: `/templates/${product.slug}`,

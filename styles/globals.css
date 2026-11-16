@@ -2327,7 +2327,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 /* The Webflow base sets `.text-input { font-size: 18em }` (where body
    font-size is ~0.07vw), which makes long placeholders like
-   "Search AI UI examples…" overflow the original 11.1em-wide nav-search
+   "Search free resources…" overflow the original 11.1em-wide nav-search
    input. Shrink the font in the nav-search only, widen the field by 50%,
    and compensate min-height and paddings so the outer height stays the
    same as before. */

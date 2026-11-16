@@ -9,7 +9,7 @@ type Props = {
   posts: NavBlogPost[];
 };
 
-// Same topics as the Learn menu and the footer, so the three never disagree.
+// Same topics as the Magazine menu and the footer, so the three never disagree.
 const TOPIC_LINKS = NAV_BLOG_CATEGORIES.filter(
   (item) => item.category !== null && item.category !== NAV_BLOG_LATEST,
 ).map((item) => ({

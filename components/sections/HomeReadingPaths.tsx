@@ -64,11 +64,8 @@ export default function HomeReadingPaths({ mostRead }: Props) {
                 ))}
               </ul>
               <div className="spacer-24" />
-              <Link
-                className="button-x-small is-text w-inline-block"
-                href={`/blog?category=${encodeURIComponent("UI Design")}`}
-              >
-                <div className="text-size-regular text-weight-bold">All UI design posts</div>
+              <Link className="button-x-small is-text w-inline-block" href="/ui-guides">
+                <div className="text-size-regular text-weight-bold">All UI guides</div>
                 <div className="button-icon is-small text-color-primary w-embed"><ArrowIcon /></div>
               </Link>
             </div>
