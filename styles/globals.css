@@ -1601,105 +1601,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     animation: nav-cards-slide-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  /*
-   * Information dropdown promo. Fills the previously empty right side with two
-   * lead-gen cards side by side (Work with us + Advertising). The wrapper sits in
-   * the same `.nav_dropdown-menu2` flex row as the links column, mirroring the
-   * Design Kits / Tutorials layout; inside, the two cards share the width evenly.
-   */
-  .navbar .nav_info-promo-wr {
-    flex: 1 1 auto;
-    display: flex;
-    gap: 24em;
-  }
-
-  .navbar .nav_info-promo {
-    position: relative;
-    display: flex;
-    flex: 1 1 0;
-    border-radius: 20em;
-    padding: 32em 32em;
-    overflow: hidden;
-    background:
-      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
-    border: 1em solid var(--black-transparent);
-  }
-
-  .navbar .nav_info-promo.is-advertising {
-    background:
-      radial-gradient(120% 140% at 0% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
-  }
-
-  .navbar .nav_info-promo-glow {
-    position: absolute;
-    top: -40em;
-    right: -40em;
-    width: 220em;
-    height: 220em;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(124, 77, 255, 0.28) 0%, rgba(124, 77, 255, 0) 70%);
-    pointer-events: none;
-    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .navbar .nav_info-promo:hover .nav_info-promo-glow {
-    transform: scale(1.15) translate(-8em, 8em);
-  }
-
-  /*
-   * Spacing lives on the flex container as `gap`, NOT as `margin-bottom` on the
-   * children. The children below set their own `font-size` (e.g. 24em), and in
-   * this em-based system `margin: Nem` on a font-sized element multiplies
-   * against that font (12em × 24px ≈ 288px), which previously stretched the card
-   * to full screen. The wrapper keeps the root ~1px em scale, so `gap` stays
-   * predictable.
-   */
-  .navbar .nav_info-promo-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12em;
-    width: 100%;
-  }
-
-  .navbar .nav_info-promo-eyebrow {
-    font-size: 12em;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary);
-  }
-
-  .navbar .nav_info-promo-title {
-    font-size: 24em;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--black);
-  }
-
-  .navbar .nav_info-promo-text {
-    color: var(--black);
-    opacity: 0.78;
-  }
-
-  /*
-   * CTA reuses the project's native button styles (`button` /
-   * `button secondary`). We only nudge it to the bottom of each card so the two
-   * CTAs line up even when the body copy differs in length. The gap above it
-   * comes from the flex `gap` on `.nav_info-promo-content`. Do NOT set
-   * `padding-top` here: it overrides the button's own vertical padding
-   * (9em / 11em) and pushes the label above the visual centre.
-   */
-  .navbar .nav_info-promo-cta {
-    cursor: pointer;
-    margin-top: auto;
-  }
-
-  /* Desktop shows the two full promo cards; the compact mobile banner is hidden. */
-  .navbar .nav_info-promo-mobile {
-    display: none;
-  }
 }
 
 @keyframes nav-cards-slide-in {
@@ -1801,15 +1702,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   .navbar .nav_inspiration-img {
     transition: none !important;
     filter: none !important;
-  }
-
-  .navbar .nav_info-promo-glow {
-    transition: none !important;
-    transform: none !important;
-  }
-
-  .navbar .nav_info-promo:hover .nav_info-promo-glow {
-    transform: none !important;
   }
 
   .navbar .nav_dropdown_toggle:hover .nav_chevron-svg,
@@ -2068,26 +1960,16 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
    * dropdown's measured height and clips the last item. Reset it.
    */
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column,
-  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list,
-  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.information,
-  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.earm-money {
+  .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list {
     margin-bottom: 0;
   }
 
   /*
-   * Company dropdown on mobile. The two side-by-side `.nav_info-promo` cards are
-   * desktop-only (their styling lives in the min-width:991px block); in the
-   * narrow drawer they overflow and clip text, so we hide them and show a single
-   * compact CTA banner instead — keeps both intents (custom design + advertising)
-   * without tearing the layout. Sizes use plain px here (not the em-fluid scale)
-   * to stay predictable inside the drawer.
-   */
-  /*
-   * The desktop `.nav_dropdown-menu2` is a flex ROW (links column + promo
-   * column side by side) and Webflow's mobile override never resets it. In the
-   * narrow drawer that row pushes the promo off the right edge. Stack it into a
-   * column and let the links column drop its fixed 200em width so children span
-   * the full drawer instead of overflowing.
+   * The desktop `.nav_dropdown-menu2` is a flex ROW (two columns side by side)
+   * and Webflow's mobile override never resets it. In the narrow drawer that row
+   * pushes the second column off the right edge. Stack it into a column and let
+   * the links column drop its fixed 200em width so children span the full drawer
+   * instead of overflowing.
    */
   .navbar .nav-menu .nav_dropdown-menu2 {
     flex-direction: column;
@@ -2095,52 +1977,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
   .navbar .nav-menu .nav_dropdown_list .nav_dropdown-column.list {
     width: 100%;
-  }
-
-  .navbar .nav-menu .nav_info-promo-wr {
-    display: none;
-  }
-
-  .navbar .nav-menu .nav_info-promo-mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-top: 16px;
-    padding: 20px;
-    border-radius: 16px;
-    background:
-      radial-gradient(120% 140% at 100% 0%, var(--light-primary) 0%, var(--light-purple) 60%);
-    border: 1px solid var(--black-transparent);
-  }
-
-  .navbar .nav-menu .nav_info-promo-mobile-eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary);
-  }
-
-  .navbar .nav-menu .nav_info-promo-mobile-title {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.25;
-    color: var(--black);
-  }
-
-  .navbar .nav-menu .nav_info-promo-mobile-text {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--black);
-    opacity: 0.78;
-  }
-
-  .navbar .nav-menu .nav_info-promo-mobile-cta {
-    width: 100%;
-    margin-top: 4px;
-    cursor: pointer;
   }
 
   .navbar .menu-button.w-nav-button {
@@ -3710,6 +3546,201 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 @media screen and (max-width: 479px) {
   .nav-guides-groups {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- Navbar: Advertise panel -------------------------------------------- */
+/* The panel sells placement on the blog, so it is not a link list: on the left
+   the offer (three facts, the entry price, one primary button), on the right
+   proof that this blog ranks — three of our own posts with a badge. Everything
+   is sized with --em-px because Webflow's em is tied to the window width. */
+.nav_advertise-main {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: calc(360 * var(--em-px));
+}
+
+.nav_advertise-eyebrow {
+  font-size: calc(12 * var(--em-px));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.nav_advertise-title {
+  margin-top: calc(8 * var(--em-px));
+  font-size: calc(22 * var(--em-px));
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--black);
+}
+
+.nav_advertise-facts {
+  display: flex;
+  gap: calc(12 * var(--em-px));
+  margin: calc(20 * var(--em-px)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav_advertise-fact {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: calc(2 * var(--em-px));
+  min-width: 0;
+  padding: calc(10 * var(--em-px)) calc(12 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--light-purple);
+  color: var(--dark-primary);
+}
+
+.nav_advertise-fact-value {
+  font-size: calc(18 * var(--em-px));
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.nav_advertise-price {
+  margin: calc(14 * var(--em-px)) 0 0;
+  color: var(--black);
+  opacity: 0.78;
+}
+
+.nav_advertise-actions {
+  margin-top: calc(18 * var(--em-px));
+}
+
+.nav_advertise-proof {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.nav_advertise-proof-title {
+  margin-bottom: calc(12 * var(--em-px));
+  font-size: calc(12 * var(--em-px));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.nav_advertise-proof-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav_advertise-proof-row {
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--em-px));
+  color: var(--black);
+  text-decoration: none;
+}
+
+.nav_advertise-proof-img {
+  flex: none;
+  width: calc(96 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  overflow: hidden;
+  /* radius-12 from the project scale (AGENTS.md, «Скругления») */
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--light-primary);
+}
+
+.nav_advertise-proof-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav_advertise-proof-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(6 * var(--em-px));
+  min-width: 0;
+}
+
+.nav_advertise-proof-name {
+  font-size: calc(16 * var(--em-px));
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Same green as the home publishing band, so "ranks on Google" reads as one
+   claim across the site. */
+.nav_advertise-badge {
+  padding: calc(2 * var(--em-px)) calc(8 * var(--em-px));
+  border-radius: 100em;
+  background-color: #e6f6ec;
+  color: #1a7f45;
+}
+
+/* Bottom row of the former Company panel. A hairline separates it from the
+   offer above, so the legal links read as secondary, not as part of the pitch. */
+.nav_advertise-foot {
+  display: flex;
+  gap: calc(28 * var(--em-px));
+  /* The offer above already ends with the panel's own bottom padding, so this
+     row only needs a hairline gap plus room for its hover pill. */
+  padding-top: calc(16 * var(--em-px));
+  padding-bottom: calc(24 * var(--em-px));
+  border-top: 1px solid var(--black-transparent);
+}
+
+/* The drawer variant is desktop-only hidden here and takes over ≤991. */
+.nav_advertise-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 991px) {
+  /* No covers in the drawer: the proof turns into one line of text inside
+     `.nav_advertise-mobile`, and the offer keeps a single CTA. */
+  .nav_advertise-main,
+  .nav_advertise-proof {
+    width: 100%;
+  }
+
+  .nav_advertise-proof,
+  .nav_advertise-actions,
+  .nav_advertise-foot {
+    display: none;
+  }
+
+  .nav_advertise-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(12 * var(--em-px));
+    width: 100%;
+    margin-top: calc(20 * var(--em-px));
+  }
+
+  .nav_advertise-mobile-note {
+    margin: 0;
+    color: var(--black);
+    opacity: 0.78;
+  }
+
+  .nav_advertise-mobile .button-small {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav_advertise-mobile-links {
+    display: flex;
+    gap: calc(24 * var(--em-px));
+    margin-top: calc(4 * var(--em-px));
   }
 }
 

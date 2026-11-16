@@ -11,7 +11,6 @@ import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
 import { getPublishLinkProps } from "../../lib/publish";
 import { trackNav } from "../../lib/nav/analytics";
 import {
-  INFORMATION_LINKS,
   KIT_PREVIEWS,
   NAV_BLOG_CATEGORIES,
   NAV_BLOG_LATEST,
@@ -29,7 +28,7 @@ import { MegaMenuPanel } from "./nav/MegaMenuPanel";
 import type { MegaMenuCategory } from "./nav/MegaMenuPanel";
 import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
 import { InspirationThumb } from "./nav/InspirationThumb";
-import { CompanyPanel } from "./nav/CompanyPanel";
+import { AdvertisePanel } from "./nav/AdvertisePanel";
 import { GuidesPanel } from "./nav/GuidesPanel";
 import { UI_GUIDES, UI_GUIDES_BY_GROUP } from "../../data/ui-guides";
 import { NavSearch } from "./nav/NavSearch";
@@ -58,6 +57,7 @@ const EMPTY_NAV_DATA: NavData = {
   guides: [],
   inspiration: [],
   inspirationCategories: [],
+  showcase: [],
 };
 
 const INSPIRATION_HOME = "https://app.setproduct.com/";
@@ -83,9 +83,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const router = useRouter();
   const currentPath = router.pathname;
 
-  const isPathActive = (href: string) =>
-    href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
-
   // On a post route `pathname` is "/blog/[slug]", so the real slug comes from
   // the query. Guides are blog posts too: the guides panel owns them, and the
   // blog item stays highlighted for every other post.
@@ -96,9 +93,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   const isTutorialsActive =
     currentPath === "/blog" || (currentPath.startsWith("/blog/") && !isGuidesActive);
   const isFreebiesActive = currentPath === "/freebies" || currentPath.startsWith("/freebies/");
-  const isInformationActive = INFORMATION_LINKS.some(
-    (link) => !link.modal && isPathActive(link.href),
-  );
+  // The Advertise panel's only own page is the paid posts terms.
+  const isAdvertiseActive = currentPath === "/legal/terms-of-paid-posts";
 
   // Lock body scroll while the drawer is open, expose the live navbar height
   // as a CSS var so the drawer can pin itself to the actual bottom of the
@@ -428,7 +424,12 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
 
                 {inspirationItem}
 
-                <CompanyPanel state={menu} isCurrent={isInformationActive} onContact={openContactModal} />
+                <AdvertisePanel
+                  state={menu}
+                  isCurrent={isAdvertiseActive}
+                  showcase={navData.showcase}
+                  onContact={openContactModal}
+                />
               </div>
 
               <div className="nav-menu-mob-btn-wr">

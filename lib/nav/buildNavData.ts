@@ -6,8 +6,10 @@ import matter from "gray-matter";
 import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
 import { UI_GUIDES, UI_GUIDE_START_HERE } from "../../data/ui-guides";
+import { PUBLISH_SHOWCASE_SLUGS } from "../../data/publish-showcase";
+import { blogThumbPath } from "../blog/thumb";
 import type { BlogFrontmatter } from "../../types/blog";
-import type { FreebieItem } from "../../types/data";
+import type { BlogPostPreview, FreebieItem } from "../../types/data";
 import {
   NAV_BLOG_CATEGORIES,
   NAV_INSPIRATION_SAMPLE_COUNT,
@@ -16,7 +18,7 @@ import {
 } from "../../components/layout/nav/navConfig";
 // The server may import the full catalogue directly.
 import { getFreebiePreviews } from "../../components/layout/nav/navPreviews";
-import type { NavBlogPost, NavData, NavFreebie, NavGuideStart } from "./types";
+import type { NavBlogPost, NavData, NavFreebie, NavGuideStart, NavShowcasePost } from "./types";
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 
@@ -40,6 +42,22 @@ function buildGuideStartData(): NavGuideStart[] {
       label: guide.label,
       thumbImage: image.replace("/blog/covers/", "/blog/covers/thumbs/"),
     };
+  });
+}
+
+/**
+ * Proof rows of the Advertise panel: our own posts that hold page 1 in Google.
+ * Slugs come from data/publish-showcase.ts (the same list the home band uses),
+ * so the two surfaces can never drift apart. A missing slug fails the build:
+ * the panel promises that these posts rank, which is a claim worth keeping
+ * deliberate rather than silently shrinking to two rows.
+ */
+function buildShowcaseData(posts: BlogPostPreview[]): NavShowcasePost[] {
+  const bySlug = new Map(posts.map((post) => [post.slug, post]));
+  return PUBLISH_SHOWCASE_SLUGS.map((slug) => {
+    const post = bySlug.get(slug);
+    if (!post) throw new Error(`[nav] showcase post "${slug}" is missing from content/blog/.`);
+    return { slug, title: post.title, thumbImage: blogThumbPath(post.thumbImage) };
   });
 }
 
@@ -96,6 +114,7 @@ function build(): NavData {
     blog,
     freebies: getFreebiePreviews(null).map(toNavFreebie),
     guides: buildGuideStartData(),
+    showcase: buildShowcaseData(posts),
     inspiration: shuffle(INSPIRATION_ITEMS).slice(0, NAV_INSPIRATION_SAMPLE_COUNT),
     inspirationCategories: INSPIRATION_CATEGORIES,
   };
@@ -103,9 +122,10 @@ function build(): NavData {
 
 /**
  * Everything the mega-menu renders on first paint, trimmed to what it shows:
- * the 6 newest posts of each Learn category (deduped, so the client gets the
- * same previews as from the full list), the "All" resources and a random
- * Inspiration sample. One result is shared by every page of a build.
+ * the 6 newest posts of each Magazine category (deduped, so the client gets
+ * the same previews as from the full list), the "Latest" resources, the lead
+ * guides, the Advertise proof rows and a random Inspiration sample. One result
+ * is shared by every page of a build.
  */
 export function getNavData(options: GetNavDataOptions = {}): NavData {
   // In dev every request should see fresh posts.

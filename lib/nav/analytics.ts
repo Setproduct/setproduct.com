@@ -3,8 +3,8 @@ import { event } from "../gtag";
 /**
  * GA4 instrumentation for the navbar mega-menu.
  *
- * Internal menu keys in SiteHeader are historical ("tutorials", "freebies",
- * "information"…). Reports use the stable, user-facing names below so renaming
+ * Internal menu keys in SiteHeader are historical ("tutorials", "freebies"…).
+ * Reports use the stable, user-facing names below so renaming
  * a state key never splits the data.
  */
 export const NAV_MENU_ID: Record<string, string> = {
@@ -13,7 +13,7 @@ export const NAV_MENU_ID: Record<string, string> = {
   tutorials: "magazine",
   guides: "ui_guides",
   freebies: "resources",
-  information: "company",
+  advertise: "advertise",
 };
 
 export type NavOpenSource = "hover" | "click" | "keyboard" | "tap";
@@ -25,6 +25,10 @@ export type NavLinkType =
   | "card_title"
   | "card_cta"
   | "card_secondary"
+  /** Plain links inside a panel that has no category column (guides, advertise). */
+  | "panel_link"
+  // Historical: the retired Company panel. Kept so past `nav_click` rows stay
+  // typed, never emitted by the current markup.
   | "company_link"
   | "promo"
   | "other";
@@ -58,8 +62,8 @@ export function getNavLinkType(el: HTMLElement): NavLinkType {
   if (el.matches(".nav_dropdown_toggle, .nav-link-block")) return "trigger";
   if (el.matches(".nav_radio")) return "category";
   if (el.matches(".nav_tabs-list-item-img-wr")) return "card_image";
-  if (el.matches(".link-block")) return "company_link";
-  if (el.matches(".nav_info-promo-cta, .nav_info-promo-mobile-cta")) return "promo";
+  if (el.matches(".link-block")) return "panel_link";
+  if (el.closest(".nav_advertise-proof-row")) return "card_title";
   const buttonRow = el.closest(".nav_tabs-list-item-btn-wr");
   if (buttonRow) {
     return buttonRow.querySelector("a, button") === el ? "card_cta" : "card_secondary";

@@ -7,12 +7,12 @@ import type { NavBlogPost } from "../../../lib/nav/types";
 import { BLOG_POPULAR_SLUGS } from "../../../lib/blog/popular";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
-export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "information";
+export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "advertise";
 /**
  * Dropdowns with a Categories column that swaps the preview cards. Guides and
- * Company render their own layout instead.
+ * Advertise render their own layout instead.
  */
-export type CategoryMenuKey = Exclude<MenuKey, "information" | "guides">;
+export type CategoryMenuKey = Exclude<MenuKey, "advertise" | "guides">;
 
 export type KitPreview = {
   href: string;
@@ -114,20 +114,6 @@ export const DESIGN_KITS: Array<{ href: string; label: string; category: string 
   { href: "/code", label: "Code", category: "code" },
   { href: "/websites", label: "Websites", category: "websites" },
   { href: "/bundle", label: "Bundle", category: BUNDLE_CATEGORY },
-];
-
-// An entry either navigates (`href`) or opens the contact modal (`modal: true`).
-// The modal entry has no href on purpose: a placeholder `href="#"` renders an
-// empty link that crawlers and screen readers both treat as broken.
-export type InformationLink =
-  | { href: string; label: string; modal?: false }
-  | { label: string; modal: true };
-
-export const INFORMATION_LINKS: InformationLink[] = [
-  { href: "/testimonials", label: "Testimonials" },
-  { href: "/legal/license", label: "License" },
-  { href: "/legal/refunds-policy", label: "Refund policy" },
-  { label: "Contact us", modal: true },
 ];
 
 /**

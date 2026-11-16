@@ -40,8 +40,12 @@ export function isPublishAudienceCategory(category?: string | null): boolean {
 
 export type PublishLocation =
   | "header"
+  // Historical: the old Company panel. Kept so past `publish_cta_click`
+  // reports stay readable; new entry points use `advertise_panel*`.
   | "company_panel"
   | "company_panel_mobile"
+  | "advertise_panel"
+  | "advertise_panel_mobile"
   | "footer"
   | "footer_band"
   | "home_hero"

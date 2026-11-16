@@ -19,8 +19,11 @@ import { event } from "./gtag";
  * `location` parameter, so one dimension splits the whole funnel by entry point.
  */
 export type ContactLocation =
+  // Historical: the old Company panel. Kept so past funnels stay comparable.
   | "company_panel_desktop"
   | "company_panel_mobile"
+  | "advertise_panel_desktop"
+  | "advertise_panel_mobile"
   | "template_hire"
   | "dashboard_cta"
   | "testimonials_page"

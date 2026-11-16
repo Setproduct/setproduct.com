@@ -13,12 +13,14 @@ import type { MegaMenuState, MenuCategories } from "./useMegaMenuState";
 
 // Human-readable category for reports (matches what the user saw). The kit
 // shelf inside Resources reports as its own value, so it never mixes with the
-// free categories.
+// free categories. Panels without a category column (guides, advertise)
+// report "panel" so their rows never land in an "all" bucket.
 function categoryLabel(
   menuKey: string,
   category: string | null,
   inspirationCategories: InspirationCategory[],
 ): string {
+  if (menuKey === "guides" || menuKey === "advertise") return "panel";
   if (menuKey === "tutorials") {
     if (category === null) return "popular";
     if (category === NAV_BLOG_LATEST) return "latest";
@@ -95,15 +97,16 @@ export function useNavAnalytics(
     const linkType = getNavLinkType(el);
     // Trigger buttons are covered by nav_menu_open; only real navigations are
     // clicks. A touch tap that only swapped the category previews (see
-    // MegaMenuPanel) is reported by nav_category_view instead.
+    // MegaMenuPanel) is reported by nav_category_view instead. Panel rows that
+    // open the contact modal still send a click, so they stay countable.
     if (!(el instanceof HTMLAnchorElement) || !el.getAttribute("href") || el.getAttribute("href") === "#") {
-      if (linkType !== "company_link" && linkType !== "promo") return;
+      if (linkType !== "panel_link") return;
     }
     if (el.dataset.previewTap === "1") return;
 
-    const card = el.closest<HTMLElement>(".nav_tabs-list-item");
+    const card = el.closest<HTMLElement>(".nav_tabs-list-item, .nav_advertise-proof-row");
     const itemTitle = card
-      ?.querySelector<HTMLElement>(".nav_tabs-list-item-info-wr .hover-lift-title")
+      ?.querySelector<HTMLElement>(".nav_tabs-list-item-info-wr .hover-lift-title, .nav_advertise-proof-name")
       ?.textContent?.trim();
     const itemPosition = card?.parentElement
       ? Array.prototype.indexOf.call(card.parentElement.children, card) + 1
