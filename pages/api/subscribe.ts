@@ -52,12 +52,19 @@ export default async function handler(
   }
 
   try {
-    await resend.emails.send({
+    // The Resend SDK resolves with `{ error }` instead of throwing on API
+    // failures, so the error has to be checked explicitly.
+    const { error } = await resend.emails.send({
       from: "Setproduct <contact@setproduct.com>",
       to: "hello@setproduct.com",
       subject: `New subscriber to Setproduct newsletter`,
       react: SubscribeEmail({ email }),
     });
+
+    if (error) {
+      console.error("Resend rejected the subscribe email:", error);
+      return res.status(502).json({ error: "Failed to send notification" });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {

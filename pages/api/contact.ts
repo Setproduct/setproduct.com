@@ -113,7 +113,10 @@ export default async function handler(
   const context = readContext(rawContext);
 
   try {
-    await resend.emails.send({
+    // The Resend SDK does not throw on API failures (bad key, quota, domain):
+    // it resolves with `{ error }`. Without this check a failed send showed
+    // "Thank you" to the person while the lead was silently lost.
+    const { error } = await resend.emails.send({
       from: "Setproduct Contact <contact@setproduct.com>",
       to: "hello@setproduct.com",
       // "Reply" in the inbox goes to the person, not back to contact@.
@@ -121,6 +124,11 @@ export default async function handler(
       subject: `Contact form: ${email} (${context.location})`,
       react: ContactEmail({ email, message, context }),
     });
+
+    if (error) {
+      console.error("Resend rejected the contact email:", error);
+      return res.status(502).json({ error: "Failed to send email", code: "send_failed" });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
