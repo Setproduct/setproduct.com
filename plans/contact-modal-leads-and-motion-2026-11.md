@@ -84,18 +84,19 @@ flowchart TD
 
 ### 4.2. Темы и предвыбор
 
-Четыре темы, выбор чипами (`button-x-small is-text`, активный `is-active` + `aria-pressed`):
+Три темы (после ответов Q3 и Q4 тема `project` и сценарий скидки убраны), выбор чипами (`button-x-small is-text`, активный `is-active` + `aria-pressed`):
 
 | Тема (`topic`) | Подпись чипа | Предвыбрана для `location` |
 |---|---|---|
 | `publish` | `Guest post or ad` | `advertise_panel_desktop`, `advertise_panel_mobile`, `terms_page` |
-| `project` | `Custom design work` | `template_hire`, `dashboard_cta`, `testimonials_page`, FAQ про найм |
-| `product` | `Question about a kit` | `search_page`, `refunds_policy`, FAQ про скидку |
-| `other` | `Something else` | не предвыбирается |
+| `product` | `Question about a kit` | `search_page`, `refunds_policy`, страницы китов |
+| `other` | `Something else` | `template_hire`, `dashboard_cta`, `testimonials_page`, футер |
+
+Подписи выбраны агентом (Q9): глагола нет, потому что это чипы-ответы на вопрос `How can we help?`, а не кнопки действия.
 
 Из футера тема не известна: показываем чипы первым экраном. В остальных случаях чипы остаются над формой, тему можно сменить одним кликом, поля меняются без перезагрузки окна.
 
-Изменение API: `openContactModal(location, { topic, product })`. Ссылки в FAQ получают значение атрибута: `data-contact="project"` и `data-contact="discount"`.
+Изменение API: `openContactModal(location, { topic, product })`. Ссылки в FAQ про найм и скидку теряют смысл (см. раздел 15), значение атрибута `data-contact` для них не заводим.
 
 ### 4.3. Ветка паблишинга (главная)
 
@@ -117,7 +118,6 @@ flowchart TD
 | Тема | Дополнительные поля | Подсказки под `Message` |
 |---|---|---|
 | `publish` | `Product or site URL` | Что хотите узнать до заказа |
-| `project` | `Name`, `Company or site URL`, бюджет чипами, срок чипами | Что строим, для кого, что уже есть |
 | `product` | `Product` (выпадающий список китов; на странице кита уже подставлен) | Что пытаетесь сделать, какая лицензия |
 | `other` | `Name` | нет |
 
@@ -125,20 +125,19 @@ flowchart TD
 
 Мотиваторы заполнения:
 
-- строка доверия под заголовком: аватар автора и `Roman replies within one business day` (текст зависит от ответа на вопрос Q2);
+- строка доверия под заголовком: `We'll reply within 24 hours` (ответ Q2);
 - подписи необязательных полей с пометкой `optional`;
-- строка под кнопкой `We use your email only to reply`.
+- строка под кнопкой `We use your email only to reply. Privacy policy` со ссылкой на `/legal/privacy-policy` (ответ Q8).
 
 ### 4.5. Success state со следующим шагом
 
 | Тема | Заголовок | Текст | Следующий шаг |
 |---|---|---|---|
-| `publish` | `Message sent` | `We'll reply to {email} within one business day.` | `See packages` (`contact_success`) |
-| `project` | `Message sent` | то же | `See client feedback` → `/testimonials` |
+| `publish` | `Message sent` | `We'll reply to {email} within 24 hours.` | `See packages` (`contact_success`) |
 | `product` | `Message sent` | то же | `Browse free resources` → `/freebies` |
 | `other` | `Message sent` | то же | мягкая строка про Guest Posts с `See packages` |
 
-Вторая кнопка везде `Done`. Автозакрытия по таймеру нет (см. Q6): оно съедает следующий шаг и мешает тем, кто читает медленно.
+Вторая кнопка везде `Done`. Решение автора (Q6): окно закрывается само через 3 секунды, либо по `Done`, либо кликом мимо окна. Чтобы таймер не съедал следующий шаг, он ставится на паузу, пока курсор над окном или фокус на кнопке следующего шага. Под текстом тонкая полоса показывает, сколько осталось (при `prefers-reduced-motion` полоса не анимируется, таймер тот же).
 
 ### 4.6. Черновик текстов (sentence case)
 
@@ -262,7 +261,7 @@ stateDiagram-v2
     open --> submitting: submit
     submitting --> open: ошибка
     submitting --> success: ответ 200
-    success --> closingDone: Done, Escape, клик мимо
+    success --> closingDone: Done, Escape, клик мимо, таймер 3 с
     closingCancel --> closed: transitionend
     closingDone --> closed: transitionend
 ```
@@ -299,13 +298,13 @@ stateDiagram-v2
 | S1 | `replyTo: email` | [`pages/api/contact.ts`](pages/api/contact.ts:20) |
 | S2 | Принимать `topic`, `name`, `url`, `budget`, `timeline`, `product`, `location`, `pagePath`, `referrer`, `landing`. Неизвестные поля отбрасывать | там же |
 | S3 | Проверка: формат и длина email (до 254), `message` от 10 до 5000, `topic` из белого списка, URL нормализуется | там же |
-| S4 | Тема письма по шаблону `[Publish] question from Name, advertise_panel_desktop` | там же |
+| S4 | Тема письма по шаблону `[Publish] question from email, advertise_panel_desktop` | там же |
 | S5 | Письмо с таблицей всех полей и контекста | [`ContactEmail`](emails/ContactEmail.tsx:8) |
 | S6 | Токен CSRF запрашивается в момент отправки, а не при открытии. Дополнительно клиент шлёт время от открытия до отправки, сервер отсекает отправки быстрее 2 секунд | [`ContactModal`](components/modals/ContactModal.tsx:16), [`lib/csrf.ts`](lib/csrf.ts:15) |
 | S7 | Словарь понятных текстов ошибок, запасная ссылка `mailto:` с уже подставленным текстом | [`ContactModal`](components/modals/ContactModal.tsx:16) |
-| S8 | Автоответ отправителю: новый `emails/ContactAutoReply.tsx`. Текст сообщения в автоответ не копируется, иначе форму можно использовать для рассылки чужим адресам | новый файл |
+| S8 | ~~Автоответ отправителю~~ Отменён автором (Q10) | — |
 | S9 | Проверить, что секрет CSRF задан в окружении Vercel: в коде есть запасная строка-заглушка | [`lib/csrf.ts`](lib/csrf.ts:6) |
-| S10 | Лимит: смягчить дневной порог (3 в день по IP режет офисы). Надёжный общий лимит требует внешнего хранилища, это отдельное решение (Q5) | [`lib/rateLimit.ts`](lib/rateLimit.ts:10) |
+| S10 | Лимит: смягчить дневной порог (3 в день по IP режет офисы). Надёжный общий лимит требует внешнего хранилища, отложено (раздел 15) | [`lib/rateLimit.ts`](lib/rateLimit.ts:10) |
 
 ---
 
@@ -385,7 +384,6 @@ stateDiagram-v2
 | Коммит | Содержание |
 |---|---|
 | `feat: keep contact draft in session storage` | P8 |
-| `feat: send contact auto-reply` | S8 |
 | `feat: open contact modal from url parameter` | `?contact=publish` для писем, статей и портала |
 | `feat: close contact modal with browser back on mobile` | Запись в history при открытии |
 | `chore: remove unused modal styles` | `.modal_form-column`, `.modal_info-wr` и прочее, после проверки поиском |
@@ -400,7 +398,7 @@ stateDiagram-v2
 
 | № | Что | Где закрыто |
 |---|---|---|
-| 1 | `replyTo` и автоответ | S1, S8 |
+| 1 | `replyTo` (автоответ отменён, Q10) | S1 |
 | 2 | Контекст лида в письме | S2, S5 |
 | 3 | Истечение токена через 5 минут | S6 |
 | 4 | Потеря текста при закрытии | Фаза 5 |
@@ -442,20 +440,20 @@ stateDiagram-v2
 
 ---
 
-## 12. Вопросы к автору
+## 12. Вопросы к автору (ответы 17.11.2026)
 
-| № | Вопрос | Рекомендация |
+| № | Вопрос | Ответ автора |
 |---|---|---|
-| Q1 | Ветка паблишинга: карточка оффера с `See packages` и второй кнопкой `Ask a question`. Оставляем форму вопроса? | Да. Вопрос перед покупкой не открывает торг, а полный запрет формы оттолкнёт сомневающихся |
-| Q2 | Какой срок ответа можно честно обещать? | `within one business day`, если это правда |
-| Q3 | Заказной дизайн ещё продаётся? Какие диапазоны бюджета ставить в чипы? | Нужны реальные диапазоны от автора |
-| Q4 | Купон 30% за историю ещё действует? | От ответа зависит сценарий скидки |
-| Q5 | Где хранить лиды и чем усиливать защиту: только почта, уведомление в Telegram, таблица, Turnstile, внешний лимит | Начать с почты и Telegram-уведомления (две переменные окружения, без новых пакетов) |
-| Q6 | Экран успеха: закрытие кнопкой `Done` или автозакрытие | `Done` |
-| Q7 | Мобильный: нижний лист или карточка по центру | Нижний лист |
-| Q8 | Политика конфиденциальности: сделать страницу или убрать ссылку из строки | Сделать короткую страницу в `/legal` |
-| Q9 | Подписи тем из 4.2 устраивают? | — |
-| Q10 | Автоответ отправителю нужен? | Да, без копии сообщения |
+| Q1 | Оставляем форму `Ask a question` в ветке паблишинга? | Да |
+| Q2 | Какой срок ответа обещать? | 24 часа: `We'll reply within 24 hours` |
+| Q3 | Заказной дизайн ещё продаётся? | Нет. Тема `project` и чипы бюджета убраны |
+| Q4 | Купон 30% действует? | Нет. Сценарий скидки убран |
+| Q5 | Где хранить лиды? | Только почта. Остальное в раздел 15 как задел |
+| Q6 | Как закрывается экран успеха? | Автозакрытие через 3 с, кнопка `Done` или клик мимо окна |
+| Q7 | Мобильный вид | Нижний лист |
+| Q8 | Политика конфиденциальности | Сделать как принято: страница `/legal/privacy-policy`, ссылки в форме и футере, sitemap |
+| Q9 | Подписи тем | Решает агент (см. 4.2) |
+| Q10 | Автоответ отправителю | Не нужен, S8 отменён |
 
 ---
 
@@ -485,3 +483,26 @@ stateDiagram-v2
 Проверено локально запросами к API: неверный email → 400 `email_invalid`, короткое сообщение → 400 `message_short`, чужой токен → 403 `token_invalid`, просроченный → 403 `token_expired`, honeypot → 400 `spam`, повтор в течение минуты → 429 `rate_minute`, отказ Resend → 502 `send_failed`. `npm run lint` и `npm run build` чистые.
 
 Что изменилось для отчётов GA4: параметр `reason` у `contact_form_error` раньше содержал английский текст ошибки, теперь короткий код. Сравнивать ошибки до и после 17.11 надо по смыслу, а не по строке.
+
+---
+
+## 15. Отложено и требует решения
+
+### 15.1. Лиды: что оптимизировать в будущем (ответ Q5)
+
+Сейчас лид живёт только в почте hello@setproduct.com. Риски: письмо в спаме, потерялось в ящике, нет истории и статистики. По порядку пользы:
+
+1. Уведомление в Telegram-бот параллельно с письмом (две переменные окружения, без новых пакетов). Скорость реакции.
+2. Хранилище лидов (Vercel KV, Upstash Redis или таблица): история, дубликаты, отчёт по темам.
+3. Общий rate limit в том же хранилище: текущий лимит в памяти сбрасывается на каждом холодном старте функции и не общий между инстансами.
+4. Cloudflare Turnstile, если honeypot и CSRF перестанут справляться со спамом.
+
+### 15.2. Контент, который противоречит ответам Q3 и Q4
+
+Найдено при подготовке фазы 2, в рамках этого плана не правится:
+
+- FAQ `I have a project. Can I hire you?` в [`data/faq.ts`](data/faq.ts) и во всех `data/template-content/*.ts`: заказной дизайн не продаётся.
+- FAQ про скидку с обещанием купона 30% там же и в [`data/dashboard-templates.ts`](data/dashboard-templates.ts): купон не действует. Это обещание покупателю, его лучше убрать до выкатки фазы 4.
+- [`TemplateCtaHire`](components/sections/TemplateCtaHire.tsx), `CtaBlock` в [`DashboardTemplatePage`](components/pages/DashboardTemplatePage.tsx), кнопка `Let's connect` в [`TestimonialsPage`](components/pages/TestimonialsPage.tsx) продают заказную работу.
+
+Нужно решение автора: удалить, переписать под паблишинг или оставить как есть.
