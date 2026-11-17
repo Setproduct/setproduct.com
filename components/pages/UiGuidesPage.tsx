@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import ArrowIcon from "../sections/ArrowIcon";
 import SeoHead from "../seo/SeoHead";
 import SiteHeader from "../layout/SiteHeader";
@@ -13,6 +12,7 @@ import { UI_GUIDES } from "../../data/ui-guides";
 import { buildUiGuidesJsonLd } from "../../lib/blog/schema";
 import type { UiGuidesData } from "../../lib/ui-guides/load";
 import type { NavData } from "../../lib/nav/types";
+import styles from "./UiGuidesPage.module.css";
 
 type Props = {
   guides: UiGuidesData;
@@ -74,42 +74,51 @@ export default function UiGuidesPage({ guides, navData }: Props) {
                   almost every product screen.
                 </p>
                 <div className="spacer-32" />
-                <div className="blog_list">
+                {/* Same card as the home feed: bordered shell, guide pill,
+                    title, description, "Read more" and the cover pinned below
+                    the text. See UiGuidesPage.module.css for the layout. */}
+                <div className={styles.startHere}>
                   {guides.startHere.map((guide, index) => (
-                    <div className="blog_list-item w-dyn-item hover-lift is-large" key={guide.slug}>
-                      <div className="blog_list-item-wr hover-lift-media">
-                        <Link
-                          className="blog_list-item-img-wr w-inline-block relative overflow-hidden"
-                          href={`/blog/${guide.slug}`}
-                        >
-                          <Image
-                            alt={`${guide.title} cover`}
-                            className="image-cover"
-                            fill
-                            priority={index === 0}
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                            src={guide.image}
-                          />
-                        </Link>
-                        <div className="blog_list-item-info">
-                          <div className="main_blog-liist1-item-info-row">
-                            <div className="category-tag">
-                              <p className="text-size-tiny text-weight-semibold">{guide.label}</p>
-                            </div>
+                    <div
+                      className="main_blog-liist2-item w-dyn-item hover-lift is-large"
+                      data-home-position={index + 1}
+                      key={guide.slug}
+                      role="listitem"
+                    >
+                      <div className="main_blog-liist2-item-wr hover-lift-media">
+                        <div className="main_blog-liist2-item-info">
+                          <div className="category-tag">
+                            <p className="text-size-tiny text-weight-semibold">{guide.label}</p>
                           </div>
-                          <Link className="blog_liist-item-heading-wr w-inline-block" href={`/blog/${guide.slug}`}>
-                            <p className="hover-lift-title heading-style-h5 text-style-2lines">{guide.title}</p>
+                          <Link className="w-inline-block" href={`/blog/${guide.slug}`}>
+                            <p className="hover-lift-title heading-style-h5 text-color-dark-primary text-style-3lines">
+                              {guide.title}
+                            </p>
                           </Link>
                           <p className="text-size-small text-style-3lines">{guide.description}</p>
                           <div className="main_blog-liist-item-btn-wr">
                             <Link className="button-x-small is-text w-inline-block" href={`/blog/${guide.slug}`}>
-                              <div className="text-size-regular text-weight-bold">Read the guide</div>
+                              <div className="text-size-regular text-weight-bold">Read more</div>
                               <div className="button-icon is-small text-color-primary w-embed">
                                 <ArrowIcon />
                               </div>
                             </Link>
                           </div>
                         </div>
+                        <Link
+                          aria-hidden="true"
+                          className="main_blog-liist2-item-img-wr w-inline-block relative overflow-hidden"
+                          href={`/blog/${guide.slug}`}
+                          tabIndex={-1}
+                        >
+                          <img
+                            alt=""
+                            className="image-cover"
+                            decoding="async"
+                            loading={index === 0 ? "eager" : "lazy"}
+                            src={guide.thumbImage}
+                          />
+                        </Link>
                       </div>
                     </div>
                   ))}

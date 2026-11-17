@@ -1,0 +1,72 @@
+/* Start here cards on /ui-guides.
+   They reuse the home feed card markup (components/sections/BlogPostsHome.tsx)
+   so the hub and the home page show the same object: a bordered card with the
+   guide pill, title, description and "Read more" on top, the cover pinned to
+   the bottom edge. Home lays that card out with :nth-child rules in
+   BlogPostsHome.module.css; the three lead cards need the tall column layout
+   for every card instead, so the overrides live here and nothing is copied
+   from the home module. Distances use --em-px: Webflow's em is tied to the
+   window width, plain em would be tied to the font size of the element. */
+
+.startHere {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(32 * var(--em-px));
+}
+
+/* The grid child has no height of its own, so it has to become a flex box for
+   the card inside to stretch to the row height and match its neighbours. */
+.startHere :global(.main_blog-liist2-item) {
+  display: flex;
+}
+
+.startHere :global(.main_blog-liist2-item-wr) {
+  flex: 1;
+  flex-direction: column;
+}
+
+/* Webflow caps this block at 333em, which is meant for the short feed card.
+   Here the block keeps its natural height and grows with the row, so the
+   button stays on the bottom edge of the text area. */
+.startHere :global(.main_blog-liist2-item-info) {
+  flex: 1 1 auto;
+  max-height: none;
+}
+
+/* The cover fills the rest of the card at a fixed 1.19:1 ratio, so the three
+   cards stay identical in height whatever their title length. */
+.startHere :global(.main_blog-liist2-item-img-wr) {
+  flex: 0 0 auto;
+  aspect-ratio: 119 / 100;
+  height: auto;
+}
+
+@media screen and (max-width: 991px) {
+  .startHere {
+    grid-template-columns: 1fr;
+    gap: calc(24 * var(--em-px));
+  }
+
+  /* Webflow fixes the tablet block at 266em, which clips the description once
+     the card becomes a single column. */
+  .startHere :global(.main_blog-liist2-item-info) {
+    flex: none;
+    height: auto;
+  }
+
+  /* A full-width card keeps a banner, not the 1.19:1 ratio: at this width the
+     ratio would make the cover taller than the text block. */
+  .startHere :global(.main_blog-liist2-item-img-wr) {
+    aspect-ratio: auto;
+    height: calc(320 * var(--em-px));
+  }
+}
+
+@media screen and (max-width: 479px) {
+  /* A full-width card at 1.19:1 eats the whole screen on a phone, so the cover
+     drops to a fixed banner height. */
+  .startHere :global(.main_blog-liist2-item-img-wr) {
+    aspect-ratio: auto;
+    height: calc(200 * var(--em-px));
+  }
+}
