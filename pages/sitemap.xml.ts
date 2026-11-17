@@ -19,6 +19,7 @@ const STATIC_PATHS = [
   "/dataviz",
   "/freebies",
   "/legal/license",
+  "/legal/privacy-policy",
   "/legal/refunds-policy",
   "/legal/terms-of-paid-posts",
   "/mobile",

@@ -105,6 +105,14 @@ export const PAGE_META: Record<string, PageMeta> = {
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com/legal/refunds-policy",
   },
+  "privacy-policy": {
+    title: "Privacy policy for setproduct.com",
+    description:
+      "What setproduct.com collects through the contact and newsletter forms and analytics, why, how long we keep it and how to get it deleted.",
+    ogImage:
+      "/images/setproduct2.webp",
+    canonical: "https://www.setproduct.com/legal/privacy-policy",
+  },
   "terms-of-paid-posts": {
     title: "Paid post terms of service for advertisers on Setproduct blog",
     description:

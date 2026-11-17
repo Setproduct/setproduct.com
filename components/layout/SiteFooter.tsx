@@ -58,6 +58,7 @@ const LEGAL_LINKS: FooterLink[] = [
   { href: "/legal/license", label: "License" },
   { href: "/legal/refunds-policy", label: "Refund policy" },
   { href: "/legal/terms-of-paid-posts", label: "Terms of paid posts" },
+  { href: "/legal/privacy-policy", label: "Privacy policy" },
 ];
 
 const PUBLISH_FACTS = [

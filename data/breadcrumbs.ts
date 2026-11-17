@@ -14,6 +14,7 @@ export const PAGE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
   "license": [{ label: "Home", href: "/" }, { label: "License" }],
   "refunds-policy": [{ label: "Home", href: "/" }, { label: "Refunds policy" }],
   "terms-of-paid-posts": [{ label: "Home", href: "/" }, { label: "Paid post terms of service" }],
+  "privacy-policy": [{ label: "Home", href: "/" }, { label: "Privacy policy" }],
   search: [{ label: "Home", href: "/" }, { label: "Search results" }],
   "ui-guides": [{ label: "Home", href: "/" }, { label: "UI guides" }],
 };
