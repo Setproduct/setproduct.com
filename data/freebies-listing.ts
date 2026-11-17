@@ -21,6 +21,27 @@ export const FREEBIE_CODE_CATEGORIES: string[] = [
 
 export const FREEBIE_PRODUCTS: FreebieItem[] = [
   {
+    slug: "archify",
+    title: "Archify, system diagrams from your agent",
+    description:
+      "Agent skill that turns a repository or a one-line description into a single interactive HTML diagram. Ten diagram types, Apache 2.0 licence, no account needed.",
+    thumb: "/freebies/thumbs/freebie-archify.webp",
+    image: "/freebies/freebie-archify.webp",
+    imageAlt:
+      "Archify editor showing a generated agent workflow map with planner, approval gate and trace log",
+    category: "Design and AI tools",
+    previewHref: "/freebies/archify",
+    duplicateHref: "https://github.com/tt-a1i/archify",
+    isFree: true,
+    ctaLabel: "View on GitHub ★",
+    menuCtaLabel: "Get the code",
+    relatedPosts: [
+      "design-to-code-ai-agents-guide",
+      "design-skills-for-ai-agents-compared",
+      "open-source-tools-digest-2026-10",
+    ],
+  },
+  {
     slug: "ramka",
     title: "Ramka, the headless lightbox for React",
     description:

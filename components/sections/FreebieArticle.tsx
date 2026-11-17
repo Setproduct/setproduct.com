@@ -17,6 +17,16 @@ type ArticleHeading = {
   text: string;
 };
 
+const ARCHIFY_HEADINGS: ArticleHeading[] = [
+  { id: "what-archify-does", text: "What Archify actually does" },
+  { id: "why-diagrams-from-chat", text: "Why the diagram lives in the chat now" },
+  { id: "how-it-works", text: "How it works under the hood" },
+  { id: "ten-diagram-types", text: "Ten diagram types, one output file" },
+  { id: "use-cases-archify", text: "Use cases" },
+  { id: "faq-archify", text: "Frequently asked questions" },
+  { id: "why-it-belongs-archify", text: "Why it belongs in your stack" },
+];
+
 const DRIVER_JS_HEADINGS: ArticleHeading[] = [
   { id: "what-driver-js-does", text: "What driver.js actually does" },
   { id: "why-onboarding", text: "Why onboarding is the thing you postpone" },
@@ -244,6 +254,7 @@ const USEANIMATIONS_HEADINGS: ArticleHeading[] = [
 ];
 
 const ARTICLE_HEADINGS: Record<string, ArticleHeading[]> = {
+  archify: ARCHIFY_HEADINGS,
   desigma: DESIGMA_HEADINGS,
   looseleaf: LOOSELEAF_HEADINGS,
   "react-useanimations": USEANIMATIONS_HEADINGS,
@@ -1201,6 +1212,284 @@ export default function FreebieArticle({ slug }: Props) {
                   other <Link href="/freebies">free resources</Link> and{" "}
                   <Link href="/code">design and code kits</Link> are built for the
                   same ship-it-yourself workflow.
+                </p>
+                  </>
+                )}
+
+                {slug === "archify" && (
+                  <>
+                <p className="blog_big-paragraph">
+                  You need a diagram. You open a drawing tool, drop boxes on a
+                  canvas, connect them with arrows, and keep nudging alignment
+                  until the picture stops looking accidental. Then someone asks
+                  what happens when the cache misses, and the layout work starts
+                  again. Archify takes the drawing out of the job. You describe the
+                  system to your coding agent in one sentence, and it returns an
+                  interactive HTML page you can click through.
+                </p>
+
+                <h2 id="what-archify-does">What Archify actually does</h2>
+                <p>
+                  Archify is a skill for AI coding agents, not an app you open. It
+                  installs into Cursor, Claude Code, Codex CLI, or OpenCode, and
+                  then behaves like one more capability your agent has. Ask for a
+                  diagram of a request path, and the agent writes the structure,
+                  Archify renders it, and you get one self-contained HTML file
+                  back. There is nothing to sign up for and no seat to buy.
+                </p>
+                <p>
+                  The install is one line you paste into the agent:
+                </p>
+                <ul>
+                  <li>
+                    <code>
+                      npx -y skills@latest add https://archify.si --skill archify
+                      --agent cursor --global --copy --yes
+                    </code>
+                  </li>
+                </ul>
+                <p>
+                  Swap <code>cursor</code> for <code>codex</code>,{" "}
+                  <code>claude-code</code>, or <code>opencode</code> and the same
+                  command covers the other targets. If you would rather not install
+                  anything, <code>npx skills use tt-a1i/archify@archify</code> runs
+                  it once.
+                </p>
+                <p>
+                  The output is not a screenshot. Nodes respond to a click, a path
+                  can be highlighted end to end, and a shareable link can carry the
+                  view you were looking at. The same file holds light and dark
+                  themes and exports to PNG, WebP, JPG, or a printed PDF when you
+                  need a still image for a deck.
+                </p>
+
+                <h2 id="why-diagrams-from-chat">
+                  Why the diagram lives in the chat now
+                </h2>
+                <p>
+                  Diagrams rot for one reason. The canvas and the code sit in
+                  different places, so the canvas never hears about the change.
+                  Someone ships a queue, the picture keeps its old arrow, and a
+                  month later nobody trusts the picture. Hand-drawn architecture
+                  ends up as a screenshot in a doc, and the doc slowly becomes
+                  decoration.
+                </p>
+                <p>
+                  Archify puts the source next to the work. The diagram is typed
+                  JSON that lives in the repository, so a change request is a short
+                  chat message: add Redis, move auth to the left, highlight the
+                  rollback path. The agent edits the source, the renderer rebuilds
+                  the page, and the picture stays within one message of the truth
+                  instead of one quarter behind it.
+                </p>
+                <p>
+                  ☞ A diagram that takes an hour to redraw gets redrawn never.
+                  Keep the source in the repo and let the agent rebuild it.
+                </p>
+
+                <h2 id="how-it-works">How it works under the hood</h2>
+                <p>
+                  Four steps run each time, and the fourth is the one that saves
+                  you from shipping a broken picture.
+                </p>
+                <ul>
+                  <li>
+                    ❶ Generate. The agent writes a typed JSON source from your
+                    description or from a repository it just read.
+                  </li>
+                  <li>
+                    ❷ Validate. Bundled validators check the schema, the layout,
+                    the routes, and the clearance between labels and arrows.
+                  </li>
+                  <li>
+                    ❸ Preview. An optional loopback preview watches one source
+                    file and reloads only revisions that passed every gate.
+                  </li>
+                  <li>
+                    ❹ Deliver. A candidate is rendered in place and checked again.
+                    Only a passing artifact replaces the last good file.
+                  </li>
+                </ul>
+                <p>
+                  Step two is where the tool differs from a prompting trick. When
+                  validation fails, you do not get a stack trace or a vague retry.
+                  You get a machine-readable receipt with a rule code, the exact
+                  subject that failed, and the repairs the tool supports, so the
+                  agent can fix the one thing that broke instead of regenerating
+                  the whole page and hoping.
+                </p>
+                <p>
+                  For a repository-backed diagram the nodes carry source
+                  references: each one marks itself with a numbered marker and opens
+                  the file and line range, pinned to one commit. The Evidence story
+                  is honest about its limits, because Archify reads a snapshot
+                  rather than live infrastructure. If you want the more aggressive
+                  version of that idea, the{" "}
+                  <Link href="/freebies/rea">
+                    REA reverse engineering server
+                  </Link>{" "}
+                  takes a similar local-first stance for compiled and packaged apps.
+                </p>
+
+                <h2 id="ten-diagram-types">Ten diagram types, one output file</h2>
+                <p>
+                  Picking the wrong shape is the most common reason a diagram fails
+                  to explain anything, so Archify ships ten checked shapes instead
+                  of one generic canvas.
+                </p>
+                <ul>
+                  <li>
+                    ❶ Architecture, for components, storage, and trust boundaries
+                  </li>
+                  <li>❷ Workflow, for CI/CD, approvals, and runbooks</li>
+                  <li>❸ Sequence, for one interaction over time</li>
+                  <li>❹ Data flow, for pipelines and sensitivity boundaries</li>
+                  <li>❺ Lifecycle, for states, retries, and terminal outcomes</li>
+                  <li>❻ ERD, for tables, columns, keys, and cardinality</li>
+                  <li>❼ Class, for types and what implements what</li>
+                  <li>❽ Tree, for single-parent hierarchies like modules</li>
+                  <li>❾ Timeline, for incident reviews and release history</li>
+                  <li>❿ Waterfall, for where the time went in one request</li>
+                </ul>
+                <p>
+                  The project keeps eleven checked scenarios on its own site, with
+                  their JSON sources and validation receipts, and you can open any
+                  of them while you decide which shape fits. The gallery of those
+                  examples lives on the{" "}
+                  <a
+                    href="https://archify.si/"
+                    rel="nofollow noopener noreferrer"
+                    target="_blank"
+                  >
+                    Archify project site
+                  </a>
+                  , which also holds the installation guide and the scenario
+                  chooser.
+                </p>
+
+                <h2 id="use-cases-archify">Use cases</h2>
+
+                <h3>For a founder</h3>
+                <ul>
+                  <li>
+                    ❶ A seed deck needs one honest picture of how a payment moves,
+                    so the sequence diagram shows call order, the retry branch, and
+                    the point where a webhook can arrive twice.
+                  </li>
+                  <li>
+                    ❷ A contractor joins for six weeks. The same map replaces the
+                    walkthrough call, and the first pull request lands on day two
+                    instead of day five.
+                  </li>
+                  <li>
+                    ❸ A customer asks why an invoice is late. A timeline of that one
+                    request answers the question faster than a paragraph of support
+                    text would.
+                  </li>
+                </ul>
+
+                <h3>For a designer</h3>
+                <ul>
+                  <li>
+                    ❶ Screens you hand over show states, not the order they arrive
+                    in. A lifecycle diagram puts empty, loading, error, and retry on
+                    one page so the developer stops guessing.
+                  </li>
+                  <li>
+                    ❷ Before you adopt an unfamiliar UI kit, an architecture diagram
+                    of its component layers tells you what you are buying faster
+                    than the pricing page does.
+                  </li>
+                  <li>
+                    ❸ On a client call about checkout, a sequence diagram makes the
+                    edge cases concrete enough to settle the argument in the room
+                    rather than in a follow-up email.
+                  </li>
+                </ul>
+
+                <h3>For a coder</h3>
+                <ul>
+                  <li>
+                    ❶ On day one in an unfamiliar repository, ask for a runtime map
+                    of eight to twelve components and skip the week you would spend
+                    reading entry points.
+                  </li>
+                  <li>
+                    ❷ A pull request touches three services. A workflow diagram of
+                    the changed path makes your review comment obvious to a reviewer
+                    who has never opened those files.
+                  </li>
+                  <li>
+                    ❸ After an incident, a waterfall view of one slow request shows
+                    where the seconds went, so the postmortem stops arguing about
+                    which service to blame.
+                  </li>
+                </ul>
+
+                <h2 id="faq-archify">Frequently asked questions</h2>
+
+                <h3>Do I need a repository to start?</h3>
+                <p>
+                  No. A text description is enough for the first diagram, which is
+                  the fastest way to check whether the shape you have in mind
+                  matches the system. Point it at a repository only when you want
+                  the nodes to carry source references.
+                </p>
+
+                <h3>Which agents does it install into?</h3>
+                <p>
+                  Cursor, Claude Code, Codex CLI, and OpenCode are the documented
+                  targets, with an agent switcher on the project site that prints
+                  the exact install command for the one you use. Community
+                  integrations exist for a couple of harnesses and are labelled as
+                  unofficial.
+                </p>
+
+                <h3>What happens when the generated diagram is wrong?</h3>
+                <p>
+                  You say what is wrong. The source is typed JSON, so a change is
+                  local: one node, one edge, one label. Validation runs again before
+                  the file is replaced, and a rejection leaves your previous working
+                  diagram untouched.
+                </p>
+
+                <h3>Is the output really one file?</h3>
+                <p>
+                  Yes. The result is a single self-contained HTML page with no
+                  server behind it, which is why it survives being emailed,
+                  committed, or dropped into a documentation folder years later.
+                </p>
+
+                <h2 id="why-it-belongs-archify">
+                  Why it belongs in your stack
+                </h2>
+                <p>
+                  You already pay for a drawing tool that you open four times a
+                  year. The difference here is that the picture gets produced in the
+                  same minute as the question, inside the chat where the code is
+                  already open. Apache 2.0 means you can fork it, and the typed
+                  source means your team can review a diagram change like any other
+                  diff.
+                </p>
+                <p>
+                  Start with the one path that people keep asking you to explain,
+                  which is usually checkout, login, or deployment. Then read{" "}
+                  <Link href="/blog/design-to-code-ai-agents-guide">
+                    how design handoff works with AI agents
+                  </Link>{" "}
+                  and the{" "}
+                  <Link href="/blog/design-skills-for-ai-agents-compared">
+                    comparison of agent skills designers actually use
+                  </Link>
+                  . If you are still choosing your agent, the{" "}
+                  <Link href="/blog/ai-agent-ui-design-patterns">
+                    interface patterns for agent products
+                  </Link>{" "}
+                  cover what the chat side should look like. When the screens inside
+                  those diagrams need a faster start, the other{" "}
+                  <Link href="/freebies">free open source resources</Link> and{" "}
+                  <Link href="/code">design and code kits</Link> follow the same
+                  ship-it-yourself workflow.
                 </p>
                   </>
                 )}

@@ -28,6 +28,7 @@ export const HOME_KITS_COUNT = 6;
  * last one. A new Figma file does not go here at all.
  */
 export const HOME_FREEBIE_SLUGS = [
+  "archify", // 17.11.2026
   "ramka", // 11.11.2026
   "desigma", // 09.11.2026
   "looseleaf", // 09.11.2026
@@ -36,7 +37,6 @@ export const HOME_FREEBIE_SLUGS = [
   "cleanyourtv", // 21.10.2026
   "gr8r-task-management", // 16.10.2026
   "spectrum-ui", // 14.10.2026
-  "compositor", // 12.10.2026
 ] as const;
 
 // The UI guides list that sits under "Most read" now comes from
