@@ -3881,3 +3881,10 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
+/* Fields: label 6em above the control (from .field), 20em between groups.
+   20 > focus edge 6 + lift 2 of L, so a focused field never touches the next
+   label. Field text inherits the page font, not the UA one. */
+.contact-dialog_form :is(.text-input, .textarea-input) {
+  font-family: inherit;
+}

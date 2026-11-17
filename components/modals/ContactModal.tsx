@@ -281,20 +281,26 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 <input aria-label="Leave this field empty" autoComplete="off" name="website" tabIndex={-1} />
               </div>
 
-              <div className="modal_form-item">
-                <p className="text-size-regular">Email</p>
+              <div className="field">
+                <label className="field-label" htmlFor="contact-email">
+                  Email
+                </label>
                 <input
                   aria-describedby={fieldWithError === "email" ? "contact-email-error" : undefined}
                   aria-invalid={fieldWithError === "email" || undefined}
-                  aria-label="Email"
-                  className="text-input w-input"
+                  autoComplete="email"
+                  className="text-input is-l"
                   disabled={isSubmitting}
+                  enterKeyHint="next"
+                  id="contact-email"
+                  inputMode="email"
                   maxLength={254}
                   name="Email"
                   onFocus={handleFieldFocus}
                   placeholder="you@company.com"
                   ref={emailRef}
                   required
+                  spellCheck={false}
                   type="email"
                 />
                 {fieldWithError === "email" && formError ? (
@@ -304,14 +310,17 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 ) : null}
               </div>
 
-              <div className="modal_form-item">
-                <p className="text-size-regular">Message</p>
+              <div className="field">
+                <label className="field-label" htmlFor="contact-message">
+                  Message
+                </label>
                 <textarea
                   aria-describedby={fieldWithError === "message" ? "contact-message-error" : undefined}
                   aria-invalid={fieldWithError === "message" || undefined}
-                  aria-label="Message"
-                  className="textarea-input w-input"
+                  className="textarea-input is-l"
                   disabled={isSubmitting}
+                  enterKeyHint="enter"
+                  id="contact-message"
                   maxLength={5000}
                   minLength={10}
                   name="Message"
@@ -338,6 +347,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                   </p>
                 </div>
               ) : null}
+
 
               <div className="contact-dialog_actions">
                 <button
