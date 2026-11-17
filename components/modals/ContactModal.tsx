@@ -14,11 +14,26 @@ type ContactModalProps = {
   location: ContactLocation;
 };
 
+/**
+ * The security token is valid for five minutes. Fetching it when the modal
+ * opened meant that anyone who wrote a thoughtful message for longer than that
+ * got "Form expired" and lost the lead. Asking for it right before the POST
+ * keeps the protection and removes the time limit on writing.
+ */
+async function fetchCsrf(): Promise<{ token: string; timestamp: number } | null> {
+  try {
+    const res = await fetch("/api/csrf", { cache: "no-store" });
+    if (!res.ok) return null;
+    return (await res.json()) as { token: string; timestamp: number };
+  } catch {
+    return null;
+  }
+}
+
 export default function ContactModal({ isOpen, onClose, location }: ContactModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [csrf, setCsrf] = useState<{ token: string; timestamp: number } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   // contact_form_start must fire once per modal session, not on every focus
   // change between the email field and the textarea.
@@ -27,15 +42,10 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      fetch("/api/csrf")
-        .then(res => res.json())
-        .then(data => setCsrf(data))
-        .catch(() => {});
     } else {
       document.body.style.overflow = "";
       setIsSubmitted(false);
       setErrorMessage(null);
-      setCsrf(null);
     }
     return () => {
       document.body.style.overflow = "";
@@ -66,6 +76,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
     let reported = false;
 
     try {
+      const csrf = await fetchCsrf();
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
