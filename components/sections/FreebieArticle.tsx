@@ -1230,12 +1230,12 @@ export default function FreebieArticle({ slug }: Props) {
 
                 <h2 id="what-archify-does">What Archify actually does</h2>
                 <p>
-                  Archify is a skill for AI coding agents, not an app you open. It
-                  installs into Cursor, Claude Code, Codex CLI, or OpenCode, and
-                  then behaves like one more capability your agent has. Ask for a
-                  diagram of a request path, and the agent writes the structure,
-                  Archify renders it, and you get one self-contained HTML file
-                  back. There is nothing to sign up for and no seat to buy.
+                  Archify is a skill you add to an AI coding agent rather than a
+                  separate app you open. It installs into Cursor, Claude Code,
+                  Codex CLI, or OpenCode, then behaves like one more capability the
+                  agent already has. Ask for a diagram of a request path, and the
+                  agent writes the structure, Archify renders it, and you get one
+                  self-contained HTML file back. There is nothing to sign up for.
                 </p>
                 <p>
                   The install is one line you paste into the agent:
@@ -1256,11 +1256,20 @@ export default function FreebieArticle({ slug }: Props) {
                   it once.
                 </p>
                 <p>
-                  The output is not a screenshot. Nodes respond to a click, a path
-                  can be highlighted end to end, and a shareable link can carry the
-                  view you were looking at. The same file holds light and dark
-                  themes and exports to PNG, WebP, JPG, or a printed PDF when you
-                  need a still image for a deck.
+                  The output behaves like a page a reader can explore. Nodes respond
+                  to a click, a path can be highlighted end to end, and a shareable
+                  link can carry the view you were looking at. The same file holds light
+                  and dark themes and exports to PNG, WebP or JPG, and prints to
+                  PDF when a deck needs a still image. Motion inside the viewer
+                  follows the{" "}
+                  <a
+                    href="https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    reduced-motion rule in WCAG 2.2
+                  </a>
+                  , so a diagram does not animate at a reader who asked it to stop.
                 </p>
 
                 <h2 id="why-diagrams-from-chat">
@@ -1339,17 +1348,41 @@ export default function FreebieArticle({ slug }: Props) {
                 </p>
                 <ul>
                   <li>
-                    ❶ Architecture, for components, storage, and trust boundaries
+                    <strong>Architecture</strong> maps components, storage and trust
+                    boundaries
                   </li>
-                  <li>❷ Workflow, for CI/CD, approvals, and runbooks</li>
-                  <li>❸ Sequence, for one interaction over time</li>
-                  <li>❹ Data flow, for pipelines and sensitivity boundaries</li>
-                  <li>❺ Lifecycle, for states, retries, and terminal outcomes</li>
-                  <li>❻ ERD, for tables, columns, keys, and cardinality</li>
-                  <li>❼ Class, for types and what implements what</li>
-                  <li>❽ Tree, for single-parent hierarchies like modules</li>
-                  <li>❾ Timeline, for incident reviews and release history</li>
-                  <li>❿ Waterfall, for where the time went in one request</li>
+                  <li>
+                    <strong>Workflow</strong> maps CI/CD, approvals and runbooks
+                  </li>
+                  <li>
+                    <strong>Sequence</strong> shows one interaction over time
+                  </li>
+                  <li>
+                    <strong>Data flow</strong> shows a pipeline and where sensitive
+                    data crosses a boundary
+                  </li>
+                  <li>
+                    <strong>Lifecycle</strong> shows states, retries and terminal
+                    outcomes
+                  </li>
+                  <li>
+                    <strong>ERD</strong> holds tables, columns, keys and cardinality
+                  </li>
+                  <li>
+                    <strong>Class</strong> shows types and what implements what
+                  </li>
+                  <li>
+                    <strong>Tree</strong> shows single-parent hierarchies such as
+                    modules
+                  </li>
+                  <li>
+                    <strong>Timeline</strong> lays out an incident review or a
+                    release history
+                  </li>
+                  <li>
+                    <strong>Waterfall</strong> shows where the time went in one
+                    request
+                  </li>
                 </ul>
                 <p>
                   The project keeps eleven checked scenarios on its own site, with
@@ -1372,17 +1405,17 @@ export default function FreebieArticle({ slug }: Props) {
                 <h3>For a founder</h3>
                 <ul>
                   <li>
-                    ❶ A seed deck needs one honest picture of how a payment moves,
+                    → A seed deck needs one honest picture of how a payment moves,
                     so the sequence diagram shows call order, the retry branch, and
                     the point where a webhook can arrive twice.
                   </li>
                   <li>
-                    ❷ A contractor joins for six weeks. The same map replaces the
+                    → A contractor joins for six weeks. The same map replaces the
                     walkthrough call, and the first pull request lands on day two
                     instead of day five.
                   </li>
                   <li>
-                    ❸ A customer asks why an invoice is late. A timeline of that one
+                    → A customer asks why an invoice is late. A timeline of that one
                     request answers the question faster than a paragraph of support
                     text would.
                   </li>
@@ -1391,17 +1424,20 @@ export default function FreebieArticle({ slug }: Props) {
                 <h3>For a designer</h3>
                 <ul>
                   <li>
-                    ❶ Screens you hand over show states, not the order they arrive
+                    → Screens you hand over show states, not the order they arrive
                     in. A lifecycle diagram puts empty, loading, error, and retry on
                     one page so the developer stops guessing.
                   </li>
                   <li>
-                    ❷ Before you adopt an unfamiliar UI kit, an architecture diagram
+                    → Before you adopt an unfamiliar UI kit, an architecture diagram
                     of its component layers tells you what you are buying faster
-                    than the pricing page does.
+                    than the pricing page does. Our own{" "}
+                    <Link href="/templates/orion">Orion charts kit</Link> is the
+                    exercise in miniature: eight widget groups, and one diagram
+                    explains how they feed a dashboard.
                   </li>
                   <li>
-                    ❸ On a client call about checkout, a sequence diagram makes the
+                    → On a client call about checkout, a sequence diagram makes the
                     edge cases concrete enough to settle the argument in the room
                     rather than in a follow-up email.
                   </li>
@@ -1410,17 +1446,17 @@ export default function FreebieArticle({ slug }: Props) {
                 <h3>For a coder</h3>
                 <ul>
                   <li>
-                    ❶ On day one in an unfamiliar repository, ask for a runtime map
+                    → On day one in an unfamiliar repository, ask for a runtime map
                     of eight to twelve components and skip the week you would spend
                     reading entry points.
                   </li>
                   <li>
-                    ❷ A pull request touches three services. A workflow diagram of
+                    → A pull request touches three services. A workflow diagram of
                     the changed path makes your review comment obvious to a reviewer
                     who has never opened those files.
                   </li>
                   <li>
-                    ❸ After an incident, a waterfall view of one slow request shows
+                    → After an incident, a waterfall view of one slow request shows
                     where the seconds went, so the postmortem stops arguing about
                     which service to blame.
                   </li>
@@ -1440,9 +1476,8 @@ export default function FreebieArticle({ slug }: Props) {
                 <p>
                   Cursor, Claude Code, Codex CLI, and OpenCode are the documented
                   targets, with an agent switcher on the project site that prints
-                  the exact install command for the one you use. Community
-                  integrations exist for a couple of harnesses and are labelled as
-                  unofficial.
+                  the exact install command for the one you use. Two community
+                  integrations also exist and both are labelled unofficial.
                 </p>
 
                 <h3>What happens when the generated diagram is wrong?</h3>
