@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import ContactModal from "./ContactModal";
-import { trackContactCta, type ContactLocation } from "../../lib/contact";
+import { rememberLandingPage, trackContactCta, type ContactLocation } from "../../lib/contact";
 
 type ContactModalContextType = {
   /**
@@ -26,6 +26,11 @@ export function useContactModal() {
 export function ContactModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [location, setLocation] = useState<ContactLocation>("unknown");
+
+  // The provider wraps the whole app, so this runs on the first page of the visit.
+  useEffect(() => {
+    rememberLandingPage();
+  }, []);
 
   // Both the GA4 click event and the modal state live here: any new entry point
   // only has to pass its location, and cannot forget to instrument the click.

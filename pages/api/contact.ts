@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
-import ContactEmail from "../../emails/ContactEmail";
+import ContactEmail, { type ContactEmailContext } from "../../emails/ContactEmail";
 import { rateLimit, getClientIp } from "../../lib/rateLimit";
 import { verifyToken } from "../../lib/csrf";
 
@@ -16,6 +16,27 @@ type ResponseData = {
   success?: boolean;
   error?: string;
 };
+
+/** Trims a client-sent string and drops anything that is not a string. */
+function cleanString(value: unknown, max: number): string {
+  if (typeof value !== "string") return "";
+  return value.replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
+}
+
+/**
+ * The context is informational only: it never decides whether the message is
+ * accepted, so a missing or malformed object simply produces empty fields.
+ */
+function readContext(raw: unknown): ContactEmailContext {
+  const source = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const location = cleanString(source.location, 64).replace(/[^a-z0-9_]/g, "");
+  return {
+    location: location || "unknown",
+    pagePath: cleanString(source.pagePath, 300),
+    referrer: cleanString(source.referrer, 300),
+    landing: cleanString(source.landing, 300),
+  };
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,7 +57,7 @@ export default async function handler(
     return res.status(429).json({ error: limit.reason });
   }
 
-  const { email, message, website, _token, _timestamp } = req.body;
+  const { email, message, website, _token, _timestamp, context: rawContext } = req.body;
 
   if (website) {
     return res.status(400).json({ error: "Invalid submission" });
@@ -55,12 +76,16 @@ export default async function handler(
     return res.status(400).json({ error: "Message is required" });
   }
 
+  const context = readContext(rawContext);
+
   try {
     await resend.emails.send({
       from: "Setproduct Contact <contact@setproduct.com>",
       to: "hello@setproduct.com",
-      subject: `Contact form: ${email}`,
-      react: ContactEmail({ email, message }),
+      // "Reply" in the inbox goes to the person, not back to contact@.
+      replyTo: email,
+      subject: `Contact form: ${email} (${context.location})`,
+      react: ContactEmail({ email, message, context }),
     });
 
     return res.status(200).json({ success: true });

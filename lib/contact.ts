@@ -34,6 +34,49 @@ export type ContactLocation =
   | "footer"
   | "unknown";
 
+const LANDING_KEY = "sp_landing";
+
+/**
+ * Remembers the first page of the visit, including its query string, so UTM
+ * tags from a newsletter or a partner link reach the lead email even when the
+ * person writes to us three pages later. Called once from the modal provider.
+ */
+export function rememberLandingPage() {
+  if (typeof window === "undefined") return;
+  try {
+    if (window.sessionStorage.getItem(LANDING_KEY)) return;
+    window.sessionStorage.setItem(LANDING_KEY, window.location.pathname + window.location.search);
+  } catch {
+    // Storage can be blocked (private mode, strict settings). Context is optional.
+  }
+}
+
+/** Where the lead came from. Sent to /api/contact and printed in the email. */
+export type LeadContext = {
+  location: ContactLocation;
+  pagePath: string;
+  referrer: string;
+  landing: string;
+};
+
+export function getLeadContext(location: ContactLocation): LeadContext {
+  if (typeof window === "undefined") {
+    return { location, pagePath: "", referrer: "", landing: "" };
+  }
+  let landing = "";
+  try {
+    landing = window.sessionStorage.getItem(LANDING_KEY) ?? "";
+  } catch {
+    landing = "";
+  }
+  return {
+    location,
+    pagePath: window.location.pathname + window.location.search,
+    referrer: document.referrer,
+    landing,
+  };
+}
+
 /** Fired on every click that opens the modal. */
 export function trackContactCta(location: ContactLocation) {
   event("contact_cta_click", {

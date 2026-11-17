@@ -1,5 +1,6 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import {
+  getLeadContext,
   trackContactFormError,
   trackContactFormStart,
   trackContactFormSubmit,
@@ -72,6 +73,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
           email,
           message,
           website,
+          context: getLeadContext(location),
           _token: csrf?.token,
           _timestamp: csrf?.timestamp,
         }),
