@@ -3751,6 +3751,21 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
    plans/contact-modal-leads-and-motion-2026-11.md.
    ========================================================================== */
 
+/* Motion tokens (plan 5.2). Durations and easings live here so the prototype
+   page and the live dialog read the same numbers. */
+.contact-dialog {
+  --modal-in: 360ms;
+  --modal-out: 220ms;
+  --modal-done: 420ms;
+  --modal-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-ease-out: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --modal-blur: 8px;
+  /* Centre of the button that opened the dialog, set from JS. The card grows
+     out of it and returns into it on cancel. */
+  --modal-origin-x: 50%;
+  --modal-origin-y: 50%;
+}
+
 /* Reset the UA box: no padding (a click on the dialog itself means backdrop),
    no border, no max size, centred by the UA inset + margin auto. */
 .contact-dialog {
@@ -3767,10 +3782,40 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 /* Blur is in px: ::backdrop does not inherit custom properties in older
    browsers, and the radius should not shrink with the layout anyway. */
+/* Durations on ::backdrop are literals on purpose: older browsers do not let
+   the pseudo-element read custom properties from its host. */
 .contact-dialog::backdrop {
   background-color: rgba(25, 24, 27, 0.32);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+  animation: contact-scrim-in 360ms linear both;
+}
+
+.contact-dialog[data-state="closingCancel"]::backdrop {
+  animation: contact-scrim-out 220ms linear both;
+}
+
+/* After a successful send the scrim leaves a little before the card. */
+.contact-dialog[data-state="closingDone"]::backdrop {
+  animation: contact-scrim-out 300ms linear both;
+}
+
+@keyframes contact-scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contact-scrim-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -3792,6 +3837,59 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   border-radius: calc(24 * var(--em-px));
   background-color: var(--white);
   outline: none;
+  transform-origin: var(--modal-origin-x) var(--modal-origin-y);
+  transition:
+    transform var(--modal-in) var(--modal-ease-in),
+    opacity calc(var(--modal-in) / 3) linear,
+    filter var(--modal-in) var(--modal-ease-in);
+}
+
+/* First painted frame after showModal(): already small, lifted and blurred, so
+   the way in is a real movement instead of a jump. */
+.contact-dialog[data-state="preopen"] .contact-dialog_card {
+  opacity: 0;
+  transform: translateY(calc(16 * var(--em-px))) scale(0.92);
+  filter: blur(var(--modal-blur));
+}
+
+.contact-dialog[data-state="open"] .contact-dialog_card,
+.contact-dialog[data-state="submitting"] .contact-dialog_card,
+.contact-dialog[data-state="success"] .contact-dialog_card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Cancel: the card goes back into the button it came from. No blur here: the
+   person changed their mind, nothing has been spent. */
+.contact-dialog[data-state="closingCancel"] .contact-dialog_card {
+  opacity: 0;
+  transform: translateY(calc(12 * var(--em-px))) scale(0.96);
+  transition:
+    transform var(--modal-out) var(--modal-ease-out),
+    opacity var(--modal-out) var(--modal-ease-out);
+}
+
+/* Done: the message flew away. Same dissolve as the read-next bar, upwards,
+   so a finished send never looks like a cancel. */
+.contact-dialog[data-state="closingDone"] .contact-dialog_card {
+  opacity: 0;
+  transform: translateY(calc(-24 * var(--em-px))) scale(1);
+  filter: blur(calc(var(--modal-blur) * 1.5));
+  transition:
+    transform var(--modal-done) var(--modal-ease-in),
+    opacity var(--modal-done) var(--modal-ease-in),
+    filter var(--modal-done) var(--modal-ease-in);
+}
+
+/* Reduced motion: opacity only, no scale, no shift, no blur. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog {
+    --modal-in: 120ms;
+    --modal-out: 120ms;
+    --modal-done: 120ms;
+    --modal-blur: 0px;
+  }
 }
 
 .contact-dialog_body {
@@ -3836,6 +3934,111 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   display: flex;
   justify-content: center;
   margin-top: calc(12 * var(--em-px));
+}
+
+/* Success: the circle pops in, the tick is drawn, the body fades up from
+   below. Nothing loops. */
+.contact-dialog_success {
+  position: relative;
+  animation: contact-success-in 200ms var(--modal-ease-in) both;
+}
+
+.contact-dialog_check {
+  display: grid;
+  place-items: center;
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  animation: contact-check-in 320ms var(--modal-ease-in) both;
+}
+
+.contact-dialog_check svg {
+  width: 50%;
+  height: 50%;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contact-dialog_check path {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: contact-check-draw 280ms var(--modal-ease-in) 120ms both;
+}
+
+/* Countdown of the three-second auto-close. Sits on the bottom edge of the
+   card and pauses while the pointer rests on the dialog. */
+.contact-dialog_progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 0 0 calc(24 * var(--em-px)) calc(24 * var(--em-px));
+}
+
+.contact-dialog_progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--primary);
+  transform-origin: left center;
+  animation: contact-progress 3000ms linear both;
+}
+
+@keyframes contact-success-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(8 * var(--em-px)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes contact-check-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contact-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes contact-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Calm mode: the tick is simply there, the bar keeps showing the countdown. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog_success,
+  .contact-dialog_check,
+  .contact-dialog_check path {
+    animation: none;
+  }
+
+  .contact-dialog_check path {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* 44px hit area (WCAG 2.5.5), 32em visible circle drawn by the background. */
@@ -3897,6 +4100,20 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     width: 100%;
     max-height: calc(100dvh - 24px);
     margin: auto 0 0;
+    --modal-blur: 4px;
+  }
+
+  /* Bottom sheet: slides from the edge, never scales from the trigger. */
+  .contact-dialog_card {
+    transform-origin: 50% 100%;
+  }
+
+  .contact-dialog[data-state="preopen"] .contact-dialog_card {
+    transform: translateY(100%) scale(1);
+  }
+
+  .contact-dialog[data-state="closingCancel"] .contact-dialog_card {
+    transform: translateY(100%) scale(1);
   }
 
   .contact-dialog::backdrop {
