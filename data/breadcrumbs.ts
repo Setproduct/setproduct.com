@@ -8,7 +8,7 @@ export const PAGE_BREADCRUMBS: Record<string, BreadcrumbItem[]> = {
   dataviz: [{ label: "Home", href: "/" }, { label: "Templates", href: "/all" }, { label: "Charts" }],
   websites: [{ label: "Home", href: "/" }, { label: "Templates", href: "/all" }, { label: "Websites" }],
   bundle: [{ label: "Home", href: "/" }, { label: "Templates", href: "/all" }, { label: "Bundle" }],
-  blog: [{ label: "Home", href: "/" }, { label: "Blog" }],
+  blog: [{ label: "Home", href: "/" }, { label: "Magazine" }],
   freebies: [{ label: "Home", href: "/" }, { label: "Resources" }],
   testimonials: [{ label: "Home", href: "/" }, { label: "Testimonials" }],
   "license": [{ label: "Home", href: "/" }, { label: "License" }],

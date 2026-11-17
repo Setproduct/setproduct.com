@@ -71,6 +71,38 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * Category filters on /blog. Webflow pins the column at top: 20em, which is
+ * 20px from the viewport edge, while the navbar is fixed and ~74em tall: the
+ * first rows (View all, Startups & SaaS) slid under it on scroll. Same offset
+ * as the article sidebar above, so both sticky columns stop at the same line.
+ * Only ≥480px: below that the column turns into a horizontal chip row and
+ * Webflow resets it to `position: static`.
+ */
+.blog_list-filters-wr {
+  top: calc(90 * var(--em-px));
+  max-height: calc(100vh - 110 * var(--em-px));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--black-transparent) transparent;
+}
+
+/* A scroll box that is taller than its content would still show a scrollbar
+   gutter, so the list keeps its own padding instead of a hard clip. */
+.blog_list-filters-inner {
+  padding-right: calc(4 * var(--em-px));
+}
+
+@media screen and (max-width: 479px) {
+  /* Below 480 the column becomes a horizontal chip row and Webflow already
+     makes it static: drop the desktop scroll box so the row never gets a
+     height cap. */
+  .blog_list-filters-wr {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+/*
  * Article sidebar (blog posts, resources, license).
  * Native sticky, no JS. Sits under the fixed navbar (70em) with a 20em gap and
  * never grows past the viewport: the TOC list shrinks and scrolls on its own,

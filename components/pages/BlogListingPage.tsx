@@ -8,8 +8,10 @@ import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import ArrowIcon from "../sections/ArrowIcon";
+import Breadcrumbs from "../sections/Breadcrumbs";
 import CtaSubscribe from "../sections/CtaSubscribe";
 import { PAGE_META } from "../../data/pages-meta";
+import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import { BLOG_CATEGORIES, LEGACY_BLOG_CATEGORIES } from "../../data/blog-categories";
 import type { BlogPostPreview } from "../../types/data";
 import type { NavData } from "../../lib/nav/types";
@@ -27,6 +29,7 @@ type Props = {
 
 export default function BlogListingPage({ blogPosts = [], navData }: Props) {
   const meta = PAGE_META.blog;
+  const breadcrumbs = PAGE_BREADCRUMBS.blog ?? [];
   const router = useRouter();
   // navData is built without posts here, so the Magazine panel and the footer
   // read this list. They need the small thumb, which is not sent in props.
@@ -82,7 +85,10 @@ export default function BlogListingPage({ blogPosts = [], navData }: Props) {
         title={meta.title}
       />
       <SiteHeader navData={navData} blogPosts={navPosts} />
-      <main className={`mt-18 ${styles.blogLayoutTweaks}`}>
+      {/* Same start offset as the other sections: the fixed navbar is ~74em
+          tall, so mt-18 (72px) left no room for the breadcrumbs. */}
+      <main className={`mt-22.5 ${styles.blogLayoutTweaks}`}>
+        {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="section">
           <div className="section-padding top-80 bottom-80">
             <div className="container">
