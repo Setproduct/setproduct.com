@@ -15,6 +15,8 @@ export type NavFreebie = Pick<
 /** Card of the UI guides panel: a guide post plus its group key. */
 export type NavGuidePost = Pick<BlogPostPreview, "slug" | "title" | "description" | "thumbImage"> & {
   group: string;
+  /** 0 = the most recently published guide. Orders the "Latest" tab. */
+  newestRank: number;
 };
 
 /** Proof row of the Advertise panel: one of our own posts that ranks on Google. */
@@ -31,7 +33,7 @@ export type NavData = {
   /** Resources shown under "Latest". */
   freebies: NavFreebie[];
   /**
-   * Previews of every UI guides tab (Popular plus each group, 6 each),
+   * Previews of every UI guides tab (Latest plus each group, 6 each),
    * deduped, most read first (UI_GUIDES_BY_READS).
    */
   guides: NavGuidePost[];

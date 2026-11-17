@@ -170,11 +170,14 @@ export function getBlogPreviews<T extends Pick<NavBlogPost, "category" | "slug">
 
 export const NAV_GUIDE_PREVIEW_COUNT = 6;
 
-// Rows of the UI guides column, built like Magazine: "Popular" (null, the
+// Rows of the UI guides column, built like Magazine: "Latest" (null, the
 // default tab and the /ui-guides link) on top, then the guide groups in
 // alphabetical order. Each group row links to its anchor on the hub.
+// The default tab is the newest guides on purpose: the most-read guides
+// already fill Magazine's "Popular", and opening both panels on the same six
+// covers looked like a repeat (author, 17.11.2026).
 export const NAV_GUIDE_CATEGORIES: Array<{ label: string; group: string | null; href: string }> = [
-  { label: "Popular", group: null, href: "/ui-guides" },
+  { label: "Latest", group: null, href: "/ui-guides" },
   ...UI_GUIDE_GROUPS_ALPHABETICAL.map((group) => ({
     label: group.title,
     group: group.key,
@@ -183,13 +186,18 @@ export const NAV_GUIDE_CATEGORIES: Array<{ label: string; group: string | null; 
 ];
 
 /**
- * UI guides previews. `guides` are sorted most read first (see
- * UI_GUIDES_BY_READS), so null gives the six most read guides overall and a
- * group gives the six most read of that group.
+ * UI guides previews. null ("Latest") gives the six most recently published
+ * guides; a group gives the six most read of that group (`guides` arrive
+ * sorted by UI_GUIDES_BY_READS).
  */
-export function getGuidePreviews<T extends Pick<NavGuidePost, "group">>(guides: T[], group: string | null): T[] {
-  const pool = group === null ? guides : guides.filter((guide) => guide.group === group);
-  return pool.slice(0, NAV_GUIDE_PREVIEW_COUNT);
+export function getGuidePreviews<T extends Pick<NavGuidePost, "group" | "newestRank">>(
+  guides: T[],
+  group: string | null,
+): T[] {
+  if (group === null) {
+    return [...guides].sort((a, b) => a.newestRank - b.newestRank).slice(0, NAV_GUIDE_PREVIEW_COUNT);
+  }
+  return guides.filter((guide) => guide.group === group).slice(0, NAV_GUIDE_PREVIEW_COUNT);
 }
 
 // Narrows the (already shuffled) inspiration pool to the hovered component

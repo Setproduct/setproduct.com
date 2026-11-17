@@ -104,9 +104,10 @@ export const UI_GUIDES: UiGuide[] = [
  * Every guide, most read first. The top three follow GA4 entrances
  * (12.07–09.10.2026: data table 2 417, AI chat interface 1 578, tabs 1 456),
  * the rest follow Search Console clicks (plans/Страницы.csv). The navbar panel
- * opens on the first six ("Popular") and shows the six most read of a group
- * when a category is hovered. Refresh it each quarter together with
- * lib/blog/popular.ts. A guide missing here simply sorts last.
+ * opens on the newest guides ("Latest", by date) and shows the six most read
+ * of a group when a category is hovered; the hub's lead block takes the first
+ * three. Refresh it each quarter together with lib/blog/popular.ts. A guide
+ * missing here simply sorts last.
  */
 export const UI_GUIDES_BY_READS: string[] = [
   "data-table-ui-design",

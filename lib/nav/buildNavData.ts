@@ -20,11 +20,16 @@ import type { NavData, NavFreebie, NavGuidePost, NavShowcasePost } from "./types
 
 /**
  * Cards of the UI guides panel. Every guide is matched to its post, sorted
- * most read first, then trimmed to what the tabs show (Popular plus six per
- * group). The thumb comes through blogThumbPath, which leaves an existing
- * /thumbs/ path alone. A guide without a post fails the build.
+ * most read first, then trimmed to what the tabs show (Latest plus six per
+ * group). `newestRank` is the guide's place among the guides by date (`posts`
+ * come newest first). The thumb comes through blogThumbPath, which leaves an
+ * existing /thumbs/ path alone. A guide without a post fails the build.
  */
 function buildGuideData(posts: BlogPostPreview[]): NavGuidePost[] {
+  const guideSlugs = new Set(UI_GUIDES.map((guide) => guide.slug));
+  const newestRank = new Map(
+    posts.filter((post) => guideSlugs.has(post.slug)).map((post, index) => [post.slug, index]),
+  );
   const bySlug = new Map(posts.map((post) => [post.slug, post]));
   const all = UI_GUIDES.map((guide) => {
     const post = bySlug.get(guide.slug);
@@ -35,6 +40,7 @@ function buildGuideData(posts: BlogPostPreview[]): NavGuidePost[] {
       description: post.description,
       thumbImage: blogThumbPath(post.thumbImage),
       group: guide.group,
+      newestRank: newestRank.get(guide.slug) ?? UI_GUIDES.length,
     };
   }).sort((a, b) => guideReadRank(a.slug) - guideReadRank(b.slug));
 

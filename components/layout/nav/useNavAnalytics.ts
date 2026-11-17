@@ -21,7 +21,7 @@ function categoryLabel(
   inspirationCategories: InspirationCategory[],
 ): string {
   if (menuKey === "advertise") return "panel";
-  if (menuKey === "guides" && category === null) return "popular";
+  if (menuKey === "guides" && category === null) return "latest";
   if (menuKey === "tutorials") {
     if (category === null) return "popular";
     if (category === NAV_BLOG_LATEST) return "latest";
