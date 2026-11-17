@@ -88,8 +88,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         answerHtml: "<p>Absolutely! Our products are not just suitable but optimized for commercial projects, offering a myriad of benefits and features that empower you to create exceptional digital experiences for your clients or customers. Whether you're working on a startup venture, an enterprise-level application, or anything in between, our admin dashboard templates provide the foundation you need to bring your vision to life.</p>",
       },
       {
-        question: "Is There a Possibility of Receiving a Discount?",
-        answerHtml: "<p>We offer exclusive discounts to those who spend enough time exploring our collections. An express email describing how you want to use our product and we will send you a shining ✨30% off coupon for your next order. Then tell us the particular product that interests you.</p>",
+        question: "Do you offer discounts?",
+        answerHtml: "<p>The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first.</p>",
       },
     ],
   },
@@ -148,8 +148,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         answerHtml: "<p>Certainly! Our items are suitable for everyone, beginners included. If you study our Commercial UI kits meticulously, you’ll see how components and layouts are built; which rules are applied, and some interesting tricks from other stylists. It's not difficult to bring our kits into Figma. We also have all the guidance you need in our instructions.</p>",
       },
       {
-        question: "I Love Your Designs, But Can I Have a Discount?",
-        answerHtml: "<p>We're so glad you like our design products! We do plan to reward customers who get in touch with us using a line or two of their own thoughts about our goods. Simply send us a message stating the product you want and we will furnish an exclusive discount code for you.</p>\n<p>Try one of our analytics dashboard templates and start turning your data into insights you can act on. Get in touch with us to discuss your project or place an order. Now, let's start building greatness together, right!?</p>",
+        question: "Do you offer discounts?",
+        answerHtml: "<p>The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first.</p>",
       },
     ],
   },
@@ -427,8 +427,8 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         answerHtml: "<p>Certainly! Our assets are fully licensed for unlimited use in commercial projects. However, it's crucial to choose the correct license type before making your purchase.</p>",
       },
       {
-        question: "Can you Provide a Discount?",
-        answerHtml: "<p>We're pleased to offer discounts to customers who share their intended usage of our products. Simply send us a message specifying the product you're interested in, along with a brief explanation of how you plan to use it, and we'll provide you with a 30% off coupon for your next purchase.</p>",
+        question: "Do you offer discounts?",
+        answerHtml: "<p>The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first.</p>",
       },
     ],
   },

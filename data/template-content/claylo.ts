@@ -229,12 +229,12 @@ export const clayloContent = {
       "answerHtml": "Yes. The HTML, CSS, and SVG are framework-agnostic. Copy the sections into your <strong>Next.js</strong> pages, <strong>Astro</strong> .astro files, or SvelteKit routes. All animations run on CSS, so nothing breaks when you lift the script-free markup out of the standalone shell."
     },
     {
-      "question": "I have a project. Can I hire you?",
-      "answerHtml": "We take on custom design and development work. We can extend this template or build new ones and ship them in production with popular frameworks. Just <a data-contact href=\"mailto:hello@setproduct.com\"><span class=\"span-link\">contact us</span></a> with your brief, budget, and expectations."
+      "question": "Can I promote my product on Setproduct?",
+      "answerHtml": "Yes. Publish a guest post on the Setproduct blog with a dofollow link to your product. About 17,000 people read the blog every month, its domain rating is 42, and posts go live within 24 hours. One link costs $288, two links cost $348. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>."
     },
     {
-      "question": "I 💜 it, but can I have a discount?",
-      "answerHtml": "We reward people who scroll to the bottom. <a data-contact href=\"mailto:hello@setproduct.com\"><span class=\"span-link\">Drop us a message</span></a> with a short note on how you plan to use Claylo and we send a ✨<strong>30% off coupon</strong> for your purchase."
+      "question": "Do you offer discounts?",
+      "answerHtml": "The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first."
     }
   ],
   "ctaHire": {

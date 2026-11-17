@@ -22,12 +22,12 @@ const COMMON_FAQ: FaqItem[] = [
     answerHtml: '<strong>Yes!</strong> You can build an unlimited amount of commercial projects using Setproduct assets. But, please, <em>consider a license type</em> before making a purchase.',
   },
   {
-    question: "I have a project. Can I hire you?",
-    answerHtml: 'We\'re open-minded to your custom design &amp; development projects. We can create complex templates based on our Figma libraries and code them in the production using a wide variety of popular frameworks and technologies.<br/><br/>If you have a project to design &amp; develop, simply <a data-contact href="mailto:hello@setproduct.com"><span class="span-link">contact us</span></a> describing your brief, budget, and expectations.',
+    question: "Can I promote my product on Setproduct?",
+    answerHtml: "Yes. Publish a guest post on the Setproduct blog with a dofollow link to your product. About 17,000 people read the blog every month, its domain rating is 42, and posts go live within 24 hours. One link costs $288, two links cost $348. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>.",
   },
   {
-    question: "I 💜 Your designs, but can I have a discount?",
-    answerHtml: 'We provide discounts for those, who scrolled to the bottom and revealed our proposal. Just <a data-contact href="mailto:hello@setproduct.com"><span class="span-link">drop us a message</span></a> with a short story about how you plan to use our product and we will give you a ✨<strong>30% off coupon</strong> for the upcoming purchase. Please, provide a specific product name you\'ve put your eye on.',
+    question: "Do you offer discounts?",
+    answerHtml: "The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first.",
   },
 ];
 
@@ -97,9 +97,9 @@ const HOME_FAQ: FaqItem[] = [
       'Yes. One kit covers an unlimited number of commercial projects for a single person or company, with no per-project fee. Pick the license tier that matches your team size, details are on the <a class="span-link" href="/legal/license">license page</a>.',
   },
   {
-    question: "I have a project. Can I hire you?",
+    question: "How do I contact the team?",
     answerHtml:
-      'Yes, we take on custom design and development work, often on top of our own Figma libraries. Tell us about your brief, budget and timeline through the <a class="span-link" data-contact href="mailto:hello@setproduct.com">contact form</a>, and we\'ll let you know if it\'s a fit.',
+      'Send your question through the <a class="span-link" data-contact href="mailto:hello@setproduct.com">contact form</a>. It works for kits, licenses and publishing, and we reply within 24 hours.',
   },
 ];
 
@@ -180,12 +180,7 @@ export const LEGACY_HOME_FAQ: FaqItem[] = [
     answerHtml:
       'Checkout runs through Gumroad, which supports card and PayPal. If those aren\'t available to you, you can fund a virtual crypto card and pay that way. We walk through it in <a class="span-link" href="/blog/pay-for-claude-pro-with-usdt">paying with USDT</a> and our <a class="span-link" href="/blog/solcard-review-usdt-crypto-card-that-actually-helps-pay-for-online-subscriptions">SolCard review</a>.',
   },
-  // GROUP E — Hire and collaboration
-  {
-    question: "I have a project. Can I hire you?",
-    answerHtml:
-      'Yes, we take on custom design and development work, often building on top of our own Figma libraries. Tell us about your brief, budget, and timeline through the <a class="span-link" data-contact href="mailto:hello@setproduct.com">contact form</a>, and we\'ll let you know if it\'s a fit.',
-  },
+  // GROUP E — Publishing
   {
     question: "Can I write a guest post for your blog?",
     answerHtml:
