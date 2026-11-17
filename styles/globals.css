@@ -3421,16 +3421,6 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   justify-content: center;
 }
 
-/* --- Navbar: divider rows in a category column ---------------------------- */
-/* Resources holds two kinds of offer: free resources, then the paid kit
-   shelf. A hairline marks the border so a reader scanning for free stuff is
-   not sold a kit by accident. */
-.navbar .nav_radio.is-divided {
-  margin-top: calc(8 * var(--em-px));
-  padding-top: calc(14 * var(--em-px));
-  border-top: 1px solid var(--black-transparent);
-}
-
 /* --- Navbar: Advertise panel -------------------------------------------- */
 /* The panel sells placement on the blog, so it is not a link list: on the left
    the offer (three facts, the entry price, one primary button), on the right

@@ -127,8 +127,6 @@ export const NAV_DESIGN_KITS_ROW = "__design_kits__";
 export type NavResourceRow = {
   label: string;
   category: string | null;
-  /** Hairline above the row: free resources end, the paid shelf begins. */
-  divider?: boolean;
 };
 
 // Rows of the Resources column. The free rows mirror FREEBIES_CATEGORIES one
@@ -139,8 +137,9 @@ export type NavResourceRow = {
 // "Self-hosted apps" would mislabel it.
 //
 // Order: fresh tools first, Figma templates last among the free rows (the same
-// "tools before Figma" decision as the home page). The kit shelf sits under a
-// hairline so a reader who came for free stuff is not sold a kit by accident.
+// "tools before Figma" decision as the home page). The kit shelf is the last
+// row and sits in the same list as the free categories, with no divider: it is
+// one of the Resources choices, not a separate block.
 export const NAV_RESOURCE_ROWS: NavResourceRow[] = [
   { label: "Latest", category: null },
   { label: "UI components", category: "UI components" },
@@ -149,7 +148,7 @@ export const NAV_RESOURCE_ROWS: NavResourceRow[] = [
   { label: "Desktop utilities", category: "Desktop utilities" },
   { label: "Self-hosted apps", category: "Self-hosted apps" },
   { label: "Figma templates", category: "Figma templates" },
-  { label: "Design kits", category: NAV_DESIGN_KITS_ROW, divider: true },
+  { label: "Design kits", category: NAV_DESIGN_KITS_ROW },
 ];
 
 /**

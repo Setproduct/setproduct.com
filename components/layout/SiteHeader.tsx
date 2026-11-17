@@ -242,7 +242,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
         : row.category
           ? `/freebies?category=${encodeURIComponent(row.category)}`
           : "/freebies",
-    divider: row.divider,
     isActive: categories.freebies === row.category,
   }));
 

@@ -15,8 +15,6 @@ export type MegaMenuCategory = {
   value: string | null;
   href: string;
   isActive: boolean;
-  /** Hairline above the row, separating a different kind of offer. */
-  divider?: boolean;
 };
 
 type MegaMenuPanelProps = {
@@ -138,7 +136,7 @@ export function MegaMenuPanel({
                 <div className="nav-links is-1-column" onMouseMove={aim.track}>
                   {categories.map((cat) => (
                     <NavLink
-                      className={`nav_radio w-inline-block${cat.isActive ? " w--current" : ""}${cat.divider ? " is-divided" : ""}`}
+                      className={`nav_radio w-inline-block${cat.isActive ? " w--current" : ""}`}
                       href={cat.href}
                       external={external}
                       key={cat.key}
