@@ -3742,3 +3742,142 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     height: calc(56 * var(--em-px));
   }
 }
+
+/* ==========================================================================
+   Contact dialog (components/modals/ContactModal.tsx)
+   Native <dialog> + showModal(): the browser gives the top layer, focus trap,
+   inert page and Escape. State lives in data-state (open / submitting /
+   success); motion for these states is added in phase 3 of
+   plans/contact-modal-leads-and-motion-2026-11.md.
+   ========================================================================== */
+
+/* Reset the UA box: no padding (a click on the dialog itself means backdrop),
+   no border, no max size, centred by the UA inset + margin auto. */
+.contact-dialog {
+  width: min(calc(768 * var(--em-px)), calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--black);
+  overflow: visible;
+}
+
+/* Blur is in px: ::backdrop does not inherit custom properties in older
+   browsers, and the radius should not shrink with the layout anyway. */
+.contact-dialog::backdrop {
+  background-color: rgba(25, 24, 27, 0.32);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .contact-dialog::backdrop {
+    background-color: rgba(25, 24, 27, 0.48);
+  }
+}
+
+.contact-dialog_card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 32px);
+  /* Inner scroll for short screens. Padding keeps room for the 6px focus edge
+     and 2px lift of L fields, so overflow never clips them (risk R4). */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(40 * var(--em-px)) calc(64 * var(--em-px));
+  border-radius: calc(24 * var(--em-px));
+  background-color: var(--white);
+  outline: none;
+}
+
+.contact-dialog_body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--em-px));
+}
+
+.contact-dialog_heading {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  /* Keep the centred title clear of the close button. */
+  padding: 0 calc(32 * var(--em-px));
+  text-align: center;
+}
+
+.contact-dialog_heading > * {
+  margin: 0;
+}
+
+.contact-dialog_form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--em-px));
+}
+
+.contact-dialog_alert {
+  display: grid;
+  row-gap: calc(4 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: #fff5f5;
+  color: var(--black);
+}
+
+.contact-dialog_alert p {
+  margin: 0;
+}
+
+.contact-dialog_actions {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(12 * var(--em-px));
+}
+
+/* 44px hit area (WCAG 2.5.5), 32em visible circle drawn by the background. */
+.contact-dialog_close {
+  position: absolute;
+  top: calc(12 * var(--em-px));
+  right: calc(12 * var(--em-px));
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.contact-dialog_close::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background-color: var(--light-grey);
+  transition: background-color 160ms ease;
+}
+
+.contact-dialog_close-icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-dialog_close:hover::before {
+    background-color: var(--light-primary);
+  }
+}
+
+.contact-dialog_close:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
