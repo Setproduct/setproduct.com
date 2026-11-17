@@ -348,6 +348,13 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 </div>
               ) : null}
 
+              <p className="contact-dialog_privacy text-size-small">
+                We use your email only to reply.{" "}
+                <a className="underline" href="/legal/privacy-policy" rel="noopener" target="_blank">
+                  Privacy policy
+                </a>
+              </p>
+
 
               <div className="contact-dialog_actions">
                 <button

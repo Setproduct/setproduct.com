@@ -3953,3 +3953,13 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     padding-top: calc(16 * var(--em-px));
   }
 }
+
+.contact-dialog_privacy {
+  margin: 0;
+  color: #19181b99;
+  text-align: center;
+}
+
+.contact-dialog_privacy a {
+  color: inherit;
+}
