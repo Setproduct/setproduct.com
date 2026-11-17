@@ -7,22 +7,26 @@ const requests = new Map<string, RequestLog>();
 const MINUTE_MS = 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+type RateLimitResult =
+  | { allowed: true }
+  | { allowed: false; reason: string; code: "rate_minute" | "rate_day" };
+
 export function rateLimit(
   ip: string,
   perMinute = 1,
   perDay = 3
-): { allowed: boolean; reason?: string } {
+): RateLimitResult {
   const now = Date.now();
   const log = requests.get(ip) || { timestamps: [] };
 
   const lastMinute = log.timestamps.filter(t => now - t < MINUTE_MS);
   if (lastMinute.length >= perMinute) {
-    return { allowed: false, reason: "Please wait a minute before trying again" };
+    return { allowed: false, reason: "Please wait a minute before trying again", code: "rate_minute" };
   }
 
   const lastDay = log.timestamps.filter(t => now - t < DAY_MS);
   if (lastDay.length >= perDay) {
-    return { allowed: false, reason: "Daily limit reached. Please try again tomorrow" };
+    return { allowed: false, reason: "Daily limit reached. Please try again tomorrow", code: "rate_day" };
   }
 
   log.timestamps = [...lastDay, now];

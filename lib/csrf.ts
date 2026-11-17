@@ -12,18 +12,22 @@ export function generateToken(): { token: string; timestamp: number } {
   return { token, timestamp };
 }
 
-export function verifyToken(token: string, timestamp: number): { valid: boolean; reason?: string } {
-  if (!token || !timestamp) {
-    return { valid: false, reason: "Missing security token" };
+type VerifyResult =
+  | { valid: true }
+  | { valid: false; reason: string; code: "token_missing" | "token_expired" | "token_invalid" };
+
+export function verifyToken(token: string, timestamp: number): VerifyResult {
+  if (!token || !timestamp || !Number.isFinite(timestamp)) {
+    return { valid: false, reason: "Missing security token", code: "token_missing" };
   }
 
   const age = Date.now() - timestamp;
   if (age > MAX_AGE_MS) {
-    return { valid: false, reason: "Form expired. Please refresh and try again" };
+    return { valid: false, reason: "Form expired. Please refresh and try again", code: "token_expired" };
   }
 
   if (age < 0) {
-    return { valid: false, reason: "Invalid timestamp" };
+    return { valid: false, reason: "Invalid timestamp", code: "token_invalid" };
   }
 
   const expected = crypto
@@ -32,7 +36,7 @@ export function verifyToken(token: string, timestamp: number): { valid: boolean;
     .digest("hex");
 
   if (token !== expected) {
-    return { valid: false, reason: "Invalid security token" };
+    return { valid: false, reason: "Invalid security token", code: "token_invalid" };
   }
 
   return { valid: true };

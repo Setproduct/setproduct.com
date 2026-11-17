@@ -12,10 +12,36 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
+/**
+ * Machine-readable error codes. The modal maps them to human copy, and GA4
+ * receives the code, so reports stay stable even if the wording changes.
+ */
+export type ContactErrorCode =
+  | "method"
+  | "origin"
+  | "spam"
+  | "token_missing"
+  | "token_expired"
+  | "token_invalid"
+  | "email_invalid"
+  | "message_short"
+  | "message_long"
+  | "rate_minute"
+  | "rate_day"
+  | "send_failed";
+
 type ResponseData = {
   success?: boolean;
   error?: string;
+  code?: ContactErrorCode;
 };
+
+const EMAIL_MAX = 254;
+const MESSAGE_MIN = 10;
+const MESSAGE_MAX = 5000;
+// Deliberately loose: one @, no spaces, a dot in the domain. Strict RFC regexes
+// reject real addresses more often than they stop junk.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Trims a client-sent string and drops anything that is not a string. */
 function cleanString(value: unknown, max: number): string {
@@ -43,37 +69,45 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Method not allowed", code: "method" });
   }
 
   const origin = req.headers.origin;
   if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
-    return res.status(403).json({ error: "Forbidden" });
+    return res.status(403).json({ error: "Forbidden", code: "origin" });
   }
 
+  const body = (req.body ?? {}) as Record<string, unknown>;
+  const { website, _token, _timestamp, context: rawContext } = body;
+
+  if (website) {
+    return res.status(400).json({ error: "Invalid submission", code: "spam" });
+  }
+
+  const csrf = verifyToken(String(_token ?? ""), Number(_timestamp));
+  if (!csrf.valid) {
+    return res.status(403).json({ error: csrf.reason, code: csrf.code });
+  }
+
+  const email = typeof body.email === "string" ? body.email.trim() : "";
+  if (email.length > EMAIL_MAX || !EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: "Please enter a valid email", code: "email_invalid" });
+  }
+
+  const message = typeof body.message === "string" ? body.message.trim() : "";
+  if (message.length < MESSAGE_MIN) {
+    return res.status(400).json({ error: "Message is too short", code: "message_short" });
+  }
+  if (message.length > MESSAGE_MAX) {
+    return res.status(400).json({ error: "Message is too long", code: "message_long" });
+  }
+
+  // The limit is checked last, right before sending: a typo in the email must
+  // not burn one of the few attempts a person gets per day.
   const ip = getClientIp(req);
   const limit = rateLimit(ip, 1, 3);
   if (!limit.allowed) {
-    return res.status(429).json({ error: limit.reason });
-  }
-
-  const { email, message, website, _token, _timestamp, context: rawContext } = req.body;
-
-  if (website) {
-    return res.status(400).json({ error: "Invalid submission" });
-  }
-
-  const csrf = verifyToken(_token, _timestamp);
-  if (!csrf.valid) {
-    return res.status(403).json({ error: csrf.reason });
-  }
-
-  if (!email || typeof email !== "string") {
-    return res.status(400).json({ error: "Email is required" });
-  }
-
-  if (!message || typeof message !== "string") {
-    return res.status(400).json({ error: "Message is required" });
+    return res.status(429).json({ error: limit.reason, code: limit.code });
   }
 
   const context = readContext(rawContext);
@@ -91,6 +125,6 @@ export default async function handler(
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Email send error:", error);
-    return res.status(500).json({ error: "Failed to send email" });
+    return res.status(500).json({ error: "Failed to send email", code: "send_failed" });
   }
 }

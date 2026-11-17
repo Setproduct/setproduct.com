@@ -175,6 +175,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                       className="textarea-input w-input"
                       disabled={isSubmitting}
                       maxLength={5000}
+                      minLength={10}
                       name="Message"
                       onFocus={handleFieldFocus}
                       placeholder="Type your message"
