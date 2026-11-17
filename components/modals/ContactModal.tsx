@@ -30,10 +30,41 @@ async function fetchCsrf(): Promise<{ token: string; timestamp: number } | null>
   }
 }
 
+const CONTACT_EMAIL = "hello@setproduct.com";
+
+/**
+ * Human copy for every error code the API can return. Unknown codes and
+ * network failures fall back to the generic line. The mailto link under the
+ * message is always shown, so a person is never left without a way to reach us.
+ */
+const ERROR_COPY: Record<string, string> = {
+  email_invalid: "Please check your email address.",
+  message_short: "Please write a bit more so we can help, at least 10 characters.",
+  message_long: "Your message is over 5,000 characters. Please shorten it or email us directly.",
+  rate_minute: "You've just sent a message. Please try again in a minute.",
+  rate_day: "You've reached today's limit for the form. Please email us directly.",
+  token_missing: "Something went wrong on our side. Please try again.",
+  token_expired: "Something went wrong on our side. Please try again.",
+  token_invalid: "Something went wrong on our side. Please try again.",
+  send_failed: "We couldn't send your message. Please try again in a moment.",
+  network: "Couldn't reach the server. Check your connection and try again.",
+};
+const ERROR_FALLBACK = "We couldn't send your message. Please try again.";
+
+type FormError = { code: string; text: string };
+
+function buildMailto(message: string): string {
+  const params = new URLSearchParams({ subject: "Message from setproduct.com" });
+  if (message.trim()) params.set("body", message.slice(0, 1500));
+  // URLSearchParams encodes spaces as "+", which mail clients show literally.
+  return `mailto:${CONTACT_EMAIL}?${params.toString().replace(/\+/g, "%20")}`;
+}
+
 export default function ContactModal({ isOpen, onClose, location }: ContactModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [formError, setFormError] = useState<FormError | null>(null);
+  const [draftMessage, setDraftMessage] = useState("");
   const overlayRef = useRef<HTMLDivElement>(null);
   // contact_form_start must fire once per modal session, not on every focus
   // change between the email field and the textarea.
@@ -45,7 +76,8 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
     } else {
       document.body.style.overflow = "";
       setIsSubmitted(false);
-      setErrorMessage(null);
+      setFormError(null);
+      setDraftMessage("");
     }
     return () => {
       document.body.style.overflow = "";
@@ -66,14 +98,19 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-    setErrorMessage(null);
+    setFormError(null);
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("Email") as string;
     const message = formData.get("Message") as string;
     const website = formData.get("website") as string;
+    setDraftMessage(message);
 
-    let reported = false;
+    const fail = (code: string) => {
+      setFormError({ code, text: ERROR_COPY[code] ?? ERROR_FALLBACK });
+      // GA4 gets the stable code, not the copy, so reports survive rewording.
+      trackContactFormError(location, code);
+    };
 
     try {
       const csrf = await fetchCsrf();
@@ -90,22 +127,18 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
         }),
       });
 
-      const data = await response.json();
+      // A proxy or a platform error page may answer with HTML, not JSON.
+      const data = (await response.json().catch(() => null)) as { code?: string } | null;
 
       if (!response.ok) {
-        const reason = data?.error || `http_${response.status}`;
-        setErrorMessage(reason);
-        trackContactFormError(location, reason);
-        reported = true;
+        fail(data?.code ?? `http_${response.status}`);
         return;
       }
 
       trackContactFormSubmit(location, message.length);
       setIsSubmitted(true);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : "unknown";
-      setErrorMessage(reason);
-      if (!reported) trackContactFormError(location, reason);
+    } catch {
+      fail("network");
     } finally {
       setIsSubmitting(false);
     }
@@ -193,9 +226,20 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                       required
                     />
                   </div>
-                  {errorMessage && (
-                    <div className="error-message" style={{ display: "block", marginBottom: "16px" }}>
-                      <div className="text-size-small">{errorMessage}</div>
+                  {formError && (
+                    <div
+                      className="error-message"
+                      role="alert"
+                      style={{ display: "block", marginBottom: "16px" }}
+                    >
+                      <div className="text-size-small">{formError.text}</div>
+                      <div className="text-size-small">
+                        Or email us at{" "}
+                        <a className="underline" href={buildMailto(draftMessage)}>
+                          {CONTACT_EMAIL}
+                        </a>
+                        , your text will be copied into the email.
+                      </div>
                     </div>
                   )}
                   <div className="modal_button-wr">
