@@ -101,15 +101,71 @@ export const UI_GUIDES: UiGuide[] = [
 ];
 
 /**
- * The three guides that open the navbar panel: data table (2 417 entries,
- * 12.07–09.10.2026), AI chat interface (1 578) and tabs (1 456). They are also
- * present in their groups, so neither list gets a gap.
+ * Every guide, most read first. The top three follow GA4 entrances
+ * (12.07–09.10.2026: data table 2 417, AI chat interface 1 578, tabs 1 456),
+ * the rest follow Search Console clicks (plans/Страницы.csv). The navbar panel
+ * opens on the first six ("Popular") and shows the six most read of a group
+ * when a category is hovered. Refresh it each quarter together with
+ * lib/blog/popular.ts. A guide missing here simply sorts last.
  */
-export const UI_GUIDE_START_HERE: string[] = [
+export const UI_GUIDES_BY_READS: string[] = [
   "data-table-ui-design",
   "ai-chat-interface-ui-design",
   "tabs-ui-design",
+  "liquid-glass-vs-glassmorphism",
+  "claymorphism-design-guide",
+  "neumorphism-design-guide",
+  "steps-ui-design",
+  "dropdown-ui-design",
+  "liquid-glass-design-explained-a-practical-guide",
+  "pagination-ui-design",
+  "retro-brutalist-ui-design-2026",
+  "filter-ui-design",
+  "button-group-guide",
+  "toggle-switch-ui-design",
+  "chip-ui-design",
+  "settings-ui-design",
+  "complete-guide-to-blueprint-grid-design",
+  "input-ui-design",
+  "radio-button-ui-design",
+  "badge-ui-design",
+  "notifications-ui-design",
+  "breadcrumbs-ui-design",
+  "dashboard-ui-design",
+  "checkbox-ui-design",
+  "carousel-ui-design",
+  "slider-ui-design",
+  "empty-state-ui-design",
+  "stepper-ui-design",
+  "bento-grid-layout-design-guide",
+  "avatar-ui-design",
+  "button-ui-design",
+  "tooltip-ui-design",
+  "ai-agent-ui-design-patterns",
+  "calendar-ui-design",
+  "appbar-ui-design",
+  "pricing-ui-design",
+  "command-palette-ui-design-guide",
+  "date-picker-ui-design",
+  "accordion-ui-design",
+  "how-to-design-dialogs",
+  "search-ui-design",
+  "sidebar-navigation-ui-design",
 ];
+
+/** The three lead guides of the /ui-guides hub: the three most read. */
+export const UI_GUIDE_START_HERE: string[] = UI_GUIDES_BY_READS.slice(0, 3);
+
+/** Groups sorted by title, the order of the navbar Categories column. */
+export const UI_GUIDE_GROUPS_ALPHABETICAL: UiGuideGroup[] = [...UI_GUIDE_GROUPS].sort((a, b) =>
+  a.title.localeCompare(b.title, "en"),
+);
+
+/** Position of a guide in UI_GUIDES_BY_READS; unknown slugs sort last. */
+export function guideReadRank(slug: string): number {
+  const index = UI_GUIDES_BY_READS.indexOf(slug);
+  return index === -1 ? UI_GUIDES_BY_READS.length : index;
+}
 
 /**
  * Component and screen guides only. The home page block promises "anatomy,
@@ -127,21 +183,6 @@ export function getGuidesByGroup(group: UiGuideGroupKey): UiGuide[] {
 export function getGuide(slug: string): UiGuide | undefined {
   return UI_GUIDES.find((guide) => guide.slug === slug);
 }
-
-/**
- * Grouped form for the navbar panel: one entry per group in UI_GUIDE_GROUPS
- * order, alphabetical inside each. Built once at module load, so the client
- * component never re-filters 42 rows on render.
- */
-export const UI_GUIDES_BY_GROUP: Array<{
-  key: UiGuideGroupKey;
-  title: string;
-  guides: UiGuide[];
-}> = UI_GUIDE_GROUPS.map((group) => ({
-  key: group.key,
-  title: group.title,
-  guides: getGuidesByGroup(group.key),
-}));
 
 /** Anchor of a group on /ui-guides. */
 export function guideGroupAnchor(group: UiGuideGroupKey): string {

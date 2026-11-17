@@ -3,16 +3,17 @@
 // ./navPreviews, which SiteHeader loads lazily.
 import type { InspirationItem, Product } from "../../../types/data";
 import type { BundleItem } from "../../../data/bundles";
-import type { NavBlogPost } from "../../../lib/nav/types";
+import type { NavBlogPost, NavGuidePost } from "../../../lib/nav/types";
 import { BLOG_POPULAR_SLUGS } from "../../../lib/blog/popular";
+import { UI_GUIDE_GROUPS_ALPHABETICAL } from "../../../data/ui-guides";
 
 /** Internal keys of the navbar dropdowns. Reports map them via NAV_MENU_ID. */
 export type MenuKey = "inspiration" | "tutorials" | "guides" | "freebies" | "advertise";
 /**
- * Dropdowns with a Categories column that swaps the preview cards. Guides and
- * Advertise render their own layout instead.
+ * Dropdowns with a Categories column that swaps the preview cards. Advertise
+ * renders its own layout instead.
  */
-export type CategoryMenuKey = Exclude<MenuKey, "advertise" | "guides">;
+export type CategoryMenuKey = Exclude<MenuKey, "advertise">;
 
 export type KitPreview = {
   href: string;
@@ -165,6 +166,30 @@ export function getBlogPreviews<T extends Pick<NavBlogPost, "category" | "slug">
   }
   if (category === NAV_BLOG_LATEST) return posts.slice(0, NAV_BLOG_PREVIEW_COUNT);
   return posts.filter((p) => p.category === category).slice(0, NAV_BLOG_PREVIEW_COUNT);
+}
+
+export const NAV_GUIDE_PREVIEW_COUNT = 6;
+
+// Rows of the UI guides column, built like Magazine: "Popular" (null, the
+// default tab and the /ui-guides link) on top, then the guide groups in
+// alphabetical order. Each group row links to its anchor on the hub.
+export const NAV_GUIDE_CATEGORIES: Array<{ label: string; group: string | null; href: string }> = [
+  { label: "Popular", group: null, href: "/ui-guides" },
+  ...UI_GUIDE_GROUPS_ALPHABETICAL.map((group) => ({
+    label: group.title,
+    group: group.key,
+    href: `/ui-guides#${group.key}`,
+  })),
+];
+
+/**
+ * UI guides previews. `guides` are sorted most read first (see
+ * UI_GUIDES_BY_READS), so null gives the six most read guides overall and a
+ * group gives the six most read of that group.
+ */
+export function getGuidePreviews<T extends Pick<NavGuidePost, "group">>(guides: T[], group: string | null): T[] {
+  const pool = group === null ? guides : guides.filter((guide) => guide.group === group);
+  return pool.slice(0, NAV_GUIDE_PREVIEW_COUNT);
 }
 
 // Narrows the (already shuffled) inspiration pool to the hovered component

@@ -13,14 +13,15 @@ import type { MegaMenuState, MenuCategories } from "./useMegaMenuState";
 
 // Human-readable category for reports (matches what the user saw). The kit
 // shelf inside Resources reports as its own value, so it never mixes with the
-// free categories. Panels without a category column (guides, advertise)
-// report "panel" so their rows never land in an "all" bucket.
+// free categories. Advertise has no category column and reports "panel" so
+// its rows never land in an "all" bucket. UI guides report the group key.
 function categoryLabel(
   menuKey: string,
   category: string | null,
   inspirationCategories: InspirationCategory[],
 ): string {
-  if (menuKey === "guides" || menuKey === "advertise") return "panel";
+  if (menuKey === "advertise") return "panel";
+  if (menuKey === "guides" && category === null) return "popular";
   if (menuKey === "tutorials") {
     if (category === null) return "popular";
     if (category === NAV_BLOG_LATEST) return "latest";
@@ -48,6 +49,7 @@ export function useNavAnalytics(
   const lastTrackedCategoryRef = useRef<MenuCategories>({
     inspiration: null,
     tutorials: null,
+    guides: null,
     freebies: null,
   });
 
@@ -80,6 +82,9 @@ export function useNavAnalytics(
   useEffect(() => trackCategoryView("tutorials", categories.tutorials),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [categories.tutorials]);
+  useEffect(() => trackCategoryView("guides", categories.guides),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [categories.guides]);
   useEffect(() => trackCategoryView("freebies", categories.freebies),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [categories.freebies]);

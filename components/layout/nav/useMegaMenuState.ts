@@ -19,6 +19,7 @@ export type MenuCategories = Record<CategoryMenuKey, string | null>;
 const INITIAL_CATEGORIES: MenuCategories = {
   inspiration: null,
   tutorials: null,
+  guides: null,
   freebies: null,
 };
 

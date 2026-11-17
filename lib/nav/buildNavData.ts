@@ -1,48 +1,48 @@
 // Server-only: reads the blog from disk. Import it from getStaticProps only;
 // client code should import types from ./types instead.
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import { getBlogPostPreviews } from "../blog/get-blog-post-previews";
 import { INSPIRATION_CATEGORIES, INSPIRATION_ITEMS } from "../../data/inspiration";
-import { UI_GUIDES, UI_GUIDE_START_HERE } from "../../data/ui-guides";
+import { UI_GUIDES, guideReadRank } from "../../data/ui-guides";
 import { PUBLISH_SHOWCASE_SLUGS } from "../../data/publish-showcase";
 import { blogThumbPath } from "../blog/thumb";
-import type { BlogFrontmatter } from "../../types/blog";
 import type { BlogPostPreview, FreebieItem } from "../../types/data";
 import {
   NAV_BLOG_CATEGORIES,
+  NAV_GUIDE_CATEGORIES,
   NAV_INSPIRATION_SAMPLE_COUNT,
   getBlogPreviews,
+  getGuidePreviews,
   shuffle,
 } from "../../components/layout/nav/navConfig";
 // The server may import the full catalogue directly.
 import { getFreebiePreviews } from "../../components/layout/nav/navPreviews";
-import type { NavBlogPost, NavData, NavFreebie, NavGuideStart, NavShowcasePost } from "./types";
-
-const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+import type { NavData, NavFreebie, NavGuidePost, NavShowcasePost } from "./types";
 
 /**
- * Label, slug and cover thumb of the lead guides. Only those three fields are
- * needed by the panel, so the rest of each post's frontmatter stays out of the
- * page props.
+ * Cards of the UI guides panel. Every guide is matched to its post, sorted
+ * most read first, then trimmed to what the tabs show (Popular plus six per
+ * group). The thumb comes through blogThumbPath, which leaves an existing
+ * /thumbs/ path alone. A guide without a post fails the build.
  */
-function buildGuideStartData(): NavGuideStart[] {
-  return UI_GUIDE_START_HERE.map((slug) => {
-    const guide = UI_GUIDES.find((item) => item.slug === slug);
-    const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-    if (!guide || !fs.existsSync(filePath)) {
-      throw new Error(`[nav] lead guide "${slug}" is missing from data/ui-guides.ts or content/blog/.`);
-    }
-    const { data } = matter(fs.readFileSync(filePath, "utf8"));
-    const frontmatter = data as BlogFrontmatter;
-    const image = frontmatter.thumbImage ?? frontmatter.coverImage ?? "";
+function buildGuideData(posts: BlogPostPreview[]): NavGuidePost[] {
+  const bySlug = new Map(posts.map((post) => [post.slug, post]));
+  const all = UI_GUIDES.map((guide) => {
+    const post = bySlug.get(guide.slug);
+    if (!post) throw new Error(`[nav] UI guide "${guide.slug}" is missing from content/blog/.`);
     return {
       slug: guide.slug,
-      label: guide.label,
-      thumbImage: image.replace("/blog/covers/", "/blog/covers/thumbs/"),
+      title: post.title,
+      description: post.description,
+      thumbImage: blogThumbPath(post.thumbImage),
+      group: guide.group,
     };
-  });
+  }).sort((a, b) => guideReadRank(a.slug) - guideReadRank(b.slug));
+
+  const picked = new Set<string>();
+  for (const { group } of NAV_GUIDE_CATEGORIES) {
+    for (const guide of getGuidePreviews(all, group)) picked.add(guide.slug);
+  }
+  return all.filter((guide) => picked.has(guide.slug));
 }
 
 /**
@@ -95,7 +95,7 @@ let cached: NavData | null = null;
  * returns them. The footer's Popular reads are the first previews of the
  * Popular category, so they are covered too.
  */
-export function pickNavBlogSlugs(posts: Pick<NavBlogPost, "slug" | "category">[]): Set<string> {
+export function pickNavBlogSlugs(posts: Pick<BlogPostPreview, "slug" | "category">[]): Set<string> {
   const picked = new Set<string>();
   for (const { category } of NAV_BLOG_CATEGORIES) {
     for (const post of getBlogPreviews(posts, category)) picked.add(post.slug);
@@ -113,7 +113,7 @@ function build(): NavData {
   return {
     blog,
     freebies: getFreebiePreviews(null).map(toNavFreebie),
-    guides: buildGuideStartData(),
+    guides: buildGuideData(posts),
     showcase: buildShowcaseData(posts),
     inspiration: shuffle(INSPIRATION_ITEMS).slice(0, NAV_INSPIRATION_SAMPLE_COUNT),
     inspirationCategories: INSPIRATION_CATEGORIES,
@@ -123,8 +123,8 @@ function build(): NavData {
 /**
  * Everything the mega-menu renders on first paint, trimmed to what it shows:
  * the 6 newest posts of each Magazine category (deduped, so the client gets
- * the same previews as from the full list), the "Latest" resources, the lead
- * guides, the Advertise proof rows and a random Inspiration sample. One result
+ * the same previews as from the full list), the "Latest" resources, the UI
+ * guides tabs, the Advertise proof rows and a random Inspiration sample. One result
  * is shared by every page of a build.
  */
 export function getNavData(options: GetNavDataOptions = {}): NavData {

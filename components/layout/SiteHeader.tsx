@@ -15,8 +15,10 @@ import {
   NAV_BLOG_CATEGORIES,
   NAV_BLOG_LATEST,
   NAV_DESIGN_KITS_ROW,
+  NAV_GUIDE_CATEGORIES,
   NAV_RESOURCE_ROWS,
   getBlogPreviews,
+  getGuidePreviews,
   getInspirationPreviews,
   shuffle,
   withUtm,
@@ -29,8 +31,7 @@ import type { MegaMenuCategory } from "./nav/MegaMenuPanel";
 import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
 import { InspirationThumb } from "./nav/InspirationThumb";
 import { AdvertisePanel } from "./nav/AdvertisePanel";
-import { GuidesPanel } from "./nav/GuidesPanel";
-import { UI_GUIDES, UI_GUIDES_BY_GROUP } from "../../data/ui-guides";
+import { UI_GUIDES } from "../../data/ui-guides";
 import { NavSearch } from "./nav/NavSearch";
 import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
@@ -190,6 +191,8 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     getInspirationPreviews(shuffledInspiration, category).forEach((item) => preloadPlainImage(item.image));
   const preloadBlog = (category: string | null) =>
     getBlogPreviews(navBlog, category).forEach((item) => preloadPlainImage(item.thumbImage));
+  const preloadGuides = (group: string | null) =>
+    getGuidePreviews(navData.guides, group).forEach((item) => preloadPlainImage(item.thumbImage));
   const preloadFreebies = (category: string | null) => {
     if (category === NAV_DESIGN_KITS_ROW) {
       kitPreviews.forEach((item) => preloadNextImage(item.image, CARD_IMAGE_SIZES));
@@ -216,6 +219,15 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
         ? `/blog?category=${encodeURIComponent(item.category)}`
         : "/blog",
     isActive: categories.tutorials === item.category,
+  }));
+
+  // Same layout as Magazine: "Popular" on top, then the groups A to Z.
+  const guideCategories: MegaMenuCategory[] = NAV_GUIDE_CATEGORIES.map((item) => ({
+    key: item.label,
+    label: item.label,
+    value: item.group,
+    href: item.href,
+    isActive: categories.guides === item.group,
   }));
 
   // The kit shelf row swaps the grid like any category; its link (a click or
@@ -372,13 +384,40 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                   ))}
                 </MegaMenuPanel>
 
-                <GuidesPanel
+                <MegaMenuPanel
+                  menu="guides"
                   state={menu}
+                  label="UI guides"
                   isCurrent={isGuidesActive}
-                  startHere={navData.guides}
-                  groups={UI_GUIDES_BY_GROUP}
-                  total={UI_GUIDES.length}
-                />
+                  listKeyPrefix="guides"
+                  categories={guideCategories}
+                  onIntent={preloadGuides}
+                >
+                  {getGuidePreviews(navData.guides, categories.guides).map((item) => (
+                    <MegaMenuCard
+                      key={item.slug}
+                      href={`/blog/${item.slug}`}
+                      title={item.title}
+                      description={item.description}
+                      media={
+                        <MegaMenuCardMedia href={`/blog/${item.slug}`}>
+                          <img
+                            alt={`${item.title} cover`}
+                            src={item.thumbImage}
+                            loading="lazy"
+                            decoding="async"
+                            className="image-cover"
+                          />
+                        </MegaMenuCardMedia>
+                      }
+                      actions={
+                        <NavLink className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
+                          <div className="text-size-regular text-weight-bold">Read more</div>
+                        </NavLink>
+                      }
+                    />
+                  ))}
+                </MegaMenuPanel>
 
                 <MegaMenuPanel
                   menu="freebies"

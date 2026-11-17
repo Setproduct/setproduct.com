@@ -12,8 +12,10 @@ export type NavFreebie = Pick<
   menuCtaLabel?: string;
 };
 
-/** Lead guides of the UI guides panel: name plus the small cover thumb. */
-export type NavGuideStart = { slug: string; label: string; thumbImage: string };
+/** Card of the UI guides panel: a guide post plus its group key. */
+export type NavGuidePost = Pick<BlogPostPreview, "slug" | "title" | "description" | "thumbImage"> & {
+  group: string;
+};
 
 /** Proof row of the Advertise panel: one of our own posts that ranks on Google. */
 export type NavShowcasePost = { slug: string; title: string; thumbImage: string };
@@ -28,8 +30,11 @@ export type NavData = {
   blog: NavBlogPost[];
   /** Resources shown under "Latest". */
   freebies: NavFreebie[];
-  /** Three lead guides of the UI guides panel (UI_GUIDE_START_HERE). */
-  guides: NavGuideStart[];
+  /**
+   * Previews of every UI guides tab (Popular plus each group, 6 each),
+   * deduped, most read first (UI_GUIDES_BY_READS).
+   */
+  guides: NavGuidePost[];
   /** Our own posts that rank on page 1 (PUBLISH_SHOWCASE_SLUGS), in order. */
   showcase: NavShowcasePost[];
   /** Random Inspiration sample; "All" picks its six from it on mount. */
