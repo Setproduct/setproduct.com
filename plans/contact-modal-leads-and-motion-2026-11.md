@@ -506,3 +506,21 @@ stateDiagram-v2
 - [`TemplateCtaHire`](components/sections/TemplateCtaHire.tsx), `CtaBlock` в [`DashboardTemplatePage`](components/pages/DashboardTemplatePage.tsx), кнопка `Let's connect` в [`TestimonialsPage`](components/pages/TestimonialsPage.tsx) продают заказную работу.
 
 Нужно решение автора: удалить, переписать под паблишинг или оставить как есть.
+
+### Фаза 2 сделана (17.11.2026)
+
+| Коммит | Что поменялось |
+|---|---|
+| `8260fd5` docs: record author answers for contact modal plan | Ответы Q1–Q10, тема `project` и сценарий скидки убраны, S8 отменён, автозакрытие через 3 с, раздел 15 |
+| `830ab56` feat: add shared scroll lock helper | `lib/scrollLock.ts`: счётчик блокировок и компенсация ширины скроллбара. Мобильное меню переведено на него |
+| `fd98add` refactor: rebuild contact modal on native dialog | `<dialog>` и `showModal()`: верхний слой, ловушка фокуса, `inert` страницы. `data-state` (`open` / `submitting` / `success`), `aria-labelledby` и `aria-describedby`, заголовок `<h2>`, Escape через `cancel`, клик мимо окна (с защитой от выделения текста, ушедшего за край), крестик `<button aria-label="Close">` 44px, возврат фокуса на кнопку-триггер, на тач-экранах фокус на карточку, а не в поле. Ошибки полей рядом с полем через `aria-invalid` и `aria-describedby`. Экран успеха с кнопкой `Done` и сроком 24 часа. Ответ сервера после закрытия окна не трогает следующую сессию |
+| `3be52de` style: move contact modal fields to new input system | `.field` и `<label>`, `text-input is-l` и `textarea-input is-l` без `w-input`, `autocomplete="email"`, `enterkeyhint` |
+| `9f2b657` style: add mobile sheet layout for contact modal | Нижний лист до 479px: прижат к низу, верхние углы 24, ручка, внутренний скролл, кнопка отправки прилипает к низу и учитывает safe area, блюр 4px |
+| `f3e0800` feat: add privacy policy page | `/legal/privacy-policy`: данные форм и контекст, GA4 и cookies, обработчики (Vercel, Resend, Google, Gumroad), передача в США, сроки хранения, права по GDPR, уведомление для Калифорнии, дети, изменения, контакт. PAGE_META, крошки, sitemap, ссылка в футере |
+| `646c34f` feat: link privacy policy from contact form | Строка `We use your email only to reply. Privacy policy` под формой |
+
+Старые классы `.modal-wr`, `.modal_close-btn` и соседние в shared CSS больше не используются окном. Удаляются в фазе 5 после проверки поиском.
+
+Не проверено глазами: в окружении нет браузера для скриншотов. Нужна ручная проверка автора на 1440 / 1024 / 768 / 390 и в Safari (`::backdrop` с блюром).
+
+Юридическая оговорка по политике: текст составлен по фактическому коду сайта. Владелец (юрлицо или ИП, страна) в тексте назван как «Setproduct, the team behind setproduct.com». Если есть зарегистрированное юрлицо, его название и адрес стоит вписать в раздел `Who is responsible`. Сроки хранения писем (24 месяца) и GA4 (14 месяцев) нужно сверить с настройками в Google Workspace и GA4.
