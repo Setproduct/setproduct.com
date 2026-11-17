@@ -71,6 +71,19 @@ h1[id], h2[id], h3[id], h4[id] {
 }
 
 /*
+ * /ui-guides hub: the jump row links to the group wrappers
+ * (<section id="visual-styles">), not to the heading inside them, so the
+ * heading rule above never matched and the group title landed under the fixed
+ * navbar. The navbar is 70em tall (64em on phones) where `em` is the body
+ * font-size, i.e. --em-px, so the offset is expressed the same way: navbar
+ * height plus a 28px reading gap. A flat 100px would drift on phones, where
+ * 1em grows to ~1.3px and the navbar with it.
+ */
+.ui-guides-group[id] {
+  scroll-margin-top: calc(70 * var(--em-px) + 28px);
+}
+
+/*
  * Category filters on /blog. Webflow pins the column at top: 20em, which is
  * 20px from the viewport edge, while the navbar is fixed and ~74em tall: the
  * first rows (View all, Startups & SaaS) slid under it on scroll. Same offset
@@ -3689,6 +3702,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
   .ui-guides-group + .ui-guides-group {
     margin-top: calc(40 * var(--em-px));
+  }
+
+  /* Navbar drops to 64em on phones, so the jump offset shrinks with it. */
+  .ui-guides-group[id] {
+    scroll-margin-top: calc(64 * var(--em-px) + 24px);
   }
 }
 
