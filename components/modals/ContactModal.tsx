@@ -136,7 +136,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
             <div className="modal_heading-wr">
               <p className="heading-style-h2">Contact us</p>
               <p className="text-size-medium mob-16">
-                Send your questions, ideas, and collaboration inquires
+                Send your questions, ideas, and collaboration inquiries
               </p>
             </div>
             <div className="modal_form-block w-form">
@@ -161,7 +161,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                       maxLength={256}
                       name="Email"
                       onFocus={handleFieldFocus}
-                      placeholder="Whats your e-mail"
+                      placeholder="you@company.com"
                       required
                       type="email"
                     />
@@ -175,7 +175,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                       maxLength={5000}
                       name="Message"
                       onFocus={handleFieldFocus}
-                      placeholder="Type your message..."
+                      placeholder="Type your message"
                       required
                     />
                   </div>
@@ -193,7 +193,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                         type="submit"
                       >
                         <div className="text-size-large text-weight-bold">
-                          {isSubmitting ? "Sending..." : "Send your Message"}
+                          {isSubmitting ? "Sending…" : "Send message"}
                         </div>
                       </button>
                     </div>
@@ -201,7 +201,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 </form>
               ) : (
                 <div className="success-message align-center" style={{ display: "block" }}>
-                  <div className="text-size-small">Thank you! Your submission has been received!</div>
+                  <div className="text-size-small">Thank you, your message has been sent.</div>
                 </div>
               )}
             </div>
