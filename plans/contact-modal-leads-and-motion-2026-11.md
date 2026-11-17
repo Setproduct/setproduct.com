@@ -499,13 +499,15 @@ stateDiagram-v2
 
 ### 15.2. Контент, который противоречит ответам Q3 и Q4
 
-Найдено при подготовке фазы 2, в рамках этого плана не правится:
+Решение автора 17.11.2026: переписать под паблишинг. Сделано:
 
-- FAQ `I have a project. Can I hire you?` в [`data/faq.ts`](data/faq.ts) и во всех `data/template-content/*.ts`: заказной дизайн не продаётся.
-- FAQ про скидку с обещанием купона 30% там же и в [`data/dashboard-templates.ts`](data/dashboard-templates.ts): купон не действует. Это обещание покупателю, его лучше убрать до выкатки фазы 4.
-- [`TemplateCtaHire`](components/sections/TemplateCtaHire.tsx), `CtaBlock` в [`DashboardTemplatePage`](components/pages/DashboardTemplatePage.tsx), кнопка `Let's connect` в [`TestimonialsPage`](components/pages/TestimonialsPage.tsx) продают заказную работу.
+| Коммит | Что поменялось |
+|---|---|
+| `7258744` content: replace hire and coupon FAQ with publishing and bundle answers | 35 вопросов `Can I hire you?` → `Can I promote my product on Setproduct?` с фактами оффера и ссылкой на портал (`data-publish-location="faq"`). 36 вопросов про купон 30% → `Do you offer discounts?` с бандлом и сезонными распродажами. На главной вопрос про найм заменён на `How do I contact the team?` (паблишинг там уже есть третьим вопросом) |
+| `fd8f0a7` feat: replace hire CTA bands with publishing CTA | Новый [`PublishCta`](components/sections/PublishCta.tsx): заголовок `Put your product in front of 17,000 readers`, primary `Publish a post` на портал, secondary `Ask a question` открывает окно. Стоит на страницах шаблонов, дашбордов и `/testimonials`. `TemplateCtaHire` удалён, `ctaHire` в claylo удалён. Новые `PublishLocation`: `template_cta`, `dashboard_cta`, `testimonials_page` |
+| `d2eed85` docs: rewrite privacy policy in a shorter, location-free voice | Тон «распределённая команда без офиса», раздел `What we never collect`, права распространены на всех, юридические блоки (GDPR, обработчики, передачи, сроки, Калифорния) сохранены |
 
-Нужно решение автора: удалить, переписать под паблишинг или оставить как есть.
+Поля `ctaTitleHtml` / `ctaBodyHtml` в `data/dashboard-templates.ts` больше не рендерятся, оставлены в данных: удалить при следующей чистке.
 
 ### Фаза 2 сделана (17.11.2026)
 
@@ -523,4 +525,4 @@ stateDiagram-v2
 
 Не проверено глазами: в окружении нет браузера для скриншотов. Нужна ручная проверка автора на 1440 / 1024 / 768 / 390 и в Safari (`::backdrop` с блюром).
 
-Юридическая оговорка по политике: текст составлен по фактическому коду сайта. Владелец (юрлицо или ИП, страна) в тексте назван как «Setproduct, the team behind setproduct.com». Если есть зарегистрированное юрлицо, его название и адрес стоит вписать в раздел `Who is responsible`. Сроки хранения писем (24 месяца) и GA4 (14 месяцев) нужно сверить с настройками в Google Workspace и GA4.
+Юридическая оговорка по политике: текст составлен по фактическому коду сайта. Владелец назван «Setproduct, the team behind setproduct.com» (подтверждено автором), юрисдикция и адрес не указываются намеренно. Сроки хранения писем (24 месяца) и GA4 (14 месяцев) нужно сверить с настройками в Google Workspace и GA4.
