@@ -461,8 +461,27 @@ stateDiagram-v2
 
 ## 13. Что не проверено
 
-- Не читал [`pages/api/csrf.ts`](pages/api/csrf.ts) и имя переменной секрета: S9 требует проверки.
+- Секрет CSRF читается из `CSRF_SECRET`. Этой переменной нет в `.env.example`. Если её нет и в Vercel, работает строка-заглушка из кода (S9).
 - Не проверял z-index шапки и оверлея Gumroad в браузере: расчёт на верхний слой `<dialog>`.
 - Не проверял поведение `backdrop-filter` на `::backdrop` в Safari 16 и старше: при проблемах фон переносится на обычный `div` внутри окна.
 - Не открывал портал publish.setproduct.com: параметр `?contact=` и новые UTM с ним не согласованы.
 - Диапазоны бюджета, срок ответа и статус купона в плане условные до ответов автора.
+
+---
+
+## 14. Ход работ
+
+### Фаза 1 сделана (17.11.2026)
+
+| Коммит | Что поменялось |
+|---|---|
+| `f6dab62` fix: correct contact modal copy and sentence case | Исправлены опечатки `inquires` и `Whats your e-mail`. Кнопка `Send message`, placeholder `you@company.com`, новый текст успеха |
+| `842014f` feat: send reply-to and page context with contact form | `replyTo` на адрес человека. В письмо уходят точка входа, страница, первая страница визита с UTM, referrer. Точка входа видна в теме письма |
+| `8e76e8f` feat: validate contact payload on the server | Проверка формата email, сообщение от 10 до 5000 символов. API отдаёт стабильные коды ошибок (`code`). Лимит частоты проверяется последним, поэтому опечатка в email не сжигает попытку |
+| `399e6f8` fix: request csrf token on submit | Токен берётся перед отправкой. Ошибка `Form expired` при долгом наборе текста ушла |
+| `d158a97` fix: show readable contact form errors with mailto fallback | Понятные тексты на каждый код и ссылка `mailto:` с уже вставленным текстом. В GA4 `reason` теперь равен коду (`email_invalid`, `rate_minute`, `network`…) |
+| `08047c1` fix: report resend failures instead of showing success | **Найдено по ходу работ.** SDK Resend не выбрасывает исключение при отказе API (неверный ключ, квота, домен), а возвращает `{ error }`. Код этого не проверял: человек видел «спасибо», а письмо терялось. Исправлено в контакте и подписке, теперь ответ 502 |
+
+Проверено локально запросами к API: неверный email → 400 `email_invalid`, короткое сообщение → 400 `message_short`, чужой токен → 403 `token_invalid`, просроченный → 403 `token_expired`, honeypot → 400 `spam`, повтор в течение минуты → 429 `rate_minute`, отказ Resend → 502 `send_failed`. `npm run lint` и `npm run build` чистые.
+
+Что изменилось для отчётов GA4: параметр `reason` у `contact_form_error` раньше содержал английский текст ошибки, теперь короткий код. Сравнивать ошибки до и после 17.11 надо по смыслу, а не по строке.
