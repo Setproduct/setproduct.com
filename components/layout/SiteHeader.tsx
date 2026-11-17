@@ -10,6 +10,7 @@ import type { InspirationItem } from "../../types/data";
 import type { NavBlogPost, NavData, NavFreebie } from "../../lib/nav/types";
 import { getPublishLinkProps } from "../../lib/publish";
 import { trackNav } from "../../lib/nav/analytics";
+import { lockScroll, unlockScroll } from "../../lib/scrollLock";
 import {
   KIT_PREVIEWS,
   NAV_BLOG_CATEGORIES,
@@ -103,7 +104,6 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
   // auto-close on resize to desktop.
   useEffect(() => {
     const navbarEl = navbarRef.current;
-    const previousOverflow = document.body.style.overflow;
 
     const syncNavbarHeight = () => {
       if (!navbarEl) return;
@@ -113,11 +113,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
 
     syncNavbarHeight();
 
-    if (isMobileNavOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = previousOverflow || "";
-    }
+    if (isMobileNavOpen) lockScroll();
 
     const handleResize = () => {
       syncNavbarHeight();
@@ -128,7 +124,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     window.addEventListener("resize", handleResize);
 
     return () => {
-      document.body.style.overflow = previousOverflow || "";
+      if (isMobileNavOpen) unlockScroll();
       window.removeEventListener("resize", handleResize);
     };
   }, [isMobileNavOpen]);
