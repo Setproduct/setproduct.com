@@ -54,6 +54,10 @@ export type PublishLocation =
   | "blog_inline"
   | "blog_sidebar"
   | "terms_page"
+  // Closing CTA band that replaced the old "hire us" block (17.11.2026).
+  | "template_cta"
+  | "dashboard_cta"
+  | "testimonials_page"
   | "content";
 
 export function isPublishHref(href?: string | null): boolean {

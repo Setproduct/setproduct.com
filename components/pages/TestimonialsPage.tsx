@@ -6,7 +6,7 @@ import SiteHeader from "../layout/SiteHeader";
 import SiteFooter from "../layout/SiteFooter";
 import ScrollUpButton from "../layout/ScrollUpButton";
 import Breadcrumbs from "../sections/Breadcrumbs";
-import { useContactModal } from "../modals/ContactModalContext";
+import PublishCta from "../sections/PublishCta";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
 import type { NavData } from "../../lib/nav/types";
@@ -76,7 +76,6 @@ export default function TestimonialsPage({ navData }: Props) {
   const breadcrumbs = PAGE_BREADCRUMBS.testimonials ?? [];
   const [visiblePages, setVisiblePages] = useState(1);
   const [lightboxIndex, setLightboxIndex] = useState(-1);
-  const { openContactModal } = useContactModal();
 
   const visiblePhotos = TESTIMONIAL_PAGES.slice(0, visiblePages)
     .flat()
@@ -162,29 +161,7 @@ export default function TestimonialsPage({ navData }: Props) {
             </div>
           </div>
         </div>
-        <div className="section">
-          <div className="section-padding top-80 bottom-80">
-            <div className="container">
-              <div className="main_cta-section">
-                <div className="main_cta-active">
-                  <div className="heading-center-wr lets-connect">
-                    <h2 className="heading-style-h2">
-                      Hire us to custom design &amp; code! Let&apos;s build together ✊
-                    </h2>
-                    <div className="heading-style-h5 mob-18">
-                      We design in Figma &amp; Webflow using the top-notch UX expertise and lay down the lines of code in React, Vue, Angular, Flutter and Swift.
-                    </div>
-                  </div>
-                  <div className="btn-link-align-center">
-                    <button type="button" className="button w-inline-block" onClick={() => openContactModal("testimonials_page")}>
-                      <div className="text-size-large text-weight-bold">Let&rsquo;s connect</div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PublishCta contactLocation="testimonials_page" publishLocation="testimonials_page" tinted={false} />
       </main>
       <SiteFooter navData={navData} />
       <ScrollUpButton />

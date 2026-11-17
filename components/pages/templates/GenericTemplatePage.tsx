@@ -7,7 +7,7 @@ import HeroCoverImage from "../../sections/HeroCoverImage";
 import TemplateVideo from "../../sections/TemplateVideo";
 import TemplateTabsWithSplitter from "../../sections/TemplateTabsWithSplitter";
 import TemplatePricing from "../../sections/TemplatePricing";
-import TemplateCtaHire from "../../sections/TemplateCtaHire";
+import PublishCta from "../../sections/PublishCta";
 import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import TemplateCarousel from "../../sections/TemplateCarousel";
 import TemplateGallery from "../../sections/TemplateGallery";
@@ -78,10 +78,6 @@ type TemplateContent = {
     question: string;
     answerHtml: string;
   }>;
-  ctaHire?: {
-    title?: string;
-    subtitle?: string;
-  };
 };
 
 type Props = {
@@ -292,11 +288,8 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
           />
         )}
 
-        {/* Hire CTA */}
-        <TemplateCtaHire
-          title={content.ctaHire?.title}
-          subtitle={content.ctaHire?.subtitle}
-        />
+        {/* Publishing CTA */}
+        <PublishCta contactLocation="template_hire" publishLocation="template_cta" />
 
         {/* FAQ */}
         {content.faq && content.faq.length > 0 && (

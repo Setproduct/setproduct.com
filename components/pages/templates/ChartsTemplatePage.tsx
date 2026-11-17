@@ -8,7 +8,7 @@ import TemplateVideo from "../../sections/TemplateVideo";
 import TemplateTabsWithSplitter from "../../sections/TemplateTabsWithSplitter";
 import TemplateImageSection from "../../sections/TemplateImageSection";
 import TemplatePricing from "../../sections/TemplatePricing";
-import TemplateCtaHire from "../../sections/TemplateCtaHire";
+import PublishCta from "../../sections/PublishCta";
 import FaqSection from "../../sections/FaqSection";
 import TemplateStickyCta from "../../sections/TemplateStickyCta";
 import { chartsContent } from "../../../data/template-content/charts";
@@ -158,8 +158,8 @@ export default function ChartsTemplatePage({ item, navData }: Props) {
           cards={chartsContent.pricing.cards}
         />
 
-        {/* Hire CTA */}
-        <TemplateCtaHire />
+        {/* Publishing CTA */}
+        <PublishCta contactLocation="template_hire" publishLocation="template_cta" />
 
         {/* FAQ */}
         <FaqSection items={chartsContent.faq} />

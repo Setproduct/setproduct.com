@@ -7,7 +7,7 @@ import Breadcrumbs from "../sections/Breadcrumbs";
 import CategoryTabs from "../sections/CategoryTabs";
 import TemplateGrid from "../sections/TemplateGrid";
 import FaqSection from "../sections/FaqSection";
-import { useContactModal } from "../modals/ContactModalContext";
+import PublishCta from "../sections/PublishCta";
 import { CATEGORY_TABS } from "../../data/categories";
 import { absoluteUrl } from "../../lib/blog/site-config";
 import type { Product } from "../../types/data";
@@ -51,41 +51,6 @@ function FeatureImageColumn({ block }: { block: DashboardFeatureBlock }) {
           src={block.image}
           srcSet={block.imageSrcSet}
         />
-      </div>
-    </div>
-  );
-}
-
-function CtaBlock({ titleHtml, bodyHtml }: { titleHtml: string; bodyHtml: string }) {
-  const { openContactModal } = useContactModal();
-  return (
-    <div className="section background-color-light-primary">
-      <div className="section-padding top-80 bottom-80">
-        <div className="container">
-          <div className="main_cta-section">
-            <div className="main_cta-active">
-              <div className="heading-center-wr lets-connect is-bigger">
-                <h2
-                  className="heading-style-h2"
-                  dangerouslySetInnerHTML={{ __html: titleHtml }}
-                />
-                <div
-                  className="heading-style-h5 mob-18"
-                  dangerouslySetInnerHTML={{ __html: bodyHtml }}
-                />
-              </div>
-              <div className="btn-link-align-center">
-                <button
-                  className="button w-inline-block"
-                  onClick={() => openContactModal("dashboard_cta")}
-                  type="button"
-                >
-                  <div className="text-size-large text-weight-bold">Let&rsquo;s connect</div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -169,7 +134,7 @@ export default function DashboardTemplatePage({ data, products, navData }: Props
           </div>
         </div>
 
-        <CtaBlock titleHtml={data.ctaTitleHtml} bodyHtml={data.ctaBodyHtml} />
+        <PublishCta contactLocation="dashboard_cta" publishLocation="dashboard_cta" />
 
         <FaqSection items={data.faq} />
       </main>

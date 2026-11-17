@@ -237,10 +237,6 @@ export const clayloContent = {
       "answerHtml": "The <a class=\"span-link\" href=\"/bundle\">bundle</a> packs several kits together at a lower combined price. We also run seasonal sales, and newsletter subscribers hear about them first."
     }
   ],
-  "ctaHire": {
-    "title": "Need Claylo tailored to your product? Let's design it together ✊",
-    "subtitle": "We adapt Claylo to your brand, extend it with new sections, and ship custom claymorphism illustrations. Figma design, HTML + CSS handoff, and framework integration in React, Vue, or Astro."
-  },
   "sectionOrder": [
     "carousel",
     "gallery"
