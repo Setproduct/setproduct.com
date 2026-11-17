@@ -1,0 +1,254 @@
+/* Prototype-only motion for the contact dialog (phase 3, section 5 of
+   plans/contact-modal-leads-and-motion-2026-11.md).
+
+   Timings live here on purpose: they are tuned on this page, approved by eye,
+   and only then moved into styles/globals.css and the real component. The
+   dialog keeps the global .contact-dialog look, so what you see here is what
+   will ship. */
+
+.dialog {
+  --in: 360ms;
+  --out: 220ms;
+  --done: 420ms;
+  /* Slow motion multiplier: 1 = real speed, 3 = a third of it. */
+  --in-k: 1;
+  --ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --blur: 8px;
+  --ox: 50%;
+  --oy: 50%;
+}
+
+.slow {
+  --in-k: 3;
+}
+
+/* Asked for calm: opacity only, no scale, no shift, no blur. */
+@media (prefers-reduced-motion: reduce) {
+  .dialog {
+    --in: 120ms;
+    --out: 120ms;
+    --done: 120ms;
+    --blur: 0px;
+  }
+}
+
+/* ---------------------------------------------------------------- backdrop */
+
+.dialog::backdrop {
+  background-color: rgba(25, 24, 27, 0.32);
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  animation: scrimIn calc(var(--in) * var(--in-k)) linear both;
+}
+
+.dialog[data-demo-state="closingCancel"]::backdrop,
+.dialog[data-demo-state="closingDone"]::backdrop {
+  animation: scrimOut calc(var(--out) * var(--in-k)) linear both;
+}
+
+@keyframes scrimIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scrimOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------- card */
+
+/* Origin sits on the button that opened the dialog, so the card grows out of
+   it and returns into it. Set as CSS variables from JS. */
+.card {
+  transform-origin: var(--ox) var(--oy);
+  transition:
+    transform calc(var(--in) * var(--in-k)) var(--ease-in),
+    opacity calc(var(--in) * 0.33 * var(--in-k)) linear,
+    filter calc(var(--in) * var(--in-k)) var(--ease-in);
+}
+
+/* First frame after showModal(): already small and blurred, but painted once
+   with no transition, so the way to open is a real movement. */
+.dialog[data-demo-state="preopen"] .card {
+  opacity: 0;
+  transform: translateY(calc(16 * var(--em-px))) scale(0.92);
+  filter: blur(var(--blur));
+}
+
+.dialog[data-demo-state="open"] .card,
+.dialog[data-demo-state="submitting"] .card,
+.dialog[data-demo-state="success"] .card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Cancel: the card goes back into the trigger. No blur: the person changed
+   their mind, the dialog was not "spent". */
+.dialog[data-demo-state="closingCancel"] .card {
+  opacity: 0;
+  transform: translateY(calc(12 * var(--em-px))) scale(0.96);
+  transition:
+    transform calc(var(--out) * var(--in-k)) var(--ease-out),
+    opacity calc(var(--out) * var(--in-k)) var(--ease-out);
+}
+
+/* Done: the message flew away. Dissolve upwards, our own read-next gesture. */
+.dialog[data-demo-state="closingDone"] .card {
+  opacity: 0;
+  transform: translateY(calc(-24 * var(--em-px))) scale(1);
+  filter: blur(calc(var(--blur) * 1.5));
+  transition:
+    transform calc(var(--done) * var(--in-k)) var(--ease-in),
+    opacity calc(var(--done) * var(--in-k)) var(--ease-in),
+    filter calc(var(--done) * var(--in-k)) var(--ease-in);
+}
+
+@media screen and (max-width: 479px) {
+  /* Bottom sheet: slides from the edge instead of scaling from the trigger. */
+  .card {
+    transform-origin: 50% 100%;
+  }
+
+  .dialog[data-demo-state="preopen"] .card {
+    transform: translateY(100%) scale(1);
+  }
+
+  .dialog[data-demo-state="closingCancel"] .card {
+    transform: translateY(100%) scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------- success */
+
+.successBody {
+  animation: bodyIn calc(200ms * var(--in-k)) var(--ease-in) both;
+}
+
+.check {
+  display: grid;
+  place-items: center;
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  animation: checkIn calc(320ms * var(--in-k)) var(--ease-in) both;
+}
+
+.check svg {
+  width: 50%;
+  height: 50%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.check path {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: draw calc(280ms * var(--in-k)) var(--ease-in) calc(120ms * var(--in-k)) both;
+}
+
+/* Auto-close countdown, paused while the pointer rests on the dialog. */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 0 0 calc(24 * var(--em-px)) calc(24 * var(--em-px));
+}
+
+.progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--primary);
+  transform-origin: left center;
+  animation: countdown var(--progress-ms, 3000ms) linear both;
+  animation-play-state: var(--progress-state, running);
+}
+
+@keyframes bodyIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(8 * var(--em-px)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes checkIn {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes countdown {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* ------------------------------------------------------------ prototype UI */
+
+.originRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(12 * var(--em-px));
+}
+
+.note {
+  margin: 0;
+  color: #19181b99;
+}
+
+.timeline {
+  display: grid;
+  gap: calc(6 * var(--em-px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  display: flex;
+  gap: calc(12 * var(--em-px));
+  font-size: inherit;
+}
+
+.timeline b {
+  flex: 0 0 9ch;
+  font-variant-numeric: tabular-nums;
+}
