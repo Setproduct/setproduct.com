@@ -3888,3 +3888,68 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 .contact-dialog_form :is(.text-input, .textarea-input) {
   font-family: inherit;
 }
+
+/* Phones: bottom sheet. Pinned to the bottom edge, top corners rounded, inner
+   scroll, the submit button sticks to the bottom so the keyboard never hides
+   it. Motion (slide up / down) comes in phase 3. */
+@media screen and (max-width: 479px) {
+  .contact-dialog {
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    margin: auto 0 0;
+  }
+
+  .contact-dialog::backdrop {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .contact-dialog_card {
+    max-height: calc(100dvh - 24px);
+    padding: calc(28 * var(--em-px)) calc(16 * var(--em-px)) 0;
+    border-radius: calc(24 * var(--em-px)) calc(24 * var(--em-px)) 0 0;
+  }
+
+  /* Grab handle: shows the sheet can be dismissed, purely visual for now. */
+  .contact-dialog_card::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #19181b26;
+    transform: translateX(-50%);
+  }
+
+  .contact-dialog_heading {
+    padding: 0 40px;
+  }
+
+  .contact-dialog_form {
+    gap: calc(16 * var(--em-px));
+  }
+
+  .contact-dialog_close {
+    top: 4px;
+    right: 4px;
+  }
+
+  .contact-dialog_actions {
+    position: sticky;
+    bottom: 0;
+    margin-top: 0;
+    padding: calc(12 * var(--em-px)) 0 max(calc(16 * var(--em-px)), env(safe-area-inset-bottom));
+    background: linear-gradient(to bottom, #fff0, var(--white) 12px);
+  }
+
+  .contact-dialog_actions > .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-dialog_success {
+    padding-top: calc(16 * var(--em-px));
+  }
+}
