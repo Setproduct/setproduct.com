@@ -3746,14 +3746,33 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 /* ==========================================================================
    Contact dialog (components/modals/ContactModal.tsx)
    Native <dialog> + showModal(): the browser gives the top layer, focus trap,
-   inert page and Escape. State lives in data-state (open / submitting /
-   success); motion for these states is added in phase 3 of
-   plans/contact-modal-leads-and-motion-2026-11.md.
+   inert page and Escape. What the dialog shows lives in data-state (open /
+   submitting / success), the motion phase in data-phase (enter / open /
+   leave-cancel / leave-done), set from JS straight on the node.
+
+   Rules that keep the motion free of flicker (plan, section 5):
+   - only transform and opacity move. No filter on the card, no animated
+     blur radius, no animated box-shadow: those repaint every frame and
+     shimmer in Safari;
+   - the scrim is a real element with a constant backdrop-filter and an
+     opacity transition. ::backdrop is only made transparent, because its
+     transitions are unreliable in Safari;
+   - enter and exit are transitions, not keyframes, so Escape in the middle
+     of the entrance reverses from the current frame instead of jumping;
+   - "enter" is applied before showModal() and committed with a forced
+     reflow, so the first painted frame is already the start frame.
    ========================================================================== */
 
 /* Reset the UA box: no padding (a click on the dialog itself means backdrop),
    no border, no max size, centred by the UA inset + margin auto. */
 .contact-dialog {
+  --modal-in: 360ms;
+  --modal-out: 220ms;
+  --modal-done-out: 420ms;
+  --modal-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-ease-out: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --modal-blur: 8px;
+
   width: min(calc(768 * var(--em-px)), calc(100vw - 32px));
   max-width: none;
   max-height: calc(100dvh - 32px);
@@ -3765,16 +3784,24 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   overflow: visible;
 }
 
-/* Blur is in px: ::backdrop does not inherit custom properties in older
-   browsers, and the radius should not shrink with the layout anyway. */
+/* The scrim below does the dimming and the blur. */
 .contact-dialog::backdrop {
+  background: transparent;
+}
+
+/* Fixed to the viewport (the dialog itself is never transformed), first in
+   DOM order, so the card paints above it. The extra bottom covers the strip
+   under the collapsing toolbar of mobile Safari. */
+.contact-dialog_scrim {
+  position: fixed;
+  inset: 0 0 -120px;
   background-color: rgba(25, 24, 27, 0.32);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(var(--modal-blur));
+  backdrop-filter: blur(var(--modal-blur));
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  .contact-dialog::backdrop {
+  .contact-dialog_scrim {
     background-color: rgba(25, 24, 27, 0.48);
   }
 }
@@ -3791,7 +3818,254 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   padding: calc(40 * var(--em-px)) calc(64 * var(--em-px));
   border-radius: calc(24 * var(--em-px));
   background-color: var(--white);
+  /* Static shadow: it travels with the card layer and is never animated. */
+  box-shadow: 0 24px 64px -24px rgba(25, 24, 27, 0.32);
   outline: none;
+  /* Centre of the pressed button, in px of the card, written by JS. */
+  transform-origin: var(--contact-origin, 50% 50%);
+}
+
+/* ---------- Motion phases ---------- */
+
+/* Start frame. No transition here: this is where the entrance begins. */
+.contact-dialog[data-phase="enter"] .contact-dialog_scrim {
+  opacity: 0;
+  transition: none;
+}
+
+.contact-dialog[data-phase="enter"] .contact-dialog_card {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.92);
+  transition: none;
+}
+
+.contact-dialog[data-phase="enter"] .contact-dialog_stagger {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: none;
+}
+
+/* Entrance: decelerate. Opacity is done early so the card is never a ghost
+   while it grows; the scale keeps settling for the full 360ms. */
+.contact-dialog[data-phase="open"] .contact-dialog_scrim {
+  opacity: 1;
+  transition: opacity 320ms ease;
+}
+
+.contact-dialog[data-phase="open"] .contact-dialog_card {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform var(--modal-in) var(--modal-ease-in),
+    opacity 160ms ease-out,
+    height 320ms var(--modal-ease-in);
+}
+
+/* Content follows the card in five groups, 24ms apart. */
+.contact-dialog[data-phase="open"] .contact-dialog_stagger {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 240ms ease-out,
+    transform var(--modal-in) var(--modal-ease-in);
+  transition-delay: calc(60ms + var(--i, 0) * 24ms);
+}
+
+/* Both exits: the page under the dialog is inert anyway, but the card must
+   not catch a second click or hover while it leaves. */
+.contact-dialog[data-phase^="leave"] {
+  pointer-events: none;
+}
+
+.contact-dialog[data-phase^="leave"] .contact-dialog_stagger {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 120ms ease-out,
+    transform 120ms ease-out;
+}
+
+/* Cancel: back into the button it came from. Accelerate, shorter than the
+   entrance, no decoration. The fade starts a beat later than the move, so the
+   card reads as "put back", not "vanished". */
+.contact-dialog[data-phase="leave-cancel"] .contact-dialog_scrim {
+  opacity: 0;
+  transition: opacity var(--modal-out) ease;
+}
+
+.contact-dialog[data-phase="leave-cancel"] .contact-dialog_card {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.96);
+  transition:
+    transform var(--modal-out) var(--modal-ease-out),
+    opacity 180ms var(--modal-ease-out) 40ms;
+}
+
+/* Sent: the card lifts away upwards and dissolves, unlike a cancel. */
+.contact-dialog[data-phase="leave-done"] .contact-dialog_scrim {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.contact-dialog[data-phase="leave-done"] .contact-dialog_card {
+  opacity: 0;
+  transform: translate3d(0, -24px, 0) scale(0.98);
+  transition:
+    transform var(--modal-done-out) var(--modal-ease-in),
+    opacity 320ms ease-out 60ms;
+}
+
+/* Form → success: the form fades up, then the success screen takes over. */
+.contact-dialog_body.is-leaving {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity 140ms ease-out,
+    transform 140ms ease-out;
+}
+
+/* ---------- Success ---------- */
+
+.contact-dialog_success .contact-dialog_stagger {
+  animation: contact-rise 280ms var(--modal-ease-in) both;
+}
+
+.contact-dialog_success .contact-dialog_heading {
+  animation-delay: 160ms;
+}
+
+.contact-dialog_success .contact-dialog_actions {
+  animation-delay: 200ms;
+}
+
+@keyframes contact-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Ring and circle share one grid cell, so the ring sits exactly behind the
+   circle without z-index tricks (a transformed circle would paint a negative
+   z-index child over its own fill). */
+.contact-dialog_check {
+  display: grid;
+  justify-content: center;
+}
+
+.contact-dialog_check > * {
+  grid-area: 1 / 1;
+}
+
+.contact-dialog_check-ring {
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  border-radius: 50%;
+  background-color: var(--light-primary);
+  opacity: 0;
+  animation: contact-ring 728ms ease-out 120ms both;
+}
+
+.contact-dialog_check-circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  animation: contact-pop 320ms var(--modal-ease-in) both;
+}
+
+.contact-dialog_check-circle svg {
+  width: 50%;
+  height: 50%;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contact-dialog_check-circle path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: contact-draw 280ms ease-out 120ms forwards;
+}
+
+@keyframes contact-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contact-ring {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes contact-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Auto-close countdown. The animation itself is the timer (animationend
+   closes the dialog), so a pause here pauses the close too. */
+.contact-dialog_progress {
+  align-self: center;
+  width: calc(120 * var(--em-px));
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--light-primary);
+  overflow: hidden;
+}
+
+.contact-dialog_progress-bar {
+  display: block;
+  height: 100%;
+  background-color: var(--primary);
+  transform-origin: left center;
+  animation: contact-progress 3000ms linear forwards;
+}
+
+/* Paused while the pointer rests on the card or Done has keyboard focus. */
+.contact-dialog_success .contact-dialog_actions:focus-within ~ .contact-dialog_progress .contact-dialog_progress-bar {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-dialog_card:hover .contact-dialog_progress-bar {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes contact-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
 
 .contact-dialog_body {
@@ -3811,6 +4085,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 .contact-dialog_heading > * {
   margin: 0;
+}
+
+/* The success title takes focus for screen readers, not as a control. */
+.contact-dialog_heading > [tabindex="-1"] {
+  outline: none;
 }
 
 .contact-dialog_form {
@@ -3891,23 +4170,40 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 /* Phones: bottom sheet. Pinned to the bottom edge, top corners rounded, inner
    scroll, the submit button sticks to the bottom so the keyboard never hides
-   it. Motion (slide up / down) comes in phase 3. */
+   it. Slides up from below, a cancel slides it back down. */
 @media screen and (max-width: 479px) {
   .contact-dialog {
+    --modal-blur: 4px;
+
     width: 100%;
     max-height: calc(100dvh - 24px);
     margin: auto 0 0;
-  }
-
-  .contact-dialog::backdrop {
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
   }
 
   .contact-dialog_card {
     max-height: calc(100dvh - 24px);
     padding: calc(28 * var(--em-px)) calc(16 * var(--em-px)) 0;
     border-radius: calc(24 * var(--em-px)) calc(24 * var(--em-px)) 0 0;
+    box-shadow: 0 -8px 32px -16px rgba(25, 24, 27, 0.24);
+  }
+
+  /* A sheet comes in whole, without scale: opacity stays at 1 so the edge
+     never looks half transparent against the page. */
+  .contact-dialog[data-phase="enter"] .contact-dialog_card {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  .contact-dialog[data-phase="open"] .contact-dialog_card {
+    transition:
+      transform var(--modal-in) var(--modal-ease-in),
+      height 320ms var(--modal-ease-in);
+  }
+
+  .contact-dialog[data-phase="leave-cancel"] .contact-dialog_card {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+    transition: transform var(--modal-out) var(--modal-ease-out);
   }
 
   /* Grab handle: shows the sheet can be dismissed, purely visual for now. */
@@ -3962,4 +4258,41 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 .contact-dialog_privacy a {
   color: inherit;
+}
+
+/* Reduced motion: opacity only, 120ms. No scale, no slide, no stagger, the
+   check is shown already drawn, the height changes at once. The countdown
+   bar keeps running: it is the auto-close timer, not decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog[data-phase] .contact-dialog_card,
+  .contact-dialog[data-phase] .contact-dialog_stagger,
+  .contact-dialog_body.is-leaving {
+    transform: none !important;
+  }
+
+  .contact-dialog[data-phase="enter"] .contact-dialog_card,
+  .contact-dialog[data-phase^="leave"] .contact-dialog_card {
+    opacity: 0;
+  }
+
+  .contact-dialog[data-phase] .contact-dialog_card,
+  .contact-dialog[data-phase] .contact-dialog_scrim {
+    transition: opacity 120ms linear !important;
+  }
+
+  .contact-dialog[data-phase] .contact-dialog_stagger {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .contact-dialog_success .contact-dialog_stagger,
+  .contact-dialog_check-circle,
+  .contact-dialog_check-ring {
+    animation: none;
+  }
+
+  .contact-dialog_check-circle path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }

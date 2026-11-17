@@ -1,4 +1,15 @@
-import { type FormEvent, type MouseEvent, type PointerEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  type AnimationEvent,
+  type CSSProperties,
+  type FormEvent,
+  type MouseEvent,
+  type PointerEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { CloseIcon } from "../icons/DecorativeIcons";
 import { lockScroll, unlockScroll } from "../../lib/scrollLock";
 import {
@@ -17,14 +28,34 @@ type ContactModalProps = {
 };
 
 /**
- * State of an open dialog, mirrored to `data-state` on the <dialog>.
- * All motion (phase 3 of the plan) hangs off this attribute in CSS, React only
- * flips it. "closed" is the native closed dialog, so it is not listed here.
+ * What the dialog shows, mirrored to `data-state` on the <dialog>.
+ * "closed" is the native closed dialog, so it is not listed here.
  */
 type DialogState = "open" | "submitting" | "success";
 
-/** How the dialog was dismissed. Kept for the close event in phase 4. */
-export type CloseMethod = "escape" | "backdrop" | "button" | "done";
+/**
+ * Motion phase, written to `data-phase` straight on the DOM node, outside
+ * React. The start frame of the entrance has to be in place before the browser
+ * paints the freshly shown dialog; a React state update can land a frame late
+ * and flash the full-size card (that was the glitch of the first motion pass).
+ */
+type MotionPhase = "enter" | "open" | "leave-cancel" | "leave-done";
+
+/** How the dialog was dismissed. Picks the exit motion, feeds the close event in phase 4. */
+export type CloseMethod = "escape" | "backdrop" | "button" | "done" | "auto";
+
+/** Durations in ms. Mirror the tokens on .contact-dialog in globals.css. */
+const MOTION = {
+  cancel: 220,
+  done: 420,
+  reduced: 120,
+  swapOut: 140,
+  resize: 320,
+} as const;
+/** The dialog is closed this long after the exit transition should have ended. */
+const EXIT_SLACK = 40;
+/** A pointerdown older than this is not treated as the button that opened the dialog. */
+const PRESS_MAX_AGE = 1500;
 
 /**
  * The security token is valid for five minutes. Fetching it when the modal
@@ -81,18 +112,42 @@ function buildMailto(message: string): string {
   return `mailto:${CONTACT_EMAIL}?${params.toString().replace(/\+/g, "%20")}`;
 }
 
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+/** Entrance stagger step for one group, consumed by .contact-dialog_stagger. */
+function stagger(index: number): CSSProperties {
+  return { "--i": index } as CSSProperties;
+}
+
 export default function ContactModal({ isOpen, onClose, location }: ContactModalProps) {
   const [state, setState] = useState<DialogState>("open");
   const [formError, setFormError] = useState<FormError | null>(null);
   const [draftMessage, setDraftMessage] = useState("");
-  // Bumped on every open: remounts the form, so fields start empty without
-  // resetting each of them by hand.
+  // True for the 140ms while the form fades up before the success screen.
+  const [isSwapping, setIsSwapping] = useState(false);
+  // Bumped after every close: remounts the form while the dialog is hidden,
+  // so the next open starts clean and never swaps content mid-entrance.
   const [session, setSession] = useState(0);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const successTitleRef = useRef<HTMLHeadingElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  // The last pressed button or link. Safari on macOS does not focus a button
+  // on click, so document.activeElement alone does not say where the press was.
+  const lastPressRef = useRef<{ el: Element; time: number } | null>(null);
+  const isClosingRef = useRef(false);
+  const isLockedRef = useRef(false);
+  const timersRef = useRef<number[]>([]);
+  // Card height right before the success screen replaces the form.
+  const heightFromRef = useRef<number | null>(null);
   // A press that starts inside the card and ends on the backdrop (selecting
   // text, dragging the textarea handle) must not close the dialog.
   const pressedBackdropRef = useRef(false);
@@ -101,44 +156,123 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
   const hasStartedRef = useRef(false);
   // A reply that arrives after the dialog was closed must not touch the next session.
   const sessionRef = useRef(0);
+  // Read from native listeners registered once.
+  const stateRef = useRef<DialogState>("open");
+  stateRef.current = state;
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
-  const requestClose = useCallback(
-    (method: CloseMethod) => {
-      // The method feeds the close event in phase 4 and picks the exit motion in phase 3.
-      void method;
-      onClose();
-    },
-    [onClose],
-  );
+  const setPhase = (phase: MotionPhase | null) => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (phase) dialog.dataset.phase = phase;
+    else delete dialog.dataset.phase;
+  };
 
-  // Open and close the native dialog from the provider state.
+  const later = (fn: () => void, ms: number) => {
+    const id = window.setTimeout(() => {
+      timersRef.current = timersRef.current.filter((t) => t !== id);
+      fn();
+    }, ms);
+    timersRef.current.push(id);
+  };
+
+  const clearTimers = () => {
+    timersRef.current.forEach((id) => window.clearTimeout(id));
+    timersRef.current = [];
+  };
+
+  const requestClose = useCallback((method: CloseMethod) => {
+    const dialog = dialogRef.current;
+    if (!dialog?.open || isClosingRef.current) return;
+    isClosingRef.current = true;
+    clearTimers();
+
+    // A cancel goes back where it came from; a sent message leaves upwards.
+    const isDone = method === "done" || method === "auto";
+    setPhase(isDone ? "leave-done" : "leave-cancel");
+
+    // The dialog is closed by a timer, not by transitionend: the event never
+    // comes in a background tab or when the value did not change, and a timer
+    // in a visible tab lands on the last frame anyway.
+    const ms = prefersReducedMotion() ? MOTION.reduced : isDone ? MOTION.done : MOTION.cancel;
+    later(() => dialogRef.current?.close(), ms + EXIT_SLACK);
+  }, []);
+
+  // Remember where the press started. Registered on the document, because the
+  // buttons that open the dialog live all over the site.
+  useEffect(() => {
+    const handlePointerDown = (event: globalThis.PointerEvent) => {
+      const el = event.target instanceof Element ? event.target.closest("button, a, [role='button']") : null;
+      lastPressRef.current = el ? { el, time: performance.now() } : null;
+    };
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    return () => document.removeEventListener("pointerdown", handlePointerDown, true);
+  }, []);
+
+  // Open the native dialog when the provider asks for it. Closing always goes
+  // through requestClose(), so the exit motion is never skipped.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const card = cardRef.current;
+    if (!isOpen || !dialog || !card || dialog.open) return;
+
+    const active = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+      ? document.activeElement
+      : null;
+    const press = lastPressRef.current;
+    const pressed = press && press.el.isConnected && performance.now() - press.time < PRESS_MAX_AGE ? press.el : null;
+    const source = pressed ?? active;
+    triggerRef.current = active ?? (pressed instanceof HTMLElement ? pressed : null);
+    isClosingRef.current = false;
+
+    // 1. Start frame first, then show. The attribute is on the node before the
+    //    dialog gets a box, so its very first style is the small, clear card.
+    setPhase("enter");
+    dialog.showModal();
+    lockScroll();
+    isLockedRef.current = true;
+
+    // 2. Grow out of the pressed button. The dialog box itself is never
+    //    transformed and the card fills it, so its rect is the resting place
+    //    of the card. The point is clamped to the card: an origin far outside
+    //    it would turn the scale into a long sideways slide.
+    const box = dialog.getBoundingClientRect();
+    const width = card.offsetWidth;
+    const height = card.offsetHeight;
+    const rect = source?.getBoundingClientRect();
+    const originX = rect ? clamp(rect.left + rect.width / 2 - box.left, 0, width) : width / 2;
+    const originY = rect ? clamp(rect.top + rect.height / 2 - box.top, 0, height) : height / 2;
+    card.style.setProperty("--contact-origin", `${Math.round(originX)}px ${Math.round(originY)}px`);
+
+    // 3. Commit the start frame (forced style + layout), then flip to the end
+    //    state in the same task. The browser has a resolved "before" style and
+    //    runs the transition from it, with no extra frame and no rAF race.
+    void card.offsetWidth;
+    setPhase("open");
+
+    // Focus goes to the email field with a mouse. On touch screens that would
+    // pop the keyboard over half of the sheet before the person has read
+    // anything, so the card itself takes focus instead.
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (finePointer) emailRef.current?.focus({ preventScroll: true });
+    else card.focus({ preventScroll: true });
+  }, [isOpen]);
+
+  // Every way the dialog can close ends here: our timer, or the browser
+  // closing it on its own (Chrome force-closes after a repeated Escape).
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    if (isOpen && !dialog.open) {
-      triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      sessionRef.current += 1;
-      setSession(sessionRef.current);
-      setState("open");
-      setFormError(null);
-      setDraftMessage("");
-      hasStartedRef.current = false;
-      dialog.showModal();
-      lockScroll();
-
-      // Focus goes to the email field with a mouse. On touch screens that
-      // would pop the keyboard over half of the sheet before the person has
-      // read anything, so the card itself takes focus instead.
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      if (finePointer) emailRef.current?.focus();
-      else cardRef.current?.focus();
-      return;
-    }
-
-    if (!isOpen && dialog.open) {
-      dialog.close();
-      unlockScroll();
+    const handleClose = () => {
+      clearTimers();
+      setPhase(null);
+      cardRef.current?.style.removeProperty("height");
+      if (isLockedRef.current) {
+        unlockScroll();
+        isLockedRef.current = false;
+      }
       // Browsers return focus on their own, Safari only when the trigger had
       // focus, which a mouse click there never gives. Restore it by hand.
       const trigger = triggerRef.current;
@@ -146,46 +280,101 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
         trigger.focus({ preventScroll: true });
       }
       triggerRef.current = null;
-    }
-  }, [isOpen]);
+      isClosingRef.current = false;
 
-  // Unmount safety: never leave the page locked.
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    return () => {
-      if (dialog?.open) unlockScroll();
+      // Reset while hidden: the next open shows a clean form from frame one.
+      sessionRef.current += 1;
+      setSession(sessionRef.current);
+      setState("open");
+      setIsSwapping(false);
+      setFormError(null);
+      setDraftMessage("");
+      hasStartedRef.current = false;
+      heightFromRef.current = null;
+
+      onCloseRef.current();
     };
-  }, []);
 
-  // Escape fires `cancel`. It is intercepted so the provider stays the single
-  // source of truth, and so phase 3 can play the exit before closing.
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    // Escape fires `cancel`. It is intercepted so the exit plays first.
     const handleCancel = (event: Event) => {
       event.preventDefault();
-      requestClose("escape");
+      requestClose(stateRef.current === "success" ? "done" : "escape");
     };
+
+    dialog.addEventListener("close", handleClose);
     dialog.addEventListener("cancel", handleCancel);
-    return () => dialog.removeEventListener("cancel", handleCancel);
+    return () => {
+      dialog.removeEventListener("close", handleClose);
+      dialog.removeEventListener("cancel", handleCancel);
+    };
   }, [requestClose]);
 
+  // Unmount safety: never leave the page locked or a timer running.
+  useEffect(
+    () => () => {
+      clearTimers();
+      if (isLockedRef.current) unlockScroll();
+    },
+    [],
+  );
+
+  // Success screen: move focus to its title and glide the card height from the
+  // form to the shorter confirmation. Runs before paint, so the first frame of
+  // the new content already has the old height and nothing jumps.
+  useLayoutEffect(() => {
+    if (state !== "success") return;
+    successTitleRef.current?.focus({ preventScroll: true });
+
+    const card = cardRef.current;
+    const from = heightFromRef.current;
+    heightFromRef.current = null;
+    if (!card || from === null) return;
+
+    const to = card.offsetHeight;
+    if (Math.abs(to - from) < 2) return;
+    card.style.height = `${from}px`;
+    void card.offsetHeight;
+    card.style.height = `${to}px`;
+    later(() => card.style.removeProperty("height"), MOTION.resize + EXIT_SLACK);
+  }, [state]);
+
+  const isBackdrop = (target: EventTarget) =>
+    target === dialogRef.current || (target instanceof Element && target.classList.contains("contact-dialog_scrim"));
+
   const handlePointerDown = (event: PointerEvent<HTMLDialogElement>) => {
-    pressedBackdropRef.current = event.target === dialogRef.current;
+    pressedBackdropRef.current = isBackdrop(event.target);
   };
 
-  // The dialog box has no padding and the card fills it, so a click whose
-  // target is the dialog itself landed on ::backdrop.
   const handleDialogClick = (event: MouseEvent<HTMLDialogElement>) => {
-    const isBackdrop = event.target === dialogRef.current && pressedBackdropRef.current;
+    const isBackdropClick = isBackdrop(event.target) && pressedBackdropRef.current;
     pressedBackdropRef.current = false;
-    if (isBackdrop) requestClose(state === "success" ? "done" : "backdrop");
+    if (isBackdropClick) requestClose(state === "success" ? "done" : "backdrop");
   };
 
   const handleFieldFocus = () => {
     if (hasStartedRef.current) return;
     hasStartedRef.current = true;
     trackContactFormStart(location);
+  };
+
+  const showSuccess = (submitSession: number) => {
+    const card = cardRef.current;
+    if (!card || prefersReducedMotion()) {
+      setState("success");
+      return;
+    }
+    // The form fades up first, then the success screen takes its place.
+    setIsSwapping(true);
+    later(() => {
+      if (sessionRef.current !== submitSession) return;
+      heightFromRef.current = card.offsetHeight;
+      setIsSwapping(false);
+      setState("success");
+    }, MOTION.swapOut);
+  };
+
+  const handleProgressEnd = (event: AnimationEvent<HTMLSpanElement>) => {
+    if (event.animationName === "contact-progress") requestClose("auto");
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -234,7 +423,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
       }
 
       trackContactFormSubmit(location, message.length);
-      if (isCurrent()) setState("success");
+      if (isCurrent()) showSuccess(submitSession);
     } catch {
       fail("network");
     }
@@ -253,6 +442,10 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
       onPointerDown={handlePointerDown}
       ref={dialogRef}
     >
+      {/* Own scrim instead of ::backdrop: a plain element fades its opacity
+          reliably in every browser, ::backdrop transitions do not in Safari. */}
+      <div aria-hidden="true" className="contact-dialog_scrim" />
+
       <div className="contact-dialog_card" ref={cardRef} tabIndex={-1}>
         <button
           aria-label="Close"
@@ -264,8 +457,8 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
         </button>
 
         {state !== "success" ? (
-          <div className="contact-dialog_body" key={session}>
-            <div className="contact-dialog_heading">
+          <div className={`contact-dialog_body${isSwapping ? " is-leaving" : ""}`} key={session}>
+            <div className="contact-dialog_heading contact-dialog_stagger" style={stagger(0)}>
               <h2 className="heading-style-h2" id={TITLE_ID}>
                 Contact us
               </h2>
@@ -281,7 +474,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 <input aria-label="Leave this field empty" autoComplete="off" name="website" tabIndex={-1} />
               </div>
 
-              <div className="field">
+              <div className="field contact-dialog_stagger" style={stagger(1)}>
                 <label className="field-label" htmlFor="contact-email">
                   Email
                 </label>
@@ -310,7 +503,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 ) : null}
               </div>
 
-              <div className="field">
+              <div className="field contact-dialog_stagger" style={stagger(2)}>
                 <label className="field-label" htmlFor="contact-message">
                   Message
                 </label>
@@ -348,15 +541,14 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 </div>
               ) : null}
 
-              <p className="contact-dialog_privacy text-size-small">
+              <p className="contact-dialog_privacy text-size-small contact-dialog_stagger" style={stagger(3)}>
                 We use your email only to reply.{" "}
                 <a className="underline" href="/legal/privacy-policy" rel="noopener" target="_blank">
                   Privacy policy
                 </a>
               </p>
 
-
-              <div className="contact-dialog_actions">
+              <div className="contact-dialog_actions contact-dialog_stagger" style={stagger(4)}>
                 <button
                   aria-busy={isSubmitting || undefined}
                   className="button w-inline-block disabled:opacity-70"
@@ -372,19 +564,32 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
           </div>
         ) : (
           <div aria-live="polite" className="contact-dialog_body contact-dialog_success">
-            <div className="contact-dialog_heading">
-              <h2 className="heading-style-h2" id={TITLE_ID}>
+            <div aria-hidden="true" className="contact-dialog_check">
+              <span className="contact-dialog_check-ring" />
+              <span className="contact-dialog_check-circle">
+                <svg fill="none" viewBox="0 0 24 24">
+                  <path d="M6.5 12.5l3.5 3.5 7.5-8" pathLength={1} />
+                </svg>
+              </span>
+            </div>
+            <div className="contact-dialog_heading contact-dialog_stagger" style={stagger(5)}>
+              <h2 className="heading-style-h2" id={TITLE_ID} ref={successTitleRef} tabIndex={-1}>
                 Message sent
               </h2>
               <p className="text-size-medium" id={DESCRIPTION_ID}>
                 Thank you. We&apos;ll reply within 24 hours.
               </p>
             </div>
-            <div className="contact-dialog_actions">
+            <div className="contact-dialog_actions contact-dialog_stagger" style={stagger(6)}>
               <button className="button-small outlined w-inline-block" onClick={() => requestClose("done")} type="button">
                 <div className="text-size-medium text-weight-bold">Done</div>
               </button>
             </div>
+            {/* Three-second countdown to the auto-close. The animation is the
+                timer: hover or keyboard focus pause it, a hidden tab stops it. */}
+            <span aria-hidden="true" className="contact-dialog_progress">
+              <span className="contact-dialog_progress-bar" onAnimationEnd={handleProgressEnd} />
+            </span>
           </div>
         )}
       </div>
