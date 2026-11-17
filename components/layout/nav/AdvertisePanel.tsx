@@ -27,7 +27,7 @@ const FACTS = [
 /**
  * The Advertise dropdown (formerly Company). It sells placement on the blog,
  * so instead of a link list it shows the offer: three facts from PUBLISH_OFFER,
- * the entry price and a primary "See packages" button. On the right, three of
+ * the entry price and a primary "See packages" button. On the right, four of
  * our own posts that rank on Google prove the platform gets found.
  *
  * Paid posts are never listed or labelled here, so the showcase can only hold

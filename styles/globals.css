@@ -3402,7 +3402,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 /* --- Navbar: Advertise panel -------------------------------------------- */
 /* The panel sells placement on the blog, so it is not a link list: on the left
    the offer (three facts, the entry price, one primary button), on the right
-   proof that this blog ranks — three of our own posts with a badge. Everything
+   proof that this blog ranks — four of our own posts with a badge. Everything
    is sized with --em-px because Webflow's em is tied to the window width. */
 .nav_advertise-main {
   display: flex;
@@ -3421,7 +3421,8 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 .nav_advertise-title {
-  margin-top: calc(8 * var(--em-px));
+  /* spacer-12 from the project scale (AGENTS.md, «Вертикальный ритм») */
+  margin-top: calc(12 * var(--em-px));
   font-size: calc(22 * var(--em-px));
   font-weight: 700;
   line-height: 1.2;
@@ -3471,7 +3472,8 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 .nav_advertise-proof-title {
-  margin-bottom: calc(12 * var(--em-px));
+  /* spacer-16 from the project scale (AGENTS.md, «Вертикальный ритм») */
+  margin-bottom: calc(16 * var(--em-px));
   font-size: calc(12 * var(--em-px));
   font-weight: 700;
   letter-spacing: 0.08em;

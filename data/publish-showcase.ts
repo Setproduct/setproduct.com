@@ -8,6 +8,7 @@
  * pages/index.tsx, so this list holds slugs only.
  */
 export const PUBLISH_SHOWCASE_SLUGS = [
+  "data-table-ui-design",
   "tabs-ui-design",
   "liquid-glass-vs-glassmorphism",
   "chip-ui-design",
