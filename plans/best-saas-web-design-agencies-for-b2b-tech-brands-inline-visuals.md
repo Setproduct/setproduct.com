@@ -1,4 +1,4 @@
-# Инлайн-визуалы для «7 best SaaS web design agencies for B2B tech brands, reviewed»
+# Инлайн-визуалы для «9 best SaaS web design agencies for B2B tech brands, reviewed»
 
 ## Где читатель спотыкается
 
@@ -6,7 +6,7 @@
 
 Вторая мина — сравнительная таблица. В колонке pricing у шести агентств стоит «Not publicly listed», в колонке platform у половины размытые формулировки. Таблица честная, но по ней ничего не решается.
 
-Третья — блок «How we ranked»: шесть критериев перечислены списком, без веса и без того, кто из семи где сильнее.
+Третья — блок «How we ranked»: шесть критериев перечислены списком, без веса и без того, кто из девяти где сильнее.
 
 Три визуала ниже ставятся в три разных места статьи, чтобы текст перестал быть простынёй: после вступления к списку, после таблицы и в блоке выбора.
 
@@ -14,7 +14,7 @@
 
 ## Визуал 1 — «Три модели работы» (сравнительная схема)
 
-**Куда вставить:** сразу после абзаца «These seven agencies serve different needs», до сравнительной таблицы.
+**Куда вставить:** сразу после абзаца «These nine agencies serve different needs», до сравнительной таблицы.
 
 **Prompt:**
 
@@ -50,9 +50,9 @@ Create a clean editorial infographic on a strictly pure white background, hex #F
 
 Headline top left, bold geometric sans, sentence case, charcoal: "Who covers what". Grey subtitle: "Filled square means the agency publishes evidence for it".
 
-Main body: a grid of seven rows and six columns. Row labels on the left in small charcoal type, stacked vertically: "Duck.Design", "Webstacks", "Ramotion", "Clay", "Refokus", "Flow Ninja", "Flowout". Column headers along the top, rotated 45 degrees to save space, in small grey type: "SaaS", "Portfolio", "UX", "CMS", "SEO", "Pricing".
+Main body: a grid of nine rows and six columns. Row labels on the left in small charcoal type, stacked vertically: "Duck.Design", "Bricx", "UITOP", "Webstacks", "Ramotion", "Clay", "Refokus", "Flow Ninja", "Flowout". Column headers along the top, rotated 45 degrees to save space, in small grey type: "SaaS", "Portfolio", "UX", "CMS", "SEO", "Pricing".
 
-Cells are squares with a black outline. A covered criterion is filled with pale lilac, an uncovered one stays white, and a partially covered one carries a single diagonal hatch stroke. Fill the grid so the pattern is legible at a glance: the first row is solid across all but "Pricing", the middle rows are strong on the first three columns and sparse on SEO, and the last two rows are strong on CMS and SEO only. The single violet square marks the one agency that publishes a price.
+Cells are squares with a black outline. A covered criterion is filled with pale lilac, an uncovered one stays white, and a partially covered one carries a single diagonal hatch stroke. Fill the grid so the pattern is legible at a glance: Duck.Design is solid across all six columns, Bricx carries one hatch stroke in "SEO" and is filled in every other column, UITOP is filled in the first four columns, the middle rows are strong on the first three columns and sparse on SEO, and the last two rows are strong on CMS and SEO only. Three violet squares mark the agencies that publish some kind of starting price: Duck.Design, Bricx, and UITOP.
 
 Under the grid, a thin legend row of three small squares with short grey labels: "Published", "Partial", "Not stated". No numbers, no invented scores, no percentages anywhere.
 
@@ -60,9 +60,9 @@ Palette: charcoal, violet #7C4DFF, pale lilac, two greys, white. Generous margin
 
 Aspect ratio: 16:9.
 
-Alt text: Matrix of seven agencies against six ranking criteria, showing which agency publishes evidence for SaaS, portfolio, UX, CMS, SEO, and pricing.
+Alt text: Matrix of nine agencies against six ranking criteria, showing which agency publishes evidence for SaaS, portfolio, UX, CMS, SEO, and pricing.
 
-Filename: best-saas-web-design-agencies-for-b2b-tech-brands-coverage-matrix.webp
+Filename: best-saas-web-design-agencies-for-b2b-tech-brands-coverage-matrix-nine.webp
 
 ---
 
