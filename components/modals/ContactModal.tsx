@@ -11,11 +11,13 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import ArrowIcon from "../sections/ArrowIcon";
 import { CloseIcon } from "../icons/DecorativeIcons";
 import { lockScroll, unlockScroll } from "../../lib/scrollLock";
 import {
   getLeadContext,
+  trackContactDraftRestore,
   trackContactFormError,
   trackContactFormStart,
   trackContactFormSubmit,
@@ -53,7 +55,7 @@ type DialogState = "open" | "submitting" | "success";
 type MotionPhase = "enter" | "open" | "leave-cancel" | "leave-done";
 
 /** How the dialog was dismissed. Picks the exit motion and feeds contact_modal_close. */
-export type CloseMethod = "escape" | "backdrop" | "button" | "done" | "auto";
+export type CloseMethod = "escape" | "backdrop" | "button" | "back" | "done" | "auto";
 
 /** Durations in ms. Mirror the tokens on .contact-dialog in globals.css. */
 const MOTION = {
@@ -169,6 +171,54 @@ function buildMailto(message: string): string {
   return `mailto:${CONTACT_EMAIL}?${params.toString().replace(/\+/g, "%20")}`;
 }
 
+/**
+ * Unsent text survives a close for the rest of the tab session. A stray tap on
+ * the backdrop used to wipe a half-written lead; now the next open brings it
+ * back. sessionStorage, not localStorage: a draft from last week is noise, and
+ * nothing outlives the tab on a shared computer.
+ */
+const DRAFT_KEY = "sp_contact_draft";
+
+type Draft = { topic: ContactTopic | null; email: string; message: string; name: string; url: string };
+
+function readDraft(): Draft | null {
+  try {
+    const raw = window.sessionStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw) as Partial<Draft>;
+    const text = (value: unknown, max: number) => (typeof value === "string" ? value.slice(0, max) : "");
+    const draft: Draft = {
+      topic: CONTACT_TOPICS.includes(data.topic as ContactTopic) ? (data.topic as ContactTopic) : null,
+      email: text(data.email, 254),
+      message: text(data.message, 5000),
+      name: text(data.name, 100),
+      url: text(data.url, 300),
+    };
+    return [draft.email, draft.message, draft.name, draft.url].some((v) => v.trim()) ? draft : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeDraft(draft: Draft) {
+  try {
+    window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    // Storage blocked or full: the draft is a convenience, not a requirement.
+  }
+}
+
+function clearDraft() {
+  try {
+    window.sessionStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // Same as above.
+  }
+}
+
+/** The bottom-sheet layout, where the browser back button should close the dialog. */
+const SHEET_QUERY = "(max-width: 479px)";
+
 function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
@@ -207,18 +257,32 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
   // The panel under the chips plays its rise only after a switch by the
   // person, never on open: the entrance stagger already covers that.
   const [hasSwitched, setHasSwitched] = useState(false);
+  // The fields were filled from a draft on this open; shows "Draft restored".
+  const [draftRestored, setDraftRestored] = useState(false);
   // Bumped after every close: remounts the form while the dialog is hidden,
   // so the next open starts clean and never swaps content mid-entrance.
   const [session, setSession] = useState(0);
 
-  // Take the entry point's topic in the same render that opens the dialog,
-  // so the first painted frame already shows the right panel.
+  // Take the entry point's topic and any saved draft in the same render that
+  // opens the dialog, so the first painted frame already shows the right panel
+  // with the text in place.
   const [wasOpen, setWasOpen] = useState(isOpen);
   if (isOpen !== wasOpen) {
     setWasOpen(isOpen);
     if (isOpen) {
-      setTopic(initialTopic);
-      setIsAsking(initialAsk);
+      const draft = readDraft();
+      // The entry point knows the current intent better than an old draft.
+      const nextTopic = initialTopic ?? draft?.topic ?? null;
+      setTopic(nextTopic);
+      // Someone with a message already written skips the offer card.
+      setIsAsking(initialAsk || (nextTopic === "publish" && Boolean(draft?.message.trim())));
+      if (draft) {
+        setEmail(draft.email);
+        setMessage(draft.message);
+        setName(draft.name);
+        setUrl(draft.url);
+      }
+      setDraftRestored(Boolean(draft));
     }
   }
 
@@ -233,6 +297,11 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
   const emailRef = useRef<HTMLInputElement>(null);
   const successTitleRef = useRef<HTMLHeadingElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const router = useRouter();
+  // A history entry was pushed for this open (phones only), so Back closes it.
+  const historyPushedRef = useRef(false);
+  // The next popstate is our own history.back() after a close: ignore it.
+  const skipPopRef = useRef(false);
   // The last pressed button or link. Safari on macOS does not focus a button
   // on click, so document.activeElement alone does not say where the press was.
   const lastPressRef = useRef<{ el: Element; time: number } | null>(null);
@@ -258,6 +327,16 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
   onCloseRef.current = onClose;
   const closeInfoRef = useRef({ location, topic: topicParam, step, hasInput });
   closeInfoRef.current = { location, topic: topicParam, step, hasInput };
+
+  // Keep the draft in step with the fields while the dialog is open. Emptying
+  // every field on purpose drops the draft too. After a send it is cleared.
+  // The open check on the node matters: the reset in handleClose runs after
+  // the dialog has closed, and must not erase the draft it just left behind.
+  useEffect(() => {
+    if (!isOpen || state === "success" || !dialogRef.current?.open) return;
+    if (hasInput) writeDraft({ topic, email, message, name, url });
+    else clearDraft();
+  }, [isOpen, state, hasInput, topic, email, message, name, url]);
 
   const setPhase = (phase: MotionPhase | null) => {
     const dialog = dialogRef.current;
@@ -340,6 +419,16 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
     lockScroll();
     isLockedRef.current = true;
 
+    // On a phone the sheet feels like a screen, and the system Back gesture is
+    // how people leave a screen. One history entry for the open dialog lets
+    // Back close it instead of leaving the page. The URL does not change.
+    if (window.matchMedia(SHEET_QUERY).matches) {
+      window.history.pushState({ ...window.history.state, contactDialog: true }, "");
+      historyPushedRef.current = true;
+    }
+
+    if (draftRestored) trackContactDraftRestore(location, topic ?? "none");
+
     // 2. Grow out of the pressed button. The dialog box itself is never
     //    transformed and the card fills it, so its rect is the resting place
     //    of the card. The point is clamped to the card: an origin far outside
@@ -365,7 +454,42 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
     const finePointer = window.matchMedia("(pointer: fine)").matches;
     if (finePointer && emailRef.current) emailRef.current.focus({ preventScroll: true });
     else card.focus({ preventScroll: true });
+    // Only the opening matters here; the values above are read once per open.
   }, [isOpen]);
+
+  // Back on a phone pops our entry. Two parts, on purpose:
+  // - beforePopState only stops the Next.js router from re-rendering the
+  //   page for an entry that is ours; it has no side effects.
+  // - a plain popstate listener closes the dialog, or swallows our own
+  //   history.back() after a close by other means.
+  useEffect(() => {
+    router.beforePopState(() => !(historyPushedRef.current || skipPopRef.current));
+
+    const handlePopState = () => {
+      if (skipPopRef.current) {
+        skipPopRef.current = false;
+        return;
+      }
+      if (historyPushedRef.current) {
+        historyPushedRef.current = false;
+        requestClose(stateRef.current === "success" ? "done" : "back");
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    // A link inside the dialog navigates on its own: the extra entry stays
+    // behind, which is harmless, but it must not be popped later. Shallow
+    // query updates (filters, the ?contact cleanup) keep the page and the entry.
+    const handleRouteStart = (_url: string, { shallow }: { shallow: boolean }) => {
+      if (!shallow) historyPushedRef.current = false;
+    };
+    router.events.on("routeChangeStart", handleRouteStart);
+    return () => {
+      router.beforePopState(() => true);
+      window.removeEventListener("popstate", handlePopState);
+      router.events.off("routeChangeStart", handleRouteStart);
+    };
+  }, [router, requestClose]);
 
   // Every way the dialog can close ends here: our timer, or the browser
   // closing it on its own (Chrome force-closes after a repeated Escape).
@@ -376,6 +500,13 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
     const handleClose = () => {
       clearTimers();
       setPhase(null);
+      // Closed some other way than Back: remove the entry we pushed, so the
+      // next Back press leaves the page as the person expects.
+      if (historyPushedRef.current) {
+        historyPushedRef.current = false;
+        skipPopRef.current = true;
+        window.history.back();
+      }
       cardRef.current?.style.removeProperty("height");
       if (isLockedRef.current) {
         unlockScroll();
@@ -396,6 +527,7 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
       setState("open");
       setIsSwapping(false);
       setHasSwitched(false);
+      setDraftRestored(false);
       setFormError(null);
       setEmail("");
       setMessage("");
@@ -461,6 +593,18 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
     const card = cardRef.current;
     if (card && !prefersReducedMotion()) heightFromRef.current = card.offsetHeight;
     setHasSwitched(true);
+  };
+
+  /** "Clear" next to "Draft restored": start over without closing the dialog. */
+  const clearFields = () => {
+    setEmail("");
+    setMessage("");
+    setName("");
+    setUrl("");
+    setDraftRestored(false);
+    setFormError(null);
+    clearDraft();
+    emailRef.current?.focus({ preventScroll: true });
   };
 
   const selectTopic = (next: ContactTopic) => {
@@ -577,6 +721,9 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
       }
 
       trackContactFormSubmit(location, message.length, topicParam, fieldsFilled);
+      // Sent: nothing to restore next time, even if the dialog was closed
+      // while the request was in flight.
+      clearDraft();
       if (isCurrent()) {
         setSentEmail(payload.email);
         showSuccess(submitSession);
@@ -694,6 +841,15 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
                     <a className="contact-dialog_offer-link" {...getPublishLinkProps("contact_modal")}>
                       See packages
                     </a>
+                  </p>
+                ) : null}
+
+                {draftRestored && hasInput ? (
+                  <p className="contact-dialog_draft text-size-small" role="status">
+                    <span>Draft restored</span>
+                    <button className="contact-dialog_draft-clear" onClick={clearFields} type="button">
+                      Clear
+                    </button>
                   </p>
                 ) : null}
 

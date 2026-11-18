@@ -4295,6 +4295,36 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 /* ---------- Form details ---------- */
 
+/* "Draft restored": quiet, one line, with a way to start over. */
+.contact-dialog_draft {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(16 * var(--em-px));
+  margin: 0;
+  color: #19181b99;
+}
+
+.contact-dialog_draft-clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.contact-dialog_draft-clear:hover {
+  text-decoration: underline;
+}
+
+.contact-dialog_draft-clear:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .contact-dialog_optional {
   margin-left: calc(4 * var(--em-px));
   font-weight: 400;

@@ -33,6 +33,8 @@ export type ContactLocation =
   | "refunds_policy"
   | "terms_page"
   | "footer"
+  // Opened by ?contact=<topic> in the address: newsletters, articles, the portal.
+  | "url_param"
   | "unknown";
 
 /** What the modal shows first for an entry point. */
@@ -150,6 +152,15 @@ export function trackContactModalClose(
     step: params.step,
     had_input: params.hadInput,
     method: params.method,
+    page_path: pagePath(),
+  });
+}
+
+/** Fired when the modal opens with a draft left from an earlier close in this tab. */
+export function trackContactDraftRestore(location: ContactLocation, topic: ContactTopicParam) {
+  event("contact_draft_restore", {
+    location,
+    topic,
     page_path: pagePath(),
   });
 }
