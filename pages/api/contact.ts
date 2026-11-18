@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
-import ContactEmail, { type ContactEmailContext, type ContactLeadFields } from "../../emails/ContactEmail";
+import ContactEmail, { type ContactEmailContext } from "../../emails/ContactEmail";
 import { rateLimit, getClientIp } from "../../lib/rateLimit";
 import { verifyToken } from "../../lib/csrf";
-import { TOPIC_LABEL, type ContactTopic } from "../../lib/contact";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -29,7 +28,6 @@ export type ContactErrorCode =
   | "message_long"
   | "rate_minute"
   | "rate_day"
-  | "url_invalid"
   | "send_failed";
 
 type ResponseData = {
@@ -64,42 +62,6 @@ function readContext(raw: unknown): ContactEmailContext {
     referrer: cleanString(source.referrer, 300),
     landing: cleanString(source.landing, 300),
   };
-}
-
-const TOPICS: ContactTopic[] = ["publish", "product", "other"];
-
-/**
- * Optional fields, all cleaned and length-capped. Unknown keys in the payload
- * are dropped by only reading the ones we know, so a client cannot inject
- * extra rows into the lead email.
- */
-function readFields(body: Record<string, unknown>): ContactLeadFields {
-  const rawTopic = typeof body.topic === "string" ? body.topic : "";
-  const topic = TOPICS.includes(rawTopic as ContactTopic) ? (rawTopic as ContactTopic) : "other";
-  return {
-    topic,
-    name: cleanString(body.name, 120),
-    url: normalizeUrl(body.url),
-    product: cleanString(body.product, 160),
-  };
-}
-
-/**
- * Accepts a bare domain and adds https, so "acme.com" works. Anything that is
- * not http or https is dropped rather than printed as a live link in the inbox.
- */
-function normalizeUrl(raw: unknown): string {
-  const value = cleanString(raw, 300);
-  if (!value) return "";
-  const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
-  try {
-    const url = new URL(withScheme);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
-    if (!url.hostname.includes(".")) return "";
-    return url.toString().slice(0, 300);
-  } catch {
-    return "";
-  }
 }
 
 export default async function handler(
@@ -149,7 +111,6 @@ export default async function handler(
   }
 
   const context = readContext(rawContext);
-  const fields = readFields(body);
 
   try {
     // The Resend SDK does not throw on API failures (bad key, quota, domain):
@@ -160,8 +121,8 @@ export default async function handler(
       to: "hello@setproduct.com",
       // "Reply" in the inbox goes to the person, not back to contact@.
       replyTo: email,
-      subject: `[${TOPIC_LABEL[fields.topic]}] ${email} (${context.location})`,
-      react: ContactEmail({ email, message, context, fields }),
+      subject: `Contact form: ${email} (${context.location})`,
+      react: ContactEmail({ email, message, context }),
     });
 
     if (error) {

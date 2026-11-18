@@ -12,13 +12,6 @@ type Props = {
   contactLocation: ContactLocation;
   /** Light purple band on template pages, plain section elsewhere. */
   tinted?: boolean;
-  /**
-   * Kit title on a product page. When set, "Ask a question" opens the modal on
-   * the product topic with this kit preselected, so the reader does not have to
-   * pick it again. Omit on listing or testimonials pages, where the question is
-   * about publishing rather than one kit.
-   */
-  product?: string;
 };
 
 /**
@@ -26,7 +19,7 @@ type Props = {
  * Replaced the old "hire us" band: custom work is off the table,
  * the paid publishing offer is what the site sells to businesses now.
  */
-export default function PublishCta({ publishLocation, contactLocation, tinted = true, product }: Props) {
+export default function PublishCta({ publishLocation, contactLocation, tinted = true }: Props) {
   const { openContactModal } = useContactModal();
 
   return (
@@ -55,9 +48,7 @@ export default function PublishCta({ publishLocation, contactLocation, tinted = 
                   </a>
                   <button
                     className="button secondary w-inline-block"
-                    onClick={() =>
-                      openContactModal(contactLocation, product ? { topic: "product", product } : undefined)
-                    }
+                    onClick={() => openContactModal(contactLocation)}
                     type="button"
                   >
                     <div className="text-size-large text-weight-bold">Ask a question</div>

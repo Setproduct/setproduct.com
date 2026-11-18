@@ -34,61 +34,6 @@ export type ContactLocation =
   | "footer"
   | "unknown";
 
-/**
- * What the person wants. Three topics only: custom work and the discount
- * scenario were dropped by the author (answers Q3 and Q4), so the form asks
- * about publishing, about a kit, or about anything else.
- */
-export type ContactTopic = "publish" | "product" | "other";
-
-export const CONTACT_TOPICS: { id: ContactTopic; label: string }[] = [
-  { id: "publish", label: "Guest post or ad" },
-  { id: "product", label: "Question about a kit" },
-  { id: "other", label: "Something else" },
-];
-
-/** Human label for the email subject and the lead table. */
-export const TOPIC_LABEL: Record<ContactTopic, string> = {
-  publish: "Publish",
-  product: "Kit",
-  other: "Other",
-};
-
-/**
- * Topic guessed from the entry point. A place that sells publishing preselects
- * `publish`, a place about products preselects `product`. The footer and the
- * general FAQ answer serve every intent, so they return null and the modal
- * opens on the chips instead of guessing wrong.
- */
-export function topicOfLocation(location: ContactLocation): ContactTopic | null {
-  switch (location) {
-    case "advertise_panel_desktop":
-    case "advertise_panel_mobile":
-    case "terms_page":
-      return "publish";
-    case "search_page":
-    case "refunds_policy":
-      return "product";
-    case "template_hire":
-    case "dashboard_cta":
-    case "testimonials_page":
-      return "other";
-    default:
-      return null;
-  }
-}
-
-/** Which screen of the modal is showing. Sent with the close event. */
-export type ContactStep = "topic" | "offer" | "form" | "success";
-
-/** Extra hints an entry point can pass. Both optional. */
-export type ContactOptions = {
-  /** Overrides the topic guessed from the location. */
-  topic?: ContactTopic;
-  /** Kit title, preselected in the Product field on a kit page. */
-  product?: string;
-};
-
 const LANDING_KEY = "sp_landing";
 
 /**
@@ -153,67 +98,10 @@ export function trackContactFormStart(location: ContactLocation) {
  * needed here because the modal stays open and shows the success state, but the
  * message length is useful to see whether people write one line or six.
  */
-export function trackContactFormSubmit(
-  location: ContactLocation,
-  messageLength: number,
-  topic: ContactTopic,
-  fieldsFilled: number,
-) {
+export function trackContactFormSubmit(location: ContactLocation, messageLength: number) {
   event("contact_form_submit", {
     location,
-    topic,
     message_length: messageLength,
-    fields_filled: fieldsFilled,
-    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
-  });
-}
-
-/** Fired when a topic chip is pressed, including a change of an already chosen one. */
-export function trackContactTopicSelect(
-  location: ContactLocation,
-  topic: ContactTopic,
-  preselected: boolean,
-) {
-  event("contact_topic_select", {
-    location,
-    topic,
-    preselected,
-    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
-  });
-}
-
-/**
- * Fired when the window is dismissed before the message was sent. `had_input`
- * separates "opened by mistake" from "wrote something and left", which is the
- * difference between a bad entry point and a form that asks too much.
- */
-export function trackContactModalClose(
-  location: ContactLocation,
-  topic: ContactTopic | null,
-  step: ContactStep,
-  hadInput: boolean,
-  method: string,
-) {
-  event("contact_modal_close", {
-    location,
-    topic: topic ?? "none",
-    step,
-    had_input: hadInput,
-    method,
-    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
-  });
-}
-
-/** Fired on the next-step button of the success screen. */
-export function trackContactSuccessCta(
-  location: ContactLocation,
-  topic: ContactTopic,
-  target: string,
-) {
-  event("contact_success_cta_click", {
-    location,
-    topic,
-    target,
     page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
   });
 }

@@ -159,7 +159,7 @@ export default function ChartsTemplatePage({ item, navData }: Props) {
         />
 
         {/* Publishing CTA */}
-        <PublishCta contactLocation="template_hire" publishLocation="template_cta" product={item.title} />
+        <PublishCta contactLocation="template_hire" publishLocation="template_cta" />
 
         {/* FAQ */}
         <FaqSection items={chartsContent.faq} />
