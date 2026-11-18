@@ -19,8 +19,6 @@ export type DashboardTemplatePageData = {
   heroTitle: string;
   heroSubtitleHtml: string;
   featureBlocks: DashboardFeatureBlock[];
-  ctaTitleHtml: string;
-  ctaBodyHtml: string;
   faq: FaqItem[];
 };
 
@@ -60,8 +58,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "<strong>Enhance Your Web Projects with&nbsp;Our&nbsp;Dashboards</strong> ✊",
-    ctaBodyHtml: "If you're eager to take the journey of your development in a bold new direction, go for some of our website dashboard templates now which can be part and parcel with standalone script modules that work together beautifully with no additional cost! Just let us know what your requirements are and we'll design bespoke solutions tailored specifically for them. Let's create something incredible together!",
     faq: [
       {
         question: "What are the Different Types of Admin Dashboards?",
@@ -120,8 +116,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "Get Started with Our Analytics Dashboard Templates ✊",
-    ctaBodyHtml: "Are you ready to visualize data effectively? With well-thought-out Figma analytics dashboard templates, you'll have a complete overview of where your business stands today and be well equipped for tomorrow. Chat with us here to get started&nbsp;now.",
     faq: [
       {
         question: "What is an Analytics Dashboard Template?",
@@ -180,8 +174,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "Get Started with Android Dashboard Templates Today!✊",
-    ctaBodyHtml: "Are you prepared to enhance your app with a sophisticated Android dashboard design? Don't hesitate - just head to our collection of Android dashboard templates and select exactly the right answer for your project. To get in touch with us, use the&nbsp;form Contact us and order now!",
     faq: [
       {
         question: "What Are Android Templates?",
@@ -228,8 +220,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "Get Started with Angular Dashboard Templates Today!✊",
-    ctaBodyHtml: "Ready to turn your data into actionable insights? Check out our collection of Angular dashboard templates and find exactly what you need for your project. Get in touch with the questionnaire to begin or put in an order now.",
     faq: [
       {
         question: "What are the Advantages of Angular Dashboards?",
@@ -291,8 +281,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: false,
       },
     ],
-    ctaTitleHtml: "Get Started with Finance Dashboard Templates Today!✊",
-    ctaBodyHtml: "Are you ready to start turning your financial data into useful information? Our finance performance dashboard templates are just an example that might fill the bill for what you're looking for. Use the form below to contact us and get started now or order today!",
     faq: [
       {
         question: "What Are Finance Templates?",
@@ -339,8 +327,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "Get Started with IOS Dashboard Templates Today!✊",
-    ctaBodyHtml: "Cause your users to experience the feeling of being on a hillside Apple with our IOS Dashboard templates. Check out our range, or if you're seeking a project that needs both design and development contact us today and let's build something amazing&nbsp;together!",
     faq: [
       {
         question: "What Is an iOS Template?",
@@ -387,8 +373,6 @@ export const DASHBOARD_TEMPLATES: DashboardTemplatePageData[] = [
         reverse: true,
       },
     ],
-    ctaTitleHtml: "Get Started with Your Mobile Dashboard Template Today! ✊",
-    ctaBodyHtml: "Ready to transform your data visualization with our mobile dashboard templates? Purchase now or contact us via the form below to place a custom order. Let’s build something extraordinary together!",
     faq: [
       {
         question: "What is a Mobile Dashboard Template?",
