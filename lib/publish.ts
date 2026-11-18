@@ -58,6 +58,9 @@ export type PublishLocation =
   | "template_cta"
   | "dashboard_cta"
   | "testimonials_page"
+  // Inside the contact modal: the offer card and the success screen (18.11.2026).
+  | "contact_modal"
+  | "contact_success"
   | "content";
 
 export function isPublishHref(href?: string | null): boolean {

@@ -4111,9 +4111,14 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   margin: 0;
 }
 
+/* Centred row that wraps: the offer (See packages + Ask a question) and the
+   success screen (next step + Done) both put two buttons here. */
 .contact-dialog_actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  gap: calc(12 * var(--em-px));
   margin-top: calc(12 * var(--em-px));
 }
 
@@ -4240,14 +4245,83 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     background: linear-gradient(to bottom, #fff0, var(--white) 12px);
   }
 
-  .contact-dialog_actions > .button {
+  /* Every action button takes the full width on a phone and they stack,
+     so a tap target is never half a row wide. */
+  .contact-dialog_actions > :is(.button, .button-small) {
     width: 100%;
     justify-content: center;
+  }
+
+  .contact-dialog_facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .contact-dialog_success {
     padding-top: calc(16 * var(--em-px));
   }
+}
+
+/* ---------- Topics, offer facts, optional tag, success next step ---------- */
+
+/* Topic chips: a centred, wrapping row above every screen. Reuses the
+   .button-x-small.is-text.is-templates chip and its .is-active state. */
+.contact-dialog_topics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(8 * var(--em-px));
+}
+
+/* Offer facts on the publish screen: same card language as the Advertise
+   mega-menu (nav_advertise-fact), four across on desktop, two on phones. */
+.contact-dialog_facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(12 * var(--em-px));
+}
+
+.contact-dialog_fact {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--em-px));
+  min-width: 0;
+  padding: calc(12 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--light-purple);
+  color: var(--dark-primary);
+}
+
+.contact-dialog_fact-value {
+  line-height: 1.1;
+}
+
+.contact-dialog_fact-label {
+  color: var(--black);
+  opacity: 0.7;
+}
+
+/* Quiet "optional" marker beside a field label, lighter than the label. */
+.field-optional {
+  margin-left: calc(4 * var(--em-px));
+  color: #19181b80;
+  font-size: 14em;
+  font-weight: 400;
+}
+
+/* Soft next-step line on the success screen for the "other" topic. */
+.contact-dialog_success-note {
+  margin: 0;
+  color: #19181b99;
+  text-align: center;
+}
+
+.contact-dialog_success-note a {
+  color: var(--primary);
+}
+
+.contact-dialog_success .contact-dialog_success-note {
+  animation-delay: 180ms;
 }
 
 .contact-dialog_privacy {
@@ -4286,6 +4360,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 
   .contact-dialog_success .contact-dialog_stagger,
+  .contact-dialog_success .contact-dialog_success-note,
   .contact-dialog_check-circle,
   .contact-dialog_check-ring {
     animation: none;
