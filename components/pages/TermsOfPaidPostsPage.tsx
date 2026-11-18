@@ -9,6 +9,7 @@ import TableOfContents from "../blog/TableOfContents";
 import MobileTableOfContents from "../blog/MobileTableOfContents";
 import { useArticleToc } from "../../hooks/useArticleToc";
 import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
+import { useContactModal } from "../modals/ContactModalContext";
 import type { BlogHeading } from "../../types/blog";
 import { PAGE_META } from "../../data/pages-meta";
 import { PAGE_BREADCRUMBS } from "../../data/breadcrumbs";
@@ -38,6 +39,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
   const breadcrumbs = PAGE_BREADCRUMBS["terms-of-paid-posts"] ?? [];
   const toc = useArticleToc(TOC_ITEMS, "legal/terms-of-paid-posts");
   const publishLink = getPublishLinkProps("terms_page");
+  const { openContactModal } = useContactModal();
 
   return (
     <>
@@ -227,8 +229,19 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       warranties, liability and termination. Read it before you pay.
                     </p>
                     <p>
-                      If your case is not covered here, write to{" "}
-                      <a href="mailto:hello@setproduct.com">hello@setproduct.com</a> and we answer before you buy.
+                      If your case is not covered here,{" "}
+                      {/* The mailto stays as a no-JS fallback; with JS the
+                          question form opens with the publishing topic. */}
+                      <a
+                        href="mailto:hello@setproduct.com"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openContactModal("terms_page");
+                        }}
+                      >
+                        ask us a question
+                      </a>{" "}
+                      and we answer before you buy.
                     </p>
                   </div>
                 </div>
