@@ -289,7 +289,7 @@ export default function GenericTemplatePage({ item, content, navData }: Props) {
         )}
 
         {/* Publishing CTA */}
-        <PublishCta contactLocation="template_hire" publishLocation="template_cta" />
+        <PublishCta contactLocation="template_hire" publishLocation="template_cta" product={item.title} />
 
         {/* FAQ */}
         {content.faq && content.faq.length > 0 && (
