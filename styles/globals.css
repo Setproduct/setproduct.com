@@ -1660,17 +1660,19 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
- * Inspiration thumbnail skeleton. While a (shuffled, lazy) preview image is
- * still loading, the wrapper shows a grey base with a moving shimmer sweep.
- * When the image fires onLoad, JS adds `.is-loaded`: the shimmer fades out and
- * the image fades in. On remount (reshuffle) the state resets to shimmer again.
+ * Mega-menu thumbnail skeleton, shared by all four panels (Magazine, UI guides,
+ * Resources, Inspiration). While a lazy preview image is still loading, the
+ * wrapper shows a grey base with a moving shimmer sweep. When the image fires
+ * onLoad, NavThumb adds `.is-loaded`: the shimmer fades out and the image fades
+ * in. Thumbs whose URL was already revealed in this session mount straight in
+ * the loaded state, so switching categories doesn't replay the shimmer.
  */
-.navbar .nav_inspiration-img-wr {
+.navbar .nav_thumb-img-wr {
   background-color: #ececef;
   overflow: hidden;
 }
 
-.navbar .nav_inspiration-img-wr::after {
+.navbar .nav_thumb-img-wr::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1687,7 +1689,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   transition: opacity 0.3s ease;
 }
 
-.navbar .nav_inspiration-img-wr.is-loaded::after {
+.navbar .nav_thumb-img-wr.is-loaded::after {
   opacity: 0;
 }
 
@@ -1697,7 +1699,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
  * otherwise wins and makes opacity/filter snap instantly. The transform entry
  * repeats the hover-lift zoom timing so the hover zoom still animates smoothly.
  */
-.navbar .nav_inspiration-img-wr .nav_inspiration-img {
+.navbar .nav_thumb-img-wr .nav_thumb-img {
   opacity: 0;
   filter: blur(8px);
   transition:
@@ -1707,7 +1709,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   z-index: 2;
 }
 
-.navbar .nav_inspiration-img-wr.is-loaded .nav_inspiration-img {
+.navbar .nav_thumb-img-wr.is-loaded .nav_thumb-img {
   opacity: 1;
   filter: blur(0);
 }
@@ -1740,11 +1742,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     transform: none !important;
   }
 
-  .navbar .nav_inspiration-img-wr::after {
+  .navbar .nav_thumb-img-wr::after {
     animation: none !important;
   }
 
-  .navbar .nav_inspiration-img {
+  .navbar .nav_thumb-img {
     transition: none !important;
     filter: none !important;
   }

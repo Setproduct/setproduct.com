@@ -8,7 +8,7 @@ type MegaMenuCardProps = {
   description: string;
   /** Opens the title link in a new tab (Inspiration cards point off-site). */
   external?: boolean;
-  /** Image slot: MegaMenuCardMedia or a custom thumb (InspirationThumb). */
+  /** Image slot: a NavThumb, which owns the frame, the shimmer and the reveal. */
   media: ReactNode;
   /** Buttons rendered in `.nav_tabs-list-item-btn-wr`. */
   actions: ReactNode;
@@ -36,19 +36,3 @@ export function MegaMenuCard({ href, title, description, external = false, media
   );
 }
 
-/**
- * Standard image frame of a card. Hidden from assistive tech and the tab order
- * because the title link right next to it goes to the same place.
- */
-export function MegaMenuCardMedia({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <NavLink
-      className="nav_tabs-list-item-img-wr hover-lift-media w-inline-block relative"
-      href={href}
-      aria-hidden="true"
-      tabIndex={-1}
-    >
-      {children}
-    </NavLink>
-  );
-}

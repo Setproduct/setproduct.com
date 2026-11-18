@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { useContactModal } from "../modals/ContactModalContext";
 // Temporarily disabled — kept for potential future use.
 // import LaunchAppCallout from "./LaunchAppCallout";
@@ -29,8 +28,8 @@ import { useMegaMenuState } from "./nav/useMegaMenuState";
 import { useNavAnalytics } from "./nav/useNavAnalytics";
 import { MegaMenuPanel } from "./nav/MegaMenuPanel";
 import type { MegaMenuCategory } from "./nav/MegaMenuPanel";
-import { MegaMenuCard, MegaMenuCardMedia } from "./nav/MegaMenuCard";
-import { InspirationThumb } from "./nav/InspirationThumb";
+import { MegaMenuCard } from "./nav/MegaMenuCard";
+import { NavThumb } from "./nav/NavThumb";
 import { AdvertisePanel } from "./nav/AdvertisePanel";
 import { UI_GUIDES } from "../../data/ui-guides";
 import { NavSearch } from "./nav/NavSearch";
@@ -38,7 +37,7 @@ import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
 import { CloseIcon, MenuIcon, SearchIcon } from "../icons/DecorativeIcons";
 
-/** `sizes` of the next/image thumbs in the Resources cards. */
+/** `sizes` of the next/image thumbs: Resources cards and the design kit shelf. */
 const CARD_IMAGE_SIZES = "158px";
 
 type SiteHeaderProps = {
@@ -250,17 +249,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
       href={item.href}
       title={item.title}
       description={item.description}
-      media={
-        <MegaMenuCardMedia href={item.href}>
-          <Image
-            alt={`${item.title} preview`}
-            src={item.image}
-            fill
-            sizes={CARD_IMAGE_SIZES}
-            className="image-cover"
-          />
-        </MegaMenuCardMedia>
-      }
+      media={<NavThumb href={item.href} image={item.image} title={item.title} sizes={CARD_IMAGE_SIZES} />}
       actions={
         <NavLink className="button-x-small is-text w-inline-block" href={item.href}>
           <div className="text-size-regular text-weight-bold">Learn more</div>
@@ -290,7 +279,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
           title={item.title}
           description={item.description}
           external
-          media={<InspirationThumb href={withUtm(item.href)} image={item.image} title={item.title} />}
+          media={<NavThumb href={withUtm(item.href)} image={item.image} title={item.title} external />}
           actions={
             <a className="button-x-small is-secondary w-inline-block" href={withUtm(item.href)} rel="noreferrer" target="_blank">
               <div className="text-size-regular text-weight-bold">View</div>
@@ -359,17 +348,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       href={`/blog/${item.slug}`}
                       title={item.title}
                       description={item.description}
-                      media={
-                        <MegaMenuCardMedia href={`/blog/${item.slug}`}>
-                          <img
-                            alt={`${item.title} cover`}
-                            src={item.thumbImage}
-                            loading="lazy"
-                            decoding="async"
-                            className="image-cover"
-                          />
-                        </MegaMenuCardMedia>
-                      }
+                      media={<NavThumb href={`/blog/${item.slug}`} image={item.thumbImage} title={item.title} />}
                       actions={
                         <NavLink className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
                           <div className="text-size-regular text-weight-bold">Read more</div>
@@ -394,17 +373,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                       href={`/blog/${item.slug}`}
                       title={item.title}
                       description={item.description}
-                      media={
-                        <MegaMenuCardMedia href={`/blog/${item.slug}`}>
-                          <img
-                            alt={`${item.title} cover`}
-                            src={item.thumbImage}
-                            loading="lazy"
-                            decoding="async"
-                            className="image-cover"
-                          />
-                        </MegaMenuCardMedia>
-                      }
+                      media={<NavThumb href={`/blog/${item.slug}`} image={item.thumbImage} title={item.title} />}
                       actions={
                         <NavLink className="button-x-small is-text w-inline-block" href={`/blog/${item.slug}`}>
                           <div className="text-size-regular text-weight-bold">Read more</div>
@@ -432,15 +401,12 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                           title={item.title}
                           description={item.description}
                           media={
-                            <MegaMenuCardMedia href={item.previewHref}>
-                              <Image
-                                alt={`${item.title} preview`}
-                                src={item.thumb}
-                                fill
-                                sizes={CARD_IMAGE_SIZES}
-                                className="image-cover"
-                              />
-                            </MegaMenuCardMedia>
+                            <NavThumb
+                              href={item.previewHref}
+                              image={item.thumb}
+                              title={item.title}
+                              sizes={CARD_IMAGE_SIZES}
+                            />
                           }
                           actions={
                             <>
