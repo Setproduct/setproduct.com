@@ -1,4 +1,5 @@
-import { Html, Head, Body, Container, Text, Heading, Hr, Section, Row, Column } from "@react-email/components";
+import { Html, Head, Body, Container, Text, Heading, Hr, Section, Row, Column, Link } from "@react-email/components";
+import { TOPIC_LABEL, type ContactTopicParam } from "../lib/contactTopics";
 
 export type ContactEmailContext = {
   location: string;
@@ -11,11 +12,14 @@ type ContactEmailProps = {
   email: string;
   message: string;
   context: ContactEmailContext;
+  topic?: ContactTopicParam;
+  name?: string;
+  url?: string;
 };
 
 const SITE = "https://www.setproduct.com";
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailRow({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
     <Row>
       <Column style={{ width: "140px", verticalAlign: "top" }}>
@@ -23,15 +27,22 @@ function DetailRow({ label, value }: { label: string; value: string }) {
       </Column>
       <Column style={{ verticalAlign: "top" }}>
         <Text style={{ fontSize: "13px", color: "#19181b", margin: "4px 0", wordBreak: "break-all" }}>
-          {value || "not available"}
+          {value && href ? (
+            <Link href={href} style={{ color: "#7c4dff" }}>
+              {value}
+            </Link>
+          ) : (
+            value || "not available"
+          )}
         </Text>
       </Column>
     </Row>
   );
 }
 
-export default function ContactEmail({ email, message, context }: ContactEmailProps) {
+export default function ContactEmail({ email, message, context, topic = "none", name = "", url = "" }: ContactEmailProps) {
   const toUrl = (path: string) => (path ? `${SITE}${path}` : "");
+  const topicLabel = topic === "none" ? "Not selected" : TOPIC_LABEL[topic];
 
   return (
     <Html>
@@ -43,9 +54,12 @@ export default function ContactEmail({ email, message, context }: ContactEmailPr
             Reply to this email to answer {email} directly.
           </Text>
           <Hr />
-          <Text style={{ fontSize: "16px" }}>
-            <strong>From:</strong> {email}
-          </Text>
+          <Section>
+            <DetailRow label="Topic" value={topicLabel} />
+            <DetailRow label="From" value={email} />
+            {name ? <DetailRow label="Name" value={name} /> : null}
+            {url ? <DetailRow label="Website" value={url} href={url} /> : null}
+          </Section>
           <Text style={{ fontSize: "16px", marginBottom: "4px" }}>
             <strong>Message:</strong>
           </Text>

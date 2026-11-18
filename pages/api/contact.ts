@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import ContactEmail, { type ContactEmailContext } from "../../emails/ContactEmail";
 import { rateLimit, getClientIp } from "../../lib/rateLimit";
 import { verifyToken } from "../../lib/csrf";
+import { TOPIC_SUBJECT_TAG, isContactTopic, type ContactTopicParam } from "../../lib/contactTopics";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -64,6 +65,23 @@ function readContext(raw: unknown): ContactEmailContext {
   };
 }
 
+/**
+ * The URL field is free text ("acme.com", "https://acme.com/pricing"). It is
+ * printed as a link in the email, so only http(s) survives; anything else
+ * (javascript:, mailto:) is kept as plain text without a scheme.
+ */
+function normalizeUrl(raw: string): string {
+  if (!raw) return "";
+  const withScheme = /^[a-z][a-z0-9+.-]*:/i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const url = new URL(withScheme);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
@@ -111,6 +129,10 @@ export default async function handler(
   }
 
   const context = readContext(rawContext);
+  // Unknown topics are not an error: an old cached bundle may send none.
+  const topic: ContactTopicParam = isContactTopic(body.topic) ? body.topic : "none";
+  const name = cleanString(body.name, 100);
+  const url = normalizeUrl(cleanString(body.url, 300));
 
   try {
     // The Resend SDK does not throw on API failures (bad key, quota, domain):
@@ -121,8 +143,8 @@ export default async function handler(
       to: "hello@setproduct.com",
       // "Reply" in the inbox goes to the person, not back to contact@.
       replyTo: email,
-      subject: `Contact form: ${email} (${context.location})`,
-      react: ContactEmail({ email, message, context }),
+      subject: `${TOPIC_SUBJECT_TAG[topic]} ${name ? `${name}, ` : ""}${email} (${context.location})`,
+      react: ContactEmail({ email, message, context, topic, name, url }),
     });
 
     if (error) {
