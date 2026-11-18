@@ -84,19 +84,20 @@ flowchart TD
 
 ### 4.2. Темы и предвыбор
 
-Три темы (после ответов Q3 и Q4 тема `project` и сценарий скидки убраны), выбор чипами (`button-x-small is-text`, активный `is-active` + `aria-pressed`):
+Четыре темы (решение автора 18.11.2026: всё про киты убрано, их выводят из продажи). Выбор чипами (`button-x-small is-text`, активный `is-active` + `aria-pressed`). Список и подписи живут в [`lib/contactTopics.ts`](lib/contactTopics.ts:1), общем для окна, API и письма.
 
 | Тема (`topic`) | Подпись чипа | Предвыбрана для `location` |
 |---|---|---|
-| `publish` | `Guest post or ad` | `advertise_panel_desktop`, `advertise_panel_mobile`, `terms_page` |
-| `product` | `Question about a kit` | `search_page`, `refunds_policy`, страницы китов |
-| `other` | `Something else` | `template_hire`, `dashboard_cta`, `testimonials_page`, футер |
+| `publish` | `Guest post or ad` | `advertise_panel_desktop`, `advertise_panel_mobile`, `terms_page`, `template_hire`, `dashboard_cta`, `testimonials_page` (сразу форма вопроса) |
+| `partnership` | `Partnership` | нет; обзоры, интеграции, совместные материалы |
+| `work` | `Design or dev work` | нет |
+| `other` | `Something else` | нет |
 
-Подписи выбраны агентом (Q9): глагола нет, потому что это чипы-ответы на вопрос `How can we help?`, а не кнопки действия.
+Подписи без глагола: это ответы на вопрос `How can we help?`, а не кнопки действия.
 
-Из футера тема не известна: показываем чипы первым экраном. В остальных случаях чипы остаются над формой, тему можно сменить одним кликом, поля меняются без перезагрузки окна.
+Тема неизвестна (футер, FAQ, поиск, возвраты): ни один чип не нажат, сразу видна общая форма. Выбирать тему не обязательно. Чипы всегда над формой, смена темы плавно меняет поля, введённый текст сохраняется.
 
-Изменение API: `openContactModal(location, { topic, product })`. Ссылки в FAQ про найм и скидку теряют смысл (см. раздел 15), значение атрибута `data-contact` для них не заводим.
+API: `openContactModal(location, { topic, ask })`. Если `options` не переданы, тема берётся из `LOCATION_DEFAULTS` в [`lib/contact.ts`](lib/contact.ts:1), поэтому точки входа править не пришлось.
 
 ### 4.3. Ветка паблишинга (главная)
 
@@ -109,17 +110,20 @@ flowchart TD
 - primary `See packages` через [`getPublishLinkProps()`](lib/publish.ts:84) с новым значением `contact_modal` в [`PublishLocation`](lib/publish.ts:41);
 - secondary `Ask a question` (`button-small outlined`): раскрывает короткую форму ниже.
 
-Форма вопроса: `Email`, `Product or site URL` (необязательное), `Message` с подсказкой `What would you like to know before ordering?`. Цена в форме не обсуждается, это вопрос перед покупкой, а не запрос цены.
+Форма вопроса: `Email`, `Website` (необязательное), `Message` с подсказкой `What would you like to know before ordering?`. Над полями полоса `From $288, live in 24 hours.` со ссылкой `See packages`, чтобы цена оставалась в одном клике. Цена в форме не обсуждается, это вопрос перед покупкой, а не запрос цены.
 
 ### 4.4. Поля по темам
 
 Правило: обязательны только `Email` и `Message`. Остальное необязательно и по возможности заполняется одним кликом.
 
-| Тема | Дополнительные поля | Подсказки под `Message` |
+| Тема | Дополнительное поле (optional) | Placeholder `Message` |
 |---|---|---|
-| `publish` | `Product or site URL` | Что хотите узнать до заказа |
-| `product` | `Product` (выпадающий список китов; на странице кита уже подставлен) | Что пытаетесь сделать, какая лицензия |
-| `other` | `Name` | нет |
+| `publish` | `Website` | `What would you like to know before ordering?` |
+| `partnership` | `Company or product` | `What do you have in mind? A review, an integration, a joint piece…` |
+| `work` | `Company or project` | `What are you building and what do you need? A rough timeline and budget help us reply faster.` |
+| `other` и без темы | `Name` | `Type your message` |
+
+Сервер принимает только ссылки `http` / `https`, адрес без схемы дополняет `https://`. В тему письма уходит метка: `[Guest post]`, `[Partnership]`, `[Design or dev work]`, `[Other]`, `[Contact]`.
 
 Автоматически, без участия человека, в письмо уходят: `topic`, `location`, `page_path`, `referrer`, первая страница визита.
 
@@ -133,9 +137,9 @@ flowchart TD
 
 | Тема | Заголовок | Текст | Следующий шаг |
 |---|---|---|---|
-| `publish` | `Message sent` | `We'll reply to {email} within 24 hours.` | `See packages` (`contact_success`) |
-| `product` | `Message sent` | то же | `Browse free resources` → `/freebies` |
-| `other` | `Message sent` | то же | мягкая строка про Guest Posts с `See packages` |
+| `publish`, `partnership` | `Message sent` | `We'll reply to {email} within 24 hours.` | `See packages` (`contact_success`) |
+| `work` | `Message sent` | то же | `Read case studies` → `/blog?category=Case Studies` |
+| `other` и без темы | `Message sent` | то же | мягкая строка `Promoting a product? Guest posts start at $288. See packages` |
 
 Вторая кнопка везде `Done`. Решение автора (Q6): окно закрывается само через 3 секунды, либо по `Done`, либо кликом мимо окна. Чтобы таймер не съедал следующий шаг, он ставится на паузу, пока курсор над окном или фокус на кнопке следующего шага. Под текстом тонкая полоса показывает, сколько осталось (при `prefers-reduced-motion` полоса не анимируется, таймер тот же).
 
@@ -371,13 +375,7 @@ stateDiagram-v2
 
 ### Фаза 4. Темы и паблишинг
 
-| Коммит | Содержание |
-|---|---|
-| `feat: add contact topics with context-aware fields` | 4.2, 4.4, расширение `openContactModal` |
-| `feat: show guest posts offer in contact modal` | 4.3, новые значения `PublishLocation` |
-| `feat: pass topic from contact entry points` | FAQ (`data-contact` со значением), страница условий вместо `mailto:`, остальные точки |
-| `feat: add next steps to contact success state` | 4.5 |
-| `feat: track contact topics, closes and success clicks` | Раздел 8 |
+Сделана заново 18.11.2026, см. раздел «Фаза 4 сделана заново» в конце файла.
 
 ### Фаза 5. Удержание
 
@@ -554,3 +552,19 @@ stateDiagram-v2
 Прототип `/contact-modal-proto` не возвращал: проверять удобнее на живом окне (кнопка Contact в футере, Ask a question в блоке паблишинга). Для медленного просмотра: DevTools → More tools → Animations → скорость 10% или 25%.
 
 Не проверено глазами: в окружении нет браузера. Обязательно Safari на macOS и iOS (слой с `backdrop-filter` под карточкой) и Chrome на Android (нижний лист).
+
+### Фаза 4 сделана заново (18.11.2026)
+
+Первый проход (`c6747af`, `6acb237`, `d8d7268`) откатан коммитом `ee0b4e3`. Новый проход: `feb5a3b` (темы на сервере и в письме), `e629cde` (окно), `4bcc89e` (страница условий).
+
+Что в окне:
+
+- Чипы `Guest post or ad`, `Partnership`, `Design or dev work`, `Something else`. Без темы ни один не нажат, видна общая форма.
+- `Guest post or ad` без вопроса показывает карточку оффера: четыре факта из `PUBLISH_OFFER`, `See packages` и `Ask a question`. Из точек паблишинга окно открывается сразу на форме вопроса.
+- Одно необязательное поле по теме (4.4), пометка `optional`. Поля controlled, текст переживает смену темы. Кто уже написал сообщение, того на карточку оффера не возвращаем.
+- Смена панели: высота карточки переезжает за 320ms тем же механизмом, что и переход к успеху, новая панель поднимается за 280ms. При открытии эта анимация не играет, вход покрывает стаггер.
+- Нижняя строка формы: политика слева, `Send message` справа. На телефоне строка разбирается (`display: contents`), кнопка остаётся липкой внизу листа.
+- Отправка: подпись остаётся в потоке (ширина кнопки не прыгает), поверх спиннер, для скринридера `Sending`.
+- Успех: адрес, на который ответим, и следующий шаг по теме (4.5).
+
+События (раздел 8): `contact_cta_click` с `topic`, `contact_topic_select` (`topic`, `previous`), `contact_modal_close` (`topic`, `step`, `had_input`, `method`), `contact_success_cta_click` (`target`), в `contact_form_submit` добавлены `topic` и `fields_filled`. Значения `PublishLocation`: `contact_modal`, `contact_success`.
