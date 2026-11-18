@@ -10,6 +10,8 @@ import {
   useRef,
   useState,
 } from "react";
+import Link from "next/link";
+import ArrowIcon from "../sections/ArrowIcon";
 import { CloseIcon } from "../icons/DecorativeIcons";
 import { lockScroll, unlockScroll } from "../../lib/scrollLock";
 import {
@@ -17,14 +19,23 @@ import {
   trackContactFormError,
   trackContactFormStart,
   trackContactFormSubmit,
+  trackContactModalClose,
+  trackContactSuccessCta,
+  trackContactTopicSelect,
   type ContactLocation,
 } from "../../lib/contact";
+import { CONTACT_TOPICS, TOPIC_LABEL, type ContactTopic, type ContactTopicParam } from "../../lib/contactTopics";
+import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
 
 type ContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
   /** Where the user opened the modal from. Splits the funnel in GA4. */
   location: ContactLocation;
+  /** Topic chip active on open. null: no chip, the general form. */
+  initialTopic: ContactTopic | null;
+  /** Publishing only: open on the question form instead of the offer card. */
+  initialAsk: boolean;
 };
 
 /**
@@ -41,7 +52,7 @@ type DialogState = "open" | "submitting" | "success";
  */
 type MotionPhase = "enter" | "open" | "leave-cancel" | "leave-done";
 
-/** How the dialog was dismissed. Picks the exit motion, feeds the close event in phase 4. */
+/** How the dialog was dismissed. Picks the exit motion and feeds contact_modal_close. */
 export type CloseMethod = "escape" | "backdrop" | "button" | "done" | "auto";
 
 /** Durations in ms. Mirror the tokens on .contact-dialog in globals.css. */
@@ -105,6 +116,52 @@ const FIELD_OF_ERROR: Record<string, "email" | "message"> = {
 
 type FormError = { code: string; text: string };
 
+/**
+ * One optional field per topic, next to Email. Only Email and Message are
+ * ever required: every extra required field costs leads.
+ */
+type FormVariant = "publish" | "partnership" | "work" | "general";
+
+type ExtraField = {
+  key: "url" | "name";
+  label: string;
+  placeholder: string;
+  autoComplete: string;
+  inputMode?: "url" | "text";
+};
+
+const URL_FIELD = { key: "url", autoComplete: "url", inputMode: "url" } as const;
+
+const VARIANTS: Record<FormVariant, { extra: ExtraField; messagePlaceholder: string }> = {
+  publish: {
+    extra: { ...URL_FIELD, label: "Website", placeholder: "yourproduct.com" },
+    messagePlaceholder: "What would you like to know before ordering?",
+  },
+  partnership: {
+    extra: { ...URL_FIELD, label: "Company or product", placeholder: "company.com" },
+    messagePlaceholder: "What do you have in mind? A review, an integration, a joint piece…",
+  },
+  work: {
+    extra: { ...URL_FIELD, label: "Company or project", placeholder: "company.com" },
+    messagePlaceholder: "What are you building and what do you need? A rough timeline and budget help us reply faster.",
+  },
+  general: {
+    extra: { key: "name", label: "Name", placeholder: "Your name", autoComplete: "name" },
+    messagePlaceholder: "Type your message",
+  },
+};
+
+function variantOf(topic: ContactTopic | null): FormVariant {
+  return topic === "publish" || topic === "partnership" || topic === "work" ? topic : "general";
+}
+
+const OFFER_FACTS = [
+  { value: PUBLISH_OFFER.readersPerMonth, label: "readers a month" },
+  { value: String(PUBLISH_OFFER.domainRating), label: "domain rating" },
+  { value: PUBLISH_OFFER.turnaround, label: "to go live" },
+  { value: `$${PUBLISH_OFFER.priceFrom}`, label: "starting price" },
+];
+
 function buildMailto(message: string): string {
   const params = new URLSearchParams({ subject: "Message from setproduct.com" });
   if (message.trim()) params.set("body", message.slice(0, 1500));
@@ -125,15 +182,51 @@ function stagger(index: number): CSSProperties {
   return { "--i": index } as CSSProperties;
 }
 
-export default function ContactModal({ isOpen, onClose, location }: ContactModalProps) {
+function Spinner() {
+  return (
+    <svg aria-hidden="true" className="contact-dialog_spinner" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
+      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeLinecap="round" strokeWidth="3" />
+    </svg>
+  );
+}
+
+export default function ContactModal({ isOpen, onClose, location, initialTopic, initialAsk }: ContactModalProps) {
   const [state, setState] = useState<DialogState>("open");
   const [formError, setFormError] = useState<FormError | null>(null);
-  const [draftMessage, setDraftMessage] = useState("");
+  const [topic, setTopic] = useState<ContactTopic | null>(initialTopic);
+  // Publishing: false shows the offer card, true the question form.
+  const [isAsking, setIsAsking] = useState(initialAsk);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [sentEmail, setSentEmail] = useState("");
   // True for the 140ms while the form fades up before the success screen.
   const [isSwapping, setIsSwapping] = useState(false);
+  // The panel under the chips plays its rise only after a switch by the
+  // person, never on open: the entrance stagger already covers that.
+  const [hasSwitched, setHasSwitched] = useState(false);
   // Bumped after every close: remounts the form while the dialog is hidden,
   // so the next open starts clean and never swaps content mid-entrance.
   const [session, setSession] = useState(0);
+
+  // Take the entry point's topic in the same render that opens the dialog,
+  // so the first painted frame already shows the right panel.
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (isOpen) {
+      setTopic(initialTopic);
+      setIsAsking(initialAsk);
+    }
+  }
+
+  const step: "offer" | "form" = topic === "publish" && !isAsking ? "offer" : "form";
+  const variant = variantOf(topic);
+  const panelKey = step === "offer" ? "offer" : variant;
+  const topicParam: ContactTopicParam = topic ?? "none";
+  const hasInput = [email, message, name, url].some((value) => value.trim() !== "");
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -146,8 +239,10 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
   const isClosingRef = useRef(false);
   const isLockedRef = useRef(false);
   const timersRef = useRef<number[]>([]);
-  // Card height right before the success screen replaces the form.
+  // Card height right before its content changes (topic switch, success).
   const heightFromRef = useRef<number | null>(null);
+  // Focus the email field once the question form has replaced the offer.
+  const focusEmailRef = useRef(false);
   // A press that starts inside the card and ends on the backdrop (selecting
   // text, dragging the textarea handle) must not close the dialog.
   const pressedBackdropRef = useRef(false);
@@ -161,6 +256,8 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
   stateRef.current = state;
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
+  const closeInfoRef = useRef({ location, topic: topicParam, step, hasInput });
+  closeInfoRef.current = { location, topic: topicParam, step, hasInput };
 
   const setPhase = (phase: MotionPhase | null) => {
     const dialog = dialogRef.current;
@@ -191,6 +288,16 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
     // A cancel goes back where it came from; a sent message leaves upwards.
     const isDone = method === "done" || method === "auto";
     setPhase(isDone ? "leave-done" : "leave-cancel");
+
+    if (!isDone) {
+      const info = closeInfoRef.current;
+      trackContactModalClose(info.location, {
+        topic: info.topic,
+        step: info.step,
+        hadInput: info.hasInput,
+        method,
+      });
+    }
 
     // The dialog is closed by a timer, not by transitionend: the event never
     // comes in a background tab or when the value did not change, and a timer
@@ -253,9 +360,10 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
 
     // Focus goes to the email field with a mouse. On touch screens that would
     // pop the keyboard over half of the sheet before the person has read
-    // anything, so the card itself takes focus instead.
+    // anything, so the card itself takes focus instead. The offer card has no
+    // field, so the card takes focus there too.
     const finePointer = window.matchMedia("(pointer: fine)").matches;
-    if (finePointer) emailRef.current?.focus({ preventScroll: true });
+    if (finePointer && emailRef.current) emailRef.current.focus({ preventScroll: true });
     else card.focus({ preventScroll: true });
   }, [isOpen]);
 
@@ -287,10 +395,15 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
       setSession(sessionRef.current);
       setState("open");
       setIsSwapping(false);
+      setHasSwitched(false);
       setFormError(null);
-      setDraftMessage("");
+      setEmail("");
+      setMessage("");
+      setName("");
+      setUrl("");
       hasStartedRef.current = false;
       heightFromRef.current = null;
+      focusEmailRef.current = false;
 
       onCloseRef.current();
     };
@@ -318,25 +431,55 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
     [],
   );
 
-  // Success screen: move focus to its title and glide the card height from the
-  // form to the shorter confirmation. Runs before paint, so the first frame of
-  // the new content already has the old height and nothing jumps.
+  // The content of the card changed (another topic, the question form, the
+  // success screen): glide the card from its old height to the new one. Runs
+  // before paint, so the first frame of the new content has the old height.
   useLayoutEffect(() => {
-    if (state !== "success") return;
-    successTitleRef.current?.focus({ preventScroll: true });
+    if (state === "success") successTitleRef.current?.focus({ preventScroll: true });
+    if (focusEmailRef.current) {
+      focusEmailRef.current = false;
+      emailRef.current?.focus({ preventScroll: true });
+    }
 
     const card = cardRef.current;
     const from = heightFromRef.current;
     heightFromRef.current = null;
     if (!card || from === null) return;
 
+    card.style.removeProperty("height");
     const to = card.offsetHeight;
     if (Math.abs(to - from) < 2) return;
     card.style.height = `${from}px`;
     void card.offsetHeight;
     card.style.height = `${to}px`;
     later(() => card.style.removeProperty("height"), MOTION.resize + EXIT_SLACK);
-  }, [state]);
+  }, [state, panelKey]);
+
+  /** Call right before the panel under the chips is replaced. */
+  const prepareSwap = (nextKey: string) => {
+    if (nextKey === panelKey) return;
+    const card = cardRef.current;
+    if (card && !prefersReducedMotion()) heightFromRef.current = card.offsetHeight;
+    setHasSwitched(true);
+  };
+
+  const selectTopic = (next: ContactTopic) => {
+    if (next === topic || state === "submitting") return;
+    // Someone who already typed a message is not sent back to the offer.
+    const nextAsking = next === "publish" ? isAsking || message.trim() !== "" : isAsking;
+    const nextKey = next === "publish" && !nextAsking ? "offer" : variantOf(next);
+    prepareSwap(nextKey);
+    setFormError(null);
+    setTopic(next);
+    setIsAsking(nextAsking);
+    trackContactTopicSelect(location, next, topicParam);
+  };
+
+  const openQuestionForm = () => {
+    prepareSwap("publish");
+    focusEmailRef.current = true;
+    setIsAsking(true);
+  };
 
   const isBackdrop = (target: EventTarget) =>
     target === dialogRef.current || (target instanceof Element && target.classList.contains("contact-dialog_scrim"));
@@ -377,17 +520,29 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
     if (event.animationName === "contact-progress") requestClose("auto");
   };
 
+  // The next step leaves the dialog: close it behind the person.
+  const handleSuccessCta = (target: string) => {
+    trackContactSuccessCta(location, topicParam, target);
+    requestClose("done");
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const submitSession = sessionRef.current;
     setState("submitting");
     setFormError(null);
 
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("Email") as string;
-    const message = formData.get("Message") as string;
-    const website = formData.get("website") as string;
-    setDraftMessage(message);
+    const website = (new FormData(event.currentTarget).get("website") as string | null) ?? "";
+    const extraKey = VARIANTS[variant].extra.key;
+    const payload = {
+      email: email.trim(),
+      message,
+      topic: topicParam,
+      // Only the field the person could see is sent.
+      name: extraKey === "name" ? name.trim() : "",
+      url: extraKey === "url" ? url.trim() : "",
+    };
+    const fieldsFilled = [payload.name, payload.url].filter(Boolean).length;
 
     const isCurrent = () => sessionRef.current === submitSession;
 
@@ -405,8 +560,7 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email,
-          message,
+          ...payload,
           website,
           context: getLeadContext(location),
           _token: csrf?.token,
@@ -422,8 +576,11 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
         return;
       }
 
-      trackContactFormSubmit(location, message.length);
-      if (isCurrent()) showSuccess(submitSession);
+      trackContactFormSubmit(location, message.length, topicParam, fieldsFilled);
+      if (isCurrent()) {
+        setSentEmail(payload.email);
+        showSuccess(submitSession);
+      }
     } catch {
       fail("network");
     }
@@ -431,6 +588,10 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
 
   const isSubmitting = state === "submitting";
   const fieldWithError = formError ? FIELD_OF_ERROR[formError.code] : undefined;
+  const extra = VARIANTS[variant].extra;
+  const extraValue = extra.key === "name" ? name : url;
+  const setExtraValue = extra.key === "name" ? setName : setUrl;
+  const panelClass = `contact-dialog_panel contact-dialog_stagger${hasSwitched ? " is-switched" : ""}`;
 
   return (
     <dialog
@@ -460,107 +621,204 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
           <div className={`contact-dialog_body${isSwapping ? " is-leaving" : ""}`} key={session}>
             <div className="contact-dialog_heading contact-dialog_stagger" style={stagger(0)}>
               <h2 className="heading-style-h2" id={TITLE_ID}>
-                Contact us
+                How can we help?
               </h2>
               <p className="text-size-medium" id={DESCRIPTION_ID}>
-                Send your questions, ideas, and collaboration inquiries. We&apos;ll reply within 24 hours.
+                We reply within 24 hours.
               </p>
             </div>
 
-            <form className="contact-dialog_form" onSubmit={handleSubmit}>
-              {/* Honeypot: hidden from sight and from assistive tech, but still
-                  submitted so the API can reject bots that fill it in. */}
-              <div aria-hidden="true" style={{ display: "none" }}>
-                <input aria-label="Leave this field empty" autoComplete="off" name="website" tabIndex={-1} />
-              </div>
+            {/* Topic is optional: with no chip pressed the general form works. */}
+            <div aria-label="Topic" className="contact-dialog_topics contact-dialog_stagger" role="group" style={stagger(1)}>
+              {CONTACT_TOPICS.map((item) => {
+                const isActive = item === topic;
+                return (
+                  <button
+                    aria-pressed={isActive}
+                    className={`button-x-small is-text w-inline-block${isActive ? " is-active" : ""}`}
+                    disabled={isSubmitting}
+                    key={item}
+                    onClick={() => selectTopic(item)}
+                    type="button"
+                  >
+                    <span className="text-size-small text-weight-semibold">{TOPIC_LABEL[item]}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-              <div className="field contact-dialog_stagger" style={stagger(1)}>
-                <label className="field-label" htmlFor="contact-email">
-                  Email
-                </label>
-                <input
-                  aria-describedby={fieldWithError === "email" ? "contact-email-error" : undefined}
-                  aria-invalid={fieldWithError === "email" || undefined}
-                  autoComplete="email"
-                  className="text-input is-l"
-                  disabled={isSubmitting}
-                  enterKeyHint="next"
-                  id="contact-email"
-                  inputMode="email"
-                  maxLength={254}
-                  name="Email"
-                  onFocus={handleFieldFocus}
-                  placeholder="you@company.com"
-                  ref={emailRef}
-                  required
-                  spellCheck={false}
-                  type="email"
-                />
-                {fieldWithError === "email" && formError ? (
-                  <p className="field-error" id="contact-email-error">
-                    {formError.text}
-                  </p>
-                ) : null}
-              </div>
-
-              <div className="field contact-dialog_stagger" style={stagger(2)}>
-                <label className="field-label" htmlFor="contact-message">
-                  Message
-                </label>
-                <textarea
-                  aria-describedby={fieldWithError === "message" ? "contact-message-error" : undefined}
-                  aria-invalid={fieldWithError === "message" || undefined}
-                  className="textarea-input is-l"
-                  disabled={isSubmitting}
-                  enterKeyHint="enter"
-                  id="contact-message"
-                  maxLength={5000}
-                  minLength={10}
-                  name="Message"
-                  onFocus={handleFieldFocus}
-                  placeholder="Type your message"
-                  required
-                />
-                {fieldWithError === "message" && formError ? (
-                  <p className="field-error" id="contact-message-error">
-                    {formError.text}
-                  </p>
-                ) : null}
-              </div>
-
-              {formError ? (
-                <div className="contact-dialog_alert" role="alert">
-                  {!fieldWithError ? <p className="text-size-small">{formError.text}</p> : null}
-                  <p className="text-size-small">
-                    Or email us at{" "}
-                    <a className="underline" href={buildMailto(draftMessage)}>
-                      {CONTACT_EMAIL}
-                    </a>
-                    , your text will be copied into the email.
-                  </p>
-                </div>
-              ) : null}
-
-              <p className="contact-dialog_privacy text-size-small contact-dialog_stagger" style={stagger(3)}>
-                We use your email only to reply.{" "}
-                <a className="underline" href="/legal/privacy-policy" rel="noopener" target="_blank">
-                  Privacy policy
-                </a>
-              </p>
-
-              <div className="contact-dialog_actions contact-dialog_stagger" style={stagger(4)}>
-                <button
-                  aria-busy={isSubmitting || undefined}
-                  className="button w-inline-block disabled:opacity-70"
-                  disabled={isSubmitting}
-                  type="submit"
-                >
-                  <div className="text-size-large text-weight-bold">
-                    {isSubmitting ? "Sending…" : "Send message"}
+            {step === "offer" ? (
+              <div className={panelClass} key="offer" style={stagger(2)}>
+                <div className="contact-dialog_offer">
+                  <div className="contact-dialog_offer-head">
+                    <h3 className="contact-dialog_offer-title">Setproduct Guest Posts</h3>
+                    <p className="text-size-regular">
+                      A dofollow link on a blog read by designers and founders. Prices are public: pick a package
+                      and pay online, no quote needed.
+                    </p>
                   </div>
-                </button>
+                  <dl className="contact-dialog_facts">
+                    {OFFER_FACTS.map((fact) => (
+                      <div className="contact-dialog_fact" key={fact.label}>
+                        <dt className="text-size-small">{fact.label}</dt>
+                        <dd className="contact-dialog_fact-value">{fact.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+                <div className="contact-dialog_offer-actions">
+                  <a className="button-small w-inline-block" {...getPublishLinkProps("contact_modal")}>
+                    <div className="text-size-medium text-weight-bold">See packages</div>
+                    <div className="button-icon is-small w-embed">
+                      <ArrowIcon />
+                    </div>
+                  </a>
+                  <button className="button-small outlined w-inline-block" onClick={openQuestionForm} type="button">
+                    <div className="text-size-medium text-weight-bold">Ask a question</div>
+                  </button>
+                </div>
               </div>
-            </form>
+            ) : (
+              <form className={`contact-dialog_form ${panelClass}`} key={variant} onSubmit={handleSubmit} style={stagger(2)}>
+                {/* Honeypot: hidden from sight and from assistive tech, but still
+                    submitted so the API can reject bots that fill it in. */}
+                <div aria-hidden="true" style={{ display: "none" }}>
+                  <input aria-label="Leave this field empty" autoComplete="off" name="website" tabIndex={-1} />
+                </div>
+
+                {variant === "publish" ? (
+                  <p className="contact-dialog_offer-strip text-size-small">
+                    <span>
+                      From ${PUBLISH_OFFER.priceFrom}, live in {PUBLISH_OFFER.turnaround}.
+                    </span>
+                    <a className="contact-dialog_offer-link" {...getPublishLinkProps("contact_modal")}>
+                      See packages
+                    </a>
+                  </p>
+                ) : null}
+
+                <div className="form-grid is-l">
+                  <div className="field">
+                    <label className="field-label" htmlFor="contact-email">
+                      Email
+                    </label>
+                    <input
+                      aria-describedby={fieldWithError === "email" ? "contact-email-error" : undefined}
+                      aria-invalid={fieldWithError === "email" || undefined}
+                      autoComplete="email"
+                      className="text-input is-l"
+                      disabled={isSubmitting}
+                      enterKeyHint="next"
+                      id="contact-email"
+                      inputMode="email"
+                      maxLength={254}
+                      name="Email"
+                      onChange={(e) => setEmail(e.target.value)}
+                      onFocus={handleFieldFocus}
+                      placeholder="you@company.com"
+                      ref={emailRef}
+                      required
+                      spellCheck={false}
+                      type="email"
+                      value={email}
+                    />
+                    {fieldWithError === "email" && formError ? (
+                      <p className="field-error" id="contact-email-error">
+                        {formError.text}
+                      </p>
+                    ) : (
+                      <span aria-hidden="true" />
+                    )}
+                  </div>
+
+                  <div className="field">
+                    <label className="field-label" htmlFor="contact-extra">
+                      {extra.label} <span className="contact-dialog_optional">optional</span>
+                    </label>
+                    <input
+                      autoComplete={extra.autoComplete}
+                      className="text-input is-l"
+                      disabled={isSubmitting}
+                      enterKeyHint="next"
+                      id="contact-extra"
+                      inputMode={extra.inputMode}
+                      maxLength={extra.key === "url" ? 300 : 100}
+                      name={extra.key === "url" ? "Url" : "Name"}
+                      onChange={(e) => setExtraValue(e.target.value)}
+                      onFocus={handleFieldFocus}
+                      placeholder={extra.placeholder}
+                      spellCheck={false}
+                      type="text"
+                      value={extraValue}
+                    />
+                    <span aria-hidden="true" />
+                  </div>
+                </div>
+
+                <div className="field">
+                  <label className="field-label" htmlFor="contact-message">
+                    Message
+                  </label>
+                  <textarea
+                    aria-describedby={fieldWithError === "message" ? "contact-message-error" : undefined}
+                    aria-invalid={fieldWithError === "message" || undefined}
+                    className="textarea-input is-l"
+                    disabled={isSubmitting}
+                    enterKeyHint="enter"
+                    id="contact-message"
+                    maxLength={5000}
+                    minLength={10}
+                    name="Message"
+                    onChange={(e) => setMessage(e.target.value)}
+                    onFocus={handleFieldFocus}
+                    placeholder={VARIANTS[variant].messagePlaceholder}
+                    required
+                    value={message}
+                  />
+                  {fieldWithError === "message" && formError ? (
+                    <p className="field-error" id="contact-message-error">
+                      {formError.text}
+                    </p>
+                  ) : null}
+                </div>
+
+                {formError ? (
+                  <div className="contact-dialog_alert" role="alert">
+                    {!fieldWithError ? <p className="text-size-small">{formError.text}</p> : null}
+                    <p className="text-size-small">
+                      Or email us at{" "}
+                      <a className="underline" href={buildMailto(message)}>
+                        {CONTACT_EMAIL}
+                      </a>
+                      , your text will be copied into the email.
+                    </p>
+                  </div>
+                ) : null}
+
+                <div className="contact-dialog_footer">
+                  <p className="contact-dialog_privacy text-size-small">
+                    We use your email only to reply.{" "}
+                    <a className="underline" href="/legal/privacy-policy" rel="noopener" target="_blank">
+                      Privacy policy
+                    </a>
+                  </p>
+                  <div className="contact-dialog_actions">
+                    <button
+                      aria-busy={isSubmitting || undefined}
+                      className="button w-inline-block contact-dialog_submit"
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
+                      {/* The label stays in the flow while sending, so the
+                          button keeps its width under the spinner. */}
+                      <div className="text-size-large text-weight-bold">Send message</div>
+                      {isSubmitting ? <Spinner /> : null}
+                    </button>
+                    {isSubmitting ? <span className="sr-only">Sending</span> : null}
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
         ) : (
           <div aria-live="polite" className="contact-dialog_body contact-dialog_success">
@@ -577,14 +835,50 @@ export default function ContactModal({ isOpen, onClose, location }: ContactModal
                 Message sent
               </h2>
               <p className="text-size-medium" id={DESCRIPTION_ID}>
-                Thank you. We&apos;ll reply within 24 hours.
+                We&apos;ll reply to <strong className="contact-dialog_sent-email">{sentEmail}</strong> within 24 hours.
               </p>
             </div>
             <div className="contact-dialog_actions contact-dialog_stagger" style={stagger(6)}>
+              {topic === "publish" || topic === "partnership" ? (
+                <a
+                  className="button-small w-inline-block"
+                  {...getPublishLinkProps("contact_success")}
+                  onClick={() => handleSuccessCta("publish_packages")}
+                >
+                  <div className="text-size-medium text-weight-bold">See packages</div>
+                  <div className="button-icon is-small w-embed">
+                    <ArrowIcon />
+                  </div>
+                </a>
+              ) : null}
+              {topic === "work" ? (
+                <Link
+                  className="button-small w-inline-block"
+                  href="/blog?category=Case%20Studies"
+                  onClick={() => handleSuccessCta("case_studies")}
+                >
+                  <div className="text-size-medium text-weight-bold">Read case studies</div>
+                  <div className="button-icon is-small w-embed">
+                    <ArrowIcon />
+                  </div>
+                </Link>
+              ) : null}
               <button className="button-small outlined w-inline-block" onClick={() => requestClose("done")} type="button">
                 <div className="text-size-medium text-weight-bold">Done</div>
               </button>
             </div>
+            {topic === null || topic === "other" ? (
+              <p className="contact-dialog_aside text-size-small contact-dialog_stagger" style={stagger(7)}>
+                Promoting a product? Guest posts start at ${PUBLISH_OFFER.priceFrom}.{" "}
+                <a
+                  className="underline"
+                  {...getPublishLinkProps("contact_success")}
+                  onClick={() => handleSuccessCta("publish_packages")}
+                >
+                  See packages
+                </a>
+              </p>
+            ) : null}
             {/* Three-second countdown to the auto-close. The animation is the
                 timer: hover or keyboard focus pause it, a hidden tab stops it. */}
             <span aria-hidden="true" className="contact-dialog_progress">

@@ -4168,6 +4168,210 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   font-family: inherit;
 }
 
+/* ---------- Topics ---------- */
+
+.contact-dialog_topics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(8 * var(--em-px));
+}
+
+/* The Webflow active look exists only for .is-templates; same colours here. */
+.contact-dialog_topics .button-x-small.is-text.is-active {
+  background-color: var(--light-purple);
+  color: var(--dark-primary);
+  box-shadow: inset 0 -3px 1px #2b00a380;
+}
+
+.contact-dialog_topics .button-x-small.is-text:disabled {
+  cursor: default;
+}
+
+/* The panel under the chips rises in after a switch. The card height glides
+   at the same time (JS), so the swap reads as one movement. */
+.contact-dialog_panel.is-switched {
+  animation: contact-rise 280ms var(--modal-ease-in) both;
+}
+
+/* ---------- Guest Posts offer ---------- */
+
+.contact-dialog_panel:not(form) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--em-px));
+}
+
+.contact-dialog_offer {
+  display: grid;
+  row-gap: calc(20 * var(--em-px));
+  padding: calc(24 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--light-purple);
+}
+
+.contact-dialog_offer-head {
+  display: grid;
+  row-gap: calc(6 * var(--em-px));
+}
+
+.contact-dialog_offer-head > * {
+  margin: 0;
+}
+
+.contact-dialog_offer-head p {
+  color: #19181bb3;
+}
+
+.contact-dialog_offer-title {
+  font-size: calc(24 * var(--em-px));
+  font-weight: 600;
+  line-height: 130%;
+}
+
+.contact-dialog_facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(12 * var(--em-px));
+  margin: 0;
+}
+
+/* dt comes first in the markup (a dl needs it), the number is shown on top. */
+.contact-dialog_fact {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: calc(2 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(14 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--white);
+}
+
+.contact-dialog_fact dt {
+  color: #19181b99;
+}
+
+.contact-dialog_fact-value {
+  margin: 0;
+  font-size: calc(24 * var(--em-px));
+  font-weight: 600;
+  line-height: 120%;
+  color: var(--dark-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.contact-dialog_offer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(12 * var(--em-px));
+}
+
+/* Question form under the offer: the price stays one click away. */
+.contact-dialog_offer-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(4 * var(--em-px)) calc(16 * var(--em-px));
+  margin: 0;
+  padding: calc(10 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--light-purple);
+  color: #19181bb3;
+}
+
+.contact-dialog_offer-link {
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.contact-dialog_offer-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Form details ---------- */
+
+.contact-dialog_optional {
+  margin-left: calc(4 * var(--em-px));
+  font-weight: 400;
+  color: #19181b80;
+}
+
+/* Privacy on the left, the send button on the right: one line, and the
+   button stands where the eye ends after the message. */
+.contact-dialog_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(24 * var(--em-px));
+  margin-top: calc(4 * var(--em-px));
+}
+
+.contact-dialog_footer .contact-dialog_privacy {
+  text-align: left;
+}
+
+.contact-dialog_footer .contact-dialog_actions {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Sending: the label keeps its place (and the button its width), the
+   spinner sits on top of it. .button has no position of its own. */
+.contact-dialog_submit {
+  position: relative;
+}
+
+.contact-dialog_submit[aria-busy="true"] > div {
+  visibility: hidden;
+}
+
+.contact-dialog_spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ---------- Success details ---------- */
+
+.contact-dialog_success .contact-dialog_actions {
+  flex-wrap: wrap;
+  gap: calc(12 * var(--em-px));
+}
+
+.contact-dialog_sent-email {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.contact-dialog_aside {
+  margin: 0;
+  color: #19181b99;
+  text-align: center;
+}
+
+.contact-dialog_aside a {
+  color: var(--primary);
+}
+
+.contact-dialog_success .contact-dialog_aside {
+  animation-delay: 240ms;
+}
+
+@media screen and (max-width: 767px) {
+  .contact-dialog_facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* Phones: bottom sheet. Pinned to the bottom edge, top corners rounded, inner
    scroll, the submit button sticks to the bottom so the keyboard never hides
    it. Slides up from below, a cancel slides it back down. */
@@ -4245,6 +4449,30 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     justify-content: center;
   }
 
+  /* The footer gives its children to the form, so the send button can stick
+     to the bottom of the sheet (sticky never leaves its parent box). */
+  .contact-dialog_footer {
+    display: contents;
+  }
+
+  .contact-dialog_footer .contact-dialog_privacy {
+    text-align: center;
+  }
+
+  .contact-dialog_offer {
+    padding: calc(16 * var(--em-px));
+  }
+
+  .contact-dialog_offer-actions > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .contact-dialog_success .contact-dialog_actions > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
   .contact-dialog_success {
     padding-top: calc(16 * var(--em-px));
   }
@@ -4286,6 +4514,7 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 
   .contact-dialog_success .contact-dialog_stagger,
+  .contact-dialog_panel.is-switched,
   .contact-dialog_check-circle,
   .contact-dialog_check-ring {
     animation: none;

@@ -13,6 +13,7 @@
  */
 
 import { event } from "./gtag";
+import type { ContactTopic, ContactTopicParam } from "./contactTopics";
 
 /**
  * Every place that can open the contact modal. The value lands in the
@@ -33,6 +34,40 @@ export type ContactLocation =
   | "terms_page"
   | "footer"
   | "unknown";
+
+/** What the modal shows first for an entry point. */
+export type ContactOpenOptions = {
+  /** Preselected topic. null: no chip is active, the general form is shown. */
+  topic?: ContactTopic | null;
+  /** Publishing only: skip the offer card and open the question form right away. */
+  ask?: boolean;
+};
+
+/**
+ * Default topic per entry point. Everything next to a publishing offer opens
+ * straight on the question form: the person has already seen the offer and
+ * clicked "Ask a question" or "Contact us" under it. Entry points without
+ * context (footer, search, FAQ, refunds) open with no chip selected.
+ */
+const LOCATION_DEFAULTS: Partial<Record<ContactLocation, Required<ContactOpenOptions>>> = {
+  advertise_panel_desktop: { topic: "publish", ask: true },
+  advertise_panel_mobile: { topic: "publish", ask: true },
+  terms_page: { topic: "publish", ask: true },
+  template_hire: { topic: "publish", ask: true },
+  dashboard_cta: { topic: "publish", ask: true },
+  testimonials_page: { topic: "publish", ask: true },
+};
+
+export function resolveOpenOptions(
+  location: ContactLocation,
+  options?: ContactOpenOptions,
+): Required<ContactOpenOptions> {
+  const fallback = LOCATION_DEFAULTS[location] ?? { topic: null, ask: false };
+  return {
+    topic: options?.topic !== undefined ? options.topic : fallback.topic,
+    ask: options?.ask ?? fallback.ask,
+  };
+}
 
 const LANDING_KEY = "sp_landing";
 
@@ -77,11 +112,55 @@ export function getLeadContext(location: ContactLocation): LeadContext {
   };
 }
 
-/** Fired on every click that opens the modal. */
-export function trackContactCta(location: ContactLocation) {
+const pagePath = () => (typeof window !== "undefined" ? window.location.pathname : undefined);
+
+/** Fired on every click that opens the modal. `topic` is the preselected one. */
+export function trackContactCta(location: ContactLocation, topic: ContactTopicParam = "none") {
   event("contact_cta_click", {
     location,
-    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    topic,
+    page_path: pagePath(),
+  });
+}
+
+/** Fired when the person picks a topic chip. */
+export function trackContactTopicSelect(location: ContactLocation, topic: ContactTopic, previous: ContactTopicParam) {
+  event("contact_topic_select", {
+    location,
+    topic,
+    previous,
+    page_path: pagePath(),
+  });
+}
+
+export type ContactCloseMethod = "escape" | "backdrop" | "button" | "back";
+
+/**
+ * Fired on every close before a message was sent. `step` says what the person
+ * was looking at (the publishing offer or a form), `had_input` whether they
+ * had typed anything: the gap between the two is the lost-lead signal.
+ */
+export function trackContactModalClose(
+  location: ContactLocation,
+  params: { topic: ContactTopicParam; step: "offer" | "form"; hadInput: boolean; method: ContactCloseMethod },
+) {
+  event("contact_modal_close", {
+    location,
+    topic: params.topic,
+    step: params.step,
+    had_input: params.hadInput,
+    method: params.method,
+    page_path: pagePath(),
+  });
+}
+
+/** Fired on the next-step link of the success screen. */
+export function trackContactSuccessCta(location: ContactLocation, topic: ContactTopicParam, target: string) {
+  event("contact_success_cta_click", {
+    location,
+    topic,
+    target,
+    page_path: pagePath(),
   });
 }
 
@@ -98,11 +177,18 @@ export function trackContactFormStart(location: ContactLocation) {
  * needed here because the modal stays open and shows the success state, but the
  * message length is useful to see whether people write one line or six.
  */
-export function trackContactFormSubmit(location: ContactLocation, messageLength: number) {
+export function trackContactFormSubmit(
+  location: ContactLocation,
+  messageLength: number,
+  topic: ContactTopicParam = "none",
+  fieldsFilled = 0,
+) {
   event("contact_form_submit", {
     location,
+    topic,
     message_length: messageLength,
-    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    fields_filled: fieldsFilled,
+    page_path: pagePath(),
   });
 }
 

@@ -58,6 +58,9 @@ export type PublishLocation =
   | "template_cta"
   | "dashboard_cta"
   | "testimonials_page"
+  // Contact modal: the offer card, and the next step on its success screen.
+  | "contact_modal"
+  | "contact_success"
   | "content";
 
 export function isPublishHref(href?: string | null): boolean {
