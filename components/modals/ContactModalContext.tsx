@@ -1,7 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/router";
 import ContactModal from "./ContactModal";
+import { isContactTopic } from "../../lib/contactTopics";
 import {
   rememberLandingPage,
   resolveOpenOptions,
@@ -32,6 +34,14 @@ export function useContactModal() {
 
 type OpenRequest = { location: ContactLocation } & Required<ContactOpenOptions>;
 
+/**
+ * `?contact=publish` (or partnership, work, other) opens the dialog on that
+ * topic; `?contact` with any other value opens it with no topic. Publishing
+ * opens on the offer card: a link from an email or an article has not shown
+ * the offer yet.
+ */
+const URL_PARAM = "contact";
+
 export function ContactModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [request, setRequest] = useState<OpenRequest>({ location: "unknown", topic: null, ask: false });
@@ -50,6 +60,25 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
     trackContactCta(location, resolved.topic ?? "none");
   }, []);
+
+  // Open from the address once the router knows the query, then drop the
+  // parameter (shallow, no reload) so a refresh or a shared link of the page
+  // does not pop the dialog again.
+  const router = useRouter();
+  useEffect(() => {
+    if (!router.isReady) return;
+    const raw = router.query[URL_PARAM];
+    if (raw === undefined) return;
+    const value = Array.isArray(raw) ? raw[0] : raw;
+    const topic = isContactTopic(value) ? value : null;
+
+    // Clean the address first, open after: on phones the dialog pushes its
+    // own history entry, and a replace landing after it would overwrite it.
+    const { [URL_PARAM]: _removed, ...rest } = router.query;
+    void router
+      .replace({ pathname: router.pathname, query: rest }, undefined, { shallow: true, scroll: false })
+      .finally(() => openContactModal("url_param", { topic, ask: false }));
+  }, [router, openContactModal]);
 
   return (
     <ContactModalContext.Provider value={{ openContactModal }}>
