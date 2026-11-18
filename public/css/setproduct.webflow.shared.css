@@ -4963,52 +4963,11 @@ figcaption {
   width: 100%;
 }
 
-.remodal {
-  justify-content: center;
-  display: flex;
-  position: relative;
-}
 
-.modal-wr {
-  grid-column-gap: 24em;
-  grid-row-gap: 24em;
-  background-color: var(--white);
-  border-radius: 24em;
-  flex-direction: column;
-  align-items: stretch;
-  width: 768em;
-  padding: 40em 64em;
-  display: flex;
-}
 
-.modal_heading-wr {
-  grid-column-gap: 8em;
-  grid-row-gap: 8em;
-  text-align: center;
-  flex-direction: column;
-  display: flex;
-}
 
-.modal_form {
-  grid-column-gap: 20em;
-  grid-row-gap: 20em;
-  flex-direction: column;
-  display: flex;
-}
 
-.modal_form.is-gap-smaller {
-  grid-column-gap: 16em;
-  grid-row-gap: 16em;
-}
 
-.modal_form-item {
-  grid-column-gap: 4em;
-  grid-row-gap: 4em;
-  text-align: left;
-  flex-direction: column;
-  width: 100%;
-  display: flex;
-}
 
 .textarea-input {
   background-color: #f0ebff;
@@ -5039,17 +4998,7 @@ figcaption {
   min-height: 6em;
 }
 
-.modal_info-wr {
-  text-align: center;
-}
 
-.modal_button-wr {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 12em;
-  display: flex;
-}
 
 .fs-rangeslider_handle {
   z-index: 1;
@@ -5114,17 +5063,7 @@ figcaption {
   position: absolute;
 }
 
-.modal_form-block {
-  margin-bottom: 0;
-}
 
-.modal_close-btn {
-  cursor: pointer;
-  width: 32em;
-  height: 32em;
-  position: absolute;
-  inset: 0% 0% auto auto;
-}
 
 .blog_subtitle-caps {
   color: var(--primary);
@@ -5918,12 +5857,6 @@ figcaption {
   margin-bottom: 16em;
 }
 
-.modal_form-column {
-  grid-column-gap: 16em;
-  grid-row-gap: 16em;
-  align-items: flex-start;
-  display: flex;
-}
 
 .max-width-800 {
   max-width: 800em;
@@ -6622,31 +6555,13 @@ figcaption {
     width: 100%;
   }
 
-  .modal-wr {
-    grid-column-gap: 24em;
-    grid-row-gap: 24em;
-    width: 100%;
-    margin-top: 50em;
-    padding: 20em 16em;
-  }
 
-  .modal_form {
-    grid-column-gap: 16em;
-    grid-row-gap: 16em;
-  }
 
   .textarea-input {
     min-height: 6em;
   }
 
-  .modal_info-wr {
-    text-align: left;
-  }
 
-  .modal_close-btn {
-    top: 16em;
-    right: 16em;
-  }
 
   .main_template-list-mob-btn-wr {
     justify-content: center;
@@ -6984,11 +6899,6 @@ figcaption {
     font-size: 18em;
   }
 
-  .modal_form-column {
-    grid-column-gap: 16em;
-    grid-row-gap: 16em;
-    flex-flow: column;
-  }
 
   .hero-cta-row {
     grid-column-gap: 12px;
