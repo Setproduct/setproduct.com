@@ -568,3 +568,33 @@ stateDiagram-v2
 - Успех: адрес, на который ответим, и следующий шаг по теме (4.5).
 
 События (раздел 8): `contact_cta_click` с `topic`, `contact_topic_select` (`topic`, `previous`), `contact_modal_close` (`topic`, `step`, `had_input`, `method`), `contact_success_cta_click` (`target`), в `contact_form_submit` добавлены `topic` и `fields_filled`. Значения `PublishLocation`: `contact_modal`, `contact_success`.
+
+### Фаза 5 сделана (18.11.2026)
+
+| Коммит | Что |
+|---|---|
+| `ab27067 chore: drop unused dashboard cta copy` | Удалены `ctaTitleHtml` / `ctaBodyHtml` из `data/dashboard-templates.ts`: после замены на `PublishCta` их никто не читал |
+| `260974b chore: remove unused legacy modal styles` | Из Webflow CSS удалены `.remodal`, `.modal-wr`, `.modal_*` (16 правил, 90 строк). Поиск по `components`, `pages`, `lib`, `data`, `content`, `public` не нашёл ни одного использования |
+| `b62723c feat: keep contact draft and close the sheet with browser back` | Черновик и кнопка «назад» |
+| `9293b34 feat: open contact modal from url parameter` | `?contact=` |
+
+Черновик:
+
+- Пока окно открыто, текст всех полей и тема пишутся в `sessionStorage` (`sp_contact_draft`). Живёт до закрытия вкладки.
+- При следующем открытии поля заполнены, над ними строка `Draft restored` с кнопкой `Clear`. Событие `contact_draft_restore` (`location`, `topic`).
+- Тема точки входа важнее темы из черновика. Если в черновике есть сообщение, карточка оффера пропускается.
+- После успешной отправки черновик стирается, даже если окно закрыли, пока шёл запрос.
+
+Кнопка «назад» на телефоне (≤479px, нижний лист):
+
+- При открытии добавляется запись в history без смены URL. Системный жест «назад» закрывает лист (`contact_modal_close` с `method: back`), страница остаётся.
+- Закрыли иначе (крестик, фон, Escape, Done): запись снимается своим `history.back()`, следующий «назад» уводит со страницы, как человек и ждёт.
+- Переход по ссылке из окна оставляет запись, она безвредна.
+
+Параметр в адресе:
+
+- `?contact=publish` (`partnership`, `work`, `other`) открывает окно без темы.
+- `location` в событиях: `url_param`. Параметр сразу убирается из адреса (shallow, без перезагрузки), поэтому обновление страницы окно не открывает.
+- Пример для письма: `https://www.setproduct.com/?contact=publish&utm_source=newsletter`. UTM доходят до письма через первую страницу визита.
+
+Проверить руками: «назад» на iOS Safari и Android Chrome, восстановление черновика после клика мимо окна, `/?contact=partnership` на 1440 и 390.
