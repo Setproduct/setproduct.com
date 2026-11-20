@@ -38,10 +38,10 @@ export function NavSearch() {
   }, []);
 
   return (
-    <form action="/search" className="search w-form" style={{ position: "relative" }}>
+    <form action="/search" className="search w-form nav-search-form" style={{ position: "relative" }}>
       <input
         aria-label="Search Setproduct"
-        className="text-input is-nav-search w-input"
+        className="text-input is-m"
         id="search"
         maxLength={256}
         name="query"

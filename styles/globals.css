@@ -2380,39 +2380,55 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 }
 
-/* --- Nav search: wider field, smaller font, cross-fading placeholder ---- */
+/* --- Nav search: cross-fading placeholder over a size M field ---------- */
 
-/* The Webflow base sets `.text-input { font-size: 18em }` (where body
-   font-size is ~0.07vw), which makes long placeholders like
-   "Search free resources…" overflow the original 11.1em-wide nav-search
-   input. Shrink the font in the nav-search only, widen the field by 50%,
-   and compensate min-height and paddings so the outer height stays the
-   same as before. */
-.text-input.is-nav-search {
-  width: 16.6667em;          /* was 11.1111em — +50% wider */
-  font-size: 14em;
-  min-height: 2.928em;       /* −4px vs 3.214em to match the Inspire me button height (4/14 ≈ 0.286em) */
-  padding-top: 0.629em;      /* re-centred vertically after the 4px height cut: 0.771 − 2px */
-  padding-bottom: 0.629em;
-  padding-left: 3.143em;     /* preserves icon clearance: 2.44444 * 18 / 14 */
-  border-radius: 1.143em;    /* ≈16px at 14px scope — slightly rounder to visually match the button */
-}
+/* The navbar field is a regular size M input (`.text-input.is-m`), so its
+   width, height, padding and font size all come from the size tokens in
+   setproduct.webflow.shared.css. Nothing about the field is set here: the
+   old `.text-input.is-nav-search` override (14em font, 16.6667em width) is
+   gone, and the fixed width now lives on `.nav-search-form`.
 
-/* Rotating placeholder rendered as absolutely-positioned spans on top of
+   Rotating placeholder rendered as absolutely-positioned spans on top of
    the input. The native placeholder attribute is left empty, so this
    overlay is the only visible hint. Two overlapping spans are rendered
    during a transition (one with .is-leaving, one with .is-entering) to
-   produce a cross-fade. */
+   produce a cross-fade. Only the position below is size dependent: the
+   overlay is a sibling of the field, so it does not inherit --input-px or
+   --input-fs and has to read the same geometry from the tokens. */
 .nav-search-placeholder {
   position: absolute;
-  left: 3.143em;             /* matches input's padding-left */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #1a191c99;          /* same color as native placeholder */
-  font-size: 14em;           /* matches the shrunken input font-size */
   white-space: nowrap;
+  /* The box below clips horizontally. Normal line height keeps the box tall
+     enough for the glyphs, so the clip never cuts them from above or below. */
+  line-height: normal;
   will-change: opacity;
+}
+
+.nav-search-form .nav-search-placeholder {
+  /* Border 1 + padding 42: the overlay sits on the padding box of the form, the
+     text in the field starts after its own border, so the two need one more
+     pixel to stand on the same vertical line. */
+  left: calc(42 * var(--em-px) + 1px);
+  font-size: calc(16 * var(--em-px));         /* = --input-m-fs */
+  /* The overlay is a sibling of the field, so it has to clip itself the way the
+     field does: the longest hint does not fit a narrow field, and spilling over
+     the button next to it would be worse than the ellipsis. */
+  right: calc(14 * var(--em-px));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--input-placeholder);
+}
+
+/* Same floor the field gets on a coarse pointer (see the input rules above):
+   the overlay used to stay at the shrunken desktop font while the field was
+   raised to 16px, so the hint was visibly smaller than the text typed into it. */
+@media (pointer: coarse) {
+  .nav-search-form .nav-search-placeholder {
+    font-size: max(calc(16 * var(--em-px)), 16px);
+  }
 }
 
 .nav-search-placeholder.is-entering {

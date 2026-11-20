@@ -3263,6 +3263,11 @@ figcaption {
   border-color: #1a191c26;
 }
 
+/* Legacy nav/`/search`/`/freebies` field. Still used by SearchPage and
+   FreebiesListingPage until they move to a size class (rollout plan steps 11
+   and 12). On a field that also carries .is-l / .is-m / .is-s the size rule
+   below wins on specificity and width, height and padding come from the
+   size tokens instead. */
 .text-input.is-nav-search {
   width: 11.1111em;
   min-height: 2.5em;
@@ -3276,6 +3281,20 @@ figcaption {
 .text-input.is-nav-search.is-page-search {
   width: 100%;
   min-height: 2.7em;
+}
+
+/* /search keeps its old look: its font size, paddings and radius used to come
+   from the navbar override in styles/globals.css, which is gone now that the
+   navbar field is a size M input. Copied here so the page does not change
+   before step 11 moves it to a size class. min-height is left out on purpose:
+   `.is-page-search` above sets 2.7em and always won over the old 2.928em.
+   Remove this block together with `.is-page-search`. */
+.text-input.text-input.is-nav-search.is-page-search {
+  font-size: 14em;
+  padding-top: 0.629em;
+  padding-bottom: 0.629em;
+  padding-left: 3.143em;
+  border-radius: 1.143em;
 }
 
 /* ==========================================================================
@@ -3503,6 +3522,25 @@ figcaption {
 .text-input:is(.is-l, .is-m, .is-s):focus ~ .search-icon-wr {
   transform: translateY(var(--input-lift));
   transition-duration: var(--input-in);
+}
+
+/* ---------- Navbar width: the field pairs with button-small ----------
+   A size class sets width: 100%, which would stretch the navbar field across
+   the whole form. The form therefore keeps a fixed width and the field fills
+   that width. 233 keeps the old row: the field used to be 16.6667em at font
+   size 14, that is 233.3px.
+
+   The field no longer carries .is-nav-search, so the magnifier clearance is
+   set here as well: inset 14 + icon 18 + gap 10 = 42, the same value the
+   rotating placeholder overlay starts from in styles/globals.css. */
+
+.nav-search-form {
+  width: calc(233 * var(--em-px));
+}
+
+.nav-search-form .text-input.text-input {
+  width: 100%;
+  padding-left: calc(42 * var(--em-px));
 }
 
 /* ---------- Textarea: keeps radius and side padding, grows to several lines ----------
