@@ -29,16 +29,18 @@ export default function CtaSubscribe() {
                           tabIndex={-1}
                         />
                       </div>
-                      <input
-                        aria-label="Email address"
-                        className="text-input w-input"
-                        disabled={isSubmitting}
-                        maxLength={256}
-                        name="Email"
-                        placeholder="Enter your email"
-                        required
-                        type="email"
-                      />
+                      <div className="input-wr">
+                        <input
+                          aria-label="Email address"
+                          className="text-input is-l is-attention"
+                          disabled={isSubmitting}
+                          maxLength={256}
+                          name="Email"
+                          placeholder="Enter your email"
+                          required
+                          type="email"
+                        />
+                      </div>
                       <div className="button-form-wr">
                         <button
                           className="button w-inline-block disabled:opacity-70"

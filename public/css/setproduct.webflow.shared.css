@@ -3190,6 +3190,23 @@ figcaption {
   align-items: stretch;
 }
 
+/* Subscribe CTA: the field sits in .input-wr, which is a size container, and a size
+   container has no intrinsic width of its own. Inside a shrink-to-fit .form-block that
+   collapsed the wrapper to 0 and the field with it. The form therefore takes a width of
+   its own instead of hugging the button: 572em leaves the field about 380em at 1440.
+   The wrapper also takes the whole row as its basis, so on the widths where the button
+   label no longer fits it keeps half of the row instead of collapsing to zero. */
+.main_cta-section .form-block {
+  align-self: stretch;
+  width: 100%;
+  max-width: 572em;
+  margin-inline: auto;
+}
+
+.main_cta-section .form-cta > .input-wr {
+  flex: 1 1 100%;
+}
+
 .text-input {
   background-color: #f0ebff;
   border: 1px solid #1a191c26;
