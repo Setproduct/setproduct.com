@@ -318,14 +318,14 @@
 .proto .f.f.s ~ :global(.search-icon-wr) { --input-lift: var(--input-s-lift); }
 
 /* Search: room for the magnifier on the left, scaled with the size.
-   L: inset 20 + icon 21 + gap 10; M: 16 + 18 + 10; S: 12 + 14 + 8. */
-.proto .f.f.l:global(.is-nav-search) { padding-left: calc(51 * var(--em-px)); }
-.proto .f.f.m:global(.is-nav-search) { padding-left: calc(44 * var(--em-px)); }
-.proto .f.f.s:global(.is-nav-search) { padding-left: calc(34 * var(--em-px)); }
+   L: inset 16 + icon 21 + gap 10; M: 14 + 18 + 10; S: 10 + 14 + 8. */
+.proto .f.f.l:global(.is-nav-search) { padding-left: calc(47 * var(--em-px)); }
+.proto .f.f.m:global(.is-nav-search) { padding-left: calc(42 * var(--em-px)); }
+.proto .f.f.s:global(.is-nav-search) { padding-left: calc(32 * var(--em-px)); }
 
-.proto .f.f.l ~ :global(.search-icon-wr) { padding-left: calc(20 * var(--em-px)); }
-.proto .f.f.m ~ :global(.search-icon-wr) { padding-left: calc(16 * var(--em-px)); }
-.proto .f.f.s ~ :global(.search-icon-wr) { padding-left: calc(12 * var(--em-px)); }
+.proto .f.f.l ~ :global(.search-icon-wr) { padding-left: calc(16 * var(--em-px)); }
+.proto .f.f.m ~ :global(.search-icon-wr) { padding-left: calc(14 * var(--em-px)); }
+.proto .f.f.s ~ :global(.search-icon-wr) { padding-left: calc(10 * var(--em-px)); }
 
 .proto .f.f.l ~ :global(.search-icon-wr) :global(.search-icon) { width: calc(21 * var(--em-px)); }
 .proto .f.f.m ~ :global(.search-icon-wr) :global(.search-icon) { width: calc(18 * var(--em-px)); }
@@ -354,20 +354,20 @@
 }
 
 .proto .f.f.l.select {
-  padding-right: calc(52 * var(--em-px));
-  background-position: right calc(20 * var(--em-px)) center;
+  padding-right: calc(48 * var(--em-px));
+  background-position: right calc(16 * var(--em-px)) center;
   background-size: calc(18 * var(--em-px));
 }
 
 .proto .f.f.m.select {
-  padding-right: calc(44 * var(--em-px));
-  background-position: right calc(16 * var(--em-px)) center;
+  padding-right: calc(42 * var(--em-px));
+  background-position: right calc(14 * var(--em-px)) center;
   background-size: calc(16 * var(--em-px));
 }
 
 .proto .f.f.s.select {
-  padding-right: calc(34 * var(--em-px));
-  background-position: right calc(12 * var(--em-px)) center;
+  padding-right: calc(32 * var(--em-px));
+  background-position: right calc(10 * var(--em-px)) center;
   background-size: calc(14 * var(--em-px));
 }
 

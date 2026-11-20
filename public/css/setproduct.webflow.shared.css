@@ -2163,7 +2163,7 @@ textarea.w-input, textarea.w-select {
 
   --input-l-h: calc(50 * var(--em-px));
   --input-l-r: calc(20 * var(--em-px));
-  --input-l-px: calc(20 * var(--em-px));
+  --input-l-px: calc(16 * var(--em-px));
   --input-l-pad-y: calc(10.5 * var(--em-px));
   --input-l-fs: 18em;
   --input-l-edge-size: calc(6 * var(--em-px));
@@ -2171,7 +2171,7 @@ textarea.w-input, textarea.w-select {
 
   --input-m-h: calc(40 * var(--em-px));
   --input-m-r: calc(16 * var(--em-px));
-  --input-m-px: calc(16 * var(--em-px));
+  --input-m-px: calc(14 * var(--em-px));
   --input-m-pad-y: calc(7 * var(--em-px));
   --input-m-fs: 16em;
   --input-m-edge-size: calc(4 * var(--em-px));
@@ -2179,7 +2179,7 @@ textarea.w-input, textarea.w-select {
 
   --input-s-h: calc(31 * var(--em-px));
   --input-s-r: calc(12 * var(--em-px));
-  --input-s-px: calc(12 * var(--em-px));
+  --input-s-px: calc(10 * var(--em-px));
   --input-s-pad-y: calc(4 * var(--em-px));
   --input-s-fs: 14em;
   --input-s-edge-size: calc(3 * var(--em-px));
@@ -2187,15 +2187,15 @@ textarea.w-input, textarea.w-select {
 }
 
 /* Label, hint and error follow the field text: the left inset is the border (1) plus the
-   inner padding (20 / 16 / 12), so the first letter of a label and the first letter of the
+   inner padding (16 / 14 / 10), so the first letter of a label and the first letter of the
    placeholder stand on one vertical line. The vertical gap between a label and its control,
    and between the control and its message, clears the focus edge plus lift (8 / 6 / 4).
    Always calc(N * var(--em-px)): inside a 16px label 21em would mean 336px, the same trap
    as with the corner radii. */
 :root {
-  --input-l-inset: calc(21 * var(--em-px));   /* border 1 + padding 20 */
-  --input-m-inset: calc(17 * var(--em-px));   /* border 1 + padding 16 */
-  --input-s-inset: calc(13 * var(--em-px));   /* border 1 + padding 12 */
+  --input-l-inset: calc(17 * var(--em-px));   /* border 1 + padding 16 */
+  --input-m-inset: calc(15 * var(--em-px));   /* border 1 + padding 14 */
+  --input-s-inset: calc(11 * var(--em-px));   /* border 1 + padding 10 */
 
   --field-gap-l: calc(8 * var(--em-px));
   --field-gap-m: calc(6 * var(--em-px));
@@ -3421,15 +3421,15 @@ figcaption {
 
 /* ---------- Search: magnifier on the left, lifts together with the field ----------
    Markup: .search > input.text-input.is-nav-search.is-* + .search-icon-wr > .search-icon.
-   L: inset 20 + icon 21 + gap 10; M: 16 + 18 + 10; S: 12 + 14 + 8. */
+   L: inset 16 + icon 21 + gap 10; M: 14 + 18 + 10; S: 10 + 14 + 8. */
 
-.text-input.text-input.is-nav-search.is-l { padding-left: calc(51 * var(--em-px)); }
-.text-input.text-input.is-nav-search.is-m { padding-left: calc(44 * var(--em-px)); }
-.text-input.text-input.is-nav-search.is-s { padding-left: calc(34 * var(--em-px)); }
+.text-input.text-input.is-nav-search.is-l { padding-left: calc(47 * var(--em-px)); }
+.text-input.text-input.is-nav-search.is-m { padding-left: calc(42 * var(--em-px)); }
+.text-input.text-input.is-nav-search.is-s { padding-left: calc(32 * var(--em-px)); }
 
-.text-input.is-l ~ .search-icon-wr { --input-lift: var(--input-l-lift); padding-left: calc(20 * var(--em-px)); }
-.text-input.is-m ~ .search-icon-wr { --input-lift: var(--input-m-lift); padding-left: calc(16 * var(--em-px)); }
-.text-input.is-s ~ .search-icon-wr { --input-lift: var(--input-s-lift); padding-left: calc(12 * var(--em-px)); }
+.text-input.is-l ~ .search-icon-wr { --input-lift: var(--input-l-lift); padding-left: calc(16 * var(--em-px)); }
+.text-input.is-m ~ .search-icon-wr { --input-lift: var(--input-m-lift); padding-left: calc(14 * var(--em-px)); }
+.text-input.is-s ~ .search-icon-wr { --input-lift: var(--input-s-lift); padding-left: calc(10 * var(--em-px)); }
 
 .text-input.is-l ~ .search-icon-wr .search-icon { width: calc(21 * var(--em-px)); }
 .text-input.is-m ~ .search-icon-wr .search-icon { width: calc(18 * var(--em-px)); }
@@ -3469,20 +3469,20 @@ figcaption {
 }
 
 .text-input.text-input.is-select.is-l {
-  padding-right: calc(52 * var(--em-px));
-  background-position: right calc(20 * var(--em-px)) center;
+  padding-right: calc(48 * var(--em-px));
+  background-position: right calc(16 * var(--em-px)) center;
   background-size: calc(18 * var(--em-px));
 }
 
 .text-input.text-input.is-select.is-m {
-  padding-right: calc(44 * var(--em-px));
-  background-position: right calc(16 * var(--em-px)) center;
+  padding-right: calc(42 * var(--em-px));
+  background-position: right calc(14 * var(--em-px)) center;
   background-size: calc(16 * var(--em-px));
 }
 
 .text-input.text-input.is-select.is-s {
-  padding-right: calc(34 * var(--em-px));
-  background-position: right calc(12 * var(--em-px)) center;
+  padding-right: calc(32 * var(--em-px));
+  background-position: right calc(10 * var(--em-px)) center;
   background-size: calc(14 * var(--em-px));
 }
 
