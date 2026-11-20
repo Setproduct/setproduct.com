@@ -67,23 +67,52 @@
    Each field spans three rows of the parent grid via subgrid: label / field / message.
    Rows are shared by both columns, so a long error in one column makes the message row
    taller for both, and the fields themselves stay on one horizontal line.
-   Row gap between field groups (20em) is larger than the focus edge + lift of L (8),
-   so the edge of a focused field never touches the label below. */
+
+   The row gap here is the field gap of the size (8 / 6 / 4, same as the shared CSS):
+   subgrid takes the gap from the parent, so the label, the control and the message
+   sit close together. Air between field groups is added on top of a group:
+   8 + 12 = 20, so the edge of a focused field never touches the next group. The top
+   rather than the bottom keeps the grid from leaving a stray band under its last row.
+   Mirrors .form-grid / .field in public/css/setproduct.webflow.shared.css. */
 
 .settings {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 16em;
-  row-gap: 20em;
+  row-gap: var(--field-gap, var(--field-gap-l));
 }
 
 .settingsField {
   display: grid;
   grid-row: span 3;
   grid-template-rows: subgrid;
-  row-gap: 6em;
+  row-gap: var(--field-gap, var(--field-gap-l));
+  margin-block-start: var(--field-group-gap);
   align-content: start;
   min-width: 0;
+}
+
+/* First shared row: the top of the panel, not a group after another group. */
+.settings > .settingsField:nth-child(-n + 2) {
+  margin-block-start: 0;
+}
+
+/* Size token pair on the wrapper, the same values the shared CSS writes for
+   .form-grid.is-m / .is-s. L is the default through the var() fallbacks, but it is
+   spelled out so a wrapper always carries an explicit pair. */
+.l {
+  --field-inset: var(--input-l-inset);
+  --field-gap: var(--field-gap-l);
+}
+
+.m {
+  --field-inset: var(--input-m-inset);
+  --field-gap: var(--field-gap-m);
+}
+
+.s {
+  --field-inset: var(--input-s-inset);
+  --field-gap: var(--field-gap-s);
 }
 
 .settingsWide {
@@ -119,6 +148,11 @@
 @media (max-width: 767px) {
   .settings {
     grid-template-columns: 1fr;
+  }
+
+  /* One column: the first row holds a single field, so the second one starts a group. */
+  .settings > .settingsField:nth-child(2) {
+    margin-block-start: var(--field-group-gap);
   }
 }
 
@@ -656,13 +690,22 @@
   border-color: var(--primary);
 }
 
-/* ---------- Field helpers (label, hint, error text) ---------- */
+/* ---------- Field helpers (label, hint, error text) ----------
+   Same numbers as .field / .field-label / .field-hint / .field-error in the shared
+   CSS: the gap between label, control and message is 8 / 6 / 4, the left inset is
+   border 1 + inner padding, 21 / 17 / 13, so the label starts on the placeholder line.
+   The size token pair comes from the wrapper (.sizeCol / .settings), the "Now" column
+   has no size class and keeps the resting look. */
 
 .fieldWrap {
   display: flex;
   flex-direction: column;
   gap: 8em;
   width: 100%;
+}
+
+.proto .fieldWrap {
+  gap: var(--field-gap, var(--field-gap-l));
 }
 
 .label.label {
@@ -679,6 +722,10 @@
 .errorText {
   margin: 0;
   color: #e03e3e;
+}
+
+.proto :is(.label, .hint, .errorText) {
+  padding-inline-start: var(--field-inset, var(--input-l-inset));
 }
 
 /* /search width override: globals.css pins .is-nav-search to 16.67em */

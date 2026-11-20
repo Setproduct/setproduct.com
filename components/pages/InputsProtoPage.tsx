@@ -156,7 +156,9 @@ function ProtoStateFields({ state }: { state: StateId }) {
           <div className={styles.sizeCol} key={size.id}>
             <SizeTag size={size} />
 
-            <div className={styles.fieldWrap}>
+            {/* Size class on the wrapper: it carries --field-inset and --field-gap,
+                so the label and the message inherit the same pair as the field. */}
+            <div className={cx(styles.fieldWrap, styles[size.id])}>
               <label className={`${size.label} ${styles.label}`} htmlFor={`${id}-email`}>
                 Email
               </label>
@@ -272,7 +274,7 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
           <div className={styles.sizeCol} key={size.id}>
             <SizeTag size={size} />
 
-            <div className={styles.fieldWrap}>
+            <div className={cx(styles.fieldWrap, styles[size.id])}>
               <label className={`${size.label} ${styles.label}`} htmlFor={`${id}-message`}>
                 Message
               </label>
@@ -284,7 +286,7 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
               />
             </div>
 
-            <div className={styles.fieldWrap}>
+            <div className={cx(styles.fieldWrap, styles[size.id])}>
               <label className={`${size.label} ${styles.label}`} htmlFor={`${id}-topic`}>
                 Topic
               </label>
@@ -334,7 +336,7 @@ function AttentionFields() {
           <div className={styles.sizeCol} key={size.id}>
             <SizeTag size={size} />
 
-            <div className={styles.fieldWrap}>
+            <div className={cx(styles.fieldWrap, styles[size.id])}>
               <label className={`${size.label} ${styles.label}`} htmlFor={`${id}-email`}>
                 Email
               </label>
@@ -459,7 +461,7 @@ function SettingsPanel({ sizeId }: { sizeId: Size }) {
   return (
     <form className={`${styles.cell} ${styles.proto}`} noValidate onSubmit={(e) => e.preventDefault()}>
       <SizeTag size={size} />
-      <div className={styles.settings}>
+      <div className={cx(styles.settings, styles[size.id])}>
         <SettingsField {...common} hint="Shown in the sidebar and on invoices" id={`${id}-name`} label="Workspace name">
           <input aria-describedby={`${id}-name-msg`} className={field} defaultValue="Setproduct" id={`${id}-name`} type="text" />
         </SettingsField>
