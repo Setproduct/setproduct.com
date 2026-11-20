@@ -13,6 +13,9 @@ import { useEffect } from "react";
 import { ContactModalProvider } from "../components/modals/ContactModalContext";
 import { GA_TRACKING_ID, pageview } from "../lib/gtag";
 import { trackPublishClicks } from "../lib/publish";
+import { injectScript, onFirstIntent } from "../lib/deferredScripts";
+
+const GUMROAD_SCRIPT = "https://gumroad.com/js/gumroad.js";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -36,6 +39,21 @@ export default function App({ Component, pageProps }: AppProps) {
   // nav panels, footer, FAQ, MDX posts): GA4 `publish_cta_click` by location.
   useEffect(() => trackPublishClicks(), []);
 
+  // Heavy third-party libraries wait for the first visitor intent (see
+  // lib/deferredScripts.ts). The tiny inline `gtag` stub below runs right
+  // away, so page views and events queue in dataLayer and are sent as soon
+  // as the library arrives.
+  useEffect(() => {
+    onFirstIntent(() => {
+      if (GA_TRACKING_ID) injectScript(`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`);
+      // Gumroad overlay: gumroad.js intercepts clicks on plain gumroad.com
+      // links (without target="_blank") and opens the product in an on-site
+      // popup instead of a new tab. A click before it loads simply opens the
+      // product page, which is the same fallback as before.
+      injectScript(GUMROAD_SCRIPT);
+    });
+  }, []);
+
   return (
     <ContactModalProvider>
       <Head>
@@ -43,10 +61,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       {GA_TRACKING_ID ? (
         <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
-            strategy="afterInteractive"
-          />
           <Script id="ga-init" strategy="afterInteractive">
             {`
               window.dataLayer = window.dataLayer || [];
@@ -60,13 +74,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </Script>
         </>
       ) : null}
-      {/* Gumroad overlay: gumroad.js intercepts clicks on plain gumroad.com
-          links (without target="_blank") and opens the product in an on-site
-          popup instead of a new tab. */}
-      <Script
-        src="https://gumroad.com/js/gumroad.js"
-        strategy="afterInteractive"
-      />
       <Component {...pageProps} />
     </ContactModalProvider>
   );
