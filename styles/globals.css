@@ -1944,8 +1944,25 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
    * Native GET form to /search: Enter / the mobile keyboard "Search" key
    * (enterKeyHint) submits to /search?query=… The trailing icon button is a
    * tappable submit affordance for users who don't reach for the keyboard key.
+   *
+   * The field itself is a regular size L input (`.text-input.is-l`), so its
+   * fill, border, radius, resting well, hover and focus states come from the
+   * size tokens in setproduct.webflow.shared.css. Three things are set here:
+   * the clearance for the magnifier, a font floor for iOS, and a touch floor
+   * for the field height.
+   *
+   * Why the floors: the drawer covers 320 → 991px, and Webflow keeps the body
+   * em at .0694445vw until 479px. At 480 a size token is worth 0.33px, so the
+   * L height (50em) collapses to 16.7px and at 768 to 26.7px — unusable as a
+   * tap target and smaller than the 52px field this replaces. The floor is
+   * local to this field on purpose: radius, fill and shadows stay on the
+   * system scale, only the height and the magnifier zone get a minimum. Left
+   * values are the L geometry at 1440 (inset 16, button 40 + 6 offset + 6 air).
    */
   .navbar .nav-menu .nav-menu-mob-search {
+    --mob-search-btn: max(calc(40 * var(--em-px)), 40px);
+    --mob-search-btn-offset: max(calc(6 * var(--em-px)), 4px);
+    --mob-search-clearance: max(calc(52 * var(--em-px)), 50px);
     position: relative;
     display: flex;
     align-items: center;
@@ -1953,35 +1970,37 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     margin: 0;
   }
 
-  .navbar .nav-menu .nav-menu-mob-search-input {
+  /* Two classes are not decoration: `.text-input` lifts the selector to 0,4,0,
+     above the 0,3,0 of the size rules, so the height, paddings and the font
+     floor below hold whatever order the stylesheets end up in. */
+  .navbar .nav-menu .nav-menu-mob-search-input.text-input {
+    /* The floor is computed here, not on the form: --input-h is declared by the
+       `.is-l` size rule on the field itself and is not visible to an ancestor. */
+    --mob-search-h: max(var(--input-h), 44px);
     width: 100%;
-    min-height: 52px;
+    min-height: var(--mob-search-h);
+    height: var(--mob-search-h);
     margin: 0;
-    padding: 0 52px 0 18px;
-    font-size: 16px;            /* ≥16px prevents iOS zoom-on-focus */
-    line-height: 1.2;
-    color: var(--black);
-    background: var(--light-grey);
-    border: 1px solid var(--black-transparent);
-    border-radius: 12px;
-    outline: none;
-  }
-
-  .navbar .nav-menu .nav-menu-mob-search-input:focus {
-    border-color: var(--primary);
-    background: var(--white);
+    /* The bottom padding is kept from the size rule: it lifts the text to the
+       button label line. The left inset carries the same floor as the height:
+       at 480 the token alone is 5.3px, which puts the first glyph into the
+       corner radius. */
+    padding: 0 var(--mob-search-clearance) var(--input-pb) max(var(--input-px), 14px);
+    /* 18 at L. The 16px floor is not cosmetic: below it iOS Safari zooms the
+       page on focus, and at 320px 18 × 0.8896 lands right on the edge. */
+    font-size: max(var(--input-fs), 16px);
   }
 
   .navbar .nav-menu .nav-menu-mob-search-btn {
     position: absolute;
-    right: 6px;
+    right: var(--mob-search-btn-offset);
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: var(--mob-search-btn);
+    height: var(--mob-search-btn);
     padding: 0;
     background: none;
     border: 0;
@@ -1989,8 +2008,11 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   }
 
   .navbar .nav-menu .nav-menu-mob-search-btn .search-icon {
-    width: 20px;
-    height: 20px;
+    /* Same 21 × --em-px as every other L field with a magnifier, with the same
+       floor logic as the button: at 480 the token alone would draw a 7px icon
+       inside a 40px button. */
+    width: max(calc(21 * var(--em-px)), 18px);
+    height: auto;
   }
 
   /*

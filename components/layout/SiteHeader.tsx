@@ -440,7 +440,7 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
                 <form action="/search" className="search w-form nav-menu-mob-search" role="search">
                   <input
                     aria-label="Search Setproduct"
-                    className="w-input nav-menu-mob-search-input"
+                    className="text-input is-l nav-menu-mob-search-input"
                     enterKeyHint="search"
                     maxLength={256}
                     name="query"
