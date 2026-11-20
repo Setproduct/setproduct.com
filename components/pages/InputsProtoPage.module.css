@@ -193,7 +193,12 @@
 
 /* ---------- Base ---------- */
 
+/* display and width used to come from the Webflow .text-input base, now removed.
+   Without width: 100% the field in a flex row (API key + Copy) falls back to its
+   intrinsic width and pushes the row out of its grid column. */
 .proto .f.f {
+  display: flex;
+  width: 100%;
   color: var(--black);
   background-color: var(--input-bg);
   border: 1px solid var(--input-border);

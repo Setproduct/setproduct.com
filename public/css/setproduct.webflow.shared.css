@@ -3207,74 +3207,10 @@ figcaption {
   flex: 1 1 100%;
 }
 
-.text-input {
-  background-color: #f0ebff;
-  border: 1px solid #1a191c26;
-  border-radius: 1em;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  min-height: 2.77778em;
-  margin-bottom: 0;
-  padding: .6em 1em;
-  font-size: 18em;
-  display: flex;
-  box-shadow: inset 0 3px 1px #7c4dff33;
-}
-
-.text-input:hover {
-  border-width: 1px;
-  border-color: var(--primary);
-}
-
-.text-input:active {
-  background-color: #f0ebff;
-}
-
-.text-input:focus {
-  border-width: 1px;
-  border-color: var(--primary);
-  background-color: #f0ebff;
-}
-
-.text-input:focus-visible, .text-input[data-wf-focus-visible] {
-  background-color: #f0ebff;
-}
-
-.text-input::placeholder {
-  color: #19181bb3;
-  background-color: #f0ebff;
-}
-
-.text-input.is-search {
-  width: 22.8125em;
-}
-
-.text-input.is-search::placeholder {
-  color: #1a191c99;
-}
-
-/* Legacy nav field. SearchPage moved to a size class in rollout step 11 and the
-   navbar and /freebies do not use it either, so the only remaining consumer is
-   the /inputs-proto page, where this class still renders the "current" field
-   the size variants are compared against. Remove it once that page is gone.
-   On a field that also carries .is-l / .is-m / .is-s the size rule below wins
-   on specificity and width, height and padding come from the size tokens. */
-.text-input.is-nav-search {
-  width: 11.1111em;
-  min-height: 2.5em;
-  padding-left: 2.44444em;
-}
-
-.text-input.is-nav-search::placeholder {
-  color: #1a191c99;
-}
-
 /* ==========================================================================
    Inputs L / M / S (approved on /inputs-proto, see plans/inputs-rollout-plan-2026-10.md).
-   Opt-in: the new look switches on only with a size class, a field without it keeps
-   the old Webflow style above. Size pairs with the button of the same size:
+   Every field carries a size class; the old Webflow .text-input / .textarea-input
+   base is gone, so these rules are the whole look. Size pairs with the button of the same size:
      .text-input.is-l  ↔ .button          (50 high)
      .text-input.is-m  ↔ .button-small    (40, 37 on phones)
      .text-input.is-s  ↔ .button-x-small  (31)
@@ -3282,9 +3218,8 @@ figcaption {
    .textarea-input.is-l / .is-m / .is-s (multi-line).
 
    Specificity: the class is doubled inside :is(), so every rule here is 0,3,0 or more.
-   That beats `.text-input.is-nav-search` from styles/globals.css (0,2,0) and, with
-   :disabled, Webflow `.w-input[disabled]:not(.w-input-disabled)` (0,3,0), whatever
-   order the stylesheets load in.
+   With :disabled that beats Webflow `.w-input[disabled]:not(.w-input-disabled)` (0,3,0),
+   whatever order the stylesheets load in.
 
    Rows: a field and a button in one horizontal row are aligned on the centre line
    (align-items: center), never on the top edge. The push edge of the button and the
@@ -5184,35 +5119,6 @@ figcaption {
 
 
 
-.textarea-input {
-  background-color: #f0ebff;
-  border: 1px solid #1a191c26;
-  border-radius: 1.25em;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  min-height: 8em;
-  margin-bottom: 0;
-  padding: .7em 1em;
-  font-size: 18em;
-  display: flex;
-  box-shadow: inset 0 3px 1px #7c4dff33;
-}
-
-.textarea-input:hover, .textarea-input:focus {
-  border-width: 1px;
-  border-color: var(--primary);
-}
-
-.textarea-input::placeholder {
-  color: #19181bb3;
-}
-
-.textarea-input.is-smaller {
-  min-height: 6em;
-}
-
 
 
 .fs-rangeslider_handle {
@@ -6272,10 +6178,6 @@ figcaption {
     align-items: stretch;
   }
 
-  .text-input.is-search {
-    width: 100%;
-  }
-
   /* Phones: the row stacks (see .templates_list-head above), the search field moves
      above the "Filter by" line as it always did, and both controls take the column. */
   .freebies_filters-wr + .text-input.is-m {
@@ -6284,10 +6186,6 @@ figcaption {
   }
 
   .freebies_filters-wr .text-input.is-m {
-    width: 100%;
-  }
-
-  .text-input.is-nav-search {
     width: 100%;
   }
 
@@ -6772,10 +6670,6 @@ figcaption {
   }
 
 
-
-  .textarea-input {
-    min-height: 6em;
-  }
 
 
 
