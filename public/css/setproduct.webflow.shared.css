@@ -2186,6 +2186,23 @@ textarea.w-input, textarea.w-select {
   --input-s-lift: calc(-1 * var(--em-px));
 }
 
+/* Label, hint and error follow the field text: the left inset is the border (1) plus the
+   inner padding (20 / 16 / 12), so the first letter of a label and the first letter of the
+   placeholder stand on one vertical line. The vertical gap between a label and its control,
+   and between the control and its message, clears the focus edge plus lift (8 / 6 / 4).
+   Always calc(N * var(--em-px)): inside a 16px label 21em would mean 336px, the same trap
+   as with the corner radii. */
+:root {
+  --input-l-inset: calc(21 * var(--em-px));   /* border 1 + padding 20 */
+  --input-m-inset: calc(17 * var(--em-px));   /* border 1 + padding 16 */
+  --input-s-inset: calc(13 * var(--em-px));   /* border 1 + padding 12 */
+
+  --field-gap-l: calc(8 * var(--em-px));
+  --field-gap-m: calc(6 * var(--em-px));
+  --field-gap-s: calc(4 * var(--em-px));
+  --field-group-gap: calc(12 * var(--em-px));  /* extra air between field groups */
+}
+
 /* On phones .text-size-medium drops to 16em, so .button-small is 6 + 7 + 16 × 1.5 = 37. */
 @media screen and (max-width: 479px) {
   :root {
@@ -3637,8 +3654,23 @@ figcaption {
      </form>
 
    Size class on .form-grid (or on a single .field): is-l / is-m / is-s, the same
-   as the fields inside. It only sets the label and message text size.
+   as the fields inside. It sets the label and message text size, the label inset
+   and the vertical gap between label, control and message.
+
+   The size token pair lives on the wrapper, never on .field itself: a .field.is-m
+   inside .form-grid.is-s must keep the grid's values through inheritance.
+   L is the default, so .is-l is optional.
    ========================================================================== */
+
+:is(.field, .form-grid).is-m {
+  --field-inset: var(--input-m-inset);
+  --field-gap: var(--field-gap-m);
+}
+
+:is(.field, .form-grid).is-s {
+  --field-inset: var(--input-s-inset);
+  --field-gap: var(--field-gap-s);
+}
 
 /* ---------- Field group: label / control / message ---------- */
 
@@ -3646,13 +3678,17 @@ figcaption {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
-  row-gap: 6em;
+  row-gap: var(--field-gap, var(--field-gap-l));
   min-width: 0;
 }
 
+/* The label, the hint and the error start on the line of the field text, not on the
+   border: the inset equals border 1 + inner padding. box-sizing: border-box is global,
+   so the padding cannot widen the block and a long line still wraps inside the column. */
 .field-label {
   display: block;
   margin: 0;
+  padding-inline-start: var(--field-inset, var(--input-l-inset));
   color: var(--black);
   font-size: 16em;
   font-weight: 600;
@@ -3662,6 +3698,7 @@ figcaption {
 .field-hint,
 .field-error {
   margin: 0;
+  padding-inline-start: var(--field-inset, var(--input-l-inset));
   font-size: 14em;
   line-height: 150%;
 }
@@ -3707,19 +3744,32 @@ figcaption {
 /* ---------- Grid: dense form in two columns ----------
    Each .field spans 3 shared rows via subgrid (label / control / message). A long
    error in one column makes the message row taller for both, the controls stay on
-   one line. Row gap 20 > focus edge + lift of L (8), so a focused field never
-   touches the label below. */
+   one line. The gap is the field gap of the size (8 / 6 / 4), so the label, the
+   control and the message sit close together; subgrid takes the gap from the parent,
+   the .field's own row-gap is ignored inside it.
+   Air between field groups is added on top of a group: 8 + 12 = 20, as before, so a
+   focused field never touches the group below. It sits on the top rather than the
+   bottom on purpose: the first shared row skips it, so a grid that is just one row
+   leaves no stray band under itself (the contact dialog is exactly that, followed by
+   a textarea field). */
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 16em;
-  row-gap: 20em;
+  row-gap: var(--field-gap, var(--field-gap-l));
 }
 
 .form-grid > .field {
   grid-row: span 3;
   grid-template-rows: subgrid;
+  margin-block-start: var(--field-group-gap);
+}
+
+/* The first shared row is the top of the form, not a group after another group.
+   Two columns: the first row holds two fields, so the first two skip the extra air. */
+.form-grid > .field:nth-child(-n + 2) {
+  margin-block-start: 0;
 }
 
 /* The control sits on the centre of its shared row. */
@@ -3734,6 +3784,11 @@ figcaption {
 @media screen and (max-width: 767px) {
   .form-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* One column: the first row holds a single field, so the second one starts a group. */
+  .form-grid > .field:nth-child(2) {
+    margin-block-start: var(--field-group-gap);
   }
 }
 
