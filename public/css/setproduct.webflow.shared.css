@@ -3263,11 +3263,12 @@ figcaption {
   border-color: #1a191c26;
 }
 
-/* Legacy nav/`/search`/`/freebies` field. Still used by SearchPage and
-   FreebiesListingPage until they move to a size class (rollout plan steps 11
-   and 12). On a field that also carries .is-l / .is-m / .is-s the size rule
-   below wins on specificity and width, height and padding come from the
-   size tokens instead. */
+/* Legacy nav field. SearchPage moved to a size class in rollout step 11 and the
+   navbar and /freebies do not use it either, so the only remaining consumer is
+   the /inputs-proto page, where this class still renders the "current" field
+   the size variants are compared against. Remove it once that page is gone.
+   On a field that also carries .is-l / .is-m / .is-s the size rule below wins
+   on specificity and width, height and padding come from the size tokens. */
 .text-input.is-nav-search {
   width: 11.1111em;
   min-height: 2.5em;
@@ -3276,25 +3277,6 @@ figcaption {
 
 .text-input.is-nav-search::placeholder {
   color: #1a191c99;
-}
-
-.text-input.is-nav-search.is-page-search {
-  width: 100%;
-  min-height: 2.7em;
-}
-
-/* /search keeps its old look: its font size, paddings and radius used to come
-   from the navbar override in styles/globals.css, which is gone now that the
-   navbar field is a size M input. Copied here so the page does not change
-   before step 11 moves it to a size class. min-height is left out on purpose:
-   `.is-page-search` above sets 2.7em and always won over the old 2.928em.
-   Remove this block together with `.is-page-search`. */
-.text-input.text-input.is-nav-search.is-page-search {
-  font-size: 14em;
-  padding-top: 0.629em;
-  padding-bottom: 0.629em;
-  padding-left: 3.143em;
-  border-radius: 1.143em;
 }
 
 /* ==========================================================================
@@ -3499,12 +3481,20 @@ figcaption {
 }
 
 /* ---------- Search: magnifier on the left, lifts together with the field ----------
-   Markup: .search > input.text-input.is-nav-search.is-* + .search-icon-wr > .search-icon.
-   L: inset 16 + icon 21 + gap 10; M: 14 + 18 + 10; S: 10 + 14 + 8. */
+   Markup: .search > input.text-input.is-* + .search-icon-wr > .search-icon.
+   L: inset 16 + icon 21 + gap 10 = 47; M: 14 + 18 + 10 = 42; S: 10 + 14 + 8 = 32.
+   Scoped to the .search form on purpose: a field of the same size without a
+   magnifier keeps the plain side padding.
 
-.text-input.text-input.is-nav-search.is-l { padding-left: calc(47 * var(--em-px)); }
-.text-input.text-input.is-nav-search.is-m { padding-left: calc(42 * var(--em-px)); }
-.text-input.text-input.is-nav-search.is-s { padding-left: calc(32 * var(--em-px)); }
+   The size class is repeated instead of doubling .text-input, so the rule sits
+   above the base size rule that drops the side inset. The phone field in the
+   navbar mobile menu is a .search child too, but it owns its own inset with a
+   pixel floor (styles/globals.css); :not() keeps it out instead of relying on
+   which stylesheet happens to load last. */
+
+.search:not(.nav-menu-mob-search) > .text-input.is-l.is-l { padding-left: calc(47 * var(--em-px)); }
+.search:not(.nav-menu-mob-search) > .text-input.is-m.is-m { padding-left: calc(42 * var(--em-px)); }
+.search:not(.nav-menu-mob-search) > .text-input.is-s.is-s { padding-left: calc(32 * var(--em-px)); }
 
 .text-input.is-l ~ .search-icon-wr { --input-lift: var(--input-l-lift); padding-left: calc(16 * var(--em-px)); }
 .text-input.is-m ~ .search-icon-wr { --input-lift: var(--input-m-lift); padding-left: calc(14 * var(--em-px)); }
@@ -3522,6 +3512,55 @@ figcaption {
 .text-input:is(.is-l, .is-m, .is-s):focus ~ .search-icon-wr {
   transform: translateY(var(--input-lift));
   transition-duration: var(--input-in);
+}
+
+/* ---------- /search clear button: same scale as the field it clears ----------
+   The button is a sibling of the field, so its offset and hit area follow the
+   field size: 12 from the right edge and 32 square at L, 10 / 28 at M, 8 / 24
+   at S. The icon inside is 14 / 13 / 12. */
+
+.text-input.is-l ~ .search-clear-btn {
+  right: calc(12 * var(--em-px));
+  width: calc(32 * var(--em-px));
+  height: calc(32 * var(--em-px));
+}
+
+.text-input.is-m ~ .search-clear-btn {
+  right: calc(10 * var(--em-px));
+  width: calc(28 * var(--em-px));
+  height: calc(28 * var(--em-px));
+}
+
+.text-input.is-s ~ .search-clear-btn {
+  right: calc(8 * var(--em-px));
+  width: calc(24 * var(--em-px));
+  height: calc(24 * var(--em-px));
+}
+
+.text-input.is-l ~ .search-clear-btn .search-clear-btn-icon { width: calc(14 * var(--em-px)); height: calc(14 * var(--em-px)); }
+.text-input.is-m ~ .search-clear-btn .search-clear-btn-icon { width: calc(13 * var(--em-px)); height: calc(13 * var(--em-px)); }
+.text-input.is-s ~ .search-clear-btn .search-clear-btn-icon { width: calc(12 * var(--em-px)); height: calc(12 * var(--em-px)); }
+
+/* The field makes room for the button instead of letting the text run under it:
+   button offset + button + air = 56 / 48 / 40. Without the button the field
+   keeps the plain --input-px inset. */
+
+.search:has(> .search-clear-btn) > .text-input.is-l.is-l { padding-right: calc(56 * var(--em-px)); }
+.search:has(> .search-clear-btn) > .text-input.is-m.is-m { padding-right: calc(48 * var(--em-px)); }
+.search:has(> .search-clear-btn) > .text-input.is-s.is-s { padding-right: calc(40 * var(--em-px)); }
+
+/* ---------- /search topic select: sits on the tab centre line ----------
+   The chip row carries 4em of bottom padding as breathing room for the scroll
+   track, so a chip's visible centre sits 2em above the centre line the row
+   would otherwise give it. The select wrapper takes the same 4em: its own
+   centre drops by 2em as well and the two line up without a pixel correction.
+   Both use one scale (em through --em-px), so the pair stays aligned at every
+   width instead of drifting when the fixed 4px of a Tailwind utility shrinks
+   against it. The chips carry m-0!, so the chip's own 4em margin adds nothing. */
+
+.search-tabs-track,
+.search-topic-wr {
+  padding-bottom: calc(4 * var(--em-px));
 }
 
 /* ---------- Navbar width: the field pairs with button-small ----------
@@ -3584,6 +3623,15 @@ figcaption {
   padding-right: calc(32 * var(--em-px));
   background-position: right calc(10 * var(--em-px)) center;
   background-size: calc(14 * var(--em-px));
+}
+
+/* Chosen value: the select borrows the focused field colours as a "filter is
+   on" state, so a narrowed list reads without opening the dropdown. New state,
+   the size system did not have it before (/search is the first consumer). */
+
+.text-input.text-input.is-select.is-active {
+  border-color: var(--input-border-focus);
+  background-color: var(--input-bg-focus);
 }
 
 /* ---------- Attention: a light beam runs along the border ----------

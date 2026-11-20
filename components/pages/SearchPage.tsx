@@ -787,7 +787,7 @@ export default function SearchPage({ items, navData }: Props) {
                     ref={inputRef}
                     aria-controls="search-results"
                     autoComplete="off"
-                    className="text-input is-nav-search is-page-search w-input pr-12 [&::-webkit-search-cancel-button]:appearance-none"
+                    className="text-input is-l"
                     enterKeyHint="search"
                     id="search-page-input"
                     maxLength={256}
@@ -809,9 +809,9 @@ export default function SearchPage({ items, navData }: Props) {
                       type="button"
                       onClick={clearInput}
                       aria-label="Clear search"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full border-0 bg-transparent cursor-pointer opacity-60 hover:opacity-100 hover:bg-(--light-primary) focus-visible:outline-2 focus-visible:outline-(--primary)"
+                      className="search-clear-btn absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full border-0 bg-transparent cursor-pointer opacity-60 hover:opacity-100 hover:bg-(--light-primary) focus-visible:outline-2 focus-visible:outline-(--primary)"
                     >
-                      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <svg aria-hidden="true" className="search-clear-btn-icon" viewBox="0 0 14 14" fill="none">
                         <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     </button>
@@ -975,7 +975,7 @@ export default function SearchPage({ items, navData }: Props) {
                     <div
                       role="tablist"
                       aria-label="Filter results by type"
-                      className="flex flex-1 min-w-0 basis-full sm:basis-0 gap-2 overflow-x-auto whitespace-nowrap -mx-4 px-4 pb-1 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                      className="search-tabs-track flex flex-1 min-w-0 basis-full sm:basis-0 gap-2 overflow-x-auto whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     >
                       {tabs.map((tab) => {
                         const selected = tab.id === effectiveTab;
@@ -1007,7 +1007,7 @@ export default function SearchPage({ items, navData }: Props) {
                     {/* второго ряда чипов. Нативный select даёт клавиатуру */}
                     {/* и системный список на мобильных без лишнего кода. */}
                     {effectiveTab === "blog" && blogCategories.length > 1 && (
-                      <div className="relative w-full sm:w-auto shrink-0 pb-1">
+                      <div className="search-topic-wr relative w-full sm:w-auto shrink-0">
                         <label htmlFor="search-topic" className="sr-only">
                           Filter blog posts by topic
                         </label>
@@ -1015,7 +1015,7 @@ export default function SearchPage({ items, navData }: Props) {
                           id="search-topic"
                           value={effectiveCategory ?? ""}
                           onChange={(e) => selectCategory(e.target.value || null)}
-                          className={`appearance-none w-full sm:w-auto m-0! h-auto! text-size-regular text-weight-semibold text-inherit cursor-pointer radius-full border border-solid pl-4 pr-10 py-2 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) ${effectiveCategory ? "border-(--primary) bg-(--light-primary)" : "border-(--black-transparent) bg-(--light-purple)"}`}
+                          className={`text-input is-s is-select w-full! sm:w-auto! m-0!${effectiveCategory ? " is-active" : ""}`}
                         >
                           <option value="">All topics ({grouped.blog.length})</option>
                           {blogCategories.map((cat) => (
@@ -1024,18 +1024,6 @@ export default function SearchPage({ items, navData }: Props) {
                             </option>
                           ))}
                         </select>
-                        <svg
-                          aria-hidden="true"
-                          viewBox="0 0 16 16"
-                          className="pointer-events-none absolute right-4 top-[calc(50%-2px)] -translate-y-1/2 w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M4 6l4 4 4-4" />
-                        </svg>
                       </div>
                     )}
                     </div>
