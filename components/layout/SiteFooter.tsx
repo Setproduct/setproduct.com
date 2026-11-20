@@ -307,7 +307,7 @@ export default function SiteFooter({ navData, blogPosts = [], hidePublish = fals
                               tabIndex={-1}
                             />
                           </div>
-                          <input aria-label="Email address" className="text-input w-input" disabled={isSubmitting} maxLength={256} name="Email" placeholder="Enter your email" required type="email" />
+                          <input aria-label="Email address" className="text-input is-l" disabled={isSubmitting} maxLength={256} name="Email" placeholder="Enter your email" required type="email" />
                           <div className="button-form-wr">
                             <button className="button outlined w-inline-block disabled:opacity-70" disabled={isSubmitting} type="submit">
                               {isSubmitting ? (
