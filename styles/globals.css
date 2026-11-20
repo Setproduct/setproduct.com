@@ -1666,6 +1666,12 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
  * onLoad, NavThumb adds `.is-loaded`: the shimmer fades out and the image fades
  * in. Thumbs whose URL was already revealed in this session mount straight in
  * the loaded state, so switching categories doesn't replay the shimmer.
+ *
+ * Performance: the sweep runs only in an OPEN panel and only until the image
+ * has loaded. Closed panels stay in the DOM (max-height: 0), so an always-on
+ * infinite animation kept the main thread painting at 60 fps on every page
+ * for as long as the tab was open. The sweep moves with `transform`, which
+ * the compositor animates without repainting.
  */
 .navbar .nav_thumb-img-wr {
   background-color: #ececef;
@@ -1682,15 +1688,19 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
     rgba(255, 255, 255, 0.6) 50%,
     rgba(255, 255, 255, 0) 80%
   );
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
+  transform: translateX(-100%);
   z-index: 1;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
+.navbar .w-dropdown-list.w--open .nav_thumb-img-wr:not(.is-loaded)::after {
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
 .navbar .nav_thumb-img-wr.is-loaded::after {
   opacity: 0;
+  animation: none;
 }
 
 /*
@@ -1716,10 +1726,10 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 
 @keyframes shimmer {
   0% {
-    background-position: 200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: -200% 0;
+    transform: translateX(100%);
   }
 }
 
