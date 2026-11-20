@@ -265,8 +265,9 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
 
   // Take the entry point's topic and any saved draft in the same render that
   // opens the dialog, so the first painted frame already shows the right panel
-  // with the text in place.
-  const [wasOpen, setWasOpen] = useState(isOpen);
+  // with the text in place. Starts at false: the provider mounts the dialog
+  // lazily, already open, and that first open must restore the draft too.
+  const [wasOpen, setWasOpen] = useState(false);
   if (isOpen !== wasOpen) {
     setWasOpen(isOpen);
     if (isOpen) {

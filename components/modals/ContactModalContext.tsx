@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import ContactModal from "./ContactModal";
 import { isContactTopic } from "../../lib/contactTopics";
 import {
   rememberLandingPage,
@@ -11,6 +11,7 @@ import {
   type ContactLocation,
   type ContactOpenOptions,
 } from "../../lib/contact";
+import { onFirstIntent } from "../../lib/deferredScripts";
 
 type ContactModalContextType = {
   /**
@@ -34,6 +35,12 @@ export function useContactModal() {
 
 type OpenRequest = { location: ContactLocation } & Required<ContactOpenOptions>;
 
+// The dialog (~1000 lines with its motion and form logic) is only needed by
+// the few people who open it, so it is its own chunk, fetched on the first
+// open instead of shipping in the bundle of every page.
+const loadContactModal = () => import("./ContactModal");
+const ContactModal = dynamic(loadContactModal, { ssr: false });
+
 /**
  * `?contact=publish` (or partnership, work, other) opens the dialog on that
  * topic; `?contact` with any other value opens it with no topic. Publishing
@@ -44,11 +51,17 @@ const URL_PARAM = "contact";
 
 export function ContactModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  // Mount the dialog on the first open and keep it mounted afterwards, so the
+  // close motion and the next open behave exactly as before.
+  const [hasOpened, setHasOpened] = useState(false);
   const [request, setRequest] = useState<OpenRequest>({ location: "unknown", topic: null, ask: false });
 
   // The provider wraps the whole app, so this runs on the first page of the visit.
   useEffect(() => {
     rememberLandingPage();
+    // Warm the dialog chunk once the visitor is active, so a later click on
+    // "Contact us" opens it without waiting for the network.
+    onFirstIntent(() => void loadContactModal());
   }, []);
 
   // Both the GA4 click event and the modal state live here: any new entry point
@@ -57,6 +70,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
     const location = next ?? "unknown";
     const resolved = resolveOpenOptions(location, options);
     setRequest({ location, ...resolved });
+    setHasOpened(true);
     setIsOpen(true);
     trackContactCta(location, resolved.topic ?? "none");
   }, []);
@@ -83,13 +97,15 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   return (
     <ContactModalContext.Provider value={{ openContactModal }}>
       {children}
-      <ContactModal
-        initialAsk={request.ask}
-        initialTopic={request.topic}
-        isOpen={isOpen}
-        location={request.location}
-        onClose={() => setIsOpen(false)}
-      />
+      {hasOpened ? (
+        <ContactModal
+          initialAsk={request.ask}
+          initialTopic={request.topic}
+          isOpen={isOpen}
+          location={request.location}
+          onClose={() => setIsOpen(false)}
+        />
+      ) : null}
     </ContactModalContext.Provider>
   );
 }
