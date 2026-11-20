@@ -18,6 +18,12 @@ export const PUBLISH_SHOWCASE_BADGE = "Page 1 on Google";
 
 export const PUBLISH_STEPS = [
   { title: "Pick a plan", text: "One or two dofollow links, with the price shown up front." },
-  { title: "Upload your draft", text: "Send the article through the publishing portal." },
-  { title: "Go live within 24 hours", text: "Your post appears on the blog next to our own guides." },
+  {
+    title: "Upload your draft",
+    text: "Send the article through the publishing portal. Or send a short brief and we write it.",
+  },
+  {
+    title: "Go live fast",
+    text: "24 hours on Accelerate, 4 hours on Maximize, 7 days on Delegate. Always right next to our own guides.",
+  },
 ] as const;

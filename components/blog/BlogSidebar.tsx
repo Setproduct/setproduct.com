@@ -92,6 +92,7 @@ function PublishCard() {
         <li>Live within {PUBLISH_OFFER.turnaround}</li>
         <li>Dofollow link, DR {PUBLISH_OFFER.domainRating}</li>
         <li>From ${PUBLISH_OFFER.priceFrom}</li>
+        <li>Or ${PUBLISH_OFFER.priceWritten} and we write it for you</li>
       </ul>
       <a className="button-small w-inline-block" {...getPublishLinkProps("blog_sidebar")}>
         <div className="text-size-medium text-weight-bold">Pricing</div>

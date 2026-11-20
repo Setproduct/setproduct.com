@@ -39,6 +39,8 @@ export default function HomePublishBand({ showcase }: Props) {
               <p className="text-size-large">
                 Publish an article about your product on Setproduct. It sits next to our design
                 guides, reaches people who build tech products and keeps a dofollow link for good.
+                Bring your own draft, or send a short brief on the Delegate plan and our writers
+                produce the article for you.
               </p>
 
               <div className="spacer-32" />

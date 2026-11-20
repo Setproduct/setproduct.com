@@ -83,8 +83,9 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
 
                     <h2 id="plans">Plans and prices</h2>
                     <p>
-                      Both plans publish your article on the Setproduct blog, which reaches{" "}
-                      {PUBLISH_OFFER.readersPerMonth} readers a month at DR {PUBLISH_OFFER.domainRating}.
+                      All three plans publish your article on the Setproduct blog, which reaches{" "}
+                      {PUBLISH_OFFER.readersPerMonth} readers a month at DR {PUBLISH_OFFER.domainRating}. On
+                      Accelerate and Maximize you bring the draft. On Delegate we write the article for you.
                     </p>
                     <div className="blog-fit-table">
                       <table>
@@ -93,6 +94,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                             <th>What you get</th>
                             <th>Accelerate</th>
                             <th>Maximize</th>
+                            <th>Delegate</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -100,31 +102,49 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                             <td>Price per article</td>
                             <td>${PUBLISH_OFFER.priceFrom}</td>
                             <td>${PUBLISH_OFFER.priceTwoLinks}</td>
+                            <td>${PUBLISH_OFFER.priceWritten}</td>
+                          </tr>
+                          <tr>
+                            <td>Who writes the post</td>
+                            <td>You</td>
+                            <td>You</td>
+                            <td>Our writers, from your brief</td>
                           </tr>
                           <tr>
                             <td>Do-follow links</td>
                             <td>One</td>
                             <td>Two</td>
+                            <td>Two</td>
                           </tr>
                           <tr>
                             <td>Published within</td>
-                            <td>24 hours</td>
-                            <td>4 hours</td>
+                            <td>{PUBLISH_OFFER.turnaround}</td>
+                            <td>{PUBLISH_OFFER.turnaroundMaximize}</td>
+                            <td>{PUBLISH_OFFER.turnaroundDelegate}</td>
                           </tr>
                           <tr>
                             <td>Word count</td>
                             <td>Up to 3,000</td>
                             <td>Up to 5,000</td>
+                            <td>Up to 2,500</td>
+                          </tr>
+                          <tr>
+                            <td>Cover and inline visuals</td>
+                            <td>Yours</td>
+                            <td>Yours</td>
+                            <td>Made for you</td>
                           </tr>
                           <tr>
                             <td>Placement</td>
                             <td>Blog</td>
                             <td>Blog, plus the homepage</td>
+                            <td>Blog, plus the homepage</td>
                           </tr>
                           <tr>
                             <td>Newsletter promotion</td>
                             <td>No</td>
-                            <td>Yes, to 7,000 subscribers</td>
+                            <td>Yes, to {PUBLISH_OFFER.newsletterSubscribers} subscribers</td>
+                            <td>Yes, to {PUBLISH_OFFER.newsletterSubscribers} subscribers</td>
                           </tr>
                         </tbody>
                       </table>
@@ -142,25 +162,33 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       <li>Preview and finalize the post before it goes live.</li>
                       <li>Track the status, from review to publication.</li>
                       <li>Talk to our team through the support system.</li>
-                      <li>Read analytics and tracking data, on the Maximize plan only.</li>
+                      <li>Read analytics and tracking data, on the Maximize and Delegate plans.</li>
                     </ul>
+                    <p>
+                      On Delegate you send a short brief instead of a draft. Tell us the product, the audience and
+                      the anchors you want. Our writers pick the topic, write the article, and make the cover and
+                      inline visuals. You see the draft before it goes live and get one round of edits.
+                    </p>
 
                     <h2 id="turnaround">Turnaround time</h2>
                     <p>
-                      The clock starts once your payment has cleared and the finalized draft is in the member zone.
-                      From there the order is the same on both plans:
+                      The clock starts once your payment has cleared and your draft or brief is in the member zone.
+                      From there the order is the same on all three plans:
                     </p>
                     <ol>
                       <li>You pay, and the member zone opens for you.</li>
-                      <li>You add the draft, the anchor text and the images, then finalize the post.</li>
+                      <li>You add the draft and the images, or send a brief on Delegate, then finalize it.</li>
                       <li>We review it and ask for changes if something needs tightening.</li>
                       <li>The post goes live, and we tell you it is up.</li>
                     </ol>
                     <p>
-                      Accelerate goes live within 24 hours. Maximize is the urgent option and goes live within 4
-                      hours, because we start reviewing it the moment the draft lands. Both limits count from the
-                      finalized draft, so upload it right after you pay. If we ask for changes, the clock pauses
-                      until you send the updated version.
+                      Accelerate goes live within {PUBLISH_OFFER.turnaround}. Maximize is the urgent option and goes
+                      live within {PUBLISH_OFFER.turnaroundMaximize}, because we start reviewing it the moment the
+                      draft lands. Delegate takes {PUBLISH_OFFER.turnaroundDelegate}, since the article has to be
+                      written first. The Accelerate and Maximize limits count from the finalized draft, so upload it
+                      right after you pay. If we ask for changes, the clock pauses until you send the updated
+                      version, and on Delegate it starts when your brief is in, not when the draft comes back to
+                      you.
                     </p>
 
                     <h2 id="indexing">Google indexing</h2>

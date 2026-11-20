@@ -18,13 +18,24 @@ import { event } from "./gtag";
 export const PUBLISH_HOST = "publish.setproduct.com";
 export const PUBLISH_URL = `https://${PUBLISH_HOST}/`;
 
-/** Offer facts shown next to publishing CTAs. Update here only. */
+/**
+ * Offer facts shown next to publishing CTAs. Update here only.
+ *
+ * Source of truth: https://publish.setproduct.com/ (checked 2026-11-20).
+ * Accelerate $390 (1 dofollow link, live in 24 hours, up to 3,000 words),
+ * Maximize $490 (2 links, live in 4 hours, homepage, newsletter),
+ * Delegate $890 (we write it, 2 links, live in 7 days).
+ */
 export const PUBLISH_OFFER = {
-  priceFrom: 288,
-  priceTwoLinks: 348,
+  priceFrom: 390,
+  priceTwoLinks: 490,
+  priceWritten: 890,
   readersPerMonth: "17,000",
   domainRating: 42,
   turnaround: "24 hours",
+  turnaroundMaximize: "4 hours",
+  turnaroundDelegate: "7 days",
+  newsletterSubscribers: "7,000",
 } as const;
 
 /**
