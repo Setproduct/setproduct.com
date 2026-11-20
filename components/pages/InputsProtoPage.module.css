@@ -739,6 +739,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24em;
+  /* Panels hold different amounts of text, so they must not stretch each other. */
+  align-items: start;
 }
 
 .cell {

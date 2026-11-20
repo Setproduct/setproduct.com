@@ -575,11 +575,15 @@ export default function InputsProtoPage({ navData }: Props) {
               <h2 className="heading-style-h5">Settings panel (dense dashboard form)</h2>
               <div className="spacer-4" />
               <p className={`text-size-regular ${styles.cellLabel}`}>
-                Acceptance test for alignment. Two columns of M and S fields on a shared grid: fields in one row
-                stay on one line even when a neighbour has a long error or no hint. Select, read-only field with a
-                button, disabled field, textarea and the Save / Cancel row all use the same size.
+                Acceptance test for alignment. Three sizes. L goes on its own row above at full width, so its 18
+                text and the long Owner email error have room to show. Below it M and S share a two-column grid,
+                and fields in one row stay on one line even when a neighbour has a long error or no hint. Select,
+                read-only field with a button, disabled field, textarea and the Save / Cancel row all use the same
+                size.
               </p>
               <div className="spacer-16" />
+              <SettingsPanel sizeId="l" />
+              <div className="spacer-24" />
               <div className={styles.row}>
                 <SettingsPanel sizeId="m" />
                 <SettingsPanel sizeId="s" />
