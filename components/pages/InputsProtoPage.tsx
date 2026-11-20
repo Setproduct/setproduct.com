@@ -14,11 +14,11 @@ type Size = "l" | "m" | "s";
 
 const STATES: { id: StateId; title: string; note: string }[] = [
   { id: "default", title: "Default", note: "Empty field, placeholder visible" },
-  { id: "hover", title: "Hover (frozen)", note: "Now: same as focus. Proposed: no movement, same inner shadow. Fill clears up, border turns light purple" },
-  { id: "focus", title: "Focus (frozen)", note: "Now: 1px border only. Proposed: 2px purple border, the inner shadow moves outside as the outlined button edge (6 / 4 / 3), the field lifts, the label stays. Click a field to see the motion" },
+  { id: "hover", title: "Hover (frozen)", note: "No movement, same inner shadow. Fill clears up, border turns light purple" },
+  { id: "focus", title: "Focus (frozen)", note: "2px purple border, the inner shadow moves outside as the outlined button edge (6 / 4 / 3), the field lifts. Click a field to see the motion" },
   { id: "filled", title: "Filled", note: "Value entered, no focus" },
-  { id: "error", title: "Error", note: "Now: no error style at all. Proposed: red border, text linked via aria-describedby" },
-  { id: "disabled", title: "Disabled", note: "Now: Webflow grey #eee. Proposed: brand fill at 60%" },
+  { id: "error", title: "Error", note: "Red border, text linked via aria-describedby" },
+  { id: "disabled", title: "Disabled", note: "Brand fill at 60%" },
 ];
 
 /* Every field size is paired with the button of the same size (see the CSS module). */
@@ -90,59 +90,7 @@ function SizeTag({ size }: { size: (typeof SIZES)[number] }) {
   );
 }
 
-/* ---------- Current site: one size, as it is now ---------- */
-
-function NowStateFields({ state }: { state: StateId }) {
-  const id = `now-${state}`;
-  const isError = state === "error";
-  const value = state === "filled" ? "roman@setproduct.com" : isError ? "roman@setproduct" : undefined;
-
-  return (
-    <>
-      <div className={styles.fieldWrap}>
-        <label className={`text-size-regular ${styles.label}`} htmlFor={`${id}-email`}>
-          Email
-        </label>
-        <input
-          aria-describedby={isError ? `${id}-email-error` : `${id}-email-hint`}
-          aria-invalid={isError || undefined}
-          className={cx("text-input w-input", forcedClass(state))}
-          defaultValue={value}
-          disabled={state === "disabled"}
-          id={`${id}-email`}
-          placeholder="Enter your email"
-          type="email"
-        />
-        {isError ? (
-          <p className={`text-size-small ${styles.errorText}`} id={`${id}-email-error`}>
-            Enter a full email address
-          </p>
-        ) : (
-          <p className={`text-size-small ${styles.hint}`} id={`${id}-email-hint`}>
-            Once per week, no spam
-          </p>
-        )}
-      </div>
-
-      <div className="search w-form">
-        <input
-          aria-invalid={isError || undefined}
-          aria-label="Search Setproduct"
-          className={cx("text-input is-nav-search w-input", styles.searchWide, forcedClass(state))}
-          defaultValue={state === "filled" || isError ? "dashboard" : undefined}
-          disabled={state === "disabled"}
-          placeholder="Search kits, articles…"
-          type="search"
-        />
-        <div className="search-icon-wr">
-          <img alt="" className="search-icon" src={SEARCH_ICON} />
-        </div>
-      </div>
-    </>
-  );
-}
-
-/* ---------- Proposed: the same state in L, M and S ---------- */
+/* ---------- One state in L, M and S ---------- */
 
 function ProtoStateFields({ state }: { state: StateId }) {
   const isError = state === "error";
@@ -166,7 +114,7 @@ function ProtoStateFields({ state }: { state: StateId }) {
                 aria-describedby={isError ? `${id}-email-error` : `${id}-email-hint`}
                 aria-invalid={isError || undefined}
                 autoComplete="email"
-                className={cx("text-input w-input", styles.f, styles[size.id], forcedClass(state))}
+                className={cx("text-input", styles.f, styles[size.id], forcedClass(state))}
                 defaultValue={value}
                 disabled={state === "disabled"}
                 id={`${id}-email`}
@@ -188,13 +136,7 @@ function ProtoStateFields({ state }: { state: StateId }) {
               <input
                 aria-invalid={isError || undefined}
                 aria-label={`Search Setproduct, size ${size.title}`}
-                className={cx(
-                  "text-input is-nav-search w-input",
-                  styles.searchWide,
-                  styles.f,
-                  styles[size.id],
-                  forcedClass(state),
-                )}
+                className={cx("text-input", styles.searchWide, styles.f, styles[size.id], forcedClass(state))}
                 defaultValue={state === "filled" || isError ? "dashboard" : undefined}
                 disabled={state === "disabled"}
                 placeholder="Search kits, articles…"
@@ -219,50 +161,6 @@ const TOPICS = [
   { value: "saas", label: "Startups & SaaS" },
 ];
 
-function NowLiveFields({ submitting }: { submitting: boolean }) {
-  const [topic, setTopic] = useState("");
-
-  return (
-    <>
-      <div className={styles.fieldWrap}>
-        <label className={`text-size-regular ${styles.label}`} htmlFor="now-live-message">
-          Message
-        </label>
-        <textarea className="textarea-input w-input" id="now-live-message" maxLength={5000} placeholder="Type your message…" />
-      </div>
-
-      <div className={styles.fieldWrap}>
-        <label className={`text-size-regular ${styles.label}`} htmlFor="now-live-topic">
-          Topic
-        </label>
-        <div className="relative w-full">
-          <select
-            className={`appearance-none w-full m-0! h-auto! text-size-regular text-weight-semibold text-inherit cursor-pointer radius-full border border-solid pl-4 pr-10 py-2 outline-none focus-visible:ring-2 focus-visible:ring-(--primary) ${topic ? "border-(--primary) bg-(--light-primary)" : "border-(--black-transparent) bg-(--light-purple)"}`}
-            id="now-live-topic"
-            onChange={(e) => setTopic(e.target.value)}
-            value={topic}
-          >
-            {TOPICS.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <form className="form-cta is-vertical" onSubmit={(e) => e.preventDefault()}>
-        <input aria-label="Email address" className="text-input w-input" disabled={submitting} placeholder="Enter your email" required type="email" />
-        <div className="button-form-wr">
-          <button className="button w-inline-block disabled:opacity-70" disabled={submitting} type="submit">
-            <div className="text-size-large text-weight-bold">Subscribe</div>
-          </button>
-        </div>
-      </form>
-    </>
-  );
-}
-
 function ProtoLiveFields({ submitting }: { submitting: boolean }) {
   const [topics, setTopics] = useState<Record<Size, string>>({ l: "", m: "", s: "" });
 
@@ -279,7 +177,7 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
                 Message
               </label>
               <textarea
-                className={cx("textarea-input w-input", styles.f, styles[size.id])}
+                className={cx("textarea-input", styles.f, styles[size.id])}
                 id={`${id}-message`}
                 maxLength={5000}
                 placeholder="Type your message…"
@@ -291,7 +189,7 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
                 Topic
               </label>
               <select
-                className={cx("text-input w-select", styles.f, styles[size.id], styles.select)}
+                className={cx("text-input", styles.f, styles[size.id], styles.select)}
                 id={`${id}-topic`}
                 onChange={(e) => setTopics((prev) => ({ ...prev, [size.id]: e.target.value }))}
                 value={topics[size.id]}
@@ -308,7 +206,7 @@ function ProtoLiveFields({ submitting }: { submitting: boolean }) {
               <input
                 aria-label={`Email address, size ${size.title}`}
                 autoComplete="email"
-                className={cx("text-input w-input", styles.f, styles[size.id])}
+                className={cx("text-input", styles.f, styles[size.id])}
                 disabled={submitting}
                 placeholder="Enter your email"
                 required
@@ -343,7 +241,7 @@ function AttentionFields() {
               <input
                 aria-describedby={`${id}-email-hint`}
                 autoComplete="email"
-                className={cx("text-input w-input", styles.f, styles[size.id], styles.attention)}
+                className={cx("text-input", styles.f, styles[size.id], styles.attention)}
                 id={`${id}-email`}
                 placeholder="Enter your email"
                 type="email"
@@ -356,13 +254,7 @@ function AttentionFields() {
             <div className="search w-form">
               <input
                 aria-label={`Search Setproduct, attention field, size ${size.title}`}
-                className={cx(
-                  "text-input is-nav-search w-input",
-                  styles.searchWide,
-                  styles.f,
-                  styles[size.id],
-                  styles.attention,
-                )}
+                className={cx("text-input", styles.searchWide, styles.f, styles[size.id], styles.attention)}
                 placeholder="Search kits, articles…"
                 type="search"
               />
@@ -389,7 +281,7 @@ function SizeRows() {
             <input
               aria-label={`Email, size ${size.title}`}
               autoComplete="email"
-              className={cx("text-input w-input", styles.f, styles[size.id])}
+              className={cx("text-input", styles.f, styles[size.id])}
               placeholder="Enter your email"
               type="email"
             />
@@ -455,7 +347,7 @@ function SettingsField({ id, label, labelClass, msgClass, hint, error, wide, chi
 function SettingsPanel({ sizeId }: { sizeId: Size }) {
   const size = SIZES.find((s) => s.id === sizeId)!;
   const id = `settings-${size.id}`;
-  const field = cx("text-input w-input", styles.f, styles[size.id]);
+  const field = cx("text-input", styles.f, styles[size.id]);
   const common = { labelClass: size.label, msgClass: size.hint };
 
   return (
@@ -484,7 +376,7 @@ function SettingsPanel({ sizeId }: { sizeId: Size }) {
         </SettingsField>
 
         <SettingsField {...common} id={`${id}-role`} label="Default role">
-          <select className={cx("text-input w-select", styles.f, styles[size.id], styles.select)} defaultValue="Editor" id={`${id}-role`}>
+          <select className={cx("text-input", styles.f, styles[size.id], styles.select)} defaultValue="Editor" id={`${id}-role`}>
             {ROLES.map((r) => (
               <option key={r}>{r}</option>
             ))}
@@ -494,7 +386,7 @@ function SettingsPanel({ sizeId }: { sizeId: Size }) {
         <SettingsField {...common} hint="Used for reports and digests" id={`${id}-tz`} label="Timezone">
           <select
             aria-describedby={`${id}-tz-msg`}
-            className={cx("text-input w-select", styles.f, styles[size.id], styles.select)}
+            className={cx("text-input", styles.f, styles[size.id], styles.select)}
             id={`${id}-tz`}
           >
             {TIMEZONES.map((t) => (
@@ -519,7 +411,7 @@ function SettingsPanel({ sizeId }: { sizeId: Size }) {
         <SettingsField {...common} hint="Up to 280 characters" id={`${id}-about`} label="Description" wide>
           <textarea
             aria-describedby={`${id}-about-msg`}
-            className={cx("textarea-input w-input", styles.f, styles[size.id])}
+            className={cx("textarea-input", styles.f, styles[size.id])}
             id={`${id}-about`}
             maxLength={280}
             placeholder="What this workspace is for…"
@@ -556,9 +448,9 @@ export default function InputsProtoPage({ navData }: Props) {
               <h1 className="heading-style-h2">Inputs prototype</h1>
               <div className="spacer-16" />
               <p className="text-size-large m-0">
-                Left column shows the fields as they are on the site now. Right column shows the proposed
-                styles in three sizes, L, M and S, paired with the buttons of the same size. Hover and focus
-                rows are frozen; every other field is live. Check the page at 1440, 1024, 768 and 390 px.
+                This page shows the fields of the design system in three sizes, L, M and S, next to the
+                buttons of the same size. Hover and focus rows are frozen; every other field is live. Check
+                the page at 1440, 1024, 768 and 390 px.
               </p>
 
               <div className="spacer-48" />
@@ -598,15 +490,8 @@ export default function InputsProtoPage({ navData }: Props) {
                 over. With reduced motion the border stays still.
               </p>
               <div className="spacer-16" />
-              <div className={styles.rowWide}>
-                <div className={`${styles.cell} ${styles.now}`}>
-                  <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
-                  <p className={`text-size-regular ${styles.cellLabel}`}>Not on the site yet</p>
-                </div>
-                <div className={`${styles.cell} ${styles.proto}`}>
-                  <p className={`text-size-small ${styles.cellLabel}`}>Proposed</p>
-                  <AttentionFields />
-                </div>
+              <div className={`${styles.cell} ${styles.proto}`}>
+                <AttentionFields />
               </div>
 
               {STATES.map((state) => (
@@ -616,15 +501,8 @@ export default function InputsProtoPage({ navData }: Props) {
                   <div className="spacer-4" />
                   <p className={`text-size-regular ${styles.cellLabel}`}>{state.note}</p>
                   <div className="spacer-16" />
-                  <div className={styles.rowWide}>
-                    <div className={`${styles.cell} ${styles.now}`}>
-                      <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
-                      <NowStateFields state={state.id} />
-                    </div>
-                    <div className={`${styles.cell} ${styles.proto}`}>
-                      <p className={`text-size-small ${styles.cellLabel}`}>Proposed</p>
-                      <ProtoStateFields state={state.id} />
-                    </div>
+                  <div className={`${styles.cell} ${styles.proto}`}>
+                    <ProtoStateFields state={state.id} />
                   </div>
                 </div>
               ))}
@@ -633,7 +511,7 @@ export default function InputsProtoPage({ navData }: Props) {
               <h2 className="heading-style-h5">Live: textarea, select, field with a button</h2>
               <div className="spacer-4" />
               <p className={`text-size-regular ${styles.cellLabel}`}>
-                Proposed select is native and styled like the field. In each size the subscribe button is the
+                The select is native and styled like the field. In each size the subscribe button is the
                 button of the same size.
               </p>
               <div className="spacer-16" />
@@ -642,15 +520,8 @@ export default function InputsProtoPage({ navData }: Props) {
                 Simulate submitting (disables the subscribe forms)
               </label>
               <div className="spacer-16" />
-              <div className={styles.rowWide}>
-                <div className={`${styles.cell} ${styles.now}`}>
-                  <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
-                  <NowLiveFields submitting={submitting} />
-                </div>
-                <div className={`${styles.cell} ${styles.proto}`}>
-                  <p className={`text-size-small ${styles.cellLabel}`}>Proposed</p>
-                  <ProtoLiveFields submitting={submitting} />
-                </div>
+              <div className={`${styles.cell} ${styles.proto}`}>
+                <ProtoLiveFields submitting={submitting} />
               </div>
             </div>
           </div>

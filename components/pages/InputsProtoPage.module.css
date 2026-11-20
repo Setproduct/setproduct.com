@@ -1,11 +1,4 @@
-/* ---------- Layout: Now column narrow, Proposed column holds L / M / S side by side ---------- */
-
-.rowWide {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
-  gap: 24em;
-  align-items: start;
-}
+/* ---------- Layout: one cell holds L / M / S side by side ---------- */
 
 .sizes {
   display: grid;
@@ -156,12 +149,6 @@
   }
 }
 
-@media (max-width: 991px) {
-  .rowWide {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 767px) {
   .sizes {
     grid-template-columns: 1fr;
@@ -179,9 +166,8 @@
 /* Inputs prototype (see plans/inputs-design-system-audit.md).
    Proposed styles are scoped to .proto, so live fields on the site stay untouched.
    Every prototype field gets the module class .f. Selectors use `.f.f` on purpose:
-   specificity 0,3,0 beats `.text-input.is-nav-search` from globals.css (0,2,0),
-   and `.f.f:disabled` (0,4,0) beats Webflow `.w-input[disabled]:not(...)` (0,3,0),
-   regardless of the order in which the stylesheets load. */
+   specificity 0,3,0 beats the Webflow `.text-input` base (0,1,0) regardless of the
+   order in which the stylesheets load. */
 
 .proto {
   /* Focus = the field rises out of the page, the mirror image of the pressed push button.
@@ -325,9 +311,9 @@
 
 /* Search: room for the magnifier on the left, scaled with the size.
    L: inset 16 + icon 21 + gap 10; M: 14 + 18 + 10; S: 10 + 14 + 8. */
-.proto .f.f.l:global(.is-nav-search) { padding-left: calc(47 * var(--em-px)); }
-.proto .f.f.m:global(.is-nav-search) { padding-left: calc(42 * var(--em-px)); }
-.proto .f.f.s:global(.is-nav-search) { padding-left: calc(32 * var(--em-px)); }
+.proto .f.f.l.searchWide { padding-left: calc(47 * var(--em-px)); }
+.proto .f.f.m.searchWide { padding-left: calc(42 * var(--em-px)); }
+.proto .f.f.s.searchWide { padding-left: calc(32 * var(--em-px)); }
 
 .proto .f.f.l ~ :global(.search-icon-wr) { padding-left: calc(16 * var(--em-px)); }
 .proto .f.f.m ~ :global(.search-icon-wr) { padding-left: calc(14 * var(--em-px)); }
@@ -701,29 +687,17 @@
   }
 }
 
-/* ---------- Current site: emulate :hover / :focus for the frozen state rows ---------- */
-
-.now .forceHover,
-.now .forceFocus {
-  border-color: var(--primary);
-}
-
 /* ---------- Field helpers (label, hint, error text) ----------
    Same numbers as .field / .field-label / .field-hint / .field-error in the shared
    CSS: the gap between label, control and message is 8 / 6 / 4, the left inset is
    border 1 + inner padding, 21 / 17 / 13, so the label starts on the placeholder line.
-   The size token pair comes from the wrapper (.sizeCol / .settings), the "Now" column
-   has no size class and keeps the resting look. */
+   The size token pair comes from the wrapper (.sizeCol / .settings). */
 
 .fieldWrap {
   display: flex;
   flex-direction: column;
-  gap: 8em;
-  width: 100%;
-}
-
-.proto .fieldWrap {
   gap: var(--field-gap, var(--field-gap-l));
+  width: 100%;
 }
 
 .label.label {
@@ -746,7 +720,7 @@
   padding-inline-start: var(--field-inset, var(--input-l-inset));
 }
 
-/* /search width override: globals.css pins .is-nav-search to 16.67em */
+/* Search fields take the whole column, like every other prototype field. */
 .cell input.searchWide {
   width: 100%;
 }
