@@ -8,6 +8,7 @@ import { NavLink } from "./NavLink";
 import { MenuTrigger } from "./MenuTrigger";
 import { handlePanelKeyDown } from "./interaction";
 import type { MegaMenuState } from "./useMegaMenuState";
+import { useNavImagesArmed } from "./navImagesGate";
 
 type AdvertisePanelProps = {
   state: MegaMenuState;
@@ -45,6 +46,8 @@ export function AdvertisePanel({ state, isCurrent, showcase, onContact }: Advert
   const openClass = isOpen ? "w--open" : "";
   const panelRef = useRef<HTMLDivElement | null>(null);
   const panelId = "nav-panel-advertise";
+  // Proof thumbs load with the rest of the menu images, on first intent.
+  const imagesArmed = useNavImagesArmed();
 
   const focusTrigger = () =>
     panelRef.current?.parentElement?.querySelector<HTMLElement>(".nav_dropdown_toggle")?.focus();
@@ -99,7 +102,9 @@ export function AdvertisePanel({ state, isCurrent, showcase, onContact }: Advert
                       <li key={post.slug}>
                         <NavLink className="nav_advertise-proof-row hover-lift" href={`/blog/${post.slug}`}>
                           <span className="nav_advertise-proof-img hover-lift-media">
-                            <img alt="" decoding="async" loading="lazy" src={post.thumbImage} />
+                            {imagesArmed ? (
+                              <img alt="" decoding="async" loading="lazy" src={post.thumbImage} />
+                            ) : null}
                           </span>
                           <span className="nav_advertise-proof-info">
                             <span className="nav_advertise-proof-name hover-lift-title">{post.title}</span>

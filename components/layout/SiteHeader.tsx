@@ -35,6 +35,7 @@ import { UI_GUIDES } from "../../data/ui-guides";
 import { NavSearch } from "./nav/NavSearch";
 import { NavLink } from "./nav/NavLink";
 import { preloadNextImage, preloadPlainImage } from "./nav/preloadImages";
+import { armNavImages } from "./nav/navImagesGate";
 import { CloseIcon, MenuIcon, SearchIcon } from "../icons/DecorativeIcons";
 
 /** `sizes` of the next/image thumbs: Resources cards and the design kit shelf. */
@@ -150,7 +151,10 @@ export default function SiteHeader({ navData = EMPTY_NAV_DATA, blogPosts = [] }:
     // The sample is fixed per build; reshuffling on prop identity is enough.
   }, [navData.inspiration]);
 
+  // First intent to use the menu: also lets the panel previews render their
+  // images (they stay empty until now, see nav/navImagesGate.ts).
   const loadCatalogue = useCallback(() => {
+    armNavImages();
     if (catalogueRequestedRef.current) return;
     catalogueRequestedRef.current = true;
     import("./nav/navPreviews")

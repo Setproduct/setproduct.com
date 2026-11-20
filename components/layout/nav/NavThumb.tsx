@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "./NavLink";
+import { useNavImagesArmed } from "./navImagesGate";
 
 // Image URLs already revealed once in this session. Cards remount whenever the
 // active category changes (the preview list gets a fresh React `key`), so
@@ -48,6 +49,9 @@ type NavThumbProps = {
 export function NavThumb({ href, image, title, external = false, sizes, decorative = true }: NavThumbProps) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [loaded, setLoaded] = useState(() => revealedNavThumbs.has(image));
+  // No <img> until the first intent to use the menu (see navImagesGate.ts):
+  // the frame shows its grey base, the shimmer starts only once a panel opens.
+  const armed = useNavImagesArmed();
 
   const reveal = () => {
     revealedNavThumbs.add(image);
@@ -55,10 +59,11 @@ export function NavThumb({ href, image, title, external = false, sizes, decorati
   };
 
   useEffect(() => {
-    // Read the set instead of the state so the effect can stay mount-only.
-    if (!revealedNavThumbs.has(image) && imgRef.current?.complete) reveal();
+    // Read the set instead of the state so the effect only re-runs when the
+    // <img> appears. Cached files may skip onLoad, `complete` catches them.
+    if (armed && !revealedNavThumbs.has(image) && imgRef.current?.complete) reveal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [armed]);
 
   const frameClassName =
     `nav_tabs-list-item-img-wr nav_thumb-img-wr hover-lift-media w-inline-block relative` +
@@ -72,7 +77,7 @@ export function NavThumb({ href, image, title, external = false, sizes, decorati
       aria-hidden={decorative ? "true" : undefined}
       tabIndex={decorative ? -1 : undefined}
     >
-      {sizes ? (
+      {!armed ? null : sizes ? (
         <Image
           ref={imgRef}
           alt={`${title} preview`}
