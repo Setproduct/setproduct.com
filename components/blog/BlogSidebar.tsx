@@ -213,7 +213,7 @@ export default function BlogSidebar({ headings, activeId, onNavigate, category, 
               </div>
               <input
                 aria-label="Email address"
-                className="text-input w-input"
+                className="text-input is-l"
                 disabled={isSubmitting}
                 maxLength={256}
                 name="Email"
