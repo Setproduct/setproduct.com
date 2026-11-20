@@ -173,7 +173,7 @@ export default function FreebiesListingPage({ navData }: Props) {
                 <div className="form-block w-form">
                   <form onSubmit={(e) => e.preventDefault()}>
                     <div className="templates_list-head">
-                      <div className="freebies_filters-wr">
+                      <div className={`freebies_filters-wr ${styles.filtersRow}`}>
                         <p className="text-size-regular text-weight-semibold" id="freebies-category-filter-label">
                           Filter by
                         </p>
@@ -189,7 +189,7 @@ export default function FreebiesListingPage({ navData }: Props) {
                             aria-expanded={isCategoryDropdownOpen}
                             aria-haspopup="listbox"
                             aria-labelledby="freebies-category-filter-label freebies-category-filter"
-                            className={`text-input is-search is-freebies-filters w-dropdown-toggle ${styles.selectToggle}`}
+                            className={`text-input is-m w-dropdown-toggle ${styles.selectToggle}`}
                             onClick={() => setIsCategoryDropdownOpen((open) => !open)}
                           >
                             <div
@@ -227,7 +227,7 @@ export default function FreebiesListingPage({ navData }: Props) {
                         </div>
                       </div>
                       <input
-                        className="text-input is-search is-templates w-input"
+                        className="text-input is-m"
                         aria-label="Search free resources"
                         maxLength={256}
                         name="field"

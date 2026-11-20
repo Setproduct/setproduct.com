@@ -3255,14 +3255,6 @@ figcaption {
   color: #1a191c99;
 }
 
-.text-input.is-search.is-templates, .text-input.is-search.is-freebies-filters {
-  width: 15.2222em;
-}
-
-.text-input.is-search.is-freebies-filters:focus {
-  border-color: #1a191c26;
-}
-
 /* Legacy nav field. SearchPage moved to a size class in rollout step 11 and the
    navbar and /freebies do not use it either, so the only remaining consumer is
    the /inputs-proto page, where this class still renders the "current" field
@@ -3580,6 +3572,26 @@ figcaption {
 .nav-search-form .text-input.text-input {
   width: 100%;
   padding-left: calc(42 * var(--em-px));
+}
+
+/* ---------- /freebies filter row width: both controls are one size and one width ----------
+   The dropdown button and the search field sit on one line with the "Filter by" label,
+   so they share a width and the row reads as one control group. 274 is the old
+   15.2222em at font 18 (15.2222 x 18 = 274), kept through --em-px so the pair shrinks
+   with the layout instead of staying a flat 274px on a tablet where the field itself
+   is already 21px tall. The selector steps over the size rule (same specificity,
+   declared later): a size class sets width: 100% on its own. */
+.freebies_filters-wr .text-input.is-m,
+.freebies_filters-wr + .text-input.is-m {
+  width: calc(274 * var(--em-px));
+}
+
+/* The dropdown goes back to flex here: the size rule sets display: block on every
+   field, and this one is a two-part control (label plus chevron) that has to lay
+   its children out on one line. Same 0,3,0 as the size rule, declared later. */
+.freebies_filters-wr .text-input.is-m {
+  display: flex;
+  align-items: center;
 }
 
 /* ---------- Textarea: keeps radius and side padding, grows to several lines ----------
@@ -6264,14 +6276,15 @@ figcaption {
     width: 100%;
   }
 
-  .text-input.is-search.is-templates {
+  /* Phones: the row stacks (see .templates_list-head above), the search field moves
+     above the "Filter by" line as it always did, and both controls take the column. */
+  .freebies_filters-wr + .text-input.is-m {
     order: -1;
     width: 100%;
   }
 
-  .text-input.is-search.is-freebies-filters {
-    order: -1;
-    width: 14.1em;
+  .freebies_filters-wr .text-input.is-m {
+    width: 100%;
   }
 
   .text-input.is-nav-search {

@@ -2,34 +2,44 @@
   position: relative;
 }
 
+/* Font size, height and side padding come from .text-input.is-m; the toggle only
+   lays its two children out. */
 .selectToggle {
   align-items: center;
   color: var(--black);
   display: flex;
-  font-size: 18px;
-  line-height: 27px;
   width: 100%;
 }
 
+/* Room for the chevron: the field inset (14) plus the 16px icon, with a little
+   air. Expressed through --em-px, because 32em inside 16px text would mean 512px. */
 .selectToggle :global(.fs-select_text-1) {
   flex: 1;
   font-size: inherit;
   line-height: inherit;
   min-width: 0;
   overflow: hidden;
-  padding-right: 24em;
+  padding-right: calc(32 * var(--em-px));
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* The chevron follows the field inset instead of Webflow's flat 20px, so it sits
+   on the same distance from the right edge as the text does on the left. */
+.selectToggle :global(.fs-select_icon-1) {
+  margin-right: calc(14 * var(--em-px));
+}
+
+/* The list is not a field, but it hangs off the M field above it: 16px text
+   instead of the old flat 18px, which read oversized on phones. */
 .selectOption {
   background: transparent;
   border: 0;
   cursor: pointer;
   display: block;
   font-family: inherit;
-  font-size: 18px;
-  line-height: 27px;
+  font-size: calc(16 * var(--em-px));
+  line-height: 1.5;
   margin: 0;
   padding: 7px 0;
   text-align: left;
@@ -53,8 +63,19 @@
   padding: 12px 16px;
 }
 
+/* On phones the "Filter by" row and the search field stack, and both controls take
+   the full column width. The row has to declare its own width: it is a flex child of
+   a column that aligns to flex-start, so without it the row shrank to its content and
+   the dropdown ended up 108px wide inside a 355px column. */
 @media (max-width: 767px) {
+  .filtersRow {
+    width: 100%;
+  }
+
+  /* The dropdown takes the rest of the row after the label instead of a fixed
+     15.2222em, which was a size in the old font scale. */
   .categoryDropdown {
-    width: 15.2222em;
+    flex: 1;
+    min-width: 0;
   }
 }
