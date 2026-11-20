@@ -264,6 +264,7 @@
   --input-r: var(--input-l-r);
   --input-px: var(--input-l-px);
   --input-pad-y: var(--input-l-pad-y);
+  --input-pad-block: var(--input-l-pad-block);
   --input-fs: var(--input-l-fs);
   --input-edge-size: var(--input-l-edge-size);
   --input-lift: var(--input-l-lift);
@@ -275,6 +276,7 @@
   --input-r: var(--input-m-r);
   --input-px: var(--input-m-px);
   --input-pad-y: var(--input-m-pad-y);
+  --input-pad-block: var(--input-m-pad-block);
   --input-fs: var(--input-m-fs);
   --input-edge-size: var(--input-m-edge-size);
   --input-lift: var(--input-m-lift);
@@ -286,6 +288,7 @@
   --input-r: var(--input-s-r);
   --input-px: var(--input-s-px);
   --input-pad-y: var(--input-s-pad-y);
+  --input-pad-block: var(--input-s-pad-block);
   --input-fs: var(--input-s-fs);
   --input-edge-size: var(--input-s-edge-size);
   --input-lift: var(--input-s-lift);
@@ -336,11 +339,14 @@
 .proto .f.f.m:global(.textarea-input) { min-height: calc(104 * var(--em-px)); }
 .proto .f.f.s:global(.textarea-input) { min-height: calc(80 * var(--em-px)); }
 
-/* Textarea is the only multi-line field: it gets its vertical padding back and grows. */
+/* Textarea is the only multi-line field: it gets its vertical padding back and grows.
+   The padding is --input-pad-block (14 / 10 / 7), not --input-pad-y: with a free height
+   the padding is air from the border to the first line, not a centring leftover. At S the
+   4px of --input-s-pad-y pressed the placeholder against the top border. */
 .proto .f.f.f:global(.textarea-input) {
   height: auto;
-  padding-top: var(--input-pad-y);
-  padding-bottom: var(--input-pad-y);
+  padding-top: var(--input-pad-block);
+  padding-bottom: var(--input-pad-block);
   resize: vertical;
   display: block;
 }

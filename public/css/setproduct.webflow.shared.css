@@ -2186,6 +2186,21 @@ textarea.w-input, textarea.w-select {
   --input-s-lift: calc(-1 * var(--em-px));
 }
 
+/* Textarea gets its own vertical padding: --input-*-pad-y is not an air gap, it is the
+   leftover of centring a single line. For one-line fields the height is fixed (50 / 40 / 31)
+   and the padding only compensates the difference between the field height and the line
+   box, so its values (10.5 / 7 / 4) are tied to that arithmetic. In a multi-line field the
+   height is free and the padding is pure air from the border to the first line: at S the
+   4px of --input-s-pad-y pressed the placeholder against the top border. This scale is
+   air, it shrinks with the size together with the text: 14 / 10 / 7 at font 18 / 16 / 14
+   with line-height 1.5 (27 / 24 / 21). Never reuse --input-*-pad-y here, and never drop
+   it either: one-line fields still need it. */
+:root {
+  --input-l-pad-block: calc(14 * var(--em-px));
+  --input-m-pad-block: calc(10 * var(--em-px));
+  --input-s-pad-block: calc(7 * var(--em-px));
+}
+
 /* Label, hint and error follow the field text: the left inset is the border (1) plus the
    inner padding (16 / 14 / 10), so the first letter of a label and the first letter of the
    placeholder stand on one vertical line. The vertical gap between a label and its control,
@@ -3262,6 +3277,7 @@ figcaption {
   --input-px: var(--input-l-px);
   --input-pb: var(--input-l-pb);
   --input-pad-y: var(--input-l-pad-y);
+  --input-pad-block: var(--input-l-pad-block);
   --input-fs: var(--input-l-fs);
   --input-edge-size: var(--input-l-edge-size);
   --input-lift: var(--input-l-lift);
@@ -3274,6 +3290,7 @@ figcaption {
   --input-px: var(--input-m-px);
   --input-pb: var(--input-m-pb);
   --input-pad-y: var(--input-m-pad-y);
+  --input-pad-block: var(--input-m-pad-block);
   --input-fs: var(--input-m-fs);
   --input-edge-size: var(--input-m-edge-size);
   --input-lift: var(--input-m-lift);
@@ -3287,6 +3304,7 @@ figcaption {
   --input-px: var(--input-s-px);
   --input-pb: var(--input-s-pb);
   --input-pad-y: var(--input-s-pad-y);
+  --input-pad-block: var(--input-s-pad-block);
   --input-fs: var(--input-s-fs);
   --input-edge-size: var(--input-s-edge-size);
   --input-lift: var(--input-s-lift);
@@ -3445,12 +3463,14 @@ figcaption {
   transition-duration: var(--input-in);
 }
 
-/* ---------- Textarea: keeps radius and side padding, grows to several lines ---------- */
+/* ---------- Textarea: keeps radius and side padding, grows to several lines ----------
+   Vertical padding is --input-pad-block (14 / 10 / 7), not --input-pad-y: in a field with
+   a free height the padding is air above the first line, not a centring leftover. */
 
 .textarea-input.textarea-input:is(.is-l, .is-m, .is-s) {
   height: auto;
-  padding-top: var(--input-pad-y);
-  padding-bottom: var(--input-pad-y);
+  padding-top: var(--input-pad-block);
+  padding-bottom: var(--input-pad-block);
   line-height: 1.5;
   resize: vertical;
 }
