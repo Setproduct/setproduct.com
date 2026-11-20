@@ -28,6 +28,8 @@ import {
 } from "../../lib/contact";
 import { CONTACT_TOPICS, TOPIC_LABEL, type ContactTopic, type ContactTopicParam } from "../../lib/contactTopics";
 import { PUBLISH_OFFER, getPublishLinkProps } from "../../lib/publish";
+// Loaded with this lazy chunk, so the dialog styles never block the first paint.
+import styles from "./ContactModal.module.css";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -662,7 +664,8 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
   };
 
   const handleProgressEnd = (event: AnimationEvent<HTMLSpanElement>) => {
-    if (event.animationName === "contact-progress") requestClose("auto");
+    // CSS modules hash keyframe names, so match the readable part.
+    if (event.animationName.includes("contact-progress")) requestClose("auto");
   };
 
   // The next step leaves the dialog: close it behind the person.
@@ -745,7 +748,7 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
     <dialog
       aria-describedby={DESCRIPTION_ID}
       aria-labelledby={TITLE_ID}
-      className="contact-dialog"
+      className={`contact-dialog ${styles.root}`}
       data-state={state}
       onClick={handleDialogClick}
       onPointerDown={handlePointerDown}

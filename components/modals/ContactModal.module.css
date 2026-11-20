@@ -1,0 +1,820 @@
+/* ==========================================================================
+   Contact dialog (components/modals/ContactModal.tsx)
+   Native <dialog> + showModal(): the browser gives the top layer, focus trap,
+   inert page and Escape. What the dialog shows lives in data-state (open /
+   submitting / success), the motion phase in data-phase (enter / open /
+   leave-cancel / leave-done), set from JS straight on the node.
+
+   Rules that keep the motion free of flicker (plan, section 5):
+   - only transform and opacity move. No filter on the card, no animated
+     blur radius, no animated box-shadow: those repaint every frame and
+     shimmer in Safari;
+   - the scrim is a real element with a constant backdrop-filter and an
+     opacity transition. ::backdrop is only made transparent, because its
+     transitions are unreliable in Safari;
+   - enter and exit are transitions, not keyframes, so Escape in the middle
+     of the entrance reverses from the current frame instead of jumping;
+   - "enter" is applied before showModal() and committed with a forced
+     reflow, so the first painted frame is already the start frame.
+   ========================================================================== */
+
+/* Reset the UA box: no padding (a click on the dialog itself means backdrop),
+   no border, no max size, centred by the UA inset + margin auto. */
+:global(.contact-dialog):where(.root) {
+  --modal-in: 360ms;
+  --modal-out: 220ms;
+  --modal-done-out: 420ms;
+  --modal-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --modal-ease-out: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --modal-blur: 8px;
+
+  width: min(calc(768 * var(--em-px)), calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--black);
+  overflow: visible;
+}
+
+/* The scrim below does the dimming and the blur. */
+:global(.contact-dialog):where(.root)::backdrop {
+  background: transparent;
+}
+
+/* Fixed to the viewport (the dialog itself is never transformed), first in
+   DOM order, so the card paints above it. The extra bottom covers the strip
+   under the collapsing toolbar of mobile Safari. */
+:where(.root) :global(.contact-dialog_scrim) {
+  position: fixed;
+  inset: 0 0 -120px;
+  background-color: rgba(25, 24, 27, 0.32);
+  -webkit-backdrop-filter: blur(var(--modal-blur));
+  backdrop-filter: blur(var(--modal-blur));
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :where(.root) :global(.contact-dialog_scrim) {
+    background-color: rgba(25, 24, 27, 0.48);
+  }
+}
+
+:where(.root) :global(.contact-dialog_card) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 32px);
+  /* Inner scroll for short screens. Padding keeps room for the 6px focus edge
+     and 2px lift of L fields, so overflow never clips them (risk R4). */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(40 * var(--em-px)) calc(64 * var(--em-px));
+  border-radius: calc(24 * var(--em-px));
+  background-color: var(--white);
+  /* Static shadow: it travels with the card layer and is never animated. */
+  box-shadow: 0 24px 64px -24px rgba(25, 24, 27, 0.32);
+  outline: none;
+  /* Centre of the pressed button, in px of the card, written by JS. */
+  transform-origin: var(--contact-origin, 50% 50%);
+}
+
+/* ---------- Motion phases ---------- */
+
+/* Start frame. No transition here: this is where the entrance begins. */
+:global(.contact-dialog)[data-phase="enter"]:where(.root) :global(.contact-dialog_scrim) {
+  opacity: 0;
+  transition: none;
+}
+
+:global(.contact-dialog)[data-phase="enter"]:where(.root) :global(.contact-dialog_card) {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.92);
+  transition: none;
+}
+
+:global(.contact-dialog)[data-phase="enter"]:where(.root) :global(.contact-dialog_stagger) {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: none;
+}
+
+/* Entrance: decelerate. Opacity is done early so the card is never a ghost
+   while it grows; the scale keeps settling for the full 360ms. */
+:global(.contact-dialog)[data-phase="open"]:where(.root) :global(.contact-dialog_scrim) {
+  opacity: 1;
+  transition: opacity 320ms ease;
+}
+
+:global(.contact-dialog)[data-phase="open"]:where(.root) :global(.contact-dialog_card) {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform var(--modal-in) var(--modal-ease-in),
+    opacity 160ms ease-out,
+    height 320ms var(--modal-ease-in);
+}
+
+/* Content follows the card in five groups, 24ms apart. */
+:global(.contact-dialog)[data-phase="open"]:where(.root) :global(.contact-dialog_stagger) {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 240ms ease-out,
+    transform var(--modal-in) var(--modal-ease-in);
+  transition-delay: calc(60ms + var(--i, 0) * 24ms);
+}
+
+/* Both exits: the page under the dialog is inert anyway, but the card must
+   not catch a second click or hover while it leaves. */
+:global(.contact-dialog)[data-phase^="leave"]:where(.root) {
+  pointer-events: none;
+}
+
+:global(.contact-dialog)[data-phase^="leave"]:where(.root) :global(.contact-dialog_stagger) {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 120ms ease-out,
+    transform 120ms ease-out;
+}
+
+/* Cancel: back into the button it came from. Accelerate, shorter than the
+   entrance, no decoration. The fade starts a beat later than the move, so the
+   card reads as "put back", not "vanished". */
+:global(.contact-dialog)[data-phase="leave-cancel"]:where(.root) :global(.contact-dialog_scrim) {
+  opacity: 0;
+  transition: opacity var(--modal-out) ease;
+}
+
+:global(.contact-dialog)[data-phase="leave-cancel"]:where(.root) :global(.contact-dialog_card) {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.96);
+  transition:
+    transform var(--modal-out) var(--modal-ease-out),
+    opacity 180ms var(--modal-ease-out) 40ms;
+}
+
+/* Sent: the card lifts away upwards and dissolves, unlike a cancel. */
+:global(.contact-dialog)[data-phase="leave-done"]:where(.root) :global(.contact-dialog_scrim) {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+:global(.contact-dialog)[data-phase="leave-done"]:where(.root) :global(.contact-dialog_card) {
+  opacity: 0;
+  transform: translate3d(0, -24px, 0) scale(0.98);
+  transition:
+    transform var(--modal-done-out) var(--modal-ease-in),
+    opacity 320ms ease-out 60ms;
+}
+
+/* Form → success: the form fades up, then the success screen takes over. */
+:where(.root) :global(.contact-dialog_body.is-leaving) {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity 140ms ease-out,
+    transform 140ms ease-out;
+}
+
+/* ---------- Success ---------- */
+
+:where(.root) :global(.contact-dialog_success .contact-dialog_stagger) {
+  animation: contact-rise 280ms var(--modal-ease-in) both;
+}
+
+:where(.root) :global(.contact-dialog_success .contact-dialog_heading) {
+  animation-delay: 160ms;
+}
+
+:where(.root) :global(.contact-dialog_success .contact-dialog_actions) {
+  animation-delay: 200ms;
+}
+
+@keyframes contact-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Ring and circle share one grid cell, so the ring sits exactly behind the
+   circle without z-index tricks (a transformed circle would paint a negative
+   z-index child over its own fill). */
+:where(.root) :global(.contact-dialog_check) {
+  display: grid;
+  justify-content: center;
+}
+
+:where(.root) :global(.contact-dialog_check > *) {
+  grid-area: 1 / 1;
+}
+
+:where(.root) :global(.contact-dialog_check-ring) {
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  border-radius: 50%;
+  background-color: var(--light-primary);
+  opacity: 0;
+  animation: contact-ring 728ms ease-out 120ms both;
+}
+
+:where(.root) :global(.contact-dialog_check-circle) {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(64 * var(--em-px));
+  height: calc(64 * var(--em-px));
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  animation: contact-pop 320ms var(--modal-ease-in) both;
+}
+
+:where(.root) :global(.contact-dialog_check-circle svg) {
+  width: 50%;
+  height: 50%;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:where(.root) :global(.contact-dialog_check-circle path) {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: contact-draw 280ms ease-out 120ms forwards;
+}
+
+@keyframes contact-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contact-ring {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes contact-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Auto-close countdown. The animation itself is the timer (animationend
+   closes the dialog), so a pause here pauses the close too. */
+:where(.root) :global(.contact-dialog_progress) {
+  align-self: center;
+  width: calc(120 * var(--em-px));
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--light-primary);
+  overflow: hidden;
+}
+
+:where(.root) :global(.contact-dialog_progress-bar) {
+  display: block;
+  height: 100%;
+  background-color: var(--primary);
+  transform-origin: left center;
+  animation: contact-progress 3000ms linear forwards;
+}
+
+/* Paused while the pointer rests on the card or Done has keyboard focus. */
+:where(.root) :global(.contact-dialog_success .contact-dialog_actions:focus-within ~ .contact-dialog_progress .contact-dialog_progress-bar) {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(.root) :global(.contact-dialog_card:hover .contact-dialog_progress-bar) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes contact-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+:where(.root) :global(.contact-dialog_body) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_heading) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  /* Keep the centred title clear of the close button. */
+  padding: 0 calc(32 * var(--em-px));
+  text-align: center;
+}
+
+:where(.root) :global(.contact-dialog_heading > *) {
+  margin: 0;
+}
+
+/* The success title takes focus for screen readers, not as a control. */
+:where(.root) :global(.contact-dialog_heading > [tabindex="-1"]) {
+  outline: none;
+}
+
+:where(.root) :global(.contact-dialog_form) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_alert) {
+  display: grid;
+  row-gap: calc(4 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: #fff5f5;
+  color: var(--black);
+}
+
+:where(.root) :global(.contact-dialog_alert p) {
+  margin: 0;
+}
+
+:where(.root) :global(.contact-dialog_actions) {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(12 * var(--em-px));
+}
+
+/* 44px hit area (WCAG 2.5.5), 32em visible circle drawn by the background. */
+:where(.root) :global(.contact-dialog_close) {
+  position: absolute;
+  top: calc(12 * var(--em-px));
+  right: calc(12 * var(--em-px));
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--black);
+  cursor: pointer;
+}
+
+:where(.root) :global(.contact-dialog_close)::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background-color: var(--light-grey);
+  transition: background-color 160ms ease;
+}
+
+:where(.root) :global(.contact-dialog_close-icon) {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(.root) :global(.contact-dialog_close:hover)::before {
+    background-color: var(--light-primary);
+  }
+}
+
+:where(.root) :global(.contact-dialog_close:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Fields: label 6em above the control (from .field), 20em between groups.
+   20 > focus edge 6 + lift 2 of L, so a focused field never touches the next
+   label. Field text inherits the page font, not the UA one. */
+:where(.root) :global(.contact-dialog_form :is(.text-input, .textarea-input)) {
+  font-family: inherit;
+}
+
+/* ---------- Topics ---------- */
+
+:where(.root) :global(.contact-dialog_topics) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(8 * var(--em-px));
+}
+
+/* The Webflow active look exists only for .is-templates; same colours here. */
+:where(.root) :global(.contact-dialog_topics .button-x-small.is-text.is-active) {
+  background-color: var(--light-purple);
+  color: var(--dark-primary);
+  box-shadow: inset 0 -3px 1px #2b00a380;
+}
+
+:where(.root) :global(.contact-dialog_topics .button-x-small.is-text:disabled) {
+  cursor: default;
+}
+
+/* The panel under the chips rises in after a switch. The card height glides
+   at the same time (JS), so the swap reads as one movement. */
+:where(.root) :global(.contact-dialog_panel.is-switched) {
+  animation: contact-rise 280ms var(--modal-ease-in) both;
+}
+
+/* ---------- Guest Posts offer ---------- */
+
+:where(.root) :global(.contact-dialog_panel:not(form)) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_offer) {
+  display: grid;
+  row-gap: calc(20 * var(--em-px));
+  padding: calc(24 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--light-purple);
+}
+
+:where(.root) :global(.contact-dialog_offer-head) {
+  display: grid;
+  row-gap: calc(6 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_offer-head > *) {
+  margin: 0;
+}
+
+:where(.root) :global(.contact-dialog_offer-head p) {
+  color: #19181bb3;
+}
+
+:where(.root) :global(.contact-dialog_offer-title) {
+  font-size: calc(24 * var(--em-px));
+  font-weight: 600;
+  line-height: 130%;
+}
+
+:where(.root) :global(.contact-dialog_facts) {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(12 * var(--em-px));
+  margin: 0;
+}
+
+/* dt comes first in the markup (a dl needs it), the number is shown on top. */
+:where(.root) :global(.contact-dialog_fact) {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: calc(2 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(14 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--white);
+}
+
+:where(.root) :global(.contact-dialog_fact dt) {
+  color: #19181b99;
+}
+
+:where(.root) :global(.contact-dialog_fact-value) {
+  margin: 0;
+  font-size: calc(24 * var(--em-px));
+  font-weight: 600;
+  line-height: 120%;
+  color: var(--dark-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+:where(.root) :global(.contact-dialog_offer-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(12 * var(--em-px));
+}
+
+/* Question form under the offer: the price stays one click away. */
+:where(.root) :global(.contact-dialog_offer-strip) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(4 * var(--em-px)) calc(16 * var(--em-px));
+  margin: 0;
+  padding: calc(10 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--light-purple);
+  color: #19181bb3;
+}
+
+:where(.root) :global(.contact-dialog_offer-link) {
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+:where(.root) :global(.contact-dialog_offer-link:hover) {
+  text-decoration: underline;
+}
+
+/* ---------- Form details ---------- */
+
+/* "Draft restored": quiet, one line, with a way to start over. */
+:where(.root) :global(.contact-dialog_draft) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(16 * var(--em-px));
+  margin: 0;
+  color: #19181b99;
+}
+
+:where(.root) :global(.contact-dialog_draft-clear) {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+:where(.root) :global(.contact-dialog_draft-clear:hover) {
+  text-decoration: underline;
+}
+
+:where(.root) :global(.contact-dialog_draft-clear:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+:where(.root) :global(.contact-dialog_optional) {
+  margin-left: calc(4 * var(--em-px));
+  font-weight: 400;
+  color: #19181b80;
+}
+
+/* Privacy on the left, the send button on the right: one line, and the
+   button stands where the eye ends after the message. */
+:where(.root) :global(.contact-dialog_footer) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(24 * var(--em-px));
+  margin-top: calc(4 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_footer .contact-dialog_privacy) {
+  text-align: left;
+}
+
+:where(.root) :global(.contact-dialog_footer .contact-dialog_actions) {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Sending: the label keeps its place (and the button its width), the
+   spinner sits on top of it. .button has no position of its own. */
+:where(.root) :global(.contact-dialog_submit) {
+  position: relative;
+}
+
+:where(.root) :global(.contact-dialog_submit[aria-busy="true"] > div) {
+  visibility: hidden;
+}
+
+:where(.root) :global(.contact-dialog_spinner) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  animation: contact-spin 0.8s linear infinite;
+}
+
+/* Local copy of the Webflow spin: module keyframe names are hashed, so the
+   global one cannot be referenced from here. */
+@keyframes contact-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Success details ---------- */
+
+:where(.root) :global(.contact-dialog_success .contact-dialog_actions) {
+  flex-wrap: wrap;
+  gap: calc(12 * var(--em-px));
+}
+
+:where(.root) :global(.contact-dialog_sent-email) {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+:where(.root) :global(.contact-dialog_aside) {
+  margin: 0;
+  color: #19181b99;
+  text-align: center;
+}
+
+:where(.root) :global(.contact-dialog_aside a) {
+  color: var(--primary);
+}
+
+:where(.root) :global(.contact-dialog_success .contact-dialog_aside) {
+  animation-delay: 240ms;
+}
+
+@media screen and (max-width: 767px) {
+  :where(.root) :global(.contact-dialog_facts) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phones: bottom sheet. Pinned to the bottom edge, top corners rounded, inner
+   scroll, the submit button sticks to the bottom so the keyboard never hides
+   it. Slides up from below, a cancel slides it back down. */
+@media screen and (max-width: 479px) {
+  :global(.contact-dialog):where(.root) {
+    --modal-blur: 4px;
+
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    margin: auto 0 0;
+  }
+
+  :where(.root) :global(.contact-dialog_card) {
+    max-height: calc(100dvh - 24px);
+    padding: calc(28 * var(--em-px)) calc(16 * var(--em-px)) 0;
+    border-radius: calc(24 * var(--em-px)) calc(24 * var(--em-px)) 0 0;
+    box-shadow: 0 -8px 32px -16px rgba(25, 24, 27, 0.24);
+  }
+
+  /* A sheet comes in whole, without scale: opacity stays at 1 so the edge
+     never looks half transparent against the page. */
+  :global(.contact-dialog)[data-phase="enter"]:where(.root) :global(.contact-dialog_card) {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  :global(.contact-dialog)[data-phase="open"]:where(.root) :global(.contact-dialog_card) {
+    transition:
+      transform var(--modal-in) var(--modal-ease-in),
+      height 320ms var(--modal-ease-in);
+  }
+
+  :global(.contact-dialog)[data-phase="leave-cancel"]:where(.root) :global(.contact-dialog_card) {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+    transition: transform var(--modal-out) var(--modal-ease-out);
+  }
+
+  /* Grab handle: shows the sheet can be dismissed, purely visual for now. */
+  :where(.root) :global(.contact-dialog_card)::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #19181b26;
+    transform: translateX(-50%);
+  }
+
+  :where(.root) :global(.contact-dialog_heading) {
+    padding: 0 40px;
+  }
+
+  :where(.root) :global(.contact-dialog_form) {
+    gap: calc(16 * var(--em-px));
+  }
+
+  :where(.root) :global(.contact-dialog_close) {
+    top: 4px;
+    right: 4px;
+  }
+
+  :where(.root) :global(.contact-dialog_actions) {
+    position: sticky;
+    bottom: 0;
+    margin-top: 0;
+    padding: calc(12 * var(--em-px)) 0 max(calc(16 * var(--em-px)), env(safe-area-inset-bottom));
+    background: linear-gradient(to bottom, #fff0, var(--white) 12px);
+  }
+
+  :where(.root) :global(.contact-dialog_actions > .button) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* The footer gives its children to the form, so the send button can stick
+     to the bottom of the sheet (sticky never leaves its parent box). */
+  :where(.root) :global(.contact-dialog_footer) {
+    display: contents;
+  }
+
+  :where(.root) :global(.contact-dialog_footer .contact-dialog_privacy) {
+    text-align: center;
+  }
+
+  :where(.root) :global(.contact-dialog_offer) {
+    padding: calc(16 * var(--em-px));
+  }
+
+  :where(.root) :global(.contact-dialog_offer-actions > *) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  :where(.root) :global(.contact-dialog_success .contact-dialog_actions > *) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  :where(.root) :global(.contact-dialog_success) {
+    padding-top: calc(16 * var(--em-px));
+  }
+}
+
+:where(.root) :global(.contact-dialog_privacy) {
+  margin: 0;
+  color: #19181b99;
+  text-align: center;
+}
+
+:where(.root) :global(.contact-dialog_privacy a) {
+  color: inherit;
+}
+
+/* Reduced motion: opacity only, 120ms. No scale, no slide, no stagger, the
+   check is shown already drawn, the height changes at once. The countdown
+   bar keeps running: it is the auto-close timer, not decoration. */
+@media (prefers-reduced-motion: reduce) {
+  :global(.contact-dialog)[data-phase]:where(.root) :global(.contact-dialog_card),
+  :global(.contact-dialog)[data-phase]:where(.root) :global(.contact-dialog_stagger),
+  :where(.root) :global(.contact-dialog_body.is-leaving) {
+    transform: none !important;
+  }
+
+  :global(.contact-dialog)[data-phase="enter"]:where(.root) :global(.contact-dialog_card),
+  :global(.contact-dialog)[data-phase^="leave"]:where(.root) :global(.contact-dialog_card) {
+    opacity: 0;
+  }
+
+  :global(.contact-dialog)[data-phase]:where(.root) :global(.contact-dialog_card),
+  :global(.contact-dialog)[data-phase]:where(.root) :global(.contact-dialog_scrim) {
+    transition: opacity 120ms linear !important;
+  }
+
+  :global(.contact-dialog)[data-phase]:where(.root) :global(.contact-dialog_stagger) {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  :where(.root) :global(.contact-dialog_success .contact-dialog_stagger),
+  :where(.root) :global(.contact-dialog_panel.is-switched),
+  :where(.root) :global(.contact-dialog_check-circle),
+  :where(.root) :global(.contact-dialog_check-ring) {
+    animation: none;
+  }
+
+  :where(.root) :global(.contact-dialog_check-circle path) {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
