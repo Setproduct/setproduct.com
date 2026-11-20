@@ -411,10 +411,10 @@
   --input-rim-size: 1px;
   /* Resting shadow is declared here, not read from :root: it is built from
      --input-shadow-step, which the size class sets on the field itself. Offset equals
-     the step, blur is a third of it (L 3 / 1, M 2 / 0.67, S 1 / 0.33). */
+     the step, blur is two thirds of it (L 3 / 2, M 2 / 1.33, S 1 / 0.67). */
   --input-shadow:
     inset 0 calc(var(--input-shadow-step) * var(--em-px))
-          calc(var(--input-shadow-step) / 3 * var(--em-px)) #7c4dff33,
+          calc(var(--input-shadow-step) * 2 / 3 * var(--em-px)) #7c4dff33,
     inset 0 0 0 0 transparent,
     0 0 0 0 transparent;
   --input-shadow-hover: var(--input-shadow);

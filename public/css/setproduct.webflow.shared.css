@@ -2130,9 +2130,9 @@ textarea.w-input, textarea.w-select {
   --input-edge: var(--btn-outlined-edge);
   --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
   /* The resting inner top shadow is built from a step, not from three hard-coded
-     numbers: the offset equals the step, the blur is step / 3. L keeps the original
-     well (step 3 → 3px / 1px), M and S get a lighter, softer one (2 / 0.67 and
-     1 / 0.33). A future XXL only needs its own step and lands on the same scale.
+     numbers: the offset equals the step, the blur is step * 2 / 3. L keeps the
+     original well (step 3 → 3px / 2px), M and S get a lighter, softer one (2 / 1.33
+     and 1 / 0.67). A future XXL only needs its own step and lands on the same scale.
      The step is set by the size class; this value is the fallback for a field
      without one. The shadow layers themselves are declared on the field, because a
      custom property resolves where it is declared and has to see the per-size step. */
@@ -2189,8 +2189,8 @@ textarea.w-input, textarea.w-select {
   --input-s-lift: calc(-1 * var(--em-px));
 }
 
-/* Inner top shadow: the offset is the step, the blur is step / 3, both in em-px.
-   L 3 / 1 keeps the original well, M 2 / 0.67 and S 1 / 0.33 follow the button
+/* Inner top shadow: the offset is the step, the blur is step * 2 / 3, both in em-px.
+   L 3 / 2 keeps the original well, M 2 / 1.33 and S 1 / 0.67 follow the button
    sizes. A size class maps its step onto --input-shadow-step. */
 :root {
   --input-l-shadow-step: 3;
@@ -3335,11 +3335,11 @@ figcaption {
    so the browser animates between them. */
 
 :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s) {
-  /* Inner top shadow: the offset is the step, the blur is a third of it. That keeps
+  /* Inner top shadow: the offset is the step, the blur is two thirds of it. That keeps
      the well proportional on every size instead of growing heavy at S. */
   --input-shadow:
     inset 0 calc(var(--input-shadow-step) * var(--em-px))
-          calc(var(--input-shadow-step) / 3 * var(--em-px)) #7c4dff33,
+          calc(var(--input-shadow-step) * 2 / 3 * var(--em-px)) #7c4dff33,
     inset 0 0 0 0 transparent,
     0 0 0 0 transparent;
   --input-shadow-hover: var(--input-shadow);
