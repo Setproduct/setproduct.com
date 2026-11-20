@@ -2129,11 +2129,14 @@ textarea.w-input, textarea.w-select {
   /* Outer edge on focus = edge of the outlined push button. */
   --input-edge: var(--btn-outlined-edge);
   --input-edge-error: color-mix(in srgb, var(--input-error) 30%, transparent);
-  --input-shadow:
-    inset 0 3px 1px #7c4dff33,
-    inset 0 0 0 0 transparent,
-    0 0 0 0 transparent;
-  --input-shadow-hover: var(--input-shadow);
+  /* The resting inner top shadow is built from a step, not from three hard-coded
+     numbers: the offset equals the step, the blur is step / 3. L keeps the original
+     well (step 3 → 3px / 1px), M and S get a lighter, softer one (2 / 0.67 and
+     1 / 0.33). A future XXL only needs its own step and lands on the same scale.
+     The step is set by the size class; this value is the fallback for a field
+     without one. The shadow layers themselves are declared on the field, because a
+     custom property resolves where it is declared and has to see the per-size step. */
+  --input-shadow-step: 3;
   --input-placeholder: #19181b8c;
   --input-placeholder-hover: #19181bb3;
   --input-error: #e03e3e;
@@ -2184,6 +2187,15 @@ textarea.w-input, textarea.w-select {
   --input-s-fs: 14em;
   --input-s-edge-size: calc(3 * var(--em-px));
   --input-s-lift: calc(-1 * var(--em-px));
+}
+
+/* Inner top shadow: the offset is the step, the blur is step / 3, both in em-px.
+   L 3 / 1 keeps the original well, M 2 / 0.67 and S 1 / 0.33 follow the button
+   sizes. A size class maps its step onto --input-shadow-step. */
+:root {
+  --input-l-shadow-step: 3;
+  --input-m-shadow-step: 2;
+  --input-s-shadow-step: 1;
 }
 
 /* Textarea gets its own vertical padding: --input-*-pad-y is not an air gap, it is the
@@ -3282,6 +3294,7 @@ figcaption {
   --input-edge-size: var(--input-l-edge-size);
   --input-lift: var(--input-l-lift);
   --input-rim-size: 1px;
+  --input-shadow-step: var(--input-l-shadow-step);
 }
 
 :is(.text-input.text-input, .textarea-input.textarea-input).is-m {
@@ -3295,6 +3308,7 @@ figcaption {
   --input-edge-size: var(--input-m-edge-size);
   --input-lift: var(--input-m-lift);
   --input-rim-size: 1px;
+  --input-shadow-step: var(--input-m-shadow-step);
 }
 
 /* S: 0.5px rim, so the focus border is 1.5px (3 device pixels on retina). */
@@ -3309,15 +3323,26 @@ figcaption {
   --input-edge-size: var(--input-s-edge-size);
   --input-lift: var(--input-s-lift);
   --input-rim-size: 0.5px;
+  --input-shadow-step: var(--input-s-shadow-step);
 }
 
 /* ---------- Base ----------
-   Focus shadows live on the field itself: a custom property resolves where it is
-   declared, so this is the only way the per-size --input-edge-size reaches them.
+   Resting and focus shadows live on the field itself: a custom property resolves
+   where it is declared, so this is the only way the per-size --input-edge-size and
+   --input-shadow-step reach them. Declared here rather than in :root on purpose:
+   a shadow built in :root would freeze the default step and ignore the size class.
    Same 3 layers in the same order in every state (inner top, inner rim, outer edge),
    so the browser animates between them. */
 
 :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s) {
+  /* Inner top shadow: the offset is the step, the blur is a third of it. That keeps
+     the well proportional on every size instead of growing heavy at S. */
+  --input-shadow:
+    inset 0 calc(var(--input-shadow-step) * var(--em-px))
+          calc(var(--input-shadow-step) / 3 * var(--em-px)) #7c4dff33,
+    inset 0 0 0 0 transparent,
+    0 0 0 0 transparent;
+  --input-shadow-hover: var(--input-shadow);
   --input-shadow-focus:
     inset 0 0 0 0 transparent,
     inset 0 0 0 var(--input-rim-size) var(--input-border-focus),
