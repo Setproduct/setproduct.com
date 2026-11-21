@@ -76,6 +76,21 @@ export const DOC_COMPONENTS: DocEntry[] = [
       { id: "live", title: "Textarea, select and a field with a button" },
     ],
   },
+  {
+    slug: "chips",
+    title: "Chips",
+    summary:
+      "Pressable pills for topics and filters. A link chip leads to a page, a filter chip toggles a value in place. Sizes S and M pair with the button and the field of the same size.",
+    status: "new",
+    sections: [
+      { id: "compare", title: "Today on the site and the new chip" },
+      { id: "sizes", title: "Sizes next to the button and the field" },
+      { id: "kinds", title: "Link chip and filter chip" },
+      { id: "states", title: "States" },
+      { id: "parts", title: "Icon and counter" },
+      { id: "rows", title: "Wrapping row and scrolling row" },
+    ],
+  },
 ];
 
 export function docHref(slug: string): string {

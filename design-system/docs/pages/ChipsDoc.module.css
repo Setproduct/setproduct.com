@@ -1,0 +1,118 @@
+/* Chips docs page. The component itself lives in design-system/css/chip.css;
+   this module only lays out the demo and freezes states for screenshots.
+   Frozen states swap the chip's private --_chip-* variables, the same way
+   the real :hover / :active rules do, so what you see here is what the
+   browser draws on interaction. `.chip.chip` beats the single-class rules
+   of chip.css regardless of stylesheet order. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(24 * var(--em-px));
+}
+
+.cell {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: calc(24 * var(--em-px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--em-px));
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  color: var(--grey);
+}
+
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(12 * var(--em-px));
+}
+
+/* The field is width: 100% by default; here it must stay in the row
+   so the shared centre line of chip, button and field is visible. */
+.line :global(.text-input) {
+  flex: 1 1 calc(120 * var(--em-px));
+  width: auto;
+  min-width: 0;
+}
+
+.states {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(150 * var(--em-px)), 1fr));
+  gap: calc(16 * var(--em-px));
+}
+
+.state {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: calc(20 * var(--em-px)) calc(16 * var(--em-px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(12 * var(--em-px));
+}
+
+.narrow {
+  max-width: calc(360 * var(--em-px));
+  border: 1px dashed var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: calc(16 * var(--em-px));
+  overflow: hidden;
+}
+
+.code {
+  margin: 0;
+  padding: calc(12 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background: var(--light-grey);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: calc(13 * var(--em-px));
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---------- Frozen states ---------- */
+
+.forceHover :global(.chip.chip) {
+  --_chip-fg: var(--chip-fg-hover);
+  --_chip-bg: var(--chip-bg-hover);
+  --_chip-edge: var(--chip-edge-hover);
+}
+
+.forceHover :global(.chip.chip.is-active) {
+  --_chip-fg: var(--chip-fg-selected);
+  --_chip-bg: var(--chip-bg-selected-hover);
+  --_chip-edge: var(--chip-edge-selected-hover);
+}
+
+.forcePress :global(.chip.chip) {
+  --_chip-fg: var(--chip-fg-hover);
+  --_chip-bg: var(--chip-bg-hover);
+  --_chip-edge: var(--chip-edge-hover);
+  --_chip-edge-y: 1;
+  --_chip-shift: 2;
+}
+
+.forceFocus :global(.chip.chip) {
+  outline: 2px solid var(--chip-focus);
+  outline-offset: 3px;
+}
+
+/* The site chip next to the new one, frozen the same way */
+.forceHover :global(.button-x-small.is-text) {
+  background-color: var(--light-purple);
+  color: var(--dark-primary);
+  box-shadow: inset 0 -3px 1px #2b00a380;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

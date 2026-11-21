@@ -53,17 +53,27 @@
   backdrop-filter: blur(8px);
 }
 
+/* nowrap + own line-height: on phones the two links share 350px, and the
+   host page's tight line-height made a wrapped brand overlap itself. */
 .brand {
+  min-width: 0;
+  overflow: hidden;
   color: var(--black);
   font-size: max(calc(18 * var(--em-px)), 15px);
   font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   text-decoration: none;
 }
 
 .back {
+  flex: none;
   color: var(--primary);
   font-size: var(--ds-nav-fs);
   font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
   text-decoration: none;
 }
 

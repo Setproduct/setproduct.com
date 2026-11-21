@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Chip (Setproduct Design System)
+
+   A chip is pressed. A label nobody clicks is a badge, not a chip.
+
+   Two kinds, one look:
+   - link chip    <a class="chip is-s" aria-current="page">  leads to a URL
+   - filter chip  <button type="button" class="chip is-s" aria-pressed="true">
+                  toggles a value on the same page
+   The selected look follows the ARIA attribute, so `is-active` is optional
+   (kept for places where the attribute cannot be set).
+
+   Sizes pair with the button and the field of the same size:
+     S  .chip.is-s  31 high, radius 12, text 14  ↔ .button-x-small, .text-input.is-s
+     M  .chip.is-m  40 high, radius 16, text 16  ↔ .button-small,   .text-input.is-m
+
+   Rules of the system (see plans/design-system-route-chips-badges-2026-11.md):
+   - every length goes through calc(N * var(--em-px, 1px)), never a bare em;
+   - no Webflow classes inside;
+   - visuals are driven by private --_chip-* variables, so each state only
+     swaps variables and the transition stays smooth.
+   ========================================================================== */
+
+:root {
+  --chip-fg: #19181b;
+  --chip-bg: #ffffff;
+  --chip-edge: #2b00a31a;
+
+  --chip-fg-hover: #39198f;
+  --chip-bg-hover: #fbfaff;
+  --chip-edge-hover: #2b00a380;
+
+  /* Selected must differ from hover: on the site both used #fbfaff,
+     so a hovered chip looked selected. */
+  --chip-fg-selected: #39198f;
+  --chip-bg-selected: #ebe0ff;
+  --chip-edge-selected: #2b00a34d;
+  --chip-bg-selected-hover: #e2d4ff;
+  --chip-edge-selected-hover: #2b00a380;
+
+  --chip-count-bg: #ebe0ff;
+  --chip-count-bg-selected: #ffffff;
+
+  --chip-focus: #7c4dff;
+  --chip-ripple: #7c4dff33;
+  --chip-disabled-opacity: 0.6;
+
+  --chip-press-in: 60ms;
+  --chip-press-out: 120ms;
+  --chip-hover: 250ms;
+  --chip-ripple-out: 728ms;
+  --chip-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Base ---------- */
+
+.chip {
+  --_chip-u: var(--em-px, 1px);
+  --_chip-fg: var(--chip-fg);
+  --_chip-bg: var(--chip-bg);
+  --_chip-edge: var(--chip-edge);
+  --_chip-edge-y: 3;
+  --_chip-shift: 0;
+
+  /* S by default, so a chip without a size class is still usable */
+  --_chip-h: 31;
+  --_chip-r: 12;
+  --_chip-px: 16;
+  --_chip-fs: 14;
+  --_chip-gap: 6;
+  --_chip-icon: 14;
+  --_chip-ripple-size: 8;
+
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--_chip-gap) * var(--_chip-u));
+  height: calc(var(--_chip-h) * var(--_chip-u));
+  margin: 0;
+  /* 1 unit of extra bottom padding lifts the text by half of it,
+     the same optical fix as the field and the button of this size */
+  padding: 0 calc(var(--_chip-px) * var(--_chip-u)) calc(1 * var(--_chip-u));
+  border: 0;
+  border-radius: calc(var(--_chip-r) * var(--_chip-u));
+  background-color: var(--_chip-bg);
+  color: var(--_chip-fg);
+  box-shadow: inset 0 calc(var(--_chip-edge-y) * -1 * var(--_chip-u)) calc(1 * var(--_chip-u)) 0 var(--_chip-edge);
+  transform: translateY(calc(var(--_chip-shift) * var(--_chip-u)));
+  font-family: inherit;
+  font-size: calc(var(--_chip-fs) * var(--_chip-u));
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition:
+    transform var(--chip-press-out) ease-out,
+    box-shadow var(--chip-hover) var(--chip-ease),
+    background-color var(--chip-hover) var(--chip-ease),
+    color var(--chip-hover) var(--chip-ease);
+}
+
+.chip.is-s {
+  --_chip-h: 31;
+  --_chip-r: 12;
+  --_chip-px: 16;
+  --_chip-fs: 14;
+  --_chip-gap: 6;
+  --_chip-icon: 14;
+  --_chip-ripple-size: 8;
+}
+
+.chip.is-m {
+  --_chip-h: 40;
+  --_chip-r: 16;
+  --_chip-px: 20;
+  --_chip-fs: 16;
+  --_chip-gap: 8;
+  --_chip-icon: 16;
+  --_chip-ripple-size: 10;
+}
+
+/* Phones: M drops to 37 together with .text-input.is-m and .button-small */
+@media screen and (max-width: 479px) {
+  .chip.is-m {
+    --_chip-h: 37;
+  }
+}
+
+/* ---------- States ---------- */
+
+@media (hover: hover) {
+  .chip:hover {
+    --_chip-fg: var(--chip-fg-hover);
+    --_chip-bg: var(--chip-bg-hover);
+    --_chip-edge: var(--chip-edge-hover);
+  }
+}
+
+.chip.is-active,
+.chip[aria-pressed="true"],
+.chip[aria-current="page"] {
+  --_chip-fg: var(--chip-fg-selected);
+  --_chip-bg: var(--chip-bg-selected);
+  --_chip-edge: var(--chip-edge-selected);
+}
+
+@media (hover: hover) {
+  .chip.is-active:hover,
+  .chip[aria-pressed="true"]:hover {
+    --_chip-bg: var(--chip-bg-selected-hover);
+    --_chip-edge: var(--chip-edge-selected-hover);
+  }
+}
+
+/* The current page is already open: no hover, no press, no pointer. */
+.chip[aria-current="page"] {
+  cursor: default;
+}
+
+/* Pressed: the chip sinks 2 units inside its box, the edge thins to 1 */
+.chip:active:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]) {
+  --_chip-edge-y: 1;
+  --_chip-shift: 2;
+  transition-duration: var(--chip-press-in);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--chip-focus);
+  outline-offset: 3px;
+}
+
+.chip:disabled,
+.chip[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--chip-disabled-opacity);
+}
+
+/* ---------- Ripple (::after), the same pure-CSS ring as the buttons ---------- */
+
+.chip::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 calc(var(--_chip-ripple-size) * 0.5 * var(--_chip-u)) 0 calc(var(--_chip-ripple-size) * var(--_chip-u)) transparent;
+  transition: box-shadow var(--chip-ripple-out) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chip:active:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"])::after {
+  box-shadow: 0 0 0 0 var(--chip-ripple);
+  transition: box-shadow 0s linear var(--chip-press-in);
+}
+
+/* ---------- Parts: icon and counter ---------- */
+
+.chip-icon {
+  display: block;
+  flex: none;
+  width: calc(var(--_chip-icon) * var(--_chip-u));
+  height: calc(var(--_chip-icon) * var(--_chip-u));
+}
+
+.chip-count {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc((var(--_chip-fs) + 4) * var(--_chip-u));
+  height: calc((var(--_chip-fs) + 4) * var(--_chip-u));
+  /* Pulls the counter towards the edge so the chip does not look lopsided */
+  margin-right: calc(var(--_chip-px) * -0.5 * var(--_chip-u));
+  padding: 0 calc(5 * var(--_chip-u));
+  border-radius: calc(100 * var(--_chip-u));
+  background-color: var(--chip-count-bg);
+  font-size: calc((var(--_chip-fs) - 2) * var(--_chip-u));
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--chip-hover) var(--chip-ease);
+}
+
+.chip.is-active .chip-count,
+.chip[aria-pressed="true"] .chip-count,
+.chip[aria-current="page"] .chip-count {
+  background-color: var(--chip-count-bg-selected);
+}
+
+/* ---------- Rows ----------
+   .chip-row            wraps onto new lines (default)
+   .chip-row.is-scroll  one line, scrolls sideways; for phones and long lists.
+   The scroll row keeps room for the press shift and the 5px focus ring
+   (3 offset + 2 outline), otherwise overflow clips them. */
+
+.chip-row {
+  --_chip-row-gap: 8;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--_chip-row-gap) * var(--em-px, 1px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip-row.is-m {
+  --_chip-row-gap: 10;
+}
+
+.chip-row.is-scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding: 6px;
+  margin: -6px;
+}
+
+.chip-row.is-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transform: none !important;
+  }
+
+  .chip::after {
+    display: none;
+  }
+}
