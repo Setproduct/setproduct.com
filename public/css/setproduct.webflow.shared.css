@@ -3357,6 +3357,53 @@ figcaption {
   }
 }
 
+/* ---------- Touch tablets: the box has to hold the floored 16px line ----------
+   Below 1440 the whole page scales down with body { font-size: .0694445vw }: one em is
+   0.53px at 768 and 0.33px at 480. The 16px floor above then makes the line taller than
+   the em-scaled box. Measured on a touch pointer: an L field is 16.7 high at 480 while
+   its line needs about 21, so the value is cut off, and the S select loses its label
+   completely (scrollHeight 19 against clientHeight 8). The height therefore stops
+   following the em scale there and keeps a real 40, the way the search field in the
+   navbar menu already keeps its own floor. Padding, magnifier and select chevron get a
+   floor as well, otherwise they collapse to 4-5px inside the taller box.
+
+   Scope is the touch pointers only, and 991 down is the tablet breakpoint. A narrow
+   mouse window needs none of this: there the text is 6px and fits its 16.7 box, so
+   nothing clips. Above 992 the em height already holds a 16px line, so a tablet in
+   landscape and the desktop are untouched.
+
+   The size ladder flattens to one height in this range on purpose: three different
+   heights would all have to be at least 40 anyway, and the rest of the page is at
+   33-53% scale there, so a hierarchy inside 40-48 would only be visible as noise. */
+@media (pointer: coarse) and (max-width: 991px) {
+  :is(.text-input.text-input, .textarea-input.textarea-input).is-l {
+    --input-h: max(var(--input-l-h), 40px);
+    --input-px: max(var(--input-l-px), 12px);
+  }
+
+  :is(.text-input.text-input, .textarea-input.textarea-input).is-m {
+    --input-h: max(var(--input-m-h), 40px);
+    --input-px: max(var(--input-m-px), 12px);
+  }
+
+  :is(.text-input.text-input, .textarea-input.textarea-input).is-s {
+    --input-h: max(var(--input-s-h), 40px);
+    --input-px: max(var(--input-s-px), 12px);
+  }
+
+  /* The button in the same row follows the field, otherwise the row reads as a 40px box
+     next to a 17px pill. Only submit buttons that live in a form row are touched:
+     standalone buttons keep their own scale. The navbar has no button here (its
+     magnifier is a div), so it is not in the list. */
+  :is(.form-cta, .form-row) > :is(.button, .button-small, .button-x-small),
+  .button-form-wr > :is(.button, .button-small, .button-x-small) {
+    min-height: 40px;
+  }
+
+  /* The magnifier and the select chevron get their own floors further down the file,
+     below the per-size rules they have to step over. */
+}
+
 /* ---------- Hover: no movement, fill clears up, border picks up the brand ---------- */
 
 :is(.text-input.text-input, .textarea-input.textarea-input):is(.is-l, .is-m, .is-s):hover:not(:focus):not(:disabled):not([aria-invalid="true"]) {
@@ -3430,6 +3477,32 @@ figcaption {
 .text-input.is-l ~ .search-icon-wr .search-icon { width: calc(21 * var(--em-px)); }
 .text-input.is-m ~ .search-icon-wr .search-icon { width: calc(18 * var(--em-px)); }
 .text-input.is-s ~ .search-icon-wr .search-icon { width: calc(14 * var(--em-px)); }
+
+/* Touch tablets: the box grew to 40 (see the height floor above), so a 6px magnifier
+   would read as a speck. Placed after the per-size widths on purpose: same
+   specificity, later declaration wins. */
+@media (pointer: coarse) and (max-width: 991px) {
+  .text-input.text-input ~ .search-icon-wr .search-icon {
+    width: max(calc(21 * var(--em-px)), 16px);
+    height: auto;
+  }
+
+  /* The 16px magnifier is wider than the em-scaled clearance it used to sit in. Left
+     alone it ends 20.7 from the field edge while the text starts at 14, so the two
+     overlap by 6.7. The wrap therefore keeps a real 12 (the floored field inset) and the
+     field keeps the old sum 12 + 16 + 8 = 36 as its left inset. Selectors are doubled to
+     step over the per-size rules above, which carry the same specificity. */
+  .text-input.text-input ~ .search-icon-wr {
+    padding-left: max(calc(16 * var(--em-px)), 12px);
+  }
+
+  .search:not(.nav-menu-mob-search) > .text-input.text-input.is-l.is-l { padding-left: max(calc(47 * var(--em-px)), 36px); }
+  .search:not(.nav-menu-mob-search) > .text-input.text-input.is-m.is-m { padding-left: max(calc(42 * var(--em-px)), 36px); }
+  .search:not(.nav-menu-mob-search) > .text-input.text-input.is-s.is-s { padding-left: max(calc(32 * var(--em-px)), 36px); }
+
+  /* The navbar field sets its own 42 above; it needs the same floor. */
+  .nav-search-form .text-input.text-input.text-input { padding-left: max(calc(42 * var(--em-px)), 36px); }
+}
 
 .text-input:is(.is-l, .is-m, .is-s) ~ .search-icon-wr {
   pointer-events: none;
@@ -3570,6 +3643,22 @@ figcaption {
   padding-right: calc(32 * var(--em-px));
   background-position: right calc(10 * var(--em-px)) center;
   background-size: calc(14 * var(--em-px));
+}
+
+/* ---------- Touch tablets: icon floors inside the taller box ----------
+   Companion of the height floor above. The box stops following the em scale there, so
+   a 7px magnifier or a 4.7px select chevron would float inside a 40px field. Placed
+   after the per-size select and magnifier rules on purpose: same specificity, so the
+   later declaration wins and no !important is needed.
+   The select is one rule for all three sizes: in this range they share one height. */
+
+@media (pointer: coarse) and (max-width: 991px) {
+  /* is-select is doubled: the per-size rules above are 0,4,0 and would otherwise win. */
+  .text-input.text-input.is-select.is-select {
+    background-size: max(calc(14 * var(--em-px)), 12px);
+    background-position: right max(calc(10 * var(--em-px)), 10px) center;
+    padding-right: max(calc(32 * var(--em-px)), 28px);
+  }
 }
 
 /* Chosen value: the select borrows the focused field colours as a "filter is

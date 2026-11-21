@@ -309,6 +309,32 @@
   }
 }
 
+/* Companion of the shared-CSS floor on touch tablets. The prototype declares its own
+   --input-h from the size tokens, so the general rule in the shared stylesheet never
+   reaches it; measured at 480 the local fields stayed 16.7 / 13.3 / 10.3 high while
+   their floored text was 16px, and the 16px line was cut off. Same 40 / 12 here, and
+   the same reason: below 1440 one em is 0.33-0.69px, so the em box cannot hold a real
+   text line. */
+@media (pointer: coarse) and (max-width: 991px) {
+  .proto .f.f.l {
+    --input-h: max(var(--input-l-h), 40px);
+    --input-px: max(var(--input-l-px), 12px);
+  }
+
+  .proto .f.f.m {
+    --input-h: max(var(--input-m-h), 40px);
+    --input-px: max(var(--input-m-px), 12px);
+  }
+
+  .proto .f.f.s {
+    --input-h: max(var(--input-s-h), 40px);
+    --input-px: max(var(--input-s-px), 12px);
+  }
+
+  /* The magnifier and the select chevron get their own floors below the per-size rules
+     they have to step over, further down this file. */
+}
+
 /* The magnifier is a sibling, it does not inherit the field's --input-lift. */
 .proto .f.f.l ~ :global(.search-icon-wr) { --input-lift: var(--input-l-lift); }
 .proto .f.f.m ~ :global(.search-icon-wr) { --input-lift: var(--input-m-lift); }
@@ -369,6 +395,33 @@
   padding-right: calc(32 * var(--em-px));
   background-position: right calc(10 * var(--em-px)) center;
   background-size: calc(14 * var(--em-px));
+}
+
+/* ---------- Touch tablets: icon floors inside the taller box ----------
+   Companion of the height floor near the size rules. The box stops following the em
+   scale there, so a 4.7px magnifier and a 5.3px select chevron would float in a 40 box
+   (measured at 480 before this block). It sits after the per-size search and select
+   rules on purpose: same specificity, so the later declaration wins.
+   The field keeps 12 + 16 + 8 = 36 on the left, so the icon and the value do not touch. */
+
+@media (pointer: coarse) and (max-width: 991px) {
+  /* .f is repeated so each rule matches the weight of the per-size rule it overrides
+     (0,5,0 and 0,6,0); being later in the file then decides. */
+  .proto .f.f.f.searchWide { padding-left: 36px; }
+
+  .proto .f.f.f ~ :global(.search-icon-wr) { padding-left: 12px; }
+
+  .proto .f.f.f ~ :global(.search-icon-wr) :global(.search-icon) {
+    width: 16px;
+    height: auto;
+  }
+
+  /* One select rule for all three sizes: in this range they share one height. */
+  .proto .f.f.f.select {
+    background-size: 12px;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
 }
 
 /* ---------- Hover (differs from focus) ---------- */
@@ -652,6 +705,14 @@
 
 @media screen and (max-width: 479px) {
   .proto .f.f.m.attention { --attention-h: calc(37 * var(--em-px)); }
+}
+
+/* The beam paints its own frame, so it does not read --input-h and needs the touch
+   floor spelled out separately, otherwise it would stay 16.7 high around a 40 field. */
+@media (pointer: coarse) and (max-width: 991px) {
+  .proto .f.f.l.attention { --attention-h: max(calc(50 * var(--em-px)), 40px); }
+  .proto .f.f.m.attention { --attention-h: max(calc(40 * var(--em-px)), 40px); }
+  .proto .f.f.s.attention { --attention-h: max(calc(37 * var(--em-px)), 40px); }
 }
 
 .proto .f.f.attention:hover:not(:focus):not(:disabled):not([aria-invalid="true"]),
