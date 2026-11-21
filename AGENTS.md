@@ -910,8 +910,61 @@ inlineCta:
 
 У поля с бегущим лучом (`.text-input.is-attention`) рамка прозрачная и несёт луч, а тонкая линия под ним — тот же `#d7ccfc` (`--attention-line`), чтобы оно не выглядело другим компонентом.
 
+**Размеры и пары с кнопками.** Поле всегда стоит в паре с кнопкой своего размера: высота, радиус и кромка фокуса у них совпадают, поэтому в одном ряду они выравниваются по центральной оси.
+
+| Размер | Класс поля | Кнопка рядом | Высота | Радиус | Шрифт | Внутр. отступ | Кромка фокуса |
+|---|---|---|---|---|---|---|---|
+| L | `text-input is-l` | `button` | 50 | 20 | 18 | 16 | 6 |
+| M | `text-input is-m` | `button-small` | 40 | 16 | 16 | 14 | 4 |
+| S | `text-input is-s` | `button-x-small` | 31 | 12 | 14 | 10 | 3 |
+
+Многострочное поле — `textarea-input is-l` / `is-m` / `is-s`, нативный селект — `text-input is-<размер> is-select` (шеврон рисуется фоном, свой SVG не добавляем), выбранный фильтр — плюс `is-active`. Поле, которое должно притягивать взгляд (одно на экран), — `is-attention` внутри обёртки `<div className="input-wr">`: луч считается от ширины контейнера, без обёртки он не работает.
+
+**Разметка:**
+```jsx
+// поле с подписью и ошибкой
+<div className="field">
+  <label className="field-label" htmlFor="email">Email</label>
+  <input
+    id="email"
+    className="text-input is-l"
+    aria-invalid={hasError || undefined}
+    aria-describedby={hasError ? "email-error" : undefined}
+  />
+  {hasError ? <p className="field-error" id="email-error">{error}</p> : null}
+</div>
+
+// поле и кнопка в одном ряду
+<div className="form-row">
+  <input aria-label="Email address" className="text-input is-m" type="email" />
+  <button className="button-small w-inline-block" type="submit">
+    <div className="text-size-medium text-weight-bold">Subscribe</div>
+  </button>
+</div>
+```
+
+**Где живут поля сейчас** (все на новой системе):
+
+| Место | Размер |
+|---|---|
+| Подписка в футере ([`SiteFooter`](components/layout/SiteFooter.tsx:310)) | L |
+| Подписка в CTA-секции ([`CtaSubscribe`](components/sections/CtaSubscribe.tsx:35)) | L + `is-attention` |
+| Подписка в сайдбаре статьи ([`BlogSidebar`](components/blog/BlogSidebar.tsx:216)) | L |
+| Поиск в навбаре ([`NavSearch`](components/layout/nav/NavSearch.tsx:44)) | M |
+| Поиск в мобильном меню ([`SiteHeader`](components/layout/SiteHeader.tsx:443)) | L, с полами 44px по высоте |
+| Поиск и селект темы на `/search` ([`SearchPage`](components/pages/SearchPage.tsx:790)) | поле L, селект S |
+| Фильтр и поиск на `/freebies` ([`FreebiesListingPage`](components/pages/FreebiesListingPage.tsx:192)) | M |
+| Модалка контакта ([`ContactModal`](components/modals/ContactModal.tsx:860)) | L, сетка `form-grid is-l` |
+
+**Запрещено** (старые правила удалены из CSS, класс без размера даст голое поле браузера):
+- `text-input` или `textarea-input` без класса размера;
+- `w-input` и `w-select` на полях: это база Webflow с серой рамкой `#ccc`, голубым фокусом и серым `#eee` у disabled;
+- старые модификаторы `is-search`, `is-nav-search`, `is-page-search`, `is-templates` (на поле), `is-freebies-filters`, `is-smaller`;
+- подпись поля через `<p>` или `<div>`: только `<label htmlFor>`, иначе клик по подписи не ставит фокус, а скринридер не связывает подпись с полем;
+- Tailwind-классы геометрии на поле (`h-*`, `px-*`, `rounded-*`, `text-*`, `pr-12`): размер задаёт только класс `is-l` / `is-m` / `is-s`.
+
 **Как применять:**
-1. Цвет рамки не пишем руками в компоненте — только через токен `--input-border` (сейчас в [`InputsProtoPage.module.css`](components/pages/InputsProtoPage.module.css:108), после выкатки — в `setproduct.webflow.shared.css` вместе с остальными `--input-*`).
+1. Цвет рамки не пишем руками в компоненте — только через токен `--input-border` из `:root` в [`setproduct.webflow.shared.css`](public/css/setproduct.webflow.shared.css:2126) вместе с остальными `--input-*`.
 2. Поле не может иметь рамку светлее своей заливки: контраст даёт заливка, а рамка только смягчает край. Поэтому на белом фоне поле всё равно остаётся видимым за счёт `#f0ebff`.
 3. `#d7ccfc` — это цвет **покоя**. Для hover, focus, ошибки и disabled он не переиспользуется, у каждого состояния свой токен из таблицы выше.
 4. Тень в покое только внутренняя и только сверху (`inset 0 3px 2px`). Внешних теней и подсветок у поля в покое нет.
