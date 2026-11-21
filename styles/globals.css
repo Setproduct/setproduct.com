@@ -524,8 +524,9 @@ h1[id], h2[id], h3[id], h4[id] {
  * plus a 5px dot centred on its leading end that softly pulses and sends out a
  * fading ripple. Both halves of the dot stay visible, so it reads as a bead
  * riding the line.
- * --rp-color is the very same hairline tone as .text-input's border, so the
- * line reads as a continuation of the input chrome rather than brand chrome.
+ * --rp-color is deliberately the same hairline tone as the card borders and
+ * the site's neutral chrome, so the line reads as a continuation of that
+ * chrome rather than a brand accent.
  * ReadingProgress.tsx writes --p (0..1) and --rp-top (navbar bottom edge in px);
  * the line scales and the dot's track slides by transform, so there is no
  * layout work while scrolling.
