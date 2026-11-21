@@ -1,24 +1,18 @@
-import Head from "next/head";
 import { useState, type ReactNode } from "react";
-import SiteHeader from "../layout/SiteHeader";
-import SiteFooter from "../layout/SiteFooter";
-import type { NavData } from "../../lib/nav/types";
-import styles from "./InputsProtoPage.module.css";
-
-type Props = {
-  navData?: NavData;
-};
+import { DocSection } from "../DocSection";
+import styles from "./InputsDoc.module.css";
 
 type StateId = "default" | "hover" | "focus" | "filled" | "error" | "disabled";
 type Size = "l" | "m" | "s";
 
-const STATES: { id: StateId; title: string; note: string }[] = [
-  { id: "default", title: "Default", note: "Empty field, placeholder visible" },
-  { id: "hover", title: "Hover (frozen)", note: "No movement, same inner shadow. Fill clears up, border turns light purple" },
-  { id: "focus", title: "Focus (frozen)", note: "2px purple border, the inner shadow moves outside as the outlined button edge (6 / 4 / 3), the field lifts. Click a field to see the motion" },
-  { id: "filled", title: "Filled", note: "Value entered, no focus" },
-  { id: "error", title: "Error", note: "Red border, text linked via aria-describedby" },
-  { id: "disabled", title: "Disabled", note: "Brand fill at 60%" },
+// Headings come from registry.ts; the section id there is `state-<id>`.
+const STATES: { id: StateId; note: string }[] = [
+  { id: "default", note: "Empty field, placeholder visible" },
+  { id: "hover", note: "Frozen. No movement, same inner shadow. Fill clears up, border turns light purple" },
+  { id: "focus", note: "Frozen. 2px purple border, the inner shadow moves outside as the outlined button edge (6 / 4 / 3), the field lifts. Click a field to see the motion" },
+  { id: "filled", note: "Value entered, no focus" },
+  { id: "error", note: "Red border, text linked via aria-describedby" },
+  { id: "disabled", note: "Brand fill at 60%" },
 ];
 
 /* Every field size is paired with the button of the same size (see the CSS module). */
@@ -431,103 +425,66 @@ function SettingsPanel({ sizeId }: { sizeId: Size }) {
   );
 }
 
-export default function InputsProtoPage({ navData }: Props) {
+export function InputsDoc() {
   const [submitting, setSubmitting] = useState(false);
 
   return (
     <>
-      <Head>
-        <title>Inputs prototype | Setproduct</title>
-        <meta content="noindex, nofollow" name="robots" />
-      </Head>
-      <SiteHeader navData={navData} />
-      <main className="mt-22.5">
-        <div className="section">
-          <div className="section-padding top-80 bottom-80">
-            <div className="container">
-              <h1 className="heading-style-h2">Inputs prototype</h1>
-              <div className="spacer-16" />
-              <p className="text-size-large m-0">
-                This page shows the fields of the design system in three sizes, L, M and S, next to the
-                buttons of the same size. Hover and focus rows are frozen; every other field is live. Check
-                the page at 1440, 1024, 768 and 390 px.
-              </p>
+      <div className="spacer-24" />
+      <p className={`text-size-regular ${styles.cellLabel}`}>
+        Hover and focus sections are frozen; every other field is live. Check the page at 1440, 1024, 768 and 390
+        px.
+      </p>
 
-              <div className="spacer-48" />
-              <h2 className="heading-style-h5">Sizes next to the buttons</h2>
-              <div className="spacer-4" />
-              <p className={`text-size-regular ${styles.cellLabel}`}>
-                Each row is a field with the primary and secondary button of the same size. Heights, radii and
-                the focus edge match. Click a field to see the focus next to the buttons.
-              </p>
-              <div className="spacer-16" />
-              <SizeRows />
+      <DocSection
+        id="sizes"
+        note="Each row is a field with the primary and secondary button of the same size. Heights, radii and the focus edge match. Click a field to see the focus next to the buttons."
+      >
+        <SizeRows />
+      </DocSection>
 
-              <div className="spacer-48" />
-              <h2 className="heading-style-h5">Settings panel (dense dashboard form)</h2>
-              <div className="spacer-4" />
-              <p className={`text-size-regular ${styles.cellLabel}`}>
-                Acceptance test for alignment. Three sizes. L goes on its own row above at full width, so its 18
-                text and the long Owner email error have room to show. Below it M and S share a two-column grid,
-                and fields in one row stay on one line even when a neighbour has a long error or no hint. Select,
-                read-only field with a button, disabled field, textarea and the Save / Cancel row all use the same
-                size.
-              </p>
-              <div className="spacer-16" />
-              <SettingsPanel sizeId="l" />
-              <div className="spacer-24" />
-              <div className={styles.row}>
-                <SettingsPanel sizeId="m" />
-                <SettingsPanel sizeId="s" />
-              </div>
-
-              <div className="spacer-48" />
-              <h2 className="heading-style-h5">Attention field (border beam)</h2>
-              <div className="spacer-4" />
-              <p className={`text-size-regular ${styles.cellLabel}`}>
-                For the one field on a screen that has to catch the eye, like the hero subscribe form. A purple
-                beam runs along the border, one lap every 4 seconds. On focus the beam stops and the regular focus takes
-                over. With reduced motion the border stays still.
-              </p>
-              <div className="spacer-16" />
-              <div className={`${styles.cell} ${styles.proto}`}>
-                <AttentionFields />
-              </div>
-
-              {STATES.map((state) => (
-                <div key={state.id}>
-                  <div className="spacer-48" />
-                  <h2 className="heading-style-h5">{state.title}</h2>
-                  <div className="spacer-4" />
-                  <p className={`text-size-regular ${styles.cellLabel}`}>{state.note}</p>
-                  <div className="spacer-16" />
-                  <div className={`${styles.cell} ${styles.proto}`}>
-                    <ProtoStateFields state={state.id} />
-                  </div>
-                </div>
-              ))}
-
-              <div className="spacer-48" />
-              <h2 className="heading-style-h5">Live: textarea, select, field with a button</h2>
-              <div className="spacer-4" />
-              <p className={`text-size-regular ${styles.cellLabel}`}>
-                The select is native and styled like the field. In each size the subscribe button is the
-                button of the same size.
-              </p>
-              <div className="spacer-16" />
-              <label className="text-size-regular text-weight-bold flex items-center gap-2 cursor-pointer">
-                <input checked={submitting} onChange={(e) => setSubmitting(e.target.checked)} type="checkbox" />
-                Simulate submitting (disables the subscribe forms)
-              </label>
-              <div className="spacer-16" />
-              <div className={`${styles.cell} ${styles.proto}`}>
-                <ProtoLiveFields submitting={submitting} />
-              </div>
-            </div>
-          </div>
+      <DocSection
+        id="settings"
+        note="A dense dashboard form, the acceptance test for alignment. L goes on its own row at full width, so its 18 text and the long Owner email error have room to show. Below it M and S share a two-column grid, and fields in one row stay on one line even when a neighbour has a long error or no hint. Select, read-only field with a button, disabled field, textarea and the Save / Cancel row all use the same size."
+      >
+        <SettingsPanel sizeId="l" />
+        <div className="spacer-24" />
+        <div className={styles.row}>
+          <SettingsPanel sizeId="m" />
+          <SettingsPanel sizeId="s" />
         </div>
-      </main>
-      <SiteFooter navData={navData} />
+      </DocSection>
+
+      <DocSection
+        id="attention"
+        note="For the one field on a screen that has to catch the eye, like the hero subscribe form. A purple beam runs along the border, one lap every 4 seconds. On focus the beam stops and the regular focus takes over. With reduced motion the border stays still."
+      >
+        <div className={`${styles.cell} ${styles.proto}`}>
+          <AttentionFields />
+        </div>
+      </DocSection>
+
+      {STATES.map((state) => (
+        <DocSection id={`state-${state.id}`} key={state.id} note={state.note}>
+          <div className={`${styles.cell} ${styles.proto}`}>
+            <ProtoStateFields state={state.id} />
+          </div>
+        </DocSection>
+      ))}
+
+      <DocSection
+        id="live"
+        note="The select is native and styled like the field. In each size the subscribe button is the button of the same size."
+      >
+        <label className="text-size-regular text-weight-bold flex items-center gap-2 cursor-pointer">
+          <input checked={submitting} onChange={(e) => setSubmitting(e.target.checked)} type="checkbox" />
+          Simulate submitting (disables the subscribe forms)
+        </label>
+        <div className="spacer-16" />
+        <div className={`${styles.cell} ${styles.proto}`}>
+          <ProtoLiveFields submitting={submitting} />
+        </div>
+      </DocSection>
     </>
   );
 }

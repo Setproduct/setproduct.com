@@ -1,0 +1,377 @@
+/* Docs shell for the Setproduct Design System (/design-system).
+   Every size goes through calc(N * var(--em-px)), never bare em: the shell must
+   keep its proportions inside any host page, whatever font-size its body has.
+   Text in the navigation has a px floor, because below 1440 one em-px is less
+   than a pixel and the labels would shrink past readable. */
+
+.shell {
+  --ds-sidebar: calc(248 * var(--em-px));
+  --ds-gutter: calc(40 * var(--em-px));
+  --ds-topbar-h: calc(64 * var(--em-px));
+  --ds-nav-fs: max(calc(15 * var(--em-px)), 13px);
+  --ds-nav-sub-fs: max(calc(14 * var(--em-px)), 12px);
+  --ds-line: var(--black-transparent);
+
+  min-height: 100vh;
+  background-color: var(--white);
+}
+
+/* ---------- Skip link ---------- */
+
+.skip {
+  position: absolute;
+  left: calc(16 * var(--em-px));
+  top: calc(-100 * var(--em-px));
+  z-index: 30;
+  padding: calc(8 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: var(--ds-nav-fs);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip:focus-visible {
+  top: calc(12 * var(--em-px));
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(16 * var(--em-px));
+  min-height: var(--ds-topbar-h);
+  padding: 0 var(--ds-gutter);
+  border-bottom: 1px solid var(--ds-line);
+  background-color: color-mix(in srgb, var(--white) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  color: var(--black);
+  font-size: max(calc(18 * var(--em-px)), 15px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back {
+  color: var(--primary);
+  font-size: var(--ds-nav-fs);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--dark-primary);
+}
+
+/* ---------- Body: sidebar + content ---------- */
+
+.body {
+  display: grid;
+  grid-template-columns: var(--ds-sidebar) minmax(0, 1fr);
+  gap: var(--ds-gutter);
+  max-width: calc(1440 * var(--em-px));
+  margin: 0 auto;
+  padding: 0 var(--ds-gutter);
+}
+
+.sidebar {
+  position: sticky;
+  top: var(--ds-offset, var(--ds-topbar-h));
+  align-self: start;
+  max-height: calc(100vh - var(--ds-offset, var(--ds-topbar-h)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(32 * var(--em-px)) 0 calc(48 * var(--em-px));
+}
+
+.main {
+  min-width: 0;
+  padding: calc(48 * var(--em-px)) 0 calc(112 * var(--em-px));
+  outline: none;
+}
+
+.lead {
+  max-width: calc(760 * var(--em-px));
+  margin: 0;
+}
+
+/* Anchors land below whatever sticks to the top (measured in DocsLayout). */
+.section {
+  scroll-margin-top: calc(var(--ds-offset, var(--ds-topbar-h)) + 24px);
+}
+
+.note {
+  max-width: calc(760 * var(--em-px));
+  margin: 0;
+  color: var(--grey);
+}
+
+/* ---------- Desktop navigation ---------- */
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.navGroup {
+  margin: calc(24 * var(--em-px)) 0 calc(8 * var(--em-px));
+  padding-left: calc(12 * var(--em-px));
+  color: var(--grey);
+  font-size: max(calc(12 * var(--em-px)), 11px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.navList,
+.navSections {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--em-px));
+  padding: calc(8 * var(--em-px)) calc(12 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  color: var(--black);
+  font-size: var(--ds-nav-fs);
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.navItem:hover {
+  color: var(--primary);
+}
+
+.navItem[aria-current="page"] {
+  background-color: var(--light-primary);
+  color: var(--dark-primary);
+  font-weight: 600;
+}
+
+.navItem:focus-visible,
+.navSection:focus-visible,
+.mobileSection:focus-visible,
+.back:focus-visible,
+.brand:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.navStatus {
+  padding: calc(1 * var(--em-px)) calc(6 * var(--em-px));
+  border: 1px solid var(--light-primary);
+  border-radius: 100em;
+  background-color: var(--white);
+  color: var(--primary);
+  font-size: max(calc(11 * var(--em-px)), 10px);
+  font-weight: 600;
+}
+
+/* Sections of the current page: a rail on the left, the active one marked on it. */
+.navSections {
+  margin: calc(4 * var(--em-px)) 0 calc(8 * var(--em-px)) calc(20 * var(--em-px));
+  border-left: 1px solid var(--light-primary);
+}
+
+.navSection {
+  position: relative;
+  display: block;
+  padding: calc(6 * var(--em-px)) calc(12 * var(--em-px));
+  color: color-mix(in srgb, var(--black) 70%, transparent);
+  font-size: var(--ds-nav-sub-fs);
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.navSection:hover {
+  color: var(--primary);
+}
+
+.navSection::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: calc(4 * var(--em-px));
+  bottom: calc(4 * var(--em-px));
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--primary);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition:
+    opacity 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navSection[aria-current="location"] {
+  color: var(--dark-primary);
+  font-weight: 600;
+}
+
+.navSection[aria-current="location"]::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* ---------- Mobile bar (below 992px) ---------- */
+
+.mobileBar {
+  display: none;
+}
+
+.mobileInner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileSelect.mobileSelect {
+  width: 100%;
+  margin: 0;
+}
+
+.mobileSections {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Room for the focus outline, given back with the negative margin. */
+  padding: 2px;
+  margin: -2px;
+}
+
+.mobileSections::-webkit-scrollbar {
+  display: none;
+}
+
+.mobileSection {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border: 1px solid var(--light-primary);
+  border-radius: 100px;
+  color: var(--black);
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.mobileSection[aria-current="location"] {
+  border-color: var(--primary);
+  background-color: var(--light-primary);
+  color: var(--dark-primary);
+  font-weight: 600;
+}
+
+@media screen and (max-width: 991px) {
+  .shell {
+    --ds-gutter: 20px;
+  }
+
+  /* The top bar scrolls away; only the navigation bar sticks. */
+  .topbar {
+    position: static;
+    min-height: 52px;
+    backdrop-filter: none;
+  }
+
+  .mobileBar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: block;
+    padding: 10px var(--ds-gutter);
+    border-bottom: 1px solid var(--ds-line);
+    background-color: color-mix(in srgb, var(--white) 94%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .body {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    padding-top: 32px;
+  }
+}
+
+/* ---------- Overview ---------- */
+
+.cards {
+  /* Reset lives here, not in Tailwind: layered utilities lose to the
+     unlayered list rules of the host page. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(300 * var(--em-px)), 1fr));
+  gap: calc(20 * var(--em-px));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  height: 100%;
+  padding: calc(24 * var(--em-px));
+  border: 1px solid var(--ds-line);
+  border-radius: calc(24 * var(--em-px));
+  color: var(--black);
+  text-decoration: none;
+  transition: border-color 200ms ease;
+}
+
+.card:hover {
+  border-color: var(--primary);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--em-px));
+}
+
+.cardMeta {
+  margin: 0;
+  color: var(--grey);
+}
+
+@media screen and (max-width: 479px) {
+  .card {
+    border-radius: calc(16 * var(--em-px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navSection::before {
+    transition: none;
+  }
+}

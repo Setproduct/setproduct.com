@@ -1,22 +1,16 @@
-import Head from "next/head";
 import { useState } from "react";
-import SiteHeader from "../layout/SiteHeader";
-import SiteFooter from "../layout/SiteFooter";
-import ArrowIcon from "../sections/ArrowIcon";
-import type { NavData } from "../../lib/nav/types";
-import styles from "./PushButtonsProtoPage.module.css";
-
-type Props = {
-  navData?: NavData;
-};
+import { DocSection } from "../DocSection";
+import { ArrowIcon } from "../icons";
+import styles from "./ButtonsDoc.module.css";
 
 type RowId = "large" | "medium" | "small" | "card";
 
-const ROWS: { id: RowId; title: string; note: string }[] = [
-  { id: "large", title: "L · button", note: "Outer edge 6em. Hero, section CTA, form submit" },
-  { id: "medium", title: "M · button-small", note: "Outer edge 4em. Card actions, load more, navbar" },
-  { id: "small", title: "S · button-x-small and chips", note: "Press inside the box, no outer edge" },
-  { id: "card", title: "Card with overflow hidden", note: "Checks that the outer edge is not clipped" },
+// Headings come from registry.ts; ids here must match its "buttons" sections.
+const ROWS: { id: RowId; note: string }[] = [
+  { id: "large", note: "Outer edge 6em. Hero, section CTA, form submit" },
+  { id: "medium", note: "Outer edge 4em. Card actions, load more, navbar" },
+  { id: "small", note: "Press inside the box, no outer edge" },
+  { id: "card", note: "Checks that the outer edge is not clipped" },
 ];
 
 function ButtonSet({ row }: { row: RowId }) {
@@ -105,63 +99,38 @@ function ButtonSet({ row }: { row: RowId }) {
   );
 }
 
-export default function PushButtonsProtoPage({ navData }: Props) {
+export function ButtonsDoc() {
   const [pressedAll, setPressedAll] = useState(false);
   const protoClass = pressedAll ? `${styles.cell} ${styles.proto} ${styles.pressedAll}` : `${styles.cell} ${styles.proto}`;
 
   return (
     <>
-      <Head>
-        <title>Push buttons prototype | Setproduct</title>
-        <meta content="noindex, nofollow" name="robots" />
-      </Head>
-      <SiteHeader navData={navData} />
-      {/* Empty touchstart listener makes :active work in iOS Safari */}
-      <main className="mt-22.5" onTouchStart={() => {}}>
-        <div className="section">
-          <div className="section-padding top-80 bottom-80">
-            <div className="container">
-              <h1 className="heading-style-h2">Push buttons prototype</h1>
-              <div className="spacer-16" />
-              <p className="text-size-large m-0">
-                Left column shows the live buttons. Right column shows the push effect in brand colours. Hover
-                to see the inner glow, press and release to see the ripple, or freeze every button in the
-                pressed state (the ripple does not play in the frozen state).
-              </p>
-              <div className="spacer-24" />
-              <label className="text-size-regular text-weight-bold flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={pressedAll}
-                  onChange={(e) => setPressedAll(e.target.checked)}
-                />
-                Show all push buttons pressed
-              </label>
+      <div className="spacer-24" />
+      <p className={`text-size-regular ${styles.cellLabel}`}>
+        Left column shows the live buttons. Right column shows the push effect in brand colours. Hover to see the
+        inner glow, press and release to see the ripple, or freeze every button in the pressed state (the ripple
+        does not play in the frozen state).
+      </p>
+      <div className="spacer-16" />
+      <label className="text-size-regular text-weight-bold flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" checked={pressedAll} onChange={(e) => setPressedAll(e.target.checked)} />
+        Show all push buttons pressed
+      </label>
 
-              {ROWS.map((row) => (
-                <div key={row.id} id={row.id}>
-                  <div className="spacer-48" />
-                  <h2 className="heading-style-h5">{row.title}</h2>
-                  <div className="spacer-4" />
-                  <p className={`text-size-regular ${styles.cellLabel}`}>{row.note}</p>
-                  <div className="spacer-16" />
-                  <div className={styles.row}>
-                    <div className={`${styles.cell} ${styles.current}`}>
-                      <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
-                      <ButtonSet row={row.id} />
-                    </div>
-                    <div className={protoClass}>
-                      <p className={`text-size-small ${styles.cellLabel}`}>Push</p>
-                      <ButtonSet row={row.id} />
-                    </div>
-                  </div>
-                </div>
-              ))}
+      {ROWS.map((row) => (
+        <DocSection id={row.id} key={row.id} note={row.note}>
+          <div className={styles.row}>
+            <div className={`${styles.cell} ${styles.current}`}>
+              <p className={`text-size-small ${styles.cellLabel}`}>Now</p>
+              <ButtonSet row={row.id} />
+            </div>
+            <div className={protoClass}>
+              <p className={`text-size-small ${styles.cellLabel}`}>Push</p>
+              <ButtonSet row={row.id} />
             </div>
           </div>
-        </div>
-      </main>
-      <SiteFooter navData={navData} />
+        </DocSection>
+      ))}
     </>
   );
 }

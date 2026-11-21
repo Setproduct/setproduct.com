@@ -2742,7 +2742,7 @@ figcaption {
 }
 
 /* ==========================================================================
-   Push buttons (approved on the /push-buttons-proto prototype).
+   Push buttons (approved on /design-system/buttons, formerly /push-buttons-proto).
    Overrides the Webflow shadows and `transition: all .3s` above.
    - L and M: outer solid edge, the button drops onto it on press.
    - S and chips: the edge is inset, the button presses inside its box.
@@ -3208,7 +3208,7 @@ figcaption {
 }
 
 /* ==========================================================================
-   Inputs L / M / S (approved on /inputs-proto, see plans/inputs-rollout-plan-2026-10.md).
+   Inputs L / M / S (approved on /design-system/inputs, see plans/inputs-rollout-plan-2026-10.md).
    Every field carries a size class; the old Webflow .text-input / .textarea-input
    base is gone, so these rules are the whole look. Size pairs with the button of the same size:
      .text-input.is-l  ↔ .button          (50 high)
@@ -3676,7 +3676,7 @@ figcaption {
      <div class="input-wr"><input class="text-input is-l is-attention" /></div>
    .input-wr takes the room of the field in a row (flex: 1), the button stays beside it.
    On focus the regular focus takes over, error paints the border red, disabled and
-   reduced motion get a still line. Full reasoning: InputsProtoPage.module.css. */
+   reduced motion get a still line. Full reasoning: design-system/docs/pages/InputsDoc.module.css. */
 
 @property --attention-t {
   syntax: "<number>";
