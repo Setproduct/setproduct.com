@@ -416,9 +416,9 @@
   outline-offset: 2px;
 }
 
-/* Fields: label 6em above the control (from .field), 20em between groups.
-   20 > focus edge 6 + lift 2 of L, so a focused field never touches the next
-   label. Field text inherits the page font, not the UA one. */
+/* Field text inherits the page font, not the UA one. Gaps and the left label line
+   come from the field system itself (8 / 6 / 4 and 17 / 15 / 11, see the inputs
+   rule in AGENTS.md), so the modal keeps no spacing of its own. */
 :where(.root) :global(.contact-dialog_form :is(.text-input, .textarea-input)) {
   font-family: inherit;
 }
