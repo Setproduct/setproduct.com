@@ -91,6 +91,21 @@ export const DOC_COMPONENTS: DocEntry[] = [
       { id: "rows", title: "Wrapping row and scrolling row" },
     ],
   },
+  {
+    slug: "badges",
+    title: "Badges",
+    summary:
+      "Small labels that only inform: a category, a type, a status. No hover, no pointer, no focus. If people should click it, it is a chip.",
+    status: "new",
+    sections: [
+      { id: "compare", title: "Today on the site and the new badge" },
+      { id: "sizes", title: "Sizes" },
+      { id: "kinds", title: "Kinds and tones" },
+      { id: "parts", title: "Dot and icon" },
+      { id: "context", title: "In a card and on an image" },
+      { id: "boundary", title: "Badge or chip" },
+    ],
+  },
 ];
 
 export function docHref(slug: string): string {

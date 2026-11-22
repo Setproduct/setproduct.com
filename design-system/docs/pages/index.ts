@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { BadgesDoc } from "./BadgesDoc";
 import { ButtonsDoc } from "./ButtonsDoc";
 import { ChipsDoc } from "./ChipsDoc";
 import { InputsDoc } from "./InputsDoc";
@@ -12,6 +13,7 @@ export const DOC_PAGES: Record<string, ComponentType> = {
   buttons: ButtonsDoc,
   inputs: InputsDoc,
   chips: ChipsDoc,
+  badges: BadgesDoc,
 };
 
 export { OverviewDoc } from "./OverviewDoc";

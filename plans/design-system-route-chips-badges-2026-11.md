@@ -1,6 +1,6 @@
 # Setproduct Design System: раздел /design-system, левая навигация, Chips и Badges
 
-Статус: этапы 1 и 2 готовы (витрина /design-system/chips, стили design-system/css/chip.css), дальше этап 3 (Badges).
+Статус: этапы 1–3 готовы (витрины /design-system/chips и /design-system/badges). Этапы 4–6 запускаются отдельно.
 
 ## 1. Chips или Badges: ответ на вопрос
 

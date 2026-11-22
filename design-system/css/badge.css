@@ -1,0 +1,166 @@
+/* ==========================================================================
+   Badge (Setproduct Design System)
+
+   A badge only informs: category, type, status. It has no hover, no pointer
+   and no focus. If people should click it, it is a chip (chip.css).
+
+   Classes:  badge + size + kind + tone
+     size    .is-s  20 high, text 12        (cards, meta rows, nav labels)
+             .is-m  24 high, text 13        (headings, image overlays)
+     kind    (none)        outline: hairline border, clear fill  ← category-tag
+             .is-soft      soft tinted fill, no border            ← statuses, types
+             .is-on-image  white fill for overlays on previews    ← /freebies
+     tone    (none)        neutral
+             .is-brand     purple
+             .is-success   green ("Ranks on Google")
+   Warning and danger exist only as tokens until the site has a real use.
+
+   Parts: .badge-dot (status dot before the label), .badge-icon (12 / 14 svg).
+
+   Rules of the system: lengths through calc(N * var(--em-px, 1px)), no Webflow
+   classes, every look is a set of private --_badge-* variables.
+   ========================================================================== */
+
+:root {
+  --badge-neutral-fg: #19181b;
+  --badge-neutral-line: #ebe0ff;
+  --badge-neutral-soft: #f3f2f5;
+  --badge-neutral-soft-fg: #4a4850;
+
+  --badge-brand-fg: #7c4dff;
+  --badge-brand-line: #7c4dff4d;
+  --badge-brand-soft: #ebe0ff;
+  --badge-brand-soft-fg: #39198f;
+
+  --badge-success-fg: #1a7f45;
+  --badge-success-line: #1a7f4540;
+  --badge-success-soft: #e6f6ec;
+  --badge-success-soft-fg: #1a7f45;
+
+  /* Reserved, no styles yet */
+  --badge-warning-fg: #8a5a00;
+  --badge-warning-soft: #fff3d6;
+  --badge-danger-fg: #c02c2c;
+  --badge-danger-soft: #fde8e8;
+
+  --badge-on-image-bg: #ffffff;
+  --badge-on-image-shadow: 0 2px 6px #19181b14;
+}
+
+/* ---------- Base ---------- */
+
+.badge {
+  --_badge-u: var(--em-px, 1px);
+  --_badge-fg: var(--badge-neutral-fg);
+  --_badge-bg: transparent;
+  --_badge-line: var(--badge-neutral-line);
+  --_badge-shadow: 0 0 #0000;
+
+  /* S by default */
+  --_badge-h: 20;
+  --_badge-px: 8;
+  --_badge-fs: 12;
+  --_badge-gap: 4;
+  --_badge-icon: 12;
+  --_badge-dot: 6;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: calc(var(--_badge-gap) * var(--_badge-u));
+  height: calc(var(--_badge-h) * var(--_badge-u));
+  max-width: 100%;
+  margin: 0;
+  /* 1 unit of extra bottom padding: the same optical lift as chips and fields */
+  padding: 0 calc(var(--_badge-px) * var(--_badge-u)) calc(1 * var(--_badge-u));
+  border: 1px solid var(--_badge-line);
+  border-radius: calc(100 * var(--_badge-u));
+  background-color: var(--_badge-bg);
+  box-shadow: var(--_badge-shadow);
+  color: var(--_badge-fg);
+  font-family: inherit;
+  font-size: calc(var(--_badge-fs) * var(--_badge-u));
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  cursor: inherit;
+  user-select: none;
+}
+
+.badge.is-s {
+  --_badge-h: 20;
+  --_badge-px: 8;
+  --_badge-fs: 12;
+  --_badge-gap: 4;
+  --_badge-icon: 12;
+  --_badge-dot: 6;
+}
+
+.badge.is-m {
+  --_badge-h: 24;
+  --_badge-px: 10;
+  --_badge-fs: 13;
+  --_badge-gap: 5;
+  --_badge-icon: 14;
+  --_badge-dot: 7;
+}
+
+/* ---------- Tones (outline) ---------- */
+
+.badge.is-brand {
+  --_badge-fg: var(--badge-brand-fg);
+  --_badge-line: var(--badge-brand-line);
+}
+
+.badge.is-success {
+  --_badge-fg: var(--badge-success-fg);
+  --_badge-line: var(--badge-success-line);
+}
+
+/* ---------- Soft: the fill carries the tone, the border melts into it ---------- */
+
+.badge.is-soft {
+  --_badge-fg: var(--badge-neutral-soft-fg);
+  --_badge-bg: var(--badge-neutral-soft);
+  --_badge-line: transparent;
+}
+
+.badge.is-soft.is-brand {
+  --_badge-fg: var(--badge-brand-soft-fg);
+  --_badge-bg: var(--badge-brand-soft);
+}
+
+.badge.is-soft.is-success {
+  --_badge-fg: var(--badge-success-soft-fg);
+  --_badge-bg: var(--badge-success-soft);
+}
+
+/* ---------- On image: white fill and a soft shadow, readable on any preview.
+   Only the look: the parent places it (position, inset). ---------- */
+
+.badge.is-on-image {
+  --_badge-bg: var(--badge-on-image-bg);
+  --_badge-shadow: var(--badge-on-image-shadow);
+}
+
+/* ---------- Parts ---------- */
+
+.badge-dot {
+  display: block;
+  flex: none;
+  width: calc(var(--_badge-dot) * var(--_badge-u));
+  height: calc(var(--_badge-dot) * var(--_badge-u));
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.badge-icon {
+  display: block;
+  flex: none;
+  width: calc(var(--_badge-icon) * var(--_badge-u));
+  height: calc(var(--_badge-icon) * var(--_badge-u));
+}

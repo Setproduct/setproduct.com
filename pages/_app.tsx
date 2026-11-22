@@ -5,6 +5,7 @@ import "../public/css/normalize.css";
 import "../public/css/webflow.css";
 import "../public/css/setproduct.webflow.shared.css";
 import "../design-system/css/chip.css";
+import "../design-system/css/badge.css";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";

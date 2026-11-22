@@ -1,0 +1,124 @@
+/* Badges docs page. The component lives in design-system/css/badge.css;
+   this module only lays out the demo. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(24 * var(--em-px));
+}
+
+.cell {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(16 * var(--em-px));
+  padding: calc(24 * var(--em-px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--em-px));
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  color: var(--grey);
+}
+
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(12 * var(--em-px));
+}
+
+/* Tone x kind matrix */
+.matrix {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: calc(16 * var(--em-px)) calc(24 * var(--em-px));
+}
+
+.matrixHead {
+  margin: 0;
+  color: var(--grey);
+}
+
+/* Image placeholder: a brand gradient, so the on-image badge is tested on
+   colour rather than on white */
+.image {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(16 * var(--em-px));
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 20%, #c9b2ff 0, transparent 55%),
+    radial-gradient(circle at 80% 70%, #7c4dff 0, transparent 60%),
+    #ebe0ff;
+}
+
+.image.isDark {
+  background:
+    radial-gradient(circle at 30% 30%, #5426d1 0, transparent 60%),
+    #19181b;
+}
+
+.overlay {
+  position: absolute;
+  top: calc(16 * var(--em-px));
+  right: calc(16 * var(--em-px));
+}
+
+.card {
+  border: 1px solid var(--black-transparent);
+  border-radius: calc(24 * var(--em-px));
+  padding: calc(12 * var(--em-px)) calc(12 * var(--em-px)) calc(20 * var(--em-px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--em-px));
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--em-px));
+  padding: 0 calc(8 * var(--em-px));
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(8 * var(--em-px));
+  color: var(--grey);
+}
+
+.searchType {
+  /* Copy of today's Tailwind badge on /search, kept here for the comparison */
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  background-color: var(--light-primary);
+  color: var(--dark-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.code {
+  margin: 0;
+  padding: calc(12 * var(--em-px)) calc(16 * var(--em-px));
+  border-radius: calc(12 * var(--em-px));
+  background: var(--light-grey);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: calc(13 * var(--em-px));
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .matrix {
+    gap: calc(12 * var(--em-px));
+  }
+}
