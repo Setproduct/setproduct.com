@@ -2,6 +2,7 @@ import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "ne
 import { DocsLayout } from "../../design-system/docs/DocsLayout";
 import { DOC_PAGES } from "../../design-system/docs/pages";
 import { DOC_COMPONENTS, getDocEntry } from "../../design-system/docs/registry";
+import { isDesignSystemPublished } from "../../lib/designSystemAccess";
 
 type Props = {
   slug: string;
@@ -13,15 +14,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
     throw new Error(`Design system: no page body for ${missing.join(", ")} (add it to design-system/docs/pages/index.ts)`);
   }
 
+  // Live site before the release: no pages are built, so every component URL
+  // is a 404 (fallback: false). See lib/designSystemAccess.ts.
   return {
-    paths: DOC_COMPONENTS.map((entry) => ({ params: { component: entry.slug } })),
+    paths: isDesignSystemPublished()
+      ? DOC_COMPONENTS.map((entry) => ({ params: { component: entry.slug } }))
+      : [],
     fallback: false,
   };
 };
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => ({
-  props: { slug: String(params?.component) },
-});
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) =>
+  isDesignSystemPublished() ? { props: { slug: String(params?.component) } } : { notFound: true };
 
 export default function SystemComponentRoute({ slug }: InferGetStaticPropsType<typeof getStaticProps>) {
   const entry = getDocEntry(slug);

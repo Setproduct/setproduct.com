@@ -364,6 +364,19 @@ title > 65 символов или содержит «:»; трихолонов 
 
 Неявно используется `VERCEL_ENV` (см. [`next.config.js`](next.config.js:3)) — выставляется самим Vercel.
 
+### Раздел `/design-system` закрыт на продакшне (обязательное правило)
+
+Витрина Setproduct Design System (`/design-system`, `/design-system/*`) — работа в процессе. Она доступна локально (`npm run dev`) и на preview-деплоях Vercel, но **на боевом сайте отдаёт 404**, даже если деплой сделан ради другой правки (новый пост и т.п.). Решение принимает [`isDesignSystemPublished`](lib/designSystemAccess.ts:22):
+
+| Где | `VERCEL_ENV` | Раздел |
+|---|---|---|
+| локально | не задан | открыт |
+| Vercel preview | `preview` | открыт |
+| Vercel production | `production` | **404** |
+| Vercel production + `DESIGN_SYSTEM_PUBLIC=true` | `production` | открыт |
+
+Публикация только по явной команде автора: добавить `DESIGN_SYSTEM_PUBLIC=true` в переменные Production проекта на Vercel и передеплоить. Страницы собираются при билде, поэтому переменная действует со следующего деплоя. Агенту запрещено самому добавлять эту переменную, убирать проверку из `pages/design-system/*` или ставить ссылки на `/design-system` со страниц сайта. Раздел в любом случае `noindex` и не входит в sitemap.
+
 ---
 
 ## 6. Стилевой стек
