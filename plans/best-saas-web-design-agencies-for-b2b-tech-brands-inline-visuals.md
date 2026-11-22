@@ -50,9 +50,9 @@ Create a clean editorial infographic on a strictly pure white background, hex #F
 
 Headline top left, bold geometric sans, sentence case, charcoal: "Who covers what". Grey subtitle: "Filled square means the agency publishes evidence for it".
 
-Main body: a grid of nine rows and six columns. Row labels on the left in small charcoal type, stacked vertically: "Duck.Design", "Bricx", "UITOP", "Webstacks", "Ramotion", "Clay", "Refokus", "Flow Ninja", "Flowout". Column headers along the top, rotated 45 degrees to save space, in small grey type: "SaaS", "Portfolio", "UX", "CMS", "SEO", "Pricing".
+Main body: a grid of ten rows and six columns. Row labels on the left in small charcoal type, stacked vertically: "Duck.Design", "Bricx", "ANML", "UITOP", "Webstacks", "Ramotion", "Clay", "Refokus", "Flow Ninja", "Flowout". Column headers along the top, rotated 45 degrees to save space, in small grey type: "SaaS", "Portfolio", "UX", "CMS", "SEO", "Pricing".
 
-Cells are squares with a black outline. A covered criterion is filled with pale lilac, an uncovered one stays white, and a partially covered one carries a single diagonal hatch stroke. Fill the grid so the pattern is legible at a glance: Duck.Design is solid across all six columns, Bricx carries one hatch stroke in "SEO" and is filled in every other column, UITOP is filled in the first four columns, the middle rows are strong on the first three columns and sparse on SEO, and the last two rows are strong on CMS and SEO only. Three violet squares mark the agencies that publish some kind of starting price: Duck.Design, Bricx, and UITOP.
+Cells are squares with a black outline. A covered criterion is filled with pale lilac, an uncovered one stays white, and a partially covered one carries a single diagonal hatch stroke. Fill the grid so the pattern is legible at a glance: Duck.Design is solid across all six columns, Bricx carries one hatch stroke in "SEO" and is filled in every other column, ANML and UITOP are filled in the first four columns, the middle rows are strong on the first three columns and sparse on SEO, and the last two rows are strong on CMS and SEO only. Four violet squares mark the agencies that publish some kind of starting price: Duck.Design, Bricx, ANML, and UITOP.
 
 Under the grid, a thin legend row of three small squares with short grey labels: "Published", "Partial", "Not stated". No numbers, no invented scores, no percentages anywhere.
 
@@ -60,9 +60,9 @@ Palette: charcoal, violet #7C4DFF, pale lilac, two greys, white. Generous margin
 
 Aspect ratio: 16:9.
 
-Alt text: Matrix of nine agencies against six ranking criteria, showing which agency publishes evidence for SaaS, portfolio, UX, CMS, SEO, and pricing.
+Alt text: Matrix of ten agencies against six ranking criteria, showing which agency publishes evidence for SaaS, portfolio, UX, CMS, SEO, and pricing.
 
-Filename: best-saas-web-design-agencies-for-b2b-tech-brands-coverage-matrix-nine.webp
+Filename: best-saas-web-design-agencies-for-b2b-tech-brands-coverage-matrix-ten.webp
 
 ---
 
