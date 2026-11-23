@@ -26,6 +26,7 @@
 | Категория в шапке статьи | `/blog/[slug]` | `button-x-small is-text-no-pointer` на `<Link>`, [`BlogHero.tsx`](../components/blog/BlogHero.tsx:86) | Ссылка без курсора и без hover: выглядит как badge, ведёт себя как chip |
 | Подсказки поиска | `/search` | `blog_list-filters-item` плюс десяток Tailwind-классов, [`SearchPage.tsx`](../components/pages/SearchPage.tsx:143) | Третья визуальная реализация чипа, геометрия в `rem` |
 | Категории блога (вертикальный список) | `/blog` | `blog_list-filters-item` на `<div role="button" tabIndex={0}>`, [`BlogListingPage.tsx`](../components/pages/BlogListingPage.tsx:121) | Нет обработчика клавиш: фокус встаёт, Enter и пробел не работают |
+| UI component guides | `/` | `home-guides-link` на `<Link>`, [`HomeReadingPaths.tsx`](../components/sections/HomeReadingPaths.tsx:61), CSS в [`globals.css`](../styles/globals.css:3434) | Четвёртая визуальная реализация чипа: свои отступы 6/12, шрифт 15, заливка `--light-purple`; нет нажатия и ряби; высота вне шкалы S/M |
 
 Активное состояние чипа сейчас записано **четырьмя** способами: `.fs-cmsfilter_active`, `.w--current`, `.is-templates.is-active` и локальный `.is-active` в модалке.
 
@@ -43,7 +44,7 @@
 | Категория поверх картинки | `/freebies`, витрины ресурсов | `freebies-template-category-wr`, [`shared.css`](../public/css/setproduct.webflow.shared.css:5796) | Позиционирование и вид склеены в один класс |
 | «Free», цена | `/search` | Голый текст `text-size-tiny` | Спорный случай: решить на прототипе, badge это или подпись |
 
-Не badge и остаются как есть: текстовые «надзаголовки» категории без контейнера (`HomeReadingPaths`, `HomeResources`, `blog-next-article-eyebrow`) и счётчики (`ui-guides-count`).
+Не badge и остаются как есть: текстовые «надзаголовки» категории без контейнера (подписи в колонке Most read из `HomeReadingPaths`, `HomeResources`, `blog-next-article-eyebrow`) и счётчики (`ui-guides-count`). Список гайдов в `HomeReadingPaths` к ним не относится: это чипы-ссылки (см. таблицу 2.1).
 
 Итог: 5 визуальных реализаций badge, из них одна продублирована, одна на Tailwind.
 
