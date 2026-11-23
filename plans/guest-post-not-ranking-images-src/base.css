@@ -1,0 +1,52 @@
+/*
+ * Shared tokens for the guest-post-not-ranking images.
+ * Palette and font come from publish.setproduct.com (tailwind.config.ts, DESIGN.md),
+ * so the diagrams read as part of the same product as the dashboard card.
+ */
+@font-face {
+  font-family: "Uncut Sans";
+  src: url("../../public/fonts/UncutSans-Variable.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+}
+
+:root {
+  --brand: #7c4dff;
+  --brand-dark: #5426d1;
+  --deep: #39198f;
+  --ink: #19181b;
+  --muted: #5c5f66;
+  --lav: #ebe0ff;
+  --fill: #f0ebff;
+  --line: #d7ccfc;
+  --paper: #fbfaff;
+  --bg: #f4f0ff;
+  --hairline: #19181b26;
+  --gray4: #ced4da;
+  --green: #1f9d61;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Uncut Sans", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* Canvas 1600x900, exported at 1.5x. */
+  body { padding: 48px 52px 46px; display: flex; flex-direction: column; }
+  h1 { font-size: 44px; line-height: 52px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .main { flex: 1; margin-top: 26px; display: grid; grid-template-columns: 292px 1fr; gap: 60px; min-height: 0; }
+
+  .brief { position: relative; background: #fff; border: 2px solid var(--line); border-radius: 28px; padding: 26px 26px; display: flex; flex-direction: column; }
+  .brief h2 { font-size: 31px; line-height: 38px; font-weight: 700; }
+  .brief .sub { margin-top: 4px; font-size: 21px; line-height: 28px; color: var(--muted); }
+  .brief ul { list-style: none; margin-top: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .brief li { border-left: 5px solid var(--brand); padding: 2px 0 2px 16px; }
+  .brief li b { display: block; font-size: 24px; line-height: 30px; font-weight: 700; }
+  .brief li span { display: block; margin-top: 3px; font-size: 20px; line-height: 26px; color: var(--muted); }
+  .brief::after { content: "→"; position: absolute; right: -52px; top: 50%; margin-top: -22px; width: 44px; height: 44px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 28px; font-weight: 700; display: grid; place-items: center; line-height: 1; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 18px; min-height: 0; }
+  .step { background: #fff; border: 2px solid var(--line); border-radius: 26px; padding: 20px 22px 20px; display: flex; flex-direction: column; }
+  .step .top { display: flex; align-items: center; gap: 14px; min-height: 66px; }
+  .badge { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 26px; font-weight: 700; display: grid; place-items: center; }
+  .step h3 { font-size: 27px; line-height: 32px; font-weight: 700; letter-spacing: -0.005em; }
+  .step p { margin-top: 12px; font-size: 22px; line-height: 29px; color: var(--muted); }
+  .chip { margin-top: auto; align-self: flex-start; background: var(--fill); color: var(--deep); border-radius: 999px; padding: 7px 16px; font-size: 20px; line-height: 26px; font-weight: 600; white-space: nowrap; }
+
+  .out { background: var(--brand); color: #fff; border-radius: 26px; padding: 22px 24px; display: flex; flex-direction: column; }
+  .out h3 { font-size: 29px; line-height: 35px; font-weight: 700; }
+  .out ul { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .out li { position: relative; padding-left: 30px; font-size: 22px; line-height: 28px; color: #f0ebff; }
+  .out li::before { content: ""; position: absolute; left: 2px; top: 6px; width: 14px; height: 8px; border-left: 3.5px solid #fff; border-bottom: 3.5px solid #fff; transform: rotate(-45deg); }
+
+  .after { margin-top: 18px; border: 2.5px dashed var(--brand); border-radius: 26px; padding: 18px 24px; display: flex; align-items: center; gap: 24px; background: #fbfaff; }
+  .after .tag { flex: none; background: var(--deep); color: #fff; border-radius: 999px; padding: 9px 20px; font-size: 22px; line-height: 28px; font-weight: 700; }
+  .after p { flex: 1; font-size: 23px; line-height: 30px; color: var(--ink); }
+  .after .chip { margin-top: 0; align-self: center; background: var(--lav); }
+</style>
+</head>
+<body>
+  <h1>Seven steps, all finished before the first line</h1>
+
+  <div class="main">
+    <div class="brief">
+      <h2>Your brief</h2>
+      <div class="sub">Four groups of fields</div>
+      <ul>
+        <li><b>Your product</b><span>Product, who buys it</span></li>
+        <li><b>The article</b><span>Topic, goal, search terms</span></li>
+        <li><b>Links and competitors</b><span>Link targets, competitors</span></li>
+        <li><b>Voice</b><span>Tone, what to avoid</span></li>
+      </ul>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="top"><div class="badge">1</div><h3>Product</h3></div><p>What you sell and which page the link lands on</p><div class="chip">Closes cause 6</div></div>
+      <div class="step"><div class="top"><div class="badge">2</div><h3>Market and competitors</h3></div><p>Who answers the reader's problem today</p></div>
+      <div class="step"><div class="top"><div class="badge">3</div><h3>Audience</h3></div><p>The buyer's job title and their own search words</p><div class="chip">Closes cause 1</div></div>
+      <div class="step"><div class="top"><div class="badge">4</div><h3>Risks</h3></div><p>Claims and anchors that cannot be published</p><div class="chip">Closes cause 6</div></div>
+      <div class="step"><div class="top"><div class="badge">5</div><h3>Potential</h3></div><p>A shortlist of 3 to 5 queries a buyer types</p><div class="chip">Closes cause 1</div></div>
+      <div class="step"><div class="top"><div class="badge">6</div><h3>Keyword map</h3></div><p>One primary query, no page of ours competing</p><div class="chip">Closes causes 2, 3, 4</div></div>
+      <div class="step"><div class="top"><div class="badge">7</div><h3>Topic and angle</h3></div><p>Title first, then the question subheadings</p><div class="chip">Closes cause 5</div></div>
+      <div class="out">
+        <h3>Goes to writing</h3>
+        <ul>
+          <li>One primary query</li>
+          <li>Title and outline</li>
+          <li>Link target and anchor</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="after">
+    <div class="tag">After publishing</div>
+    <p>At four to six weeks we read the real queries in Search Console and rewrite the title and meta description if they need it.</p>
+    <div class="chip">Closes cause 7</div>
+  </div>
+</body>
+</html>

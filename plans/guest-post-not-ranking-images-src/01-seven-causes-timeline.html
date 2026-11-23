@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* Canvas 1600x900, exported at 1.5x. */
+  body { padding: 52px 56px 52px; display: flex; flex-direction: column; }
+  h1 { font-size: 44px; line-height: 52px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .axis { position: relative; margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .axis::before { content: ""; position: absolute; left: 14px; right: 0; top: 13px; height: 3px; background: var(--line); border-radius: 2px; }
+  .phase { position: relative; display: flex; align-items: center; gap: 14px; }
+  .phase i { flex: none; width: 29px; height: 29px; border-radius: 50%; background: var(--brand); border: 6px solid var(--bg); box-shadow: 0 0 0 3px var(--brand); }
+  .phase span { background: var(--bg); padding-right: 18px; font-size: 29px; line-height: 29px; font-weight: 700; color: var(--deep); }
+
+  .cols { flex: 1; margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); grid-auto-flow: column; gap: 20px 24px; }
+  .card { background: #fff; border: 2px solid var(--line); border-radius: 28px; padding: 24px 26px; display: flex; gap: 20px; align-items: flex-start; }
+  .badge { flex: none; width: 54px; height: 54px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 30px; font-weight: 700; display: grid; place-items: center; }
+  .card h2 { font-size: 31px; line-height: 37px; font-weight: 700; letter-spacing: -0.005em; }
+  .card p { margin-top: 10px; font-size: 24px; line-height: 31px; color: var(--muted); }
+  .card p b { color: var(--deep); font-weight: 600; }
+
+  .note { grid-row: span 2; background: var(--brand); color: #fff; border-radius: 28px; padding: 34px 34px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+  .note strong { font-size: 35px; line-height: 43px; font-weight: 700; letter-spacing: -0.005em; }
+  .note span { font-size: 26px; line-height: 35px; color: #ebe0ff; }
+</style>
+</head>
+<body>
+  <h1>When each of the seven causes is decided</h1>
+
+  <div class="axis">
+    <div class="phase"><i></i><span>Before a word is written</span></div>
+    <div class="phase"><i></i><span>In the text itself</span></div>
+    <div class="phase"><i></i><span>After it goes live</span></div>
+  </div>
+
+  <div class="cols">
+    <div class="card"><div class="badge">1</div><div><h2>Topic picked for traffic</h2><p><b>The sign.</b> The people who type the query do not buy</p></div></div>
+    <div class="card"><div class="badge">2</div><div><h2>Five queries in one post</h2><p><b>The sign.</b> 30 or more queries, all at positions 40 to 90</p></div></div>
+    <div class="card"><div class="badge">3</div><div><h2>No query map on the host</h2><p><b>The sign.</b> An older page of the host sits above yours</p></div></div>
+
+    <div class="card"><div class="badge">4</div><div><h2>No links to the host's posts</h2><p><b>The sign.</b> Zero links out to the blog, zero links in</p></div></div>
+    <div class="card"><div class="badge">5</div><div><h2>Nothing AI Overview can lift</h2><p><b>The sign.</b> Subheadings are labels like Benefits</p></div></div>
+    <div class="card"><div class="badge">6</div><div><h2>Link points to the homepage</h2><p><b>The sign.</b> The anchor says click here</p></div></div>
+
+    <div class="card"><div class="badge">7</div><div><h2>Nobody touched it after launch</h2><p><b>The sign.</b> Positions 3 to 10 with a CTR under 1%</p></div></div>
+    <div class="note">
+      <strong>The first three are decided before a single word is written.</strong>
+      <span>No edit after publishing repairs a topic nobody searches.</span>
+    </div>
+  </div>
+</body>
+</html>

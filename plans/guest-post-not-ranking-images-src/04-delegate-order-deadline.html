@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+  /*
+   * Canvas 520x650 (4:5 portrait), exported at 2.5x. Headless Chromium will not open a
+   * window narrower than 500px, so the page is laid out at 416px and zoomed 1.25.
+   *
+   * A re-render of the buyer order card at its mobile width, built from the
+   * markup and Tailwind values of publish.setproduct.com
+   * src/app/dashboard/(overview)/BriefStatus.tsx and lib/delegate.ts.
+   * Reference capture: docs/screenshots/delegate/status-390.png (1x, header
+   * carries a personal email, which is why it is not used directly).
+   * Dates match that capture: brief Nov 19, delivery Nov 26, seven days apart.
+   * The card bleeds off the bottom edge like a cropped screenshot.
+   */
+  html { zoom: 1.25; }
+  body { background: #f5f3ff; padding: 32px 32px 0; }
+  .card { background: #fff; border: 1px solid var(--hairline); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 32px; height: 640px; }
+  header { display: flex; flex-direction: column; gap: 8px; }
+  h2 { font-size: 24px; line-height: 30px; font-weight: 600; color: var(--ink); }
+  header p { font-size: 16px; line-height: 26px; color: var(--muted); }
+  header p strong { font-weight: 600; color: var(--ink); }
+
+  ol { list-style: none; display: grid; gap: 16px; }
+  li { display: flex; gap: 12px; }
+  .n { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--gray4); color: var(--muted); font-size: 14px; line-height: 20px; font-weight: 600; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+  .cur .n { border-color: var(--brand); color: var(--deep); }
+  .t { display: flex; flex-direction: column; gap: 2px; }
+  .t b { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--muted); }
+  .cur .t b { color: var(--ink); }
+  .t span { font-size: 14px; line-height: 20px; color: var(--muted); }
+
+  .brief { border-top: 1px solid var(--hairline); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; font-size: 18px; line-height: 28px; font-weight: 600; color: var(--ink); }
+  .brief svg { width: 16px; height: 16px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <section class="card">
+    <header>
+      <h2>We are on it</h2>
+      <p>Brief sent on Nov 19. Your article goes live by <strong>Nov 26</strong>.</p>
+    </header>
+
+    <ol>
+      <li class="cur"><span class="n">1</span><span class="t"><b>Brief received</b><span>We read it and pick the angle.</span></span></li>
+      <li><span class="n">2</span><span class="t"><b>Writing</b><span>We write the article and draw the visuals.</span></span></li>
+      <li><span class="n">3</span><span class="t"><b>Your review</b><span>You get the draft by email for one round of edits.</span></span></li>
+      <li><span class="n">4</span><span class="t"><b>Live</b><span>Published and sent to the newsletter.</span></span></li>
+    </ol>
+
+    <div class="brief">
+      Your brief
+      <svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+</body>
+</html>

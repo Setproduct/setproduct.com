@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+  /*
+   * Canvas 800x1000 (4:5 portrait), exported at 2x. Floats right at 40% of the
+   * article column, so every label is sized to stay readable at half scale.
+   *
+   * This is a drawn chart of exported figures, deliberately NOT styled like the
+   * Search Console interface: it must never pass for a screenshot.
+   * Source: plans/compare 6 months - Страницы.csv, row /blog/tabs-ui-design.
+   */
+  body { padding: 52px 52px 48px; display: flex; flex-direction: column; }
+  .eyebrow { font-size: 27px; line-height: 34px; font-weight: 600; color: var(--deep); }
+  h1 { margin-top: 6px; font-size: 50px; line-height: 58px; font-weight: 700; letter-spacing: -0.01em; }
+
+  .chart { flex: 1; margin-top: 28px; background: #fff; border: 2px solid var(--line); border-radius: 32px; padding: 32px 36px 30px; display: flex; flex-direction: column; }
+  .chart h2 { font-size: 30px; line-height: 36px; font-weight: 700; }
+  .bars { flex: 1; margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: end; }
+  .bar { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+  .bar .val { font-weight: 700; letter-spacing: -0.01em; }
+  .bar .col { margin-top: 12px; border-radius: 18px 18px 6px 6px; }
+  .bar .cap { margin-top: 14px; font-size: 26px; line-height: 32px; color: var(--muted); font-weight: 500; }
+  .prev .val { font-size: 44px; line-height: 48px; color: var(--muted); }
+  .prev .col { background: var(--line); }
+  .last .val { font-size: 62px; line-height: 64px; color: var(--ink); }
+  .last .col { background: var(--brand); }
+
+  .tiles { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tile { background: #fff; border: 2px solid var(--line); border-radius: 28px; padding: 24px 28px 26px; }
+  .tile .k { font-size: 26px; line-height: 32px; color: var(--muted); font-weight: 500; }
+  .tile .v { margin-top: 6px; font-size: 54px; line-height: 60px; font-weight: 700; letter-spacing: -0.01em; }
+  .tile .s { margin-top: 6px; font-size: 25px; line-height: 31px; color: var(--deep); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="eyebrow">Search Console, six months to Oct 10, 2026</div>
+  <h1>Tabs UI design post</h1>
+
+  <div class="chart">
+    <h2>Impressions</h2>
+    <div class="bars">
+      <!-- Bar heights are proportional: 96,491 / 194,601 = 49.6%. -->
+      <div class="bar prev">
+        <div class="val num">96,491</div>
+        <div class="col" style="height: 37.2%"></div>
+        <div class="cap">Previous 6 months</div>
+      </div>
+      <div class="bar last">
+        <div class="val num">194,601</div>
+        <div class="col" style="height: 75%"></div>
+        <div class="cap">Last 6 months</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">Clicks</div>
+      <div class="v num">1,211</div>
+      <div class="s">Up from 771</div>
+    </div>
+    <div class="tile">
+      <div class="k">Average position</div>
+      <div class="v num">8.51</div>
+      <div class="s">Six-month average</div>
+    </div>
+  </div>
+</body>
+</html>

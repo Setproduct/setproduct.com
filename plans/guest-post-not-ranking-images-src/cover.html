@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="base.css">
+<style>
+  /*
+   * Canvas 1920x1080, exported at 1x. Everything that carries meaning sits
+   * inside the central 1200x630 crop that scripts/generate-og-variants.mjs
+   * cuts for og:image (it loses about 3% from top and bottom).
+   */
+  body { position: relative; background: linear-gradient(135deg, #8a5cff 0%, #7c4dff 42%, #5426d1 100%); }
+  body::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(#ffffff2e 2px, transparent 2.5px); background-size: 44px 44px; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(120px); }
+  .g1 { width: 760px; height: 760px; left: -180px; top: -260px; background: #b79bff; opacity: .55; }
+  .g2 { width: 820px; height: 820px; right: -220px; bottom: -340px; background: #2b00a3; opacity: .55; }
+
+  .card { position: absolute; background: #fff; border-radius: 40px; box-shadow: 0 50px 100px -30px #1a0a5c99, 0 12px 28px -12px #1a0a5c66; }
+
+  /* Left: the published guest post. */
+  .post { left: 170px; top: 160px; width: 790px; height: 760px; transform: rotate(-3.5deg); padding: 34px 44px 44px; }
+  .bar { display: flex; align-items: center; gap: 12px; }
+  .bar i { width: 20px; height: 20px; border-radius: 50%; background: #e3dcf7; }
+  .bar .url { margin-left: 18px; flex: 1; height: 40px; border-radius: 20px; background: #f3f0fb; }
+  .pills { margin-top: 38px; display: flex; gap: 16px; }
+  .pill { display: flex; align-items: center; gap: 12px; border-radius: 999px; padding: 12px 26px 12px 20px; font-size: 34px; line-height: 40px; font-weight: 700; }
+  .pill.live { background: #e3f7ec; color: #12784a; }
+  .pill.live::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: #1f9d61; box-shadow: 0 0 0 7px #1f9d6133; margin-right: 4px; }
+  .pill.idx { background: var(--fill); color: var(--deep); }
+  .pill.idx::before { content: ""; width: 20px; height: 11px; border-left: 5px solid var(--brand); border-bottom: 5px solid var(--brand); transform: rotate(-45deg) translate(2px, -3px); margin-right: 2px; }
+  .title { margin-top: 44px; display: flex; flex-direction: column; gap: 20px; }
+  .title b { display: block; height: 42px; border-radius: 12px; background: var(--ink); }
+  .lines { margin-top: 48px; display: flex; flex-direction: column; gap: 26px; }
+  .lines .row { display: flex; gap: 16px; align-items: center; }
+  .lines s { display: block; height: 22px; border-radius: 11px; background: #e4e1ec; }
+  .lines .link { position: relative; height: 22px; width: 250px; border-radius: 11px; background: var(--brand); }
+  .lines .link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 5px; border-radius: 3px; background: var(--brand); }
+  .tag { position: absolute; left: 330px; top: 486px; display: flex; align-items: center; gap: 14px; background: var(--ink); color: #fff; border-radius: 22px; padding: 16px 28px; font-size: 34px; line-height: 40px; font-weight: 700; box-shadow: 0 18px 36px -14px #19181b99; }
+  .tag::before { content: ""; position: absolute; left: 54px; top: -12px; width: 26px; height: 26px; background: var(--ink); transform: rotate(45deg); border-radius: 5px; }
+  .tag i { width: 16px; height: 16px; border-radius: 50%; background: #3ddc91; }
+
+  /* Right: six weeks of nothing. */
+  .gsc { left: 1010px; top: 218px; width: 760px; height: 640px; transform: rotate(2.5deg); padding: 44px 50px 44px; display: flex; flex-direction: column; }
+  .gsc .k { font-size: 36px; line-height: 44px; font-weight: 600; color: var(--muted); }
+  .gsc .v { margin-top: 2px; font-size: 190px; line-height: 180px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+  .plot { position: relative; flex: 1; margin-top: 26px; }
+  .plot .grid { position: absolute; left: 0; right: 0; border-top: 3px dashed #e4e1ec; }
+  .plot .base { position: absolute; left: 0; right: 0; bottom: 58px; height: 7px; border-radius: 4px; background: var(--brand); }
+  .plot .dots { position: absolute; left: 0; right: 0; bottom: 47px; display: flex; justify-content: space-between; }
+  .plot .dots i { width: 29px; height: 29px; border-radius: 50%; background: #fff; border: 7px solid var(--brand); }
+  .plot .x { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; font-size: 28px; line-height: 34px; font-weight: 600; color: var(--muted); }
+  .plot .x span { width: 29px; text-align: center; white-space: nowrap; display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+
+  <div class="card post">
+    <div class="bar"><i></i><i></i><i></i><div class="url"></div></div>
+    <div class="pills">
+      <div class="pill live">Live</div>
+      <div class="pill idx">Indexed</div>
+    </div>
+    <div class="title"><b style="width: 92%"></b><b style="width: 64%"></b></div>
+    <div class="lines">
+      <div class="row"><s style="width: 100%"></s></div>
+      <div class="row"><s style="width: 30%"></s><div class="link"></div><s style="flex: 1"></s></div>
+      <div class="row"><s style="width: 88%"></s></div>
+      <div class="row"><s style="width: 100%"></s></div>
+      <div class="row"><s style="width: 96%"></s></div>
+      <div class="row"><s style="width: 100%"></s></div>
+      <div class="row"><s style="width: 54%"></s></div>
+    </div>
+    <div class="tag"><i></i>Dofollow link</div>
+  </div>
+
+  <div class="card gsc">
+    <div class="k">Clicks from Google</div>
+    <div class="v">0</div>
+    <div class="plot">
+      <div class="grid" style="top: 8%"></div>
+      <div class="grid" style="top: 38%"></div>
+      <div class="base"></div>
+      <div class="dots"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="x"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span></div>
+    </div>
+  </div>
+</body>
+</html>
