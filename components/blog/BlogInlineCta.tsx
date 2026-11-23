@@ -18,9 +18,10 @@ export const DEFAULT_PUBLISH_CTA: InlineCta = {
 
 export default function BlogInlineCta({ cta }: BlogInlineCtaProps) {
   // Links to the publishing portal get UTM tags and the GA4 location, so the
-  // bottom-of-post CTA is measured the same way as the header button.
+  // bottom-of-post CTA is measured the same way as the header button. The
+  // page and anchor from the frontmatter are kept (e.g. /pricing#delegate).
   const linkProps = isPublishHref(cta.buttonLink)
-    ? getPublishLinkProps("blog_inline")
+    ? getPublishLinkProps("blog_inline", cta.buttonLink)
     : { href: cta.buttonLink, target: "_blank", rel: "noopener noreferrer" };
 
   return (

@@ -1,8 +1,11 @@
 import type { MDXRemoteProps } from "next-mdx-remote";
 import MDXImage from "./MDXImage";
 import CodeBlock from "./CodeBlock";
+import PublishBanner from "./PublishBanner";
 
 export const blogMdxComponents: MDXRemoteProps["components"] = {
+  // Written in a post as <PublishBanner /> on its own line.
+  PublishBanner,
   pre: (props) => <CodeBlock {...props} />,
   img: (props) => {
     const title = typeof props.title === "string" ? props.title : "";

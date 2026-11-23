@@ -1166,6 +1166,106 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
   white-space: nowrap;
 }
 
+/*
+ * In-article banner for the Delegate plan: components/blog/PublishBanner.tsx,
+ * written in MDX as <PublishBanner />. Dark row that echoes the Delegate panel
+ * on publish.setproduct.com: price on the left, offer next to it, button on the
+ * right. On narrow screens it stacks into a column.
+ *
+ * Every length goes through --em-px and font sizes are set on the leaf
+ * elements only, so nothing is multiplied by a parent font-size (see the
+ * "em trap" in AGENTS.md). The button keeps its own em-based sizes: its
+ * parent has no font-size of its own.
+ */
+.rich-text-18 .blog-publish-banner {
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--em-px));
+  clear: both;
+  margin: calc(40 * var(--em-px)) 0;
+  padding: calc(24 * var(--em-px)) calc(28 * var(--em-px));
+  border: 1px solid var(--black);
+  border-radius: calc(16 * var(--em-px));
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.blog-publish-banner-price {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: calc(4 * var(--em-px));
+  padding-right: calc(24 * var(--em-px));
+  border-right: 1px solid #ffffff2e;
+}
+
+.blog-publish-banner-price-value {
+  font-size: calc(40 * var(--em-px));
+  font-weight: 700;
+  line-height: 1;
+}
+
+.blog-publish-banner-price-caption {
+  color: #ffffffb8;
+  font-size: calc(13 * var(--em-px));
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.blog-publish-banner-body {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: calc(4 * var(--em-px));
+  min-width: 0;
+}
+
+.blog-publish-banner-title {
+  font-size: calc(20 * var(--em-px));
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.blog-publish-banner-text {
+  color: #ffffffc7;
+  font-size: calc(15 * var(--em-px));
+  line-height: 1.5;
+}
+
+/* .rich-text-18 a paints every link violet and underlines it on hover. */
+.rich-text-18 .blog-publish-banner a.button-small {
+  flex: none;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.rich-text-18 .blog-publish-banner a.button-small:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .rich-text-18 .blog-publish-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(16 * var(--em-px));
+    border-radius: calc(12 * var(--em-px));
+  }
+
+  .blog-publish-banner-price {
+    flex-direction: row;
+    align-items: baseline;
+    gap: calc(8 * var(--em-px));
+    padding-right: 0;
+    padding-bottom: calc(16 * var(--em-px));
+    border-right: 0;
+    border-bottom: 1px solid #ffffff2e;
+  }
+
+  .blog-publish-banner-body {
+    flex: none;
+  }
+}
+
 @media (min-width: 991px) {
   .section.is-height-100vh {
     height: calc(100dvh - 70em);

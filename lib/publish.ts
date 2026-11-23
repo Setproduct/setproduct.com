@@ -17,6 +17,8 @@ import { event } from "./gtag";
 
 export const PUBLISH_HOST = "publish.setproduct.com";
 export const PUBLISH_URL = `https://${PUBLISH_HOST}/`;
+/** The Delegate plan on the pricing page (section id="delegate" on the portal). */
+export const PUBLISH_DELEGATE_URL = `https://${PUBLISH_HOST}/pricing#delegate`;
 
 /**
  * Offer facts shown next to publishing CTAs. Update here only.
@@ -35,6 +37,7 @@ export const PUBLISH_OFFER = {
   turnaround: "24 hours",
   turnaroundMaximize: "4 hours",
   turnaroundDelegate: "7 days",
+  linksDelegate: 2,
   newsletterSubscribers: "7,000",
 } as const;
 
@@ -64,6 +67,8 @@ export type PublishLocation =
   | "faq"
   | "blog_inline"
   | "blog_sidebar"
+  // In-article Delegate banner (components/blog/PublishBanner.tsx).
+  | "blog_banner"
   | "terms_page"
   // Closing CTA band that replaced the old "hire us" block (17.11.2026).
   | "template_cta"
@@ -83,13 +88,23 @@ export function isPublishHref(href?: string | null): boolean {
   }
 }
 
-export function getPublishHref(location: PublishLocation): string {
-  const params = new URLSearchParams({
-    utm_source: "setproduct.com",
-    utm_medium: location,
-    utm_campaign: "publish",
-  });
-  return `${PUBLISH_URL}?${params.toString()}`;
+/**
+ * `target` is a page on the portal, e.g. PUBLISH_DELEGATE_URL. Its path and
+ * hash are kept, the UTM tags are added. Anything that is not on the portal
+ * falls back to the portal home page.
+ */
+export function getPublishHref(location: PublishLocation, target: string = PUBLISH_URL): string {
+  let url: URL;
+  try {
+    url = new URL(target, PUBLISH_URL);
+    if (url.hostname !== PUBLISH_HOST) url = new URL(PUBLISH_URL);
+  } catch {
+    url = new URL(PUBLISH_URL);
+  }
+  url.searchParams.set("utm_source", "setproduct.com");
+  url.searchParams.set("utm_medium", location);
+  url.searchParams.set("utm_campaign", "publish");
+  return url.toString();
 }
 
 type PublishLinkProps = {
@@ -99,9 +114,9 @@ type PublishLinkProps = {
   "data-publish-location": PublishLocation;
 };
 
-export function getPublishLinkProps(location: PublishLocation): PublishLinkProps {
+export function getPublishLinkProps(location: PublishLocation, target?: string): PublishLinkProps {
   return {
-    href: getPublishHref(location),
+    href: getPublishHref(location, target),
     target: "_blank",
     rel: "noopener noreferrer",
     "data-publish-location": location,
