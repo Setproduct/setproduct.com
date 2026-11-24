@@ -51,6 +51,7 @@ export const UI_GUIDES: UiGuide[] = [
   { slug: "checkbox-ui-design", label: "Checkbox", group: "inputs" },
   { slug: "date-picker-ui-design", label: "Date picker", group: "inputs" },
   { slug: "dropdown-ui-design", label: "Dropdown", group: "inputs" },
+  { slug: "form-controls-reference-2026", label: "Form controls", group: "inputs" },
   { slug: "input-ui-design", label: "Input field", group: "inputs" },
   { slug: "radio-button-ui-design", label: "Radio button", group: "inputs" },
   { slug: "slider-ui-design", label: "Slider", group: "inputs" },
@@ -74,6 +75,7 @@ export const UI_GUIDES: UiGuide[] = [
   { slug: "badge-ui-design", label: "Badge", group: "data-display" },
   { slug: "calendar-ui-design", label: "Calendar", group: "data-display" },
   { slug: "carousel-ui-design", label: "Carousel", group: "data-display" },
+  { slug: "chart-ui-design-guide", label: "Chart", group: "data-display" },
   { slug: "chip-ui-design", label: "Chip", group: "data-display" },
   { slug: "data-table-ui-design", label: "Data table", group: "data-display" },
 
