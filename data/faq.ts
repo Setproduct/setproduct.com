@@ -23,7 +23,7 @@ const COMMON_FAQ: FaqItem[] = [
   },
   {
     question: "Can I promote my product on Setproduct?",
-    answerHtml: "Yes. Publish a guest post on the Setproduct blog with a dofollow link to your product. About 17,000 people read the blog every month, its domain rating is 42. Accelerate costs $390 with one link and goes live in 24 hours, Maximize costs $490 with two links and goes live in 4 hours, and Delegate costs $890: we write the article for you and it goes live in 7 days. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>.",
+    answerHtml: "Yes. Publish a guest post on the Setproduct blog about your product. About 17,000 people read the blog every month, its domain rating is 42. Accelerate costs $390 with one link and goes live in 24 hours, Maximize costs $490 with two links and goes live in 4 hours, and Delegate costs $890: we write the article for you and it goes live in 7 days. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>.",
   },
   {
     question: "Do you offer discounts?",

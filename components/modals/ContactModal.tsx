@@ -804,8 +804,8 @@ export default function ContactModal({ isOpen, onClose, location, initialTopic, 
                   <div className="contact-dialog_offer-head">
                     <h3 className="contact-dialog_offer-title">Setproduct Guest Posts</h3>
                     <p className="text-size-regular">
-                      A dofollow link on a blog read by designers and founders. Prices are public: pick a package
-                      and pay online, no quote needed.
+                      An article with a link to your site, on a blog read by designers and founders. Prices are
+                      public: pick a package and pay online, no quote needed.
                     </p>
                   </div>
                   <dl className="contact-dialog_facts">

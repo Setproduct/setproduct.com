@@ -11,7 +11,7 @@ type BlogInlineCtaProps = {
  */
 export const DEFAULT_PUBLISH_CTA: InlineCta = {
   title: `Put your product in front of ${PUBLISH_OFFER.readersPerMonth} readers`,
-  description: `Publish a story on Setproduct within ${PUBLISH_OFFER.turnaround}, with a dofollow link to your site. From $${PUBLISH_OFFER.priceFrom}. No time to write? Our $${PUBLISH_OFFER.priceWritten} Delegate plan covers the article itself.`,
+  description: `Publish a story on Setproduct within ${PUBLISH_OFFER.turnaround}, with a link to your site. From $${PUBLISH_OFFER.priceFrom}. No time to write? Our $${PUBLISH_OFFER.priceWritten} Delegate plan covers the article itself.`,
   buttonText: "See packages",
   buttonLink: "https://publish.setproduct.com/",
 };

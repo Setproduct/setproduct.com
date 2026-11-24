@@ -99,7 +99,7 @@ export const xelaContent = {
     },
     {
       "question": "Can I promote my product on Setproduct?",
-      "answerHtml": "Yes. Publish a guest post on the Setproduct blog with a dofollow link to your product. About 17,000 people read the blog every month, its domain rating is 42, and posts go live within 24 hours. One link costs $390, two links cost $490, and the Delegate plan at $890 includes the article written for you. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>."
+      "answerHtml": "Yes. Publish a guest post on the Setproduct blog about your product. About 17,000 people read the blog every month, its domain rating is 42, and posts go live within 24 hours. One link costs $390, two links cost $490, and the Delegate plan at $890 includes the article written for you. Start on <a class=\"span-link\" href=\"https://publish.setproduct.com/?utm_source=setproduct.com&amp;utm_medium=faq&amp;utm_campaign=publish\" data-publish-location=\"faq\" target=\"_blank\" rel=\"noopener noreferrer\">publish.setproduct.com</a>."
     },
     {
       "question": "Do you offer discounts?",

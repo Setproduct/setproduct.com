@@ -84,7 +84,7 @@ export function AdvertisePanel({ state, isCurrent, showcase, onContact }: Advert
                   ))}
                 </ul>
                 <p className="text-size-small nav_advertise-price">
-                  From ${PUBLISH_OFFER.priceFrom} per story, dofollow link
+                  From ${PUBLISH_OFFER.priceFrom} per story, one link to your site
                 </p>
                 <div className="nav_advertise-actions">
                   <a className="button w-inline-block" {...getPublishLinkProps("advertise_panel")}>

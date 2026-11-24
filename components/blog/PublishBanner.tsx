@@ -24,7 +24,7 @@ export default function PublishBanner() {
         <div className="blog-publish-banner-title">We research the topic and write the post for you</div>
         <div className="blog-publish-banner-text">
           Send a brief. The article goes live in {PUBLISH_OFFER.turnaroundDelegate} with{" "}
-          {PUBLISH_OFFER.linksDelegate} dofollow links.
+          {PUBLISH_OFFER.linksDelegate} links to your site.
         </div>
       </div>
       <a className="button-small secondary w-inline-block" {...getPublishLinkProps("blog_banner", PUBLISH_DELEGATE_URL)}>

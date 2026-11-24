@@ -13,7 +13,7 @@ type Props = {
 
 const FACTS = [
   { value: PUBLISH_OFFER.readersPerMonth, label: "readers a month" },
-  { value: `DR ${PUBLISH_OFFER.domainRating}`, label: "dofollow links" },
+  { value: `DR ${PUBLISH_OFFER.domainRating}`, label: "domain rating" },
   { value: PUBLISH_OFFER.turnaround, label: "to go live" },
   { value: `$${PUBLISH_OFFER.priceFrom}`, label: "per post, from" },
 ];
@@ -38,7 +38,7 @@ export default function HomePublishBand({ showcase }: Props) {
               <div className="spacer-16" />
               <p className="text-size-large">
                 Publish an article about your product on Setproduct. It sits next to our design
-                guides, reaches people who build tech products and keeps a dofollow link for good.
+                guides, reaches people who build tech products and stays on the blog for good.
                 Bring your own draft, or send a short brief on the Delegate plan and our writers
                 produce the article for you.
               </p>

@@ -17,7 +17,7 @@ export const PUBLISH_SHOWCASE_SLUGS = [
 export const PUBLISH_SHOWCASE_BADGE = "Page 1 on Google";
 
 export const PUBLISH_STEPS = [
-  { title: "Pick a plan", text: "One or two dofollow links, with the price shown up front." },
+  { title: "Pick a plan", text: "Three plans, with the price shown up front." },
   {
     title: "Upload your draft",
     text: "Send the article through the publishing portal. Or send a short brief and we write it.",

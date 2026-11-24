@@ -90,7 +90,7 @@ function PublishCard() {
       </p>
       <ul className="blog-publish-card-facts text-size-small">
         <li>Live within {PUBLISH_OFFER.turnaround}</li>
-        <li>Dofollow link, DR {PUBLISH_OFFER.domainRating}</li>
+        <li>Link to your site, DR {PUBLISH_OFFER.domainRating}</li>
         <li>From ${PUBLISH_OFFER.priceFrom}</li>
         <li>Or ${PUBLISH_OFFER.priceWritten} and we write it for you</li>
       </ul>

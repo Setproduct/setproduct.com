@@ -63,7 +63,7 @@ const LEGAL_LINKS: FooterLink[] = [
 
 const PUBLISH_FACTS = [
   `Live in ${PUBLISH_OFFER.turnaround}`,
-  `Dofollow link, DR ${PUBLISH_OFFER.domainRating}`,
+  `Link to your site, DR ${PUBLISH_OFFER.domainRating}`,
   `${PUBLISH_OFFER.readersPerMonth} readers a month`,
   `From $${PUBLISH_OFFER.priceFrom}`,
 ];

@@ -33,7 +33,7 @@ export default function PublishCta({ publishLocation, contactLocation, tinted = 
                   Put your product in front of {PUBLISH_OFFER.readersPerMonth} readers
                 </h2>
                 <div className="heading-style-h5 mob-18">
-                  Publish a guest post with a dofollow link on a blog with domain rating{" "}
+                  Publish a guest post with a link to your site on a blog with domain rating{" "}
                   {PUBLISH_OFFER.domainRating}. It goes live within {PUBLISH_OFFER.turnaround}, from $
                   {PUBLISH_OFFER.priceFrom}.
                 </div>
