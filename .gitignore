@@ -15,3 +15,6 @@ scripts/report.md
 # Regenerable open graph audit (scripts/audit-og-images.mjs)
 scripts/og-audit.json
 scripts/og-variants-report.json
+
+# Internal audit reports (never published, never committed)
+reports/
