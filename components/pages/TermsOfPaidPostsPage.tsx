@@ -19,11 +19,10 @@ const TOC_ITEMS: BlogHeading[] = [
   { id: "plans", text: "Plans and prices", level: 2 },
   { id: "after-payment", text: "What happens after you pay", level: 2 },
   { id: "turnaround", text: "Turnaround time", level: 2 },
-  { id: "indexing", text: "Google indexing", level: 2 },
+  { id: "indexing", text: "Indexing and rankings", level: 2 },
   { id: "what-we-accept", text: "What we accept", level: 2 },
   { id: "prohibited", text: "Topics we don't accept", level: 2 },
   { id: "edits", text: "Edits and review", level: 2 },
-  { id: "labels", text: "Sponsored labels", level: 2 },
   { id: "payment", text: "Payment and refunds", level: 2 },
   { id: "duration", text: "How long the post stays online", level: 2 },
   { id: "ownership", text: "Who owns the content", level: 2 },
@@ -111,7 +110,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                             <td>Our writers, from your brief</td>
                           </tr>
                           <tr>
-                            <td>Do-follow links</td>
+                            <td>Links to your site</td>
                             <td>One</td>
                             <td>Two</td>
                             <td>Two</td>
@@ -157,7 +156,7 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                     </p>
                     <ul>
                       <li>Insert your draft and edit it as needed.</li>
-                      <li>Add your anchor text and target keywords.</li>
+                      <li>Add your links.</li>
                       <li>Upload images and other media.</li>
                       <li>Preview and finalize the post before it goes live.</li>
                       <li>Track the status, from review to publication.</li>
@@ -191,11 +190,10 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       you.
                     </p>
 
-                    <h2 id="indexing">Google indexing</h2>
+                    <h2 id="indexing">Indexing and rankings</h2>
                     <p>
-                      We guarantee that the post gets indexed by Google, and in most cases that happens within 48
-                      hours of publication. Indexing is the part we control. Ranking for a specific keyword is not
-                      something we promise.
+                      We submit every post to Google on publish day, and most posts are indexed within 48 hours. We
+                      can't promise a ranking for a specific keyword.
                     </p>
 
                     <h2 id="what-we-accept">What we accept</h2>
@@ -224,12 +222,6 @@ export default function TermsOfPaidPostsPage({ navData }: Props) {
                       We may fix small copy issues ourselves and we may ask you for changes before we accept a
                       draft. Once the post is live, you can still ask for changes to the text or to a link, and we
                       make them free of charge.
-                    </p>
-
-                    <h2 id="labels">Sponsored labels</h2>
-                    <p>
-                      By default we do not add a sponsored tag to a paid post. If you want a label or a disclosure
-                      line next to your article, tell us before publication and we add the wording you need.
                     </p>
 
                     <h2 id="payment">Payment and refunds</h2>

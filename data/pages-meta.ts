@@ -116,7 +116,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   "terms-of-paid-posts": {
     title: "Paid post terms of service for advertisers on Setproduct blog",
     description:
-      "How paid posts work on the Setproduct blog: plans and prices, turnaround, Google indexing, labels, payment and refunds.",
+      "How paid posts work on the Setproduct blog: plans and prices, turnaround, indexing and rankings, payment and refunds.",
     ogImage:
       "/images/setproduct2.webp",
     canonical: "https://www.setproduct.com/legal/terms-of-paid-posts",
