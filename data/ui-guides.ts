@@ -53,9 +53,9 @@ export const UI_GUIDES: UiGuide[] = [
   { slug: "dropdown-ui-design", label: "Dropdown", group: "inputs" },
   { slug: "form-controls-reference-2026", label: "Form controls", group: "inputs" },
   { slug: "input-ui-design", label: "Input field", group: "inputs" },
+  { slug: "stepper-ui-design", label: "Number stepper", group: "inputs" },
   { slug: "radio-button-ui-design", label: "Radio button", group: "inputs" },
   { slug: "slider-ui-design", label: "Slider", group: "inputs" },
-  { slug: "stepper-ui-design", label: "Stepper", group: "inputs" },
   { slug: "toggle-switch-ui-design", label: "Toggle switch", group: "inputs" },
 
   // Navigation
@@ -66,7 +66,7 @@ export const UI_GUIDES: UiGuide[] = [
   { slug: "pagination-ui-design", label: "Pagination", group: "navigation" },
   { slug: "search-ui-design", label: "Search", group: "navigation" },
   { slug: "sidebar-navigation-ui-design", label: "Sidebar navigation", group: "navigation" },
-  { slug: "steps-ui-design", label: "Steps", group: "navigation" },
+  { slug: "steps-ui-design", label: "Steps (wizard)", group: "navigation" },
   { slug: "tabs-ui-design", label: "Tabs", group: "navigation" },
 
   // Data display
