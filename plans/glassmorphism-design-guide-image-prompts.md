@@ -5,9 +5,13 @@
 Обложка: `public/blog/covers/glassmorphism-design-guide.webp`
 Бриф: [`plans/glassmorphism-guide-brief-2026-11.md`](glassmorphism-guide-brief-2026-11.md)
 
-Всего 23 файла: 1 обложка, 11 полноширинных, 11 обтекаемых. Всё WebP.
+Всего 24 файла: 1 обложка, 12 полноширинных, 11 обтекаемых. Всё WebP.
 
 **Версия 2 (24.11.2026).** Все иллюстрации переведены на строго белый холст `#ffffff`. Главный рецепт статьи теперь светлое стекло с тёмным текстом. Тёмное стекло осталось только там, где этого требует контекст (раздел 2.3).
+
+**Версия 3 (25.11.2026, после вычитки).** Появился №17а `glass-examples-strip.webp` (3:2, вся ширина, шесть фрагментов вместо одного раздела про системы). Добавлены пометки в разделах 3 и 7 о том, какие числа статьи изменились после повторного замера производительности. Промпты №1–23 не правились: их содержимое от вычитки не зависит.
+
+**Версия 4 (25.11.2026).** Из процесса убрана ручная работа в редакторе. Раздел 4 переписан под правило «руками не рисуется ничего», в мастер-блок добавлена строка `Text`, а все строки подписей в промптах переведены с `set in Figma` на `drawn by the generator` с указанием, где подпись стоит и каким цветом. Причина: собранные вручную 24 картинки расходятся по толщине стекла и кеглю подписей, а из промпта картинка воспроизводится. Раздел 4 статьи про Figma (сборка поверхности инструментом) не затрагивается: это про читателя и его файл, а не про производство иллюстраций.
 
 ---
 
@@ -34,6 +38,7 @@
 | 15 | Contrast math you can check before shipping | 16:9 | вся колонка | 1440×810 | 720 | нет | `contrast-stress-test.webp` |
 | 16 | States on a glass component | 16:9 | вся колонка | 1440×810 | 720 | нет | `glass-states.webp` |
 | 17 | Where glass belongs and where it breaks | 16:9 | вся колонка | 1440×810 | 720 | нет | `glass-chrome-vs-content.webp` |
+| 17а | Examples from shipped products | 3:2 | вся колонка | 1440×960 | 720 | нет | `glass-examples-strip.webp` |
 | 18 | Component recipes | 3:2 | вся колонка | 1440×960 | 720 | нет | `glass-component-recipes.webp` |
 | 19 | то же, после сетки | 4:5 | обтекание справа | 576×720 | 288×360 | 130 | `glass-toast-recipe.webp` |
 | 20 | Glassmorphism on mobile | 4:5 | обтекание справа | 576×720 | 288×360 | 130 | `glass-mobile-performance.webp` |
@@ -42,6 +47,8 @@
 | 23 | Before you ship | 4:5 | обтекание справа | 576×720 | 288×360 | 130 | `glass-ship-checklist.webp` |
 
 В FAQ картинок нет.
+
+№17а добавлен 25.11.2026: раздел `Examples from shipped products` встал между `Where glass belongs and where it breaks` и `Component recipes`, то есть между №17 и №18. Нумерация остальных файлов не менялась, чтобы генерация и подписи не разъехались с уже сделанным.
 
 Порядок обтекаемых: 4 → 5 → 7 → 9 → 10 → 11 → 14 → 19 → 20 → 21 → 23. Между каждой парой стоит либо полноширинная картинка, либо H2 (он сбрасывает обтекание через `clear: both`), либо обёртка `blog-float-clip` у подраздела H3. Три подряд идущих H3 анатомии (9, 10, 11) заворачиваются в `blog-float-clip` каждый, потому что H3 обтекание не сбрасывает.
 
@@ -102,9 +109,14 @@
 1. **№6 `glass-family-matrix.webp`: 1:1 с обтеканием заменён на 3:2 во всю колонку.** Пять ячеек в 288 px нечитаемы и нарушают лимит в 4 элемента.
 2. **№15 `contrast-stress-test.webp`: три карточки заменены сеткой 3×2.** Сверху провал, снизу исправление на тех же фонах.
 3. **№20 `glass-mobile-performance.webp`: `60 fps` это целевой бюджет кадра (16.7 мс), а не замер.**
+
+   **Уточнено 25.11.2026 после повторного замера.** Надпись `60 fps` больше не подтверждает цифры статьи: в тексте теперь стоят измеренные значения (0.07 / 0.96 / 1.89 / 2.72 / 3.71 мс на кадр по слоям, ноль пропусков кадров). Карточка с `60 fps` верна как **бюджет**, а не как результат, и в подписи к разделу это теперь сказано прямо: «целевой бюджет кадра». Если хочется, чтобы картинка показывала числа статьи, замените надпись на `0 frames dropped` — тогда она читается как вывод замера, а не как обещание. Решение за автором, я оставил `60 fps` и поправил только трактовку.
 4. **№4 `glass-subtle-vs-heavy.webp`: alt** `Subtle and heavy glass on the same card` (слово `tint` убрано).
 5. **Новое. №15, нижний ряд: рецепт сменён с тёмного стекла на светлое.** Было: tint `#10121b` 60%, белый текст, 6.05 / 5.42 / 4.88. Стало: белый tint 60%, текст `#19181b`, 14.02 / 6.76 / 6.74. Причина: главный рецепт статьи теперь светлый, и стресс-тест обязан проверять именно его. Худшая точка у рядов разная: для белого текста это самое светлое место фона, для тёмного текста самое тёмное. В статье это объясняется одним абзацем.
-6. **№1, обложка: решено в пользу варианта B** (сплошной градиент `#7c4dff` → `#ff5fa2` → `#ffb86b`), alt `Glass card on a gradient background`. Автор выбрал его 24.11: обложка стоит вне текста и в листинге блога соседствует с цветными обложками. Правило «строго белый холст» действует на 22 иллюстрации внутри статьи, обложка из него выведена сознательно. Вариант A сохранён в промпте №1 как запасной.
+6. **№1, обложка: решено в пользу варианта B** (сплошной градиент `#7c4dff` → `#ff5fa2` → `#ffb86b`), alt `Glass card on a gradient background`. Автор выбрал его 24.11: обложка стоит вне текста и в листинге блога соседствует с цветными обложками. Правило «строго белый холст» действует на 23 иллюстрации внутри статьи, обложка из него выведена сознательно. Вариант A сохранён в промпте №1 как запасной.
+7. **Новое, 25.11.2026. №17а `glass-examples-strip.webp`: раздел получил картинку, которой не было в исходном плане.** Причина: после вычитки в статье появился H2 `Examples from shipped products` с шестью примерами, а по правилу проекта раздел не остаётся без иллюстрации. Формат 3:2 во всю колонку, не 1:1 и не 4:5: шесть фрагментов в ряд в узком обтекании превратились бы в нечитаемую полоску. Минимум слов не применяется, потому что 3:2 не входит в список форматов с минимумом.
+8. **Новое, 25.11.2026. №3 `glass-types-comparison.webp`: в промпт добавлено требование к силе размытия.** В статье таблица типов получила колонку `Blur` со значениями на каждый тип (clear меньше 8 px, frosted 16 px и больше, tinted / textured / gradient-backed по 24 px). Чтобы картинка не спорила с таблицей, в промпте теперь сказано: первая карточка почти резкая, вторая заметно смягчена, три последние стоят на одном размытии и отличаются тинтом, зерном и подложкой. Формат, размер и подписи не менялись.
+9. **Новое, 25.11.2026. Новых картинок под перенос доступности и под блок «две минуты» не требуется.** Раздел `Accessibility beyond contrast` стал H2 и встал после `Glassmorphism on mobile`, но владельцем картинки остался №20: она стоит внутри мобильного раздела и после переноса оказалась выше H2 доступности, то есть обтекание сбрасывается заголовком, а не новой картинкой. У блока «If you have two minutes» картинки нет по правилу лид-абзаца: он стоит до первого H2 и не является разделом.
 
 Без отклонения, но с риском: **№23** оставлен с шестью пунктами. Запасной вариант — четыре строки.
 
@@ -114,14 +126,18 @@
 
 ## 4. Как собирать
 
-- **Мастер-блок из раздела 5 дописывается в конец каждого промпта.** В самих промптах материал стекла не повторяется, чтобы не было 23 слегка разных описаний.
-- **Белый должен быть ровно `#ffffff`.** Генераторы дают `#fafafa`, серую виньетку или «пол» с тенью. После генерации: вырезать объект или поднять белую точку уровнями, проверить пипеткой четыре угла. На странице белый фон картинки сольётся с белым фоном сайта, любая серость проявится прямоугольником.
-- **Экспорт WebP с качеством 90+ или lossless.** На низком качестве вокруг размытых пятен на белом появляются серые блоки.
-- **Подписи ставить в Figma поверх основы.** В каждом промпте подписи вынесены в строку `Labels`. Цвет подписей на белом холсте `#19181b`.
+**Главное правило: руками не рисуется ничего.** Всё, что должно быть на изображении, уже описано в промпте: материал стекла, композиция, подписи, числа, цвета фона. Если после генерации чего-то не хватает, промпт уточняется и картинка генерируется заново. Готовая картинка не дорисовывается и не подчищается в редакторе.
+
+Причина простая: 24 картинки, собранные вручную, разъезжаются по толщине стекла, кеглю подписей и отступам, и повторить результат через месяц уже нельзя. Из промпта картинка воспроизводится.
+
+- **Мастер-блок из раздела 5 дописывается в конец каждого промпта.** В самих промптах материал стекла не повторяется, чтобы не было 24 слегка разных описаний.
+- **Подписи и числа входят в промпт как часть изображения.** В каждом промпте есть строка `Labels (drawn by the generator, …)`: генератор рисует текст сам, прямо в картинке, в размере, указанном для исходника. Цвет на белом холсте `#19181b`, на тёмной половине №13 белый.
+- **Шрифт подписей задаётся в промпте:** чистый геометрический гротеск, близкий к Inter или Uncut Sans, semibold. Только английский, sentence case, без обводки, без тени у текста.
 - **Размер подписей в исходнике от 32 px**, линии от 6 px: картинки показываются в половину размера.
-- **Шрифт подписей:** Uncut Sans или Inter, semibold. Только английский, sentence case.
-- **Числа на картинках №8, №9, №15, №20, №21 менять нельзя.** Для №9 и №15 фон собирать по hex из промпта, иначе число не будет соответствовать картинке.
-- **Лучше собрать стекло в Figma, а генератором делать только пятна и сцену.** Рецепт из 2.4 воспроизводится в Figma точно: fill white 60%, background blur 24, stroke inside white 70%, drop shadow `#7c4dff` 28% y24 blur48 spread−16. Тогда стекло на всех 23 картинках будет одним материалом.
+- **Числа на картинках №8, №9, №15, №20, №21 не меняет никто.** Значения впечатаны в промпт как данные и должны выйти посимвольно: `1.33:1`, `14.02:1`, `60 fps` и так далее. Искажённая цифра означает брак и повторную генерацию. Для №9 и №15 фоны тоже заданы hex-ами в промпте, так что число и картинка сходятся сами.
+- **Белый `#ffffff` — это приёмка, а не ретушь.** Генераторы дают `#fafafa`, серую виньетку или «пол» с тенью. В промпте белый уже задан отдельной строкой мастер-блока, поэтому такая картинка просто генерируется заново. Пипетка по четырём углам нужна, чтобы отличить годную картинку от брака; правкой уровней ничего не исправляется. На странице белый фон картинки сольётся с белым фоном сайта, любая серость проявится прямоугольником.
+- **Один материал на все 24 картинки задаёт мастер-блок.** Он одинаковый во всех промптах: fill white 60%, background blur 24, stroke inside white 70%, drop shadow `#7c4dff` 28% y24 blur48 spread−16. Отсюда толщина, подсветка кромки и тень совпадают без сверки между картинками.
+- **Экспорт WebP с качеством 90+ или lossless.** На низком качестве вокруг размытых пятен на белом появляются серые блоки.
 - **Файлы новые, существующие не перезаписываются.**
 - **После заливки:** `npm run thumbs:blog` и `node check_images2.js`. Оба запускает автор.
 
@@ -156,7 +172,8 @@ Shadow: one soft, wide, violet-tinted shadow below the glass, low and diffuse. N
 Light: soft studio light from the top left, a faint diagonal sheen on the upper left area of the glass, a very fine grain on the glass only.
 Colour: comes only from the shapes placed behind the glass, saturated orbs in violet #7c4dff, pink #ff5fa2 and warm orange #ffb86b. Each orb is sharp where it sticks out past the glass edge and blurred where the glass covers it. The orbs cover roughly a third of the glass, the rest of the glass sits over white.
 Content on glass: dark ink #19181b. Never white text on light glass. Accent buttons are solid violet #7c4dff with white text.
-Rules: one subject, large shapes, no small text, no screenshot or browser frames, no device bezels, no people.
+Text: render every label and number listed in this prompt as clean flat text directly on the image, geometric sans close to Inter or Uncut Sans, semibold, tight tracking, sentence case, no outline, no drop shadow, no italics, no lettering on a curve. Spell each value exactly as written in the prompt, character for character. Place each label exactly where this prompt puts it, on white or on the glass, and use the colour this prompt assigns to it.
+Rules: one subject, large shapes, no screenshot or browser frames, no device bezels, no people. Inside the mockups keep content abstract, with no small text other than the labels listed in this prompt.
 ```
 
 ### Тёмная добавка (только правая половина №13 и панель №10)
@@ -199,7 +216,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Four sheets in one row in the middle horizontal band, equal size, equal spacing. Keep the meaning in the central third: top and bottom thirds are white apart from the labels directly under each sheet.
 
-**Labels (set in Figma, 36 px in source):** `blur`, `tint`, `border`, `highlight`
+**Labels (drawn by the generator, 36 px in source):** `blur`, `tint`, `border`, `highlight`, one under each sheet, dark on white
 
 **Aspect ratio:** 16:9
 
@@ -215,11 +232,13 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Scene:** The same rounded card repeated five times in one row on a pure white canvas. Behind every card sits the identical pair of bold shapes: a violet circle and an orange bar, each sticking out past the card edge. Card 1 is clear glass: the shapes behind stay sharp and fully recognisable through it. Card 2 is frosted: the shapes melt into soft colour fields. Card 3 is tinted: frosted glass that carries a visible violet hue across its whole surface. Card 4 is textured: frosted glass with a clearly visible fine grain. Card 5 is gradient-backed: instead of the two hard shapes, a smooth mesh gradient sits behind frosted glass and glows through it evenly.
 
-**Style:** Flat UI mockup. The five surfaces must be clearly different from each other at a glance.
+**Style:** Flat UI mockup. The five surfaces must be clearly different from each other at a glance, and the difference must be readable as three levels of blur, not five tints.
 
 **Composition:** Five equal cards in a single row across the middle horizontal band, generous gaps, one label directly under each card. Keep the meaning in the central third: nothing above or below the row except the labels.
 
-**Labels (set in Figma, 32 px in source):** `clear`, `frosted`, `tinted`, `textured`, `gradient-backed`
+**Степень размытия (совпадает с колонкой `Blur` в таблице статьи).** После вычитки таблица типов получила колонку `Blur`, поэтому картинка обязана показывать три различимых уровня, иначе она спорит с текстом: `clear` читается как «блюр почти отсутствует» (меньше 8 px), `frosted` как «заметное размытие» (16 px и больше), а `tinted`, `textured` и `gradient-backed` стоят на 24 px и отличаются не силой блюра, а цветом тинта, зерном и подложкой. Практически: у первой карточки пятна за стеклом почти резкие, у второй смягчены, у трёх последних размытие одинаковое, и разницу несут тинт, зерно и градиент.
+
+**Labels (drawn by the generator, 32 px in source):** `clear`, `frosted`, `tinted`, `textured`, `gradient-backed`, one under each card, dark on white
 
 **Aspect ratio:** 16:9
 
@@ -239,7 +258,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, two cards of equal size stacked with a clear gap, one large label inside each card. 10% empty white margin on every side. Two elements only.
 
-**Labels (set in Figma, 44 px in source):** `subtle`, `heavy`
+**Labels (drawn by the generator, 44 px in source):** `subtle`, `heavy`, set inside each card in dark ink
 
 **Aspect ratio:** 4:5
 
@@ -259,7 +278,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, three mockups of equal visual weight stacked top to bottom, the timeline line on the left, one label beside each mockup. 10% empty white margin on every side. Three elements only.
 
-**Labels (set in Figma, 36 px in source):** `Aero, 2007`, `iOS 7, 2013`, `visionOS, 2023`
+**Labels (drawn by the generator, 36 px in source):** `Aero, 2007`, `iOS 7, 2013`, `visionOS, 2023`, one beside each mockup on white
 
 **Aspect ratio:** 2:3
 
@@ -279,7 +298,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Five equal cells, three in the first row and two centred in the second, 10% safe white margin on every side, one label under each cell. The grid is centred, nothing important in the corners.
 
-**Labels (set in Figma, 32 px in source):** `glassmorphism`, `frosted UI`, `liquid glass`, `neumorphism`, `claymorphism`
+**Labels (drawn by the generator, 32 px in source):** `glassmorphism`, `frosted UI`, `liquid glass`, `neumorphism`, `claymorphism`, one under each cell, dark on white
 
 **Aspect ratio:** 3:2
 
@@ -299,7 +318,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** The corner sits in the centre and runs diagonally, four leader lines fan out to four labels placed in the four quadrants. 10% empty white margin on every side. Four elements only.
 
-**Labels (set in Figma, 36 px in source):** `blur`, `tint`, `border`, `highlight`
+**Labels (drawn by the generator, 36 px in source):** `blur`, `tint`, `border`, `highlight`, one at the end of each leader line
 
 **Aspect ratio:** 1:1
 
@@ -319,7 +338,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Five equal cards in a single row across the middle horizontal band, one value label under each. Keep the meaning in the central third: top and bottom thirds are white apart from the labels.
 
-**Labels (set in Figma, 36 px in source):** `4 px`, `8 px`, `16 px`, `24 px`, `40 px`
+**Labels (drawn by the generator, 36 px in source):** `4 px`, `8 px`, `16 px`, `24 px`, `40 px`, one under each card, dark on white
 
 **Aspect ratio:** 16:9
 
@@ -339,7 +358,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, two equal cards stacked with a clear gap, the percentage label large inside each card next to the sample word. 10% empty white margin on every side. Two elements only.
 
-**Labels (set in Figma, 44 px in source, do not change):** `8%`, `40%`; sample word on both cards `Aa`
+**Labels (drawn by the generator, 44 px in source, spell exactly as written):** `8%`, `40%`; sample word on both cards `Aa`
 
 **Aspect ratio:** 4:5
 
@@ -359,7 +378,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** The photo tile takes the central 80% of the frame, the corner of the panel sits slightly above centre, the edge line runs through the centre, the sample word sits inside the panel below it. 10% empty white margin on every side. Two elements only (the edge and the word). No people in the photo.
 
-**Labels (set in Figma, 36 px in source):** `1 px border`; sample word `Aa`
+**Labels (drawn by the generator, 36 px in source):** `1 px border` in white on the dark panel; sample word `Aa` in white inside the panel
 
 **Aspect ratio:** 1:1
 
@@ -379,7 +398,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, three equal slabs stacked with clear gaps, one label to the left of each. 10% empty white margin on every side. Three elements only.
 
-**Labels (set in Figma, 40 px in source):** `flat`, `highlight`, `noise`
+**Labels (drawn by the generator, 40 px in source):** `flat`, `highlight`, `noise`, one to the left of each slab, dark on white
 
 **Aspect ratio:** 4:5
 
@@ -399,7 +418,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** The card sits in the centre and takes roughly the central third of the frame width. Keep the meaning in the central third: the outer areas are pure white.
 
-**Labels (set in Figma):** number `$48`, line `per month`, button `Upgrade`
+**Labels (drawn by the generator):** number `$48` at 96 px in source, line `per month` at 32 px in source, button `Upgrade` at 32 px in source in white on the violet pill. All dark except the button, all inside the card.
 
 **Aspect ratio:** 3:2
 
@@ -419,7 +438,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** The split line runs through the exact centre, the card is centred on it. Keep the meaning in the central third. One label in the top corner of each half.
 
-**Labels (set in Figma, 36 px in source):** `light` in #19181b, `dark` in white
+**Labels (drawn by the generator, 36 px in source):** `light` in #19181b on the white half, `dark` in white on the dark half, one in the top corner of each half
 
 **Aspect ratio:** 16:9
 
@@ -439,7 +458,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Two equal cards centred, a clear gap between them, one label under each. 10% empty white margin on every side. Two elements only.
 
-**Labels (set in Figma, 36 px in source):** `fallback`, `blur`; sample word on both `Aa`
+**Labels (drawn by the generator, 36 px in source):** `fallback`, `blur`, one under each card; sample word `Aa` on both cards in dark ink
 
 **Aspect ratio:** 1:1
 
@@ -459,7 +478,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Grid centred with a 10% safe white margin, columns labelled once along the top, rows labelled once on the left, one large contrast value under each card. A red cross beside the three values in the top row and a green tick beside the three in the bottom row. No people in the photo.
 
-**Labels (set in Figma, values 40 px in source, do not change them):** columns `gradient`, `photo`, `pattern`; rows `12% tint`, `60% tint`; top row values `1.33:1`, `1.15:1`, `1.00:1`; bottom row values `14.02:1`, `6.76:1`, `6.74:1`; sample word `Aa`
+**Labels (drawn by the generator, values 40 px in source, spell each value character for character):** columns `gradient`, `photo`, `pattern`; rows `12% tint`, `60% tint`; top row values `1.33:1`, `1.15:1`, `1.00:1` with a red cross beside each; bottom row values `14.02:1`, `6.76:1`, `6.74:1` with a green tick beside each; sample word `Aa`
 
 **Aspect ratio:** 16:9
 
@@ -479,7 +498,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Seven equal buttons in one row across the middle horizontal band, one label under each. Keep the meaning in the central third: top and bottom thirds are white apart from the labels.
 
-**Labels (set in Figma, 32 px in source):** `default`, `hover`, `focus`, `active`, `disabled`, `error`, `loading`
+**Labels (drawn by the generator, 32 px in source):** `default`, `hover`, `focus`, `active`, `disabled`, `error`, `loading`, one under each button, dark on white. These seven words are the only text in the row; the buttons hold no other lettering.
 
 **Aspect ratio:** 16:9
 
@@ -499,7 +518,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Two equal panels centred with a clear gap, a green tick above the left one and a red cross above the right one, one label under each. Keep the meaning in the central third.
 
-**Labels (set in Figma, 36 px in source):** `chrome`, `dense data`
+**Labels (drawn by the generator, 36 px in source):** `chrome`, `dense data`, one under each panel, dark on white
 
 **Aspect ratio:** 16:9
 
@@ -511,6 +530,28 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 ---
 
+### 17а. Examples from shipped products (добавлено в редпроходе 25.11.2026, расширено до шести 25.11.2026)
+
+**Файл:** `glass-examples-strip.webp`, 3:2, вся ширина, alt `Six shipped products using glass on chrome`.
+
+**Что изменилось после вычитки.** В разделе стало **шесть** примеров: к пяти системным добавлен веб-пример, Linear, потому что читатель с браузерным продуктом не находил себя среди одних только ОС. Фрагмент Linear в картинке обязателен, иначе текст и иллюстрация разойдутся.
+
+**Композиция.** Шесть фрагментов реальных интерфейсов в один ряд на светлом холсте, каждый в своей рамке со скруглением `radius-16`, под каждым фрагментом подпись продукта мелким текстом. Слева направо: Control Center iOS (плотная панель с плитками), хром окна macOS (заголовок с кромкой и сайдбар с материалом), окно visionOS (панель на подложке-комнате), окно Windows 11 с Mica (фон окна из обоев), Acrylic-меню Windows (контекстное меню над контентом), веб-приложение Linear (тонкая фиксированная полоса наверху, под ней прокручивается список задач).
+
+На шести фрагментах в ряд каждый получает ~15% ширины холста. На исходнике 1440 px это 216 px на фрагмент, что для подписи и силуэта достаточно, а для чтения внутреннего текста нет. Поэтому внутри фрагментов ни одна надпись не читается: только формы, полосы и цвет.
+
+**Промпт:**
+
+```
+A horizontal strip of six interface fragments on a very light lavender canvas (#fbfaff), arranged in one row with equal gaps, each fragment inside a rounded-corner frame with a soft shadow. Fragment one: an iOS Control Center panel with rounded tiles for brightness, volume and connectivity, dense frosted fill. Fragment two: a macOS window chrome with a title bar and a left sidebar, the title bar marked by a light 1px inner edge and a soft shadow, the sidebar slightly translucent with a subtle blur of the window backdrop. Fragment three: a visionOS window floating on a soft blurred living-room backdrop, glass as the base surface. Fragment four: a Windows 11 app window whose background blends a blurred desktop wallpaper, flat tint, no live blur. Fragment five: a Windows context menu with acrylic material over an app window, dense enough to read four rows. Fragment six: a web app with a thin fixed top bar spanning the full width, 8% of the frame height, showing a wordmark on the left and four short navigation bars on the right, a single 1px bottom border, and a task list of narrow rows scrolling visibly underneath the bar so the rows are half-hidden and softened by the blur. Under each frame a short product caption in small grey sans. Flat vector illustration, no people, no logos, no text inside the fragments apart from caption labels, 3:2 aspect ratio, white and violet palette, generous negative space.
+```
+
+**Подписи (рисует генератор, 32 px в исходнике):** `Control Center`, `macOS`, `visionOS`, `Mica`, `Acrylic`, `Linear`, по одной под каждым фрагментом, мелким серым. Эти шесть слов — единственный текст в картинке, внутри фрагментов надписей нет.
+
+**Почему 3:2 и вся ширина.** Шесть объектов в ряд не читаются в узком обтекании. Минимум слов рядом для 3:2, по правилу проекта, не применяется: формат не входит в список 2:3 / 4:5 / 1:1.
+
+**Как проверить после генерации.** Фрагмент шесть обязан показывать именно то, что описано в тексте: полоса наверху, строки под ней видны наполовину и размыты, снизу тонкая кромка. Если генератор нарисовал просто полупрозрачную панель над пустым фоном, картинка врёт про механику и её надо перегенерировать.
+
 ### 18. Component recipes
 
 **Scene:** Four finished light glass components in a two by two grid on a pure white canvas, each with its own pair of orbs behind it. Top left: a content card with a heading bar, a text bar and a solid violet button. Top right: a modal dialog with a title bar and two buttons, floating over a rounded dimmed tile so the scrim is visible. Bottom left: a horizontal navigation bar with a logo dot and four link bars, colourful blocks passing under it. Bottom right: a toast notification with an icon dot, one line and a close mark.
@@ -519,7 +560,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Grid of four equal cells centred with a 10% safe white margin, one label under each cell, nothing important in the corners.
 
-**Labels (set in Figma, 36 px in source):** `card`, `modal`, `navbar`, `toast`
+**Labels (drawn by the generator, 36 px in source):** `card`, `modal`, `navbar`, `toast`, one under each cell, dark on white
 
 **Aspect ratio:** 3:2
 
@@ -539,7 +580,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, three equal toasts stacked with clear gaps, one label directly beneath each. 10% empty white margin on every side. Three elements only.
 
-**Labels (set in Figma, 40 px in source):** `quiet`, `tinted`, `solid`
+**Labels (drawn by the generator, 40 px in source):** `quiet`, `tinted`, `solid`, one directly beneath each toast, dark on white
 
 **Aspect ratio:** 4:5
 
@@ -559,7 +600,9 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, the phone takes the upper two thirds, the readout chip the lower third, both centred. 10% empty white margin on every side. Two elements only.
 
-**Labels (set in Figma, 56 px in source, do not change):** `60 fps`
+**Labels (drawn by the generator, 56 px in source, spell exactly as written):** `60 fps` in white on the dark readout chip
+
+**Вариант надписи, если нужен вывод замера:** `0 frames dropped`. В статье цифры такие: 0.07 мс без блюра, 1.89 мс на двух слоях, ни одного кадра дольше 25 мс в шести прогонах. `60 fps` показывает бюджет, `0 frames dropped` показывает результат, и второе честнее по отношению к тексту. Обе надписи короткие и встают в ту же карточку.
 
 **Aspect ratio:** 4:5
 
@@ -579,7 +622,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** The panel is centred and fills the frame up to a 10% empty white margin on every side, four rows of equal height. Four elements only (four rows).
 
-**Labels (set in Figma, 32 px in source, monospace, do not change):** row 1 `glass/blur` → `--glass-blur`; row 2 `glass/tint` → `--glass-tint`; row 3 `glass/border` → `--glass-border`; row 4 `glass/highlight` → `--glass-highlight`
+**Labels (drawn by the generator, 32 px in source, monospace, spell exactly as written):** row 1 `glass/blur` → `--glass-blur`; row 2 `glass/tint` → `--glass-tint`; row 3 `glass/border` → `--glass-border`; row 4 `glass/highlight` → `--glass-highlight`. Chips sit on the glass, so set this text in dark ink and keep it crisp.
 
 **Aspect ratio:** 1:1
 
@@ -599,7 +642,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Grid of eight equal cells centred with a 10% safe white margin, one label under each cell, nothing important in the corners.
 
-**Labels (set in Figma, 32 px in source):** `no tint`, `stacked glass`, `flat backdrop`, `milky tint`, `no edge`, `dense data`, `tint-only states`, `no fallback`
+**Labels (drawn by the generator, 32 px in source):** `no tint`, `stacked glass`, `flat backdrop`, `milky tint`, `no edge`, `dense data`, `tint-only states`, `no fallback`, one under each cell, dark on white
 
 **Aspect ratio:** 3:2
 
@@ -619,7 +662,7 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 
 **Composition:** Vertical composition, the card is centred and fills the frame up to a 10% empty white margin on every side, six rows of equal height, no card title.
 
-**Labels (set in Figma, 36 px in source):** `contrast checked`, `fallback ready`, `focus visible`, `states differ`, `phone tested`, `tokens named`
+**Labels (drawn by the generator, 36 px in source):** `contrast checked`, `fallback ready`, `focus visible`, `states differ`, `phone tested`, `tokens named`, one on each row in dark ink, the only text in the card
 
 **Aspect ratio:** 4:5
 
@@ -641,7 +684,6 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 | №9 | поверхность `#b094ff` при 40% | белый tint 40% поверх `#7c4dff`, контраст с белым текстом 2.46:1 |
 | №15, верхний ряд | 1.33 / 1.15 / 1.00 | белый текст на белом tint 12%, самая светлая точка каждого фона: `#fbcfe8`, `#e8eef5`, `#ffffff` |
 | №15, нижний ряд | 14.02 / 6.76 / 6.74 | текст `#19181b` на белом tint 60%, самая тёмная точка каждого фона: `#c4b5fd`, `#0b1220`, `#111111` |
-| №20 | 60 fps | целевой бюджет кадра, 1000 / 60 = 16.7 мс. Не замер |
 | правило 3 | 9.94:1 | `#19181b` на белом tint 60% поверх `#7c4dff` (поверхность `#cbb8ff`) |
 | правило 3 | 6.21:1 | то же поверх чёрного `#000000` (поверхность `#999999`), худший возможный фон |
 | правило 5 | 1.18:1 | линия `rgba(25,24,27,.08)` на белом (`#ededed`) к белому |
@@ -651,3 +693,41 @@ Dark variant: glass surface is deep navy #10121b at about 60% opacity with a 24 
 | №14 | 16.28:1 | `#19181b` на fallback-заливке `#f7f4ff` |
 
 Дополнительно для текста статьи: светлое стекло с tint 50% над чёрным даёт 4.45:1 (чуть ниже AA), с tint 40% даёт 3.08:1. Отсюда нижняя граница главного рецепта: 60%.
+
+### 7.1. Числа производительности (повторный замер, 25.11.2026)
+
+Первые числа (`87` длинных кадров без блюра, `118 / 118 / 123 / 117` на одном, двух, трёх и четырёх слоях, `280 из 600` у шторки) при повторном замере не воспроизвелись и из статьи убраны. Причина: стенд старого прогона упирался в конец документа через ~2.8 с, поэтому запись обрывалась на 170 кадрах, а порог `>16.7 мс` ловил дрожание вертикальной синхронизации (16.66 против 16.70), а не пропуск кадра.
+
+Новый стенд: Chromium headless, вьюпорт 390×844 при 2x, троттлинг CPU в 6 раз, десять секунд непрерывного скролла по полосатому фону, общий запас прокрутки 400 000 px, метрика — межкадровые интервалы `DisplayScheduler::DrawAndSwap` из полного трейса CDP, порог пропуска `>25 мс` (полтора кадра), первые 10% интервалов отбрасываются как разгон. Каждый прогон дал около 540 кадров.
+
+| Слоёв блюра (`blur(24px)`) | Кадров | Отрисовка кадра, среднее | p95 | Пропусков >25 мс |
+|---|---|---|---|---|
+| 0 | 540 | 0.07 мс | 0.14 мс | 0 |
+| 1 | 541 | 0.96 мс | 1.06 мс | 0 |
+| 2 | 541 | 1.89 мс | 2.05 мс | 0 |
+| 3 | 541 | 2.72 мс | 2.85 мс | 0 |
+| 4 | 541 | 3.71 мс | 3.99 мс | 0 |
+
+| Два слоя, состояние панели | Кадров | Отрисовка кадра, среднее | p95 | Пропусков >25 мс |
+|---|---|---|---|---|
+| Панель стоит | 541 | 1.89 мс | 2.05 мс | 0 |
+| Панель скользит | 540 | 1.70 мс | 2.22 мс | 0 |
+
+Что из этого следует и что нельзя заявлять:
+
+| Утверждение | Проверено? |
+|---|---|
+| Один слой добавляет ≈0.9 мс к отрисовке кадра при `blur(24px)` | да, линейно на пяти строках |
+| Два слоя занимают 11% бюджета 16.7 мс | да, 1.89 / 16.7 |
+| В этом стенде ни один прогон не потерял кадр | да, ноль пропусков во всех шести сценариях |
+| Медиана интервала держится 16.65–16.70 мс | да |
+| Худший одиночный интервал 21.6 мс на двух слоях | да, композитор его поглощает без видимого рывка |
+| «Ноль длинных кадров» — цель, к которой слои идут | нет. Базовый скролл уже не даёт пропусков, поэтому слои не «догоняют ноль», а остаются внутри бюджета |
+| Анимация трансформа панели дороже, чем статичная панель | нет, в замере скользящая панель не хуже (1.70 против 1.89 мс); дороже анимация **фона под** неподвижной панелью, её в таблице нет |
+| Шторка удваивает пропуски (`280 из 600`) | нет, при повторном замере пропусков нет вообще; цифра была артефактом старого стенда |
+
+Поэтому в статье вывод сформулирован так: база скролла сама по себе не ноль, сравнивать надо со своей базой, слои добавляют время отрисовки, но не срывают доставку кадра, а проверять надо тот случай, которого в таблице нет — движение содержимого под неподвижным стеклом.
+
+Скрипт замера — `perf-probe.mjs` (создавался в корне проекта и удалён после прогона; воспроизводится по описанию выше: `Tracing.start` с `includedCategories: ["*"]`, `Emulation.setCPUThrottlingRate(6)`, скролл через `requestAnimationFrame` с `window.scrollBy(0, 14)`).
+
+Надпись на карточке №20 `60 fps` — это бюджет кадра (1000 / 60 = 16.7 мс), а не результат замера. Если картинка должна показывать вывод, честнее `0 frames dropped`: в шести прогонах нового замера не потеряно ни одного кадра.
