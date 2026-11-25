@@ -74,6 +74,7 @@ export const UI_GUIDES: UiGuide[] = [
   { slug: "avatar-ui-design", label: "Avatar", group: "data-display" },
   { slug: "badge-ui-design", label: "Badge", group: "data-display" },
   { slug: "calendar-ui-design", label: "Calendar", group: "data-display" },
+  { slug: "card-ui-design", label: "Card", group: "data-display" },
   { slug: "carousel-ui-design", label: "Carousel", group: "data-display" },
   { slug: "chart-ui-design-guide", label: "Chart", group: "data-display" },
   { slug: "chip-ui-design", label: "Chip", group: "data-display" },

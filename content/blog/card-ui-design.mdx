@@ -1,0 +1,910 @@
+---
+title: "Card UI design, anatomy and the layouts that scale"
+description: "Design cards that survive real content. Eight-zone anatomy, column math with CSS minmax, card states and accessible whole-card links, plus a ship checklist."
+slug: card-ui-design
+date: "2026-11-25"
+author: Roman Kamushken
+category: UI Design
+coverImage: /blog/covers/card-ui-design.webp
+coverImageAlt: "A single product card on a plain background"
+thumbImage: /blog/covers/thumbs/card-ui-design.webp
+canonical: "https://www.setproduct.com/blog/card-ui-design"
+subtitle: "Eight zones, the column math behind a card grid and the states that keep cards usable on real content"
+metaTitle: "Card UI design, anatomy and the layouts that scale"
+cardDescription: "Card anatomy, grid math and states with working CSS, plus the cases where a table row does the job better."
+readingTimeText: 23 min read
+relatedSlugs:
+  - bento-grid-layout-design-guide
+  - data-table-ui-design
+  - empty-state-ui-design
+faq:
+  - question: What is a KPI card in a dashboard?
+    answer: >-
+      A KPI card shows one metric with enough context to judge it: the current
+      value, the change against a previous period and the period itself. A
+      sparkline is optional. Keep the number as the largest text on the card,
+      around 32 to 40px, and pair the delta with an arrow as well as a color, so
+      the trend survives for colorblind users.
+  - question: What is the minimum width of a card in a grid?
+    answer: >-
+      For a card with an image, a title and a short description, 280px is a safe
+      minimum. Below that a two-line title wraps into four lines and buttons start
+      to stack. Text-only cards can go down to 240px. Set it once with
+      grid-template-columns repeat(auto-fill, minmax(280px, 1fr)) and let the
+      column count follow the container.
+  - question: Should the whole card be clickable?
+    answer: >-
+      Yes, when the card leads to one destination. Put a real link on the title
+      and stretch its hit area over the card with a pseudo-element, so screen
+      readers announce one short link. Secondary buttons inside the card sit above
+      that layer with position relative and a higher z-index. If a card has two
+      equal destinations, keep two separate links instead.
+  - question: How many cards should fit in one row?
+    answer: >-
+      Let the width decide. With a 280px minimum and 24px gaps, a 1200px container
+      fits four cards, a 900px container fits three and a phone gets one. Product
+      grids work well at three or four. Five and more turns browsing into a
+      scanning task, and at that point a table or a list usually serves the reader
+      better.
+  - question: How do I make cards the same height in a row?
+    answer: >-
+      CSS grid stretches every item in a row to the tallest one by default, so make
+      the card a flex column with height 100%. Then push the footer down with
+      margin-top auto. Buttons line up across the row even when titles run one or
+      two lines. Clamp the title to two lines so one long title cannot stretch the
+      whole row.
+  - question: What should a product card include?
+    answer: >-
+      An image, the product name, the price and one action. A rating and a short
+      attribute line help in catalogs where people compare. Keep the price as the
+      strongest text after the name, and move secondary actions like a wishlist
+      into an icon button with an aria-label. Variant pickers and long
+      descriptions belong on the product page.
+  - question: How do I build a responsive card in Figma?
+    answer: >-
+      Build the card as an auto layout frame set to fill the container, with a min
+      width of 280 and a max width of 400. Give the image a fixed aspect ratio and
+      truncate the title after two lines. A spacer set to fill pins the footer to
+      the bottom. The free Responsive imagery cards file on Setproduct is built
+      with constraints, so you can inspect a working setup first.
+---
+
+<span class="blog_big-paragraph">A card is a container that groups everything about one object (an image, a title, a few facts and an action) and presents it as a single unit you can scan and open. It loses to a table row the moment people need to compare values across many objects, because a table lines those values up in one column and a card scatters them.</span>
+
+Cards look like the easiest component in a UI kit. A rectangle, a radius, some padding. Then real content arrives: a 90-character product name, a missing photo, a price in two currencies, five actions somebody wants on every card. Most card grids I audit break on content, and the styling is rarely to blame.
+
+This guide treats the card as a component. It starts with what goes inside a card and how wide it can get, then moves on to states and the cases where a card is the wrong choice.
+
+**If you have two minutes.** Five numbers carry most of the result.
+
+❶ **280px minimum width** for a card with media. Narrower, and a two-line title wraps into four. See [the column math](#the-column-math-behind-a-card-grid).
+
+❷ **One primary action per card**, two secondary at most. Everything else goes into a menu.
+
+❸ **Two lines for a title** in a grid, clamped with `line-clamp`.
+
+❹ **24×24px minimum touch target** per WCAG 2.2, and 44×44px for anything people tap on a phone.
+
+❺ **Twelve objects or more** that people compare by one field belong in a table. See [when cards hurt](#when-cards-hurt-the-interface).
+
+## What a card is, and when a table row wins
+
+A card wins when each object is read on its own and loses when objects are read against each other. That one rule settles most arguments about cards in a design review.
+
+![The same content as a card, a table row and a list item](/blog/assets/card-ui-design/card-vs-table-vs-list.webp)
+
+Look at the same project shown three ways. The card gives the cover image room and makes the project feel like a thing you can pick up. The table row strips it down to values in columns, so the eye runs down the budget column and finds the largest number in a second. The list item sits in between: a small thumbnail, a title and one line of meta, dense enough to fit 20 items on a laptop screen.
+
+So the container follows the task. The content matters less than most teams expect.
+
+<div class="blog-fit-table">
+
+| Task | Best container | Why |
+|---|---|---|
+| Browse and pick one | Card | The image and the title carry the decision |
+| Compare by values | Table row | Values align in one column |
+| Scan and act fast | List item | Highest density, one line per object |
+| Watch one number | Stat card | One metric in large type |
+
+</div>
+
+The table side of this decision, including sorting and sticky headers, is covered in the [data table UI guide](/blog/data-table-ui-design). Here the card gets the floor.
+
+A card has three properties a row lacks. It holds media at a real size, usually 160px tall or more. It has a visible boundary (a border, a shadow or a fill) that turns it into an object. And it can stand alone, on a dashboard or in a sidebar, without a header row to explain it. Take the boundary away and you get a list item with a big picture.
+
+## Card anatomy in eight zones
+
+<div className="blog-float-clip">
+
+A card has eight possible zones, read top to bottom. Most cards use four or five of them.
+
+![Labelled zones of a card stacked top to bottom](/blog/assets/card-ui-design/card-anatomy-stack.webp "float-right")
+
+The order matters more than the count. People scan a card the way they scan a page: picture first, then the title, then the facts that confirm the choice.
+
+❶ **Media.** A photo, illustration, chart or map. It sits at the top edge or the left edge, and never between lines of text. Its height comes from an aspect ratio, so the card does not jump when the image loads.
+
+❷ **Meta.** Category, date, author or tags in small type, 12–14px. Tags here are usually chips, and their sizing rules live in the [chip UI guide](/blog/chip-ui-design).
+
+❸ **Title.** The only required text. 16–20px, semibold, two lines at most in a grid. It is also the link target, which matters for accessibility later.
+
+❹ **Body.** One or two lines of description at 14–16px. The first zone to cut when space runs out.
+
+❺ **Status.** A badge or a pill that marks state, such as new or sold out. Place it in the top corner of the media or next to the title, and keep it to one per card. Placement and color for these markers are in the [badge UI guide](/blog/badge-ui-design).
+
+❻ **Key value.** The number the card exists for, a price or a due date. It gets the strongest weight after the title.
+
+❼ **Actions.** Buttons or icon buttons, one primary at most. The count gets its own section below.
+
+❽ **Footer.** Secondary info pinned to the bottom edge, like avatars or a timestamp. In a grid the footer keeps rows aligned, because it always sits at the same height.
+
+</div>
+
+### Which zones every card needs
+
+A title and one action. Every other zone is optional and has to earn its place.
+
+A card with only a title and a link is still a card, as long as it has a boundary. A card with all eight zones is a page in a box, and it usually means the detail view is missing. When I build card variants for a UI kit, I start from the full eight-zone version and cut it into three presets: a media card (media, title, action), a content card (meta, title, body, footer) and a data card (title, key value, status).
+
+Two rules keep the zone order stable across a product.
+
+→ The title always comes before the body. A description above the title makes people read text that has no context yet.
+
+→ Actions sit at the bottom or in the top-right corner, in the same place on every card of a set. People learn the position once and stop looking for it.
+
+## When cards hurt the interface
+
+<div className="blog-float-clip">
+
+Cards hurt when people compare. The moment a user wants the cheapest item or the latest date across a set, every card sends the eye to a new spot. The price sits under a photo of a different height on each card, so the eye has to hunt for it again every time.
+
+![A cluttered card grid next to the same data in a table](/blog/assets/card-ui-design/card-soup-vs-table.webp "float-right")
+
+Design reviews have a name for this: card soup. A screen of identical boxes, each with an image that says nothing (often a placeholder), a title and three numbers. To compare those numbers the reader holds them in memory, card by card. A table puts them in one column, and the comparison takes one glance.
+
+Four signs you are serving card soup:
+
+→ More than 12 cards on one screen, and people sort or filter them.
+
+→ The images are generic, or identical for every object.
+
+→ Each card shows three or more numeric fields.
+
+→ Users ask for an export to a spreadsheet.
+
+</div>
+
+Any two of these, and a table or a list will serve better. Keep cards for the browsing view, add a table view for comparing, and let people switch between them. Notion and GitHub Projects both ship this toggle between board and table views, and it costs one icon button in the toolbar.
+
+## Card layouts that scale
+
+A card grid scales when the card sets its own minimum width and the container decides how many columns fit. Hard-coded column counts per breakpoint break the first time the same grid lands in a narrower container.
+
+![One card grid at two, three and four columns with breakpoints marked](/blog/assets/card-ui-design/card-grid-breakpoints.webp)
+
+This section covers grids of equal cards, where every cell has the same footprint. Grids with cells of different sizes are a composition problem with their own row-span math, and that lives in the [bento grid layout guide](/blog/bento-grid-layout-design-guide). Here the question is narrower: how wide a card can get, how many fit and what happens at the edges.
+
+If you want to see the rules below in a working file first, the free [Responsive imagery cards](/freebies/responsive-imagery-cards) Figma template is built on constraints and global styles. Resize the frame and watch which parts of the card stretch and which stay fixed. It answers more questions about card behavior in two minutes than a spec page does.
+
+### The column math behind a card grid
+
+<div className="blog-float-clip">
+
+Every card with media has a width below which it breaks and a width above which it looks empty. For a card with an image, a two-line title, a line of meta and a button, those numbers are about 280px and 400px.
+
+![Minimum and maximum card width on a measuring scale](/blog/assets/card-ui-design/card-column-measure.webp "float-right")
+
+The minimum comes from the title. At 18px semibold with 16px padding on each side, a 280px card fits about 26 characters per line, so a typical 45-character product name takes two lines. At 240px the same name takes three, the clamp cuts it, and the button label starts to wrap.
+
+The maximum comes from the image. Past 400px a 4:3 image grows taller than 300px, one card fills most of a laptop screen, and the grid stops feeling like a grid.
+
+Text-only cards have no image to protect, so their minimum drops to about 240px. CSS grid does the counting if you give it the minimum and let the remaining space spread evenly.
+
+</div>
+
+```css
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card__footer {
+  margin-top: auto;
+}
+```
+
+Three details in this snippet do most of the work.
+
+❶ **`min(280px, 100%)`** stops the grid from overflowing in a container narrower than 280px, such as a 320px phone with padding.
+
+❷ **`auto-fill` instead of `auto-fit`.** With only two cards in a 1200px container, `auto-fit` stretches each one to almost 600px. `auto-fill` keeps the empty tracks, and the two cards stay at grid width.
+
+❸ **The flex column with `margin-top: auto`** on the footer. Grid already stretches every card in a row to the tallest one, and the footer pins buttons to the bottom edge, so they line up across the row.
+
+Here is what the formula produces at common widths, with 16px page padding on phones and 32px elsewhere.
+
+<div class="blog-fit-table">
+
+| Viewport | Container | Columns | Card width |
+|---|---|---|---|
+| 390px | 358px | 1 | 358px |
+| 768px | 704px | 2 | 340px |
+| 1024px | 960px | 3 | 304px |
+| 1440px | 1200px | 4 | 282px |
+
+</div>
+
+One weak spot remains. Just under 584px of container, a single card spans the full width, so a 580px column shows one card with a 435px-tall image. If your grid lives in that range (large phones in landscape, narrow side panels), switch the media to 16:9 below 600px or move to a list layout there.
+
+### Three card sizes and when to use each
+
+Three sizes cover almost every product. Compact, standard and feature differ in padding and media, and the content inside stays the same.
+
+![Compact, standard and feature card sizes with the same content](/blog/assets/card-ui-design/card-sizes-compared.webp)
+
+<div class="blog-fit-table">
+
+| Size | Width | Padding | Media | Use for |
+|---|---|---|---|---|
+| Compact | 200–280px | 12px | 1:1 or none | Dense catalogs, sidebars, search results |
+| Standard | 280–400px | 16–20px | 4:3 | Default grids |
+| Feature | 2 columns | 24px | 16:9 | One highlighted item per row |
+
+</div>
+
+Compact grids use the same formula as above with 200px as the minimum. A feature card is a standard card that spans two columns. It needs a guard, because `grid-column: span 2` in a one-column grid creates an extra implicit column and pushes the page into horizontal scroll. Two columns need 584px of container, which with page padding means a viewport of about 650px, so the guard sits at 720px with some margin.
+
+```css
+@media (min-width: 720px) {
+  .card--feature {
+    grid-column: span 2;
+  }
+}
+```
+
+Keep one feature card per row at most. Two of them side by side are just a two-column grid, and the emphasis disappears. The same logic drives the highlighted plan in a pricing table: one card gets the larger padding and the stronger border, the rest stay quiet. The [pricing UI guide](/blog/pricing-ui-design) shows how far that emphasis can go before it reads as a trick.
+
+### Horizontal cards with media
+
+<div className="blog-float-clip">
+
+A horizontal card puts the media on the left and the text on the right. It is the best format for lists of articles, search results and order history, and it is the card that breaks most often.
+
+![A horizontal media card next to its broken narrow version](/blog/assets/card-ui-design/card-horizontal-breaks.webp "float-right")
+
+The failure looks like this. A 200px image column and a text column share a card with 16px padding. In the main content area at 760px the text gets about 510px and reads well. Put the same card into a 320px sidebar and the text gets about 70px, so the title wraps one word per line.
+
+A media query cannot fix it, because the viewport is the same in both places. The card has to respond to its own container. [CSS container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) do exactly that and have worked in every major browser since 2023.
+
+The switch point is around 480px of card width. Below that the card goes vertical, with the media on top at 16:9. The number comes from subtraction: at 480px, the padding, the 200px image and a 16px gap leave 232px for text, close to the 248px text column inside a 280px vertical card. Any narrower and the horizontal version reads worse than the vertical one.
+
+</div>
+
+```css
+.card-slot {
+  container-type: inline-size;
+}
+
+.card--horizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@container (min-width: 480px) {
+  .card--horizontal {
+    grid-template-columns: 200px 1fr;
+  }
+}
+```
+
+The container type sits on a wrapper. An element cannot query its own size, so `container-type` on the card itself does nothing for the card's layout.
+
+### Cards in a horizontal scroller
+
+A horizontal scroller (also called a shelf or a rail) fits secondary sets of 4–12 cards that people browse and rarely search. The main catalog belongs in a grid, since cards beyond the first screen of a scroller get seen far less.
+
+The scroller has to show that it scrolls. Let the next card peek out by 15–20% of its width, and snap each card to the left edge so the motion ends cleanly.
+
+```css
+.card-scroller {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 82%;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-inline: 16px;
+  scroll-padding-inline: 16px;
+}
+
+.card-scroller > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .card-scroller {
+    grid-auto-columns: 280px;
+  }
+}
+```
+
+On a phone, 82% leaves the next card visible at the right edge. From 768px up the cards switch to the same 280px as the grid, so the two layouts share one card component. Arrow buttons, autoplay and indicators turn a scroller into a carousel, and that pattern has its own rules in the [carousel UI guide](/blog/carousel-ui-design).
+
+## Card types you will actually ship
+
+The card type decides which zone gets the visual weight. The eight zones stay the same, and what changes is the one the eye lands on first.
+
+A stat card leads with the number, while a product card leads with the image and the price. Get that order wrong and the card still looks tidy, yet people read it in the wrong sequence and miss the one fact they came for.
+
+### Stat and KPI cards
+
+<div className="blog-float-clip">
+
+A stat card shows one metric and enough context to judge it. One card, one number. Two numbers on one card make people guess which one matters.
+
+![A stat card with a large number, delta and sparkline](/blog/assets/card-ui-design/card-stat-widget.webp "float-right")
+
+The context is the delta against a previous period and the period itself. Without the period, "+12%" is noise: twelve percent over a day and over a year are different stories.
+
+The type scale is steep on purpose. The value sits at 32–40px, the label at 14px, the delta at 14px semibold with an arrow. The arrow carries the direction, so the trend survives for people who cannot tell red from green. A sparkline at 32–40px tall shows the shape of the trend, and it needs no axes at that size.
+
+Where these cards sit on the page, and how many belong in the top row, is a dashboard question. The [dashboard UI guide](/blog/dashboard-ui-design) covers it.
+
+</div>
+
+```html
+<article class="stat-card">
+  <h3 class="stat-card__label">Monthly revenue</h3>
+  <p class="stat-card__value">$48.2k</p>
+  <p class="stat-card__delta is-up">
+    <span aria-hidden="true">▲</span> 12% vs last month
+  </p>
+</article>
+```
+
+```css
+.stat-card__label { font-size: 14px; color: #6b6a70; margin: 0; }
+.stat-card__value { font-size: 36px; font-weight: 700; line-height: 1.1; margin: 4px 0; font-variant-numeric: tabular-nums; }
+.stat-card__delta { font-size: 14px; font-weight: 600; margin: 0; }
+.stat-card__delta.is-up { color: #1a7f4b; }
+.stat-card__delta.is-down { color: #c2362b; }
+```
+
+`tabular-nums` keeps digits the same width, so a row of stat cards does not jitter when values update live. The delta text spells out "vs last month", so screen readers get the period without a tooltip.
+
+Building a full set of these from scratch takes longer than it looks: positive, negative and neutral deltas, empty values, loading states, light and dark themes. [Material Desktop](/templates/material-desktop) ships 48 dashboard templates with stat cards already wired into those variants, which is a faster start than an empty Figma file.
+
+### Product cards
+
+<div className="blog-float-clip">
+
+A product card sells one item and leads to one page. Four parts are required: the image, the name, the price and one action. Everything else is optional.
+
+![A product card with image, rating, price and one button](/blog/assets/card-ui-design/card-product-anatomy.webp "float-right")
+
+The image carries the decision, so it gets a fixed aspect ratio and the full card width. Square or 4:5 works for physical goods, because most product photos are shot that way. A mixed set of ratios makes the grid look broken even when the code is fine.
+
+The price is the strongest text after the name. When there is a discount, show the new price first and the old one struck through next to it, smaller and grey.
+
+A rating and a short attribute line (size range, color count) help in catalogs where people compare similar items. Keep it to one line.
+
+Variant pickers, size charts and long descriptions belong on the product page. A card that tries to close the sale on its own grows to twice the height and halves the number of products on screen.
+
+</div>
+
+Two decisions trip up most product grids, so they get a separate note.
+
+☛ **Hover is a bonus.** A second photo on hover is a nice detail on desktop, and it never shows on a phone, where most catalog traffic comes from. Anything people need to choose (price, stock, the action) has to be visible without hover.
+
+→ Secondary actions such as wishlist or compare go into a 40px icon button in the top-right corner of the image, with an `aria-label`.
+
+→ Out-of-stock items stay in the grid with a status badge and a muted image. Removing them breaks the layout people remember.
+
+### Task and event cards
+
+Task and event cards are read in columns and lists, so their weight sits in the metadata. The title tells what, and the date, the owner and the status tell whether it needs attention today.
+
+A task card on a board needs four zones: the title, a status or priority badge, the due date and the assignee avatar. A drag handle appears on hover or focus. Keep the card at 240–280px wide so a board fits four or five columns on a laptop.
+
+Event cards swap the avatar for a date block. A 48px square with the day number in large type and the month in small caps on top reads faster than a full date string, because the eye finds the number first.
+
+Density matters more here than anywhere else. A board with 30 tasks per column needs compact cards with 12px padding and no media. Cover images on task cards look good in a demo and push the board into endless scrolling once real projects fill it.
+
+## How many actions a card can hold
+
+<div className="blog-float-clip">
+
+One primary action, up to two secondary, and everything else in a menu. A card with five buttons is a toolbar with a picture.
+
+![One, three and five actions on a card compared](/blog/assets/card-ui-design/card-action-density.webp "float-right")
+
+The limit comes from width. A 280px card with 16px padding has 248px for buttons. A medium button with a two-word label takes about 110px, so two fit in one row and a third wraps into a second line. The card gets taller, and the row of cards stops lining up.
+
+The hierarchy matters as much as the count. The primary action is a filled button, the secondary ones are outlined or text buttons, and a menu sits behind a 40px icon button with three dots and an `aria-label` such as "More actions". The [button UI guide](/blog/button-ui-design) explains how those three levels differ in weight.
+
+When the whole card is a link (the next section), the primary action is often the card itself. Then the visible buttons are secondary, and one or two is plenty.
+
+</div>
+
+<div class="blog-fit-table">
+
+| Actions | Layout | Example |
+|---|---|---|
+| 1 | Full-width button or whole-card link | Product card, article card |
+| 2–3 | Primary button plus text or icon buttons | File card with share and download |
+| 4+ | One visible action, the rest in a menu | Project card with rename, move, archive, delete |
+
+</div>
+
+Destructive actions such as delete never sit next to the primary button. Put them in the menu, last, with a confirmation step. A misclick on a card grid is common, because cards sit close together and people scroll on touch screens.
+
+## Making the whole card clickable
+
+<div className="blog-float-clip">
+
+Make the title a real link and stretch its click area over the whole card with a pseudo-element. Wrapping the entire card in an `<a>` tag looks simpler and causes three problems.
+
+![Focus ring on a whole-card link with an inner button and numbered focus order](/blog/assets/card-ui-design/card-whole-link-focus.webp "float-right")
+
+A screen reader reads the full content of a wrapped card as one link name, so users hear a paragraph instead of a title. Buttons inside a link are invalid HTML, and browsers handle the nested click inconsistently. And people cannot select the text inside the card to copy it.
+
+The stretched link avoids all three. The link stays on the title, so its name is short. The `::after` pseudo-element covers the card, so a click anywhere opens the page. Inner buttons get `position: relative` and a higher `z-index`, so they sit above the link layer and keep their own clicks.
+
+</div>
+
+```html
+<article class="card">
+  <img class="card__media" src="/img/project.webp" alt="" />
+  <h3 class="card__title">
+    <a class="card__link" href="/projects/atlas">Atlas redesign</a>
+  </h3>
+  <p class="card__body">Design system migration, 42 screens.</p>
+  <div class="card__footer">
+    <button class="card__action" type="button" aria-label="Add Atlas redesign to favorites">♡</button>
+  </div>
+</article>
+```
+
+```css
+.card {
+  position: relative;
+}
+
+.card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.card__action {
+  position: relative;
+  z-index: 1;
+}
+
+.card:has(.card__link:focus-visible) {
+  outline: 2px solid #7c4dff;
+  outline-offset: 2px;
+}
+
+.card__link:focus-visible {
+  outline: none;
+}
+```
+
+The image has an empty `alt` because the title already names the project, and a second description would be read twice. The focus ring moves to the card through `:has()`, so keyboard users see the full clickable area instead of a thin outline around the title text. If you support Safari older than 15.4, which lacks `:has()`, drop the `outline: none` rule so the title keeps its own ring there.
+
+The focus order follows the DOM: the title link first, then the inner button. Two tab stops per card is the ceiling. In a grid of 24 cards with three focusable elements each, a keyboard user presses Tab 72 times to get past the grid, and a skip link above the grid saves them the trip.
+
+## Eight card states and the CSS behind them
+
+A card changes state more often than any other container on a screen. Each state needs its own visual signal, and none of them may move the cards around it.
+
+![Card in default, hover, focus, selected, dragging, loading, error and disabled states](/blog/assets/card-ui-design/card-states.webp)
+
+❶ **Default.** White surface, a 1px border, no shadow or a faint one. Every other state is measured against this one.
+
+❷ **Hover.** The card lifts by 2–4px and the shadow grows. Use `transform` for the lift, because a changed `margin` pushes the neighbouring cards down.
+
+❸ **Focus.** A 2px ring with an offset, drawn with `outline` so the box keeps its size. Keyboard users depend on it, so the ring gets stronger contrast than hover.
+
+❹ **Selected.** A violet border plus a check icon. Color alone fails people with color blindness, so the icon carries the meaning. When only one card in a set can be selected, the set behaves like a radio group, and the [radio button guide](/blog/radio-button-ui-design) covers the keyboard rules for that case.
+
+❺ **Dragging.** A heavier shadow, a slight tilt and an empty slot left in the grid. The slot shows where the card returns if the user drops it outside a target.
+
+❻ **Loading.** A skeleton in the card's own shape, covered in the next section.
+
+❼ **Error.** A red border and a short message inside the card, with a retry button. The message names what failed: `Price didn't load` tells the user more than `Something went wrong`.
+
+❽ **Disabled.** Opacity around 40% and `aria-disabled="true"` on the link. Add one line of text that says why, or hide the card if the reason never matters to the user.
+
+```css
+.card {
+  border: 1px solid #e4dcff;
+  border-radius: 24px;
+  background: #fff;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -10px rgb(25 24 27 / 0.18);
+  }
+}
+
+.card:has(.card__link:focus-visible) {
+  outline: 2px solid #7c4dff;
+  outline-offset: 2px;
+}
+
+.card:has(.card__select:checked) {
+  border-color: #7c4dff;
+  box-shadow: inset 0 0 0 1px #7c4dff;
+}
+
+.card.is-dragging {
+  transform: rotate(2deg);
+  box-shadow: 0 24px 48px -16px rgb(25 24 27 / 0.3);
+}
+
+.card.is-error {
+  border-color: #c2362b;
+}
+
+.card.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: box-shadow 260ms;
+  }
+
+  .card:hover,
+  .card.is-dragging {
+    transform: none;
+  }
+}
+```
+
+The selected state reads a real checkbox inside the card through `:has()`, so the visual state and the form value can never disagree. The inset shadow makes the border look 2px thick while the card keeps its size. Hover lives inside a media query, so a tap on a phone does not leave the card stuck in the lifted position. Under reduced motion the shadow stays and the movement goes.
+
+## Loading and empty cards
+
+<div className="blog-float-clip">
+
+A skeleton is a placeholder card made of grey blocks, and it should match the loaded card zone for zone. The media block keeps its height, a bar stands in for the title at the title's line height, a shorter bar marks the meta line, and a block sits where the button will be. When the data arrives, nothing on the page jumps. A spinner in the middle of an empty box gives no hint of the layout, and the content shifts when it loads, which Google counts against the page as Cumulative Layout Shift.
+
+![A skeleton card above an empty card](/blog/assets/card-ui-design/card-loading-empty.webp "float-right")
+
+Render as many skeletons as fit the first screen, usually one row on a phone and two rows on desktop. Twenty skeletons below the fold only add nodes to the page. Keep the shimmer slow, about 1.5 seconds per pass, and switch it off under `prefers-reduced-motion`.
+
+An empty card holds the place of content that does not exist yet: a new project with no tasks, a dashboard widget with no data for the period. It gets a line icon, one sentence that says what will appear here, and one button that makes it appear.
+
+</div>
+
+```css
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eeeaf8 25%, #f7f5ff 50%, #eeeaf8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.skeleton--media {
+  aspect-ratio: 4 / 3;
+}
+
+.skeleton--title {
+  width: 70%;
+  height: 1lh;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+```
+
+The `1lh` unit equals one line of text in the current font, so the title bar matches the real title height without a magic number. Safari supports it since 16.4 and Chrome since 109.
+
+The [empty state guide](/blog/empty-state-ui-design) covers copy patterns for whole empty screens. Inside a card the budget is smaller: one sentence of up to 60 characters and one button. A KPI card with zero results for the period shows `0` and the period, because zero is a real value, and an illustration in its place would hide it.
+
+## Content rules inside a card
+
+Card content has two hard limits. The card width is fixed by the grid, and the row height is set by the tallest neighbour. Text and media that ignore these limits break the alignment people use to scan a row, and two rules prevent most of that damage.
+
+### Titles and truncation
+
+<div className="blog-float-clip">
+
+Keep titles to two lines in a grid. At a card width of 282px and 18px type, two lines hold about 50 characters, which is enough for a product name or a project title. Anything longer gets cut with an ellipsis through `line-clamp`.
+
+![A card title at one, two and three lines with a clamp ruler](/blog/assets/card-ui-design/card-title-truncation.webp "float-right")
+
+Truncation hides information, so the full text must stay one step away. Put it on the detail page the card links to, and add it to the `title` attribute when the hidden part matters to mouse users. Screen readers read the whole title anyway, because `line-clamp` changes only what is drawn on screen.
+
+Reserve the height of two lines even for short titles. A one-line title then keeps the body text on the same baseline as its neighbours, and the row reads as one line of content.
+
+</div>
+
+```css
+.card__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 2lh;
+}
+```
+
+Browsers still ship the prefixed version, and the unprefixed `line-clamp` is there for the day they switch. Body text gets the same treatment at three lines.
+
+### Media aspect ratios
+
+![The same card with square, four by three and widescreen media](/blog/assets/card-ui-design/card-media-ratios.webp)
+
+Pick one aspect ratio per grid. Mixed ratios make the titles start at different heights, and the row loses its baseline.
+
+→ 1:1 for products and app icons, where the object sits in the middle of the frame.
+
+→ 4:3 for photos of places and people, close to the native frame of phone cameras.
+
+→ 16:9 for video thumbnails and article covers, which are produced in that ratio already.
+
+```css
+.card__media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.card__media--product {
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #f7f5ff;
+}
+```
+
+`aspect-ratio` reserves the box before the image loads, so the card keeps its height on a slow connection. `object-fit: cover` crops uploads in odd ratios instead of stretching them. Product shots on a white background use `contain` with a light fill, because cropping would cut the edges off the product.
+
+## Card accessibility
+
+<div className="blog-float-clip">
+
+Start with semantics. A standalone card is an `<article>` with a heading inside. A set of cards is a list: a `<ul>` with each card in an `<li>`, so a screen reader announces "list, 12 items" and people know the size of the set before they start. Give each card one heading, at the level that fits the page outline, usually an `h3` under the section's `h2`.
+
+![Numbered focus order and touch target sizes on a card](/blog/assets/card-ui-design/card-focus-order.webp "float-right")
+
+For targets, [WCAG 2.2 success criterion 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) sets 24×24 CSS pixels as the minimum for anything clickable, or enough empty space around a smaller target. Treat that as the floor. Icon buttons on cards, such as favorite or a more menu, should reach 44×44 on touch screens. The icon itself can stay at 20px while padding makes up the rest of the area.
+
+Border contrast matters when the border is the only cue that shows where a clickable card ends. In that case SC 1.4.11 asks for 3:1 against the page. The pale #e4dcff border in this guide has about 1.3:1 on white, so the title link and the focus ring carry the interactive cue instead.
+
+</div>
+
+Test one row with a keyboard and one card with VoiceOver before release. Tab through the row and check that every card shows its focus ring. Then listen to one card: if VoiceOver reads the title, the price and the button label once each, the markup is right. If the image alt repeats the title, empty the alt.
+
+## Cards on mobile
+
+<div className="blog-float-clip">
+
+Under 480px a card grid becomes one column. The `minmax(min(280px, 100%), 1fr)` rule from the grid section does this on its own: on a 390px phone with 16px side padding the track is 358px wide, too narrow for two 280px cards.
+
+![A card grid collapsing to one column on a phone](/blog/assets/card-ui-design/card-mobile-one-column.webp "float-right")
+
+Tall vertical cards in one column mean a lot of scrolling. For lists that people scan, such as search results, orders or messages, switch to the horizontal card with an 88px thumbnail on the left and text on the right. One item then takes about 112px of height instead of 360px, and a phone screen shows five or six items instead of two.
+
+Actions move to where thumbs reach, with 44×44 targets and 8px between them. Swipe actions on cards, such as archive or delete, need a visible menu button as well, because few people discover swipes on their own.
+
+Touch screens have no hover. Anything you reveal on hover, such as a quick-add button, has to be visible by default on mobile.
+
+</div>
+
+On phones the side padding of the card drops to 16px regardless of the density level. At 24px on a 358px card the padding alone takes 48px, about 13% of the width, and a two-line title turns into three.
+
+## Density and spacing
+
+![The same card grid at two density levels](/blog/assets/card-ui-design/card-density-two.webp)
+
+Density is the ratio of content to empty space inside a card and between cards. Two levels cover almost every product, and a third one rarely earns its maintenance cost.
+
+<div class="blog-fit-table">
+
+| Level | Card padding | Grid gap | Use for |
+|---|---|---|---|
+| Comfortable | 24px | 24px | Catalogs, galleries, marketing pages, anything people browse |
+| Compact | 16px | 12px | Dashboards, admin tools, kanban boards, screens people work in all day |
+
+</div>
+
+Keep the gap equal to or smaller than the padding. When the gap grows past the padding, the eye groups content with the empty space around it, and the cards fall apart into loose islands. Equal values give a calm grid. A gap at about three quarters of the padding, as in the compact row, holds the set together more tightly.
+
+Inside the card, spacing follows the content groups. Use 4 to 8px between a title and its meta line, and 12 to 16px between groups such as media and text, or text and footer. Take every value from one scale, 4, 8, 12, 16 and 24, so cards built by different people still match.
+
+Pick density once per screen. A compact card dropped into a comfortable grid looks like a rendering bug. Products with heavy daily use can let people choose: Gmail has offered a density setting for years, and the switch is cheap when padding and gap live in two variables.
+
+```css
+.card-grid {
+  --card-pad: 24px;
+  --card-gap: 24px;
+  gap: var(--card-gap);
+}
+
+.card-grid[data-density="compact"] {
+  --card-pad: 16px;
+  --card-gap: 12px;
+}
+
+.card {
+  padding: var(--card-pad);
+}
+```
+
+The variables sit on the grid, so every card inside inherits them. A dashboard can show a compact grid of KPI cards above a comfortable grid of report cards on the same page without a single extra class on the cards.
+
+## Card design tokens
+
+<div className="blog-float-clip">
+
+A design token is a named value that components read instead of a hard-coded number. A card needs four groups of them: radius, padding, shadow and border. Put them in custom properties at the root, and every card variant in the product reads the same values. Changing the corner radius of all cards then takes one line.
+
+![Card token panel with radius, padding, shadow and border](/blog/assets/card-ui-design/card-tokens-panel.webp "float-right")
+
+The nested radius rule keeps rounded elements inside a card in line with its corner. When an inner element sits close to the edge, the outer radius equals the inner radius plus the space between them. An image with a 16px radius inside a card with 8px padding needs a 24px radius on the card. With equal radii the gap between the two curves gets thicker at the corner than along the sides, and the corner looks pinched.
+
+When media runs flush to the card edge, round the card, clip it with `overflow: hidden` and give the image no radius at all.
+
+</div>
+
+```css
+:root {
+  --card-radius: 24px;
+  --card-pad: 24px;
+  --card-border: 1px solid #e4dcff;
+  --card-shadow: 0 1px 2px rgb(25 24 27 / 0.06);
+  --card-shadow-raised: 0 14px 28px -10px rgb(25 24 27 / 0.18);
+}
+
+.card {
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: var(--card-shadow);
+}
+
+.card--inset-media {
+  --card-pad: 8px;
+}
+
+.card--inset-media .card__media {
+  border-radius: calc(var(--card-radius) - var(--card-pad));
+}
+```
+
+Two shadow levels are enough: resting for every card, and raised for hover, dragging and anything that floats above the grid. A third level tends to appear for one special card and then spreads to every new screen.
+
+In Figma the same names become variables bound to the card component. When a designer and a developer both say `card-radius`, a review comment points to one value in two places, and nobody hunts for a 22px corner that slipped in by hand. Dark mode needs only new values for the border and shadow tokens, because shadows barely show on a dark page and the border carries the edge instead.
+
+Before you fix your own values, look at how other interfaces spend radius and shadow. The [Setproduct AI inspiration gallery](https://app.setproduct.com) collects AI-generated interfaces with plenty of card layouts, and ten minutes there shows which combinations read as calm and which read as heavy.
+
+### Building a card component in Figma
+
+The Figma component follows the same rules as the CSS, and it is worth building it in that order: layout first, then properties, then variants.
+
+Make the card an auto layout frame in vertical direction, with the width set to fill the container. Give it a min width of 280 and a max width of 400, so the card behaves like the `minmax()` track when a designer drops it into a grid frame. Padding and gap come from the variables described above, and the corner radius binds to `card-radius`.
+
+Each optional zone becomes a boolean property: show media, show meta, show footer. A designer then switches zones off in the properties panel instead of detaching the instance to delete a layer. Detached cards stop receiving updates, and after a few months the file holds a dozen slightly different cards.
+
+The media slot is a frame with a fixed aspect ratio and the image as a fill set to crop. Text layers use auto height, and the title has a two-line limit with truncation turned on, so long names behave the way `line-clamp` behaves in the browser. Add a spacer frame set to fill between the body and the footer, and the footer stays at the bottom when cards in one row have different content.
+
+States go into a variant property with the same eight values as the CSS section. Keep the names identical in both places: when a developer reads `State=Selected` in Dev Mode, they search the code for `selected` and find it.
+
+The free [Responsive imagery cards](/freebies/responsive-imagery-cards) file shows the layout part in practice, so you can resize a frame and watch the cards reflow before you build your own.
+
+## Card surface styles beyond flat
+
+![The same card in flat, glass, neumorphic and clay styles](/blog/assets/card-ui-design/card-surface-styles.webp)
+
+A flat white card with a thin border is the default for product UI because it survives any content. Three other styles keep showing up in briefs. Each one changes the surface, and each one has a contrast cost you need to pay back somewhere else.
+
+**Glass.** A translucent card with `backdrop-filter: blur()` over a colorful background. The text contrast depends on whatever sits behind the card, so it changes as the user scrolls. Put a tint of at least 60% opacity under any text and test the card over the busiest part of the background. The [liquid glass guide](/blog/liquid-glass-design-explained-a-practical-guide) covers Apple's version and the fallbacks for browsers that skip the blur.
+
+**Neumorphic.** The card is extruded from a background of the same color by a pair of light and dark shadows. The edge often lands near 1.1:1 against the page, so it disappears for people with low vision, and a pressed state looks almost the same as a resting one. Keep it for decorative tiles, and add a visible border when the card is clickable. The [neumorphism guide](/blog/neumorphism-design-guide) shows where the style still works.
+
+**Clay.** Large soft shapes with a big radius, pastel fills and inner shadows. Clay suits onboarding screens and marketing sections with three or four cards. In a dense grid of 40 items the volume of every card competes with its content, and the grid reads as a pile of toys. The [claymorphism guide](/blog/claymorphism-design-guide) has the shadow recipes.
+
+The surface is the only thing these styles change. Anatomy, states and target sizes stay exactly as described in the earlier sections.
+
+## Eight card anti-patterns
+
+![Eight card design mistakes in a grid](/blog/assets/card-ui-design/card-anti-patterns.webp)
+
+The image shows the mistakes in reading order, top row first. Each one passes a design review on a mockup and fails on real data.
+
+❶ **Five buttons on one card.** Each extra button takes attention from the main action. In a grid of 12 cards, five buttons each put 60 targets on one screen. Keep one primary action, move the rest into a more menu, and let the card link handle opening.
+
+❷ **A clipped title with no way out.** The title is cut mid-word with no ellipsis, or the full version exists nowhere. Clamp at two lines with an ellipsis, and keep the full title on the detail page. The link text still holds the whole title, so screen readers get it.
+
+❸ **Mixed image ratios.** Square product shots next to wide banners push titles to different heights, and the row loses its baseline. Set one `aspect-ratio` per grid and let `object-fit` crop the uploads, even when the source files come from five different suppliers.
+
+❹ **A card inside a card.** Two borders and two radii nested within each other blur the hierarchy and spend the padding twice. Inside a card, group content with spacing or a thin divider. A nested surface makes sense only for inset media, with the radius rule applied.
+
+❺ **Low-contrast text.** Grey meta text in #adadad on white reaches about 2.3:1, well below the 4.5:1 WCAG asks for normal text. Darken secondary text until it passes, and make it secondary with size and weight instead of a pale color.
+
+❻ **Tiny targets.** A 16px heart icon with no padding gets missed on a phone. The tap lands on the card link instead and opens a page the user never asked for. Pad icon buttons to 44×44 on touch and keep 8px between neighbouring targets.
+
+❼ **No visible focus.** `outline: none` on the card link with nothing in its place leaves keyboard users guessing where they are in a grid of 24 cards. Move the ring to the card with `:has(:focus-visible)`, as shown in the clickable card section, and test with the Tab key.
+
+❽ **Uneven heights.** Cards that end at different heights make the buttons zigzag across the row. Make the card a flex column at full height, push the footer down with `margin-top: auto`, and reserve two lines for the title so short titles keep the baseline.
+
+## Ship checklist for cards
+
+<div className="blog-float-clip">
+
+Run these six checks on one real screen with real data before a card goes into the design system. Placeholder text hides most of the problems listed above.
+
+![A card checklist with six ticked items](/blog/assets/card-ui-design/card-ship-checklist.webp "float-right")
+
+❶ **Longest content.** Load the longest title and the longest price from your data. The title clamps at two lines, and the card keeps the row height.
+
+❷ **Missing content.** Remove the image and the description. The card keeps its height, and a fallback fills the media slot.
+
+❸ **Narrowest width.** Shrink the container to 280px, then to a 358px phone column. Buttons stay on one line in both.
+
+❹ **Keyboard.** Tab through one row. Every card shows a focus ring and takes two tab stops at most.
+
+❺ **Screen reader.** VoiceOver reads the title once, the key facts once and each button label once.
+
+❻ **States.** Hover, selected, loading, error and disabled exist both in Figma and in code, and none of them moves the neighbouring cards.
+
+</div>
+
+The six checks take about fifteen minutes per card type. Write the results into the component documentation as content limits (maximum title length, the fallback image, the minimum width), so the next person who adds a field knows where the card breaks.
+
+## Frequently asked questions
+
+### ❶ What is a KPI card in a dashboard?
+
+A KPI card shows one metric with enough context to judge it: the current value, the change against a previous period and the period itself. A sparkline is optional. Keep the number as the largest text on the card, around 32 to 40px, and pair the delta with an arrow as well as a color, so the trend survives for colorblind users.
+
+### ❷ What is the minimum width of a card in a grid?
+
+For a card with an image, a title and a short description, 280px is a safe minimum. Below that a two-line title wraps into four lines and buttons start to stack. Text-only cards can go down to 240px. Set it once with `grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))` and let the column count follow the container.
+
+### ❸ Should the whole card be clickable?
+
+Yes, when the card leads to one destination. Put a real link on the title and stretch its hit area over the card with a pseudo-element, so screen readers announce one short link. Secondary buttons inside the card sit above that layer with position relative and a higher z-index. If a card has two equal destinations, keep two separate links instead.
+
+### ❹ How many cards should fit in one row?
+
+Let the width decide. With a 280px minimum and 24px gaps, a 1200px container fits four cards, a 900px container fits three and a phone gets one. Product grids work well at three or four. Five and more turns browsing into a scanning task, and at that point a table or a list usually serves the reader better.
+
+### ❺ How do I make cards the same height in a row?
+
+CSS grid stretches every item in a row to the tallest one by default, so make the card a flex column with height 100%. Then push the footer down with margin-top auto. Buttons line up across the row even when titles run one or two lines. Clamp the title to two lines so one long title cannot stretch the whole row.
+
+### ❻ What should a product card include?
+
+An image, the product name, the price and one action. A rating and a short attribute line help in catalogs where people compare. Keep the price as the strongest text after the name, and move secondary actions like a wishlist into an icon button with an aria-label. Variant pickers and long descriptions belong on the product page.
+
+### ❼ How do I build a responsive card in Figma?
+
+Build the card as an auto layout frame set to fill the container, with a min width of 280 and a max width of 400. Give the image a fixed aspect ratio and truncate the title after two lines. A spacer set to fill pins the footer to the bottom. The free Responsive imagery cards file on Setproduct is built with constraints, so you can inspect a working setup first.

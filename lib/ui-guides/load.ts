@@ -20,7 +20,7 @@ function readCard(slug: string, label: string): UiGuideCard {
   if (!fs.existsSync(filePath)) {
     // data/ui-guides.ts lists a guide that has no post. Failing the build is
     // deliberate: silently dropping the row would leave a hole in the index
-    // that nobody notices, and a hub page with 45 guides reads as complete.
+    // that nobody notices, and a hub page with 46 guides reads as complete.
     throw new Error(
       `[ui-guides] data/ui-guides.ts lists "${slug}", but content/blog/${slug}.mdx does not exist. ` +
         `Fix the slug or remove the row.`,
