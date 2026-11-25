@@ -6,7 +6,7 @@
 //
 // Usage:
 //   node scripts/check-site.mjs [TARGET_ORIGIN]
-//   TARGET_ORIGIN default: https://setproduct-com.vercel.app
+//   TARGET_ORIGIN default: https://www.setproduct.com
 //
 // Output:
 //   scripts/report.json  - full structured report
@@ -15,7 +15,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const TARGET = (process.argv[2] || process.env.TARGET || 'https://setproduct-com.vercel.app').replace(/\/+$/, '');
+const TARGET = (process.argv[2] || process.env.TARGET || 'https://www.setproduct.com').replace(/\/+$/, '');
 const TARGET_HOST = new URL(TARGET).host;
 const SITEMAP_HOSTS_TO_REWRITE = new Set(['www.setproduct.com', 'setproduct.com']);
 const SITEMAP_URL = `${TARGET}/sitemap.xml`;
