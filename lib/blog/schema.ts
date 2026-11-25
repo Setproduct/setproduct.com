@@ -80,7 +80,7 @@ export function buildBreadcrumbJsonLd(
 /**
  * CollectionPage JSON-LD for the /ui-guides hub. The ItemList carries every
  * guide in page order, which is how the page actually renders them, so a
- * crawler sees the same 42 links a reader does.
+ * crawler sees the same 45 links a reader does.
  */
 export function buildUiGuidesJsonLd(
   pageUrl: string,

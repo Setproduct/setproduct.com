@@ -249,6 +249,7 @@ export const FREEBIE_PRODUCTS: FreebieItem[] = [
     ctaLabel: "View on GitHub ★",
     menuCtaLabel: "Get the code",
     relatedPosts: [
+      "glassmorphism-design-guide",
       "liquid-glass-vs-glassmorphism",
       "liquid-glass-design-explained-a-practical-guide",
       "neumorphism-design-guide",
