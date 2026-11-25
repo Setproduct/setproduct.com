@@ -92,6 +92,32 @@ const nextConfig = {
         destination: "/blog/button-ui-design",
         permanent: true,
       },
+
+      // URLs that Search Console still reports on page one but that never
+      // existed as posts. Two read as alternate names for the three-style
+      // comparison, one is a typo of the liquid glass guide slug, so all four
+      // point at the comparison rather than the glassmorphism guide: the
+      // intent behind these queries is comparing styles, not building one.
+      {
+        source: "/blog/glassmorphism-vs-neumorphism-vs-liquid-glass",
+        destination: "/blog/liquid-glass-vs-glassmorphism",
+        permanent: true,
+      },
+      {
+        source: "/blog/glassmorphism-vs-neumorphism-vs-liquid-glass-2026",
+        destination: "/blog/liquid-glass-vs-glassmorphism",
+        permanent: true,
+      },
+      {
+        source: "/blog/liquid-glass-vs-liquid-glass-vs-glassmorphism",
+        destination: "/blog/liquid-glass-vs-glassmorphism",
+        permanent: true,
+      },
+      {
+        source: "/blog/liquid-glass-designed-explained-a-practical-guide",
+        destination: "/blog/liquid-glass-vs-glassmorphism",
+        permanent: true,
+      },
     ];
   },
   async headers() {
