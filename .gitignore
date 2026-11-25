@@ -18,3 +18,7 @@ scripts/og-variants-report.json
 
 # Internal audit reports (never published, never committed)
 reports/
+
+# Generated image staging area (scripts/gen-image.mjs).
+# Nothing here is published: approved files are copied into public/blog by hand.
+.tmp-gen/
