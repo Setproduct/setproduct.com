@@ -1,0 +1,559 @@
+---
+title: "Glassmorphism UI design in 2026, types and the CSS that holds up"
+description: "Glassmorphism explained, its types, blur values, contrast limits, a copy-paste CSS recipe and the mistakes that break readability in 2026."
+slug: glassmorphism-design-guide
+date: "2026-11-24"
+author: Roman Kamushken
+category: Design Trends
+coverImage: /blog/covers/glassmorphism-design-guide.webp
+coverImageAlt: "Glass card on a gradient background"
+thumbImage: /blog/covers/thumbs/glassmorphism-design-guide.webp
+canonical: "https://www.setproduct.com/blog/glassmorphism-design-guide"
+subtitle: "The four layers of a glass surface, with values that stay readable on a plain white page"
+metaTitle: "Glassmorphism UI design in 2026, types and the CSS that holds up"
+cardDescription: "A glass recipe that stays readable on white, with the blur values and contrast math behind it."
+relatedSlugs:
+  - liquid-glass-vs-glassmorphism
+  - claymorphism-design-guide
+  - sidebar-navigation-ui-design
+inlineCta:
+  title: "Shipping glass across a whole component library?"
+  description: "The Liquid Glass UI Playbook is written for Apple's newer material. Its state rules and stress boards carry over to classic glass without changes."
+  buttonText: "Get the playbook"
+  buttonLink: "https://setproduct.gumroad.com/l/liquid-glass"
+faq:
+  - question: What are the types of glassmorphism?
+    answer: >-
+      Five types differ by how much backdrop survives and what the surface adds.
+      Clear glass keeps shapes behind it recognisable, frosted glass melts them into
+      colour fields, tinted glass carries a hue of its own, textured glass adds a
+      visible grain, and gradient-backed glass supplies its own colour behind the panel.
+  - question: Is glass morphism the same as glassmorphism?
+    answer: >-
+      Yes. Glass morphism and glassmorphism name the same style, and the two-word
+      spelling is common in early coverage and in search queries. Designers settled on
+      the single word around 2020, when the style got its name. Both spellings describe
+      one frosted surface with a blur, a tint, a light edge and an inner highlight.
+  - question: Is glassmorphism outdated in 2026?
+    answer: >-
+      No, but its job narrowed. The Dribbble wave of 2020 is over, and glass survived
+      where it does real work: navigation bars, modals, sheets and floating controls.
+      Apple kept the material in iOS and visionOS, which makes it a platform default
+      rather than a trend. Decorative glass cards on landing pages are the part that
+      aged badly.
+  - question: What can I use instead of glassmorphism?
+    answer: >-
+      Frosted UI is the calmer cousin, with the same blur under a dense neutral tint
+      and no colour play. If you want depth without transparency, neumorphism and
+      claymorphism build it from shadows and opaque surfaces. For pages that need
+      density, a plain surface with a hairline border wins every time.
+  - question: How do I keep text readable on glass?
+    answer: >-
+      Move to a dense tint with dark text. White at 60% with ink #19181b holds 9.94:1
+      over a vivid backdrop and 6.21:1 over pure black, which covers anything. Then
+      check the composite against the worst pixel behind the panel, blurring the
+      backdrop before you measure.
+  - question: Does glassmorphism hurt mobile performance?
+    answer: >-
+      It can. Every blurred layer is recomputed when the content behind it moves, and
+      the 16.7 ms frame budget disappears quickly on a mid-range phone. Blur one
+      element per screen, keep backdrop-filter off anything that animates, and give the
+      filtered panel a stable height so the compositor stops re-blurring.
+  - question: How do I build glassmorphism in Figma?
+    answer: >-
+      Use a background blur on the fill, a white tint between 60 and 72 percent, an
+      inner stroke of white at 70 percent for the edge, and two drop shadows, one tight
+      and dark at low opacity, one wide and tinted with the accent. Store the four
+      values as variables, so the library keeps one material.
+---
+
+<span class="blog_big-paragraph">Glassmorphism (also written glass morphism) is a UI style where a surface looks like frosted glass. It is built from four layers: a blurred backdrop, a translucent tint, a thin light border and an inner highlight that fakes thickness. Remove one layer and the panel reads as a plain transparent rectangle.</span>
+
+Most tutorials show a card over a purple gradient and stop there. Most products live on white pages, so I calculated the contrast of every recipe instead of trusting my eyes. The classic one, a 12% white tint with white text, scores 1.00:1 on a white page, and the card disappears. Below is the version that holds.
+
+## What glassmorphism actually is
+
+Glassmorphism is a layering trick, and the glass has no colour of its own. Everything you see through the panel belongs to whatever sits behind it.
+
+![Four layers of a glass surface separated in an exploded view](/blog/assets/glassmorphism-design-guide/glass-layers-exploded.webp)
+
+Take one glass card apart and you get four sheets, stacked in this order.
+
+❶ **Backdrop blur.** `backdrop-filter: blur()` smears everything behind the panel. This is the only layer that makes it glass. The other three make it usable.
+
+❷ **Tint.** A semi-transparent fill between the backdrop and your content. It decides how much colour survives and how much contrast your text gets.
+
+❸ **Border.** A 1px light line along the edge. It separates the panel from the page when the blur alone cannot.
+
+❹ **Inner highlight.** An inset shadow on the top edge that reads as the thickness of the pane.
+
+Three things get mislabeled as glassmorphism all the time.
+
+→ A card with `opacity: 0.5`. Text fades with the surface, and nothing behind it blurs.
+
+→ A solid pastel card with a white border. No backdrop shows through, so nothing frosts.
+
+→ Liquid glass. Apple's 2025 material bends the backdrop like a lens, a separate technique I took apart in the [liquid glass practical guide](/blog/liquid-glass-design-explained-a-practical-guide).
+
+One consequence follows: glass needs something to blur. Half of this guide is about what goes behind it.
+
+## The types of glassmorphism that actually differ
+
+Glass types differ in two things you can see: how much of the backdrop survives, and what the surface adds on top. Five combinations show up in real products.
+
+![Five glassmorphism types shown side by side](/blog/assets/glassmorphism-design-guide/glass-types-comparison.webp)
+
+<div class="blog-fit-table">
+
+| Type | What you see | Where it works |
+|---|---|---|
+| Clear | Blur under 8px and a thin tint. Shapes behind stay recognisable | Large captions over a calm photo, media controls |
+| Frosted | Blur of 16px and more. The backdrop melts into soft colour fields | Navigation bars, modals, sheets. The default choice |
+| Tinted | Frosted glass with a visible hue in the tint | Status toasts, selected items, brand panels |
+| Textured | Frosted glass with a fine grain over the surface | Big panels where a smooth blur shows banding |
+| Gradient-backed | Frosted glass with its own gradient placed behind it | Hero and pricing cards on a white or flat page |
+
+</div>
+
+The first four depend on the page behind them. Gradient-backed carries its own colour and works the same anywhere.
+
+![Subtle and heavy glass on the same card](/blog/assets/glassmorphism-design-guide/glass-subtle-vs-heavy.webp "float-right")
+
+Inside every type sits a second dial, intensity. Subtle glass means a tint so dense the panel is almost solid: at 72% white, dark text holds 9.36:1 even over a dark navy photo (`#0b1220`). That is the version that survives in dashboards and settings screens.
+
+Heavy glass drops below 40%, so the backdrop floods through and the panel looks spectacular in a Dribbble shot. Run the numbers and it falls apart: dark text on a 40% white tint over pure black gets 3.08:1, under the 4.5:1 body text needs. I keep heavy glass for decoration and display type.
+
+☛ Pick the type by the backdrop you cannot control. If users upload their own wallpaper or photos, clear and heavy glass are off the table.
+
+## Why frosted glass keeps coming back
+
+Frosted glass returns because it solves a layout problem: it shows that one layer sits above another without hiding the layer below. A depth cue with a job outlives trends.
+
+![Timeline of frosted glass in Aero, iOS 7 and visionOS](/blog/assets/glassmorphism-design-guide/glass-history-timeline.webp "float-right")
+
+Windows Vista shipped Aero in 2007 with blurred translucent window frames. It looked expensive and it was, since the effect needed graphics hardware that many PCs lacked. Microsoft flattened everything again with Windows 8 in 2012.
+
+A year later Apple brought the blur back. iOS 7 (2013) put frosted panels under Control Center and the notification shade, so you always sensed the app underneath. macOS followed with Yosemite in 2014 and went further with Big Sur in 2020. That same year designer Michał Malewicz gave the style its name, and the Dribbble wave started. The web caught up late: Chrome shipped `backdrop-filter` in 2019, and Firefox turned it on by default in 2022.
+
+Apple never let go of it. visionOS, announced in 2023, made glass the base material of the whole system, because a window floating in your living room has to stay readable over any wall. In 2025 the company pushed the idea further with Liquid Glass in iOS 26, adding refraction on top of the blur. The reasoning is written down in the [materials section of the Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/materials). If you design for iOS or visionOS today, glass is the platform default, and the only open question is how well you control it.
+
+## Five glass aesthetics, one family
+
+Five styles, one idea: fake depth on a flat screen, solved with different materials. Ask what each surface does with the page behind it.
+
+![One card rendered in five different glass aesthetics](/blog/assets/glassmorphism-design-guide/glass-family-matrix.webp)
+
+| Style | What the surface does | Depth cue | Main risk |
+|---|---|---|---|
+| Glassmorphism | Blurs and tints the backdrop | Blur plus a light edge | Text contrast changes with the backdrop |
+| Frosted UI | Blurs the backdrop under a dense neutral tint | Blur alone, almost no colour | Turns grey and flat on plain pages |
+| Liquid glass | Bends and refracts the backdrop like a lens | Refraction and moving highlights | Heavy on the GPU, hard to keep legible |
+| Neumorphism | Matches the page colour exactly | One light shadow, one dark shadow | Low contrast between component and page |
+| Claymorphism | Covers the page with a saturated opaque colour | Thick radius and inner shadows | Reads as playful, wrong for dense tools |
+
+Glassmorphism and frosted UI share the same CSS and differ in dose. Frosted UI is what operating systems ship under names like Acrylic and vibrancy: neutral, dense, built to stay out of the way. Glassmorphism turns the colour up.
+
+The two soft styles ignore the backdrop entirely, which is why they get their own guides: [neumorphism](/blog/neumorphism-design-guide) and [claymorphism](/blog/claymorphism-design-guide). I compared the whole family axis by axis in a separate post, [glassmorphism versus liquid glass and the soft styles](/blog/liquid-glass-vs-glassmorphism). Use it as the map. The rest of this guide stays in the first row of the table.
+
+## The anatomy of a glass surface
+
+A glass surface is five layers in a fixed order: the backdrop, the blur, the tint, the edge treatments, and your content. Swap two of them and the panel stops reading as glass.
+
+<div className="blog-float-clip">
+
+![Close-up of a glass surface edge with four labelled layers](/blog/assets/glassmorphism-design-guide/glass-surface-cross-section.webp "float-right")
+
+❶ **The backdrop.** Everything behind the panel, and the only source of colour the glass has.
+
+❷ **The blur.** `backdrop-filter: blur()` smears that backdrop. This layer alone makes the material read as glass.
+
+❸ **The tint.** A semi-transparent fill stacked over the blurred backdrop. It sets how much colour survives and how much contrast your text gets.
+
+❹ **The edge.** A light border inside the shape plus a faint dark hairline outside it.
+
+❺ **The highlight.** An inset shadow along the top edge that reads as the thickness of the pane.
+
+The distinction that trips people up first is `filter` against `backdrop-filter`. On a card, `filter: blur(20px)` blurs the card and its text. `backdrop-filter` blurs only what sits behind it.
+
+</div>
+
+### Backdrop blur and how much is too much
+
+Blur has five useful stops, each answering a different question.
+
+![The same glass card at five blur strengths side by side](/blog/assets/glassmorphism-design-guide/blur-scale-comparison.webp)
+
+→ `4px`. The backdrop stays recognisable. Shapes behind the panel still read as shapes, which makes the glass look like a thin coloured scrim.
+
+→ `8px`. Edges behind soften and text stops resolving. Fine for a caption over a photo.
+
+→ `16px`. The threshold where glass becomes safe for content on top. Forms behind turn into colour fields, and nothing in the backdrop competes with your label.
+
+→ `24px`. My default for cards and navbars. The backdrop is a soft wash, and the tint has room to do its job.
+
+→ `40px`. Only colour survives. Use it on large surfaces, where a smaller blur would still show a recognisable edge behind the panel.
+
+The practical rule: a blur smaller than the text behind it is a bug. Put a headline 20px behind an 8px blur and people will try to read both at once.
+
+### Tint and saturation
+
+The tint is where most glass designs fail, and the numbers explain why.
+
+<div className="blog-float-clip">
+
+![Glass tint at eight and forty percent opacity](/blog/assets/glassmorphism-design-guide/glass-tint-range.webp "float-right")
+
+The recipe everyone copies is a white tint at 12% with white text. Over our brand violet `#7c4dff` the surface becomes `#8c62ff`, where white text scores 3.95:1, under the 4.5:1 body text needs. At 20% it drops to 3.45:1, at 40% you get `#b094ff` and 2.46:1.
+
+Now put the same card over a light part of the page, where most products live. Over pale pink `#fbcfe8` the surface is `#fbd5eb` and white text scores 1.33:1. Over a photo highlight it scores 1.15:1. On white it scores 1.00:1 and the card is gone.
+
+The fix is to stop treating the tint as a whisper. At 60% white, dark ink `#19181b` holds 9.94:1 over the violet orb, 17.68:1 over white, and 6.21:1 over pure black, so the card survives any backdrop you can throw at it. At 50% the same ink drops to 4.45:1 over black, which is where the recipe starts to fail.
+
+</div>
+
+Dense tints wash colour out of the backdrop, and that is what `saturate()` is for. Pairing `blur(24px)` with `saturate(180%)` puts back the chroma the white film removes. Drop the filter and a 60% white tint reads as milk.
+
+### The border that saves readability
+
+The border earns its place when the blur is weak, and it also carries the light direction of the whole interface.
+
+<div className="blog-float-clip">
+
+![A one pixel light border keeping text legible on a photo](/blog/assets/glassmorphism-design-guide/glass-border-legibility.webp "float-right")
+
+A single 1px line along the inside of the top and left edge does two jobs. It shows where light lands on a thick pane, and it separates the panel from a busy backdrop when the tint is too thin.
+
+On a photo the light line carries the edge. On a white page it vanishes, because white on white has no contrast to give. That is why the light recipe adds a darker line outside it: `0 0 0 1px rgba(25,24,27,.08)` at 1.18:1 against white, enough to separate surfaces and too little to signal state.
+
+</div>
+
+Light falls from the top left in almost every interface, so the bright edge belongs on the top and left. Flip it and the surface reads as pressed in.
+
+### The inner highlight that fakes thickness
+
+Two details separate a pane of glass from a translucent sticker.
+
+<div className="blog-float-clip">
+
+![Cross-section of a glass edge with and without an inner highlight](/blog/assets/glassmorphism-design-guide/glass-thickness-layers.webp "float-right")
+
+The first is a single inset shadow on the top edge, `inset 0 1px 0 rgba(255,255,255,.9)`. One pixel, no blur, and it creates the idea of a top surface catching light at an angle. Without it the card looks like a rounded rectangle of colour.
+
+The second is grain. A large blur produces smooth gradients, and those band on 8-bit displays, most visibly in dark areas. Noise at 2-3% opacity breaks the bands without showing at normal zoom.
+
+Both cost one line of CSS and no performance. The inset shadow rides on the same `box-shadow` as the lift, and the grain is a baked texture. Together they turn a flat fill into a pane you feel before you name it.
+
+☞ If you can add only one of the two, add the highlight. Grain fixes an artefact. The highlight fixes the material.
+
+</div>
+
+## A copy-paste CSS recipe
+
+The recipe ships the solid fallback first and upgrades to glass only where the browser can blur. Every value lives in a custom property, so a theme changes variables and never touches the rules. Replace the four colours with your own and the structure still holds.
+
+![The glass card that the CSS recipe produces](/blog/assets/glassmorphism-design-guide/glass-recipe-result.webp)
+
+```css
+:root {
+  --glass-fallback: #f7f4ff;
+  --glass-tint: rgba(255, 255, 255, .6);
+  --glass-ink: #19181b;
+  --glass-blur: 24px;
+  --glass-saturate: 180%;
+  --glass-border: rgba(255, 255, 255, .7);
+  --glass-highlight: rgba(255, 255, 255, .9);
+  --glass-shadow:
+    0 0 0 1px rgba(25, 24, 27, .08),          /* edge on white */
+    0 1px 2px rgba(25, 24, 27, .06),          /* contact */
+    0 24px 48px -16px rgba(124, 77, 255, .28); /* lift */
+}
+
+.glass {
+  background: var(--glass-fallback);
+  color: var(--glass-ink);
+  border: 1px solid rgba(25, 24, 27, .08);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass {
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border-color: var(--glass-border);
+    box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+  }
+}
+```
+
+Two details matter. The shadow is violet at 28%, because a black shadow makes a white page look dirty. Action buttons inside the card stay solid `#7c4dff` with white text (4.81:1), since a glass button on glass loses its edge.
+
+### Light theme and dark theme
+
+The dark theme swaps the tint colour and keeps every other number.
+
+![The same glass layout in light and dark themes](/blog/assets/glassmorphism-design-guide/glass-light-dark.webp)
+
+```css
+.dark {
+  --glass-fallback: #1b1d29;
+  --glass-tint: rgba(16, 18, 27, .6);
+  --glass-ink: #ffffff;
+  --glass-saturate: 160%;
+  --glass-border: rgba(255, 255, 255, .14);
+  --glass-highlight: rgba(255, 255, 255, .12);
+  --glass-shadow: 0 24px 48px -16px rgba(0, 0, 0, .5);
+}
+```
+
+Dark glass is easy on a dark page, where white text scores 18.76:1. The hard case is a dark card over something light: over white it drops to 4.88:1, and a 50% tint fails at 3.52:1. The dark tint needs 58% at minimum.
+
+### Fallback for browsers without backdrop-filter
+
+The fallback is the design for everyone the blur cannot reach, so give it the same care as the glass.
+
+<div className="blog-float-clip">
+
+![A solid fallback next to a blurred glass card](/blog/assets/glassmorphism-design-guide/glass-fallback-compare.webp "float-right")
+
+Older Safari still needs the `-webkit-` prefix, and the blur gets switched off in more places than you expect, for example when GPU acceleration is disabled or when users ask for less transparency.
+
+`@supports` handles the first case. The pale lavender `#f7f4ff` with dark ink scores 16.28:1, and the dark fallback `#1b1d29` with white text scores 16.74:1. Both read better than the glass they replace, so nobody is being served a worse interface for having an older browser.
+
+The mistake is treating the solid version as a patch applied at the last minute. Design it alongside the glass, with the same radius, the same shadow and the same spacing, and the two look like one system. Ship the solid colour as the base rule and let `@supports` switch it to glass.
+
+</div>
+
+## Contrast math you can check before shipping
+
+Glass has no colour of its own, so you check contrast against the worst point of the backdrop and never against the swatch in your design file.
+
+The [WCAG 2.2 contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) asks for 4.5:1 for body text and 3:1 for large text. The formula compares two fixed colours, and a glass card has a different colour over every pixel of the backdrop. That is why a design passing in Figma fails in production.
+
+The fix takes two steps. Blend the tint over the backdrop channel by channel with `result = alpha × tint + (1 − alpha) × backdrop`, then run the WCAG formula on the result.
+
+Worked example, the light recipe over the violet orb. White at 60% over `#7c4dff` gives red `0.6 × 255 + 0.4 × 124 = 203` and green `0.6 × 255 + 0.4 × 77 = 184`, blue 255. The surface is `#cbb8ff` at a relative luminance of 0.5406. Ink `#19181b` sits at 0.0094, so contrast is `(0.5406 + 0.05) / (0.0094 + 0.05) = 9.94:1`.
+
+☛ Run the check on the unblurred backdrop. Blur averages neighbouring pixels, so the real surface is never more extreme than the sharpest point behind it. If the sharp version passes, the blurred one passes too.
+
+The worst case gives you a floor that holds on any backdrop. Dark ink on a white tint over pure black needs just over 50% for 4.5:1 and 64% for 7:1. White text on the dark tint over pure white needs 58% for 4.5:1.
+
+### A three-background stress test
+
+Before a glass component ships, I put it on three backdrops that break glass in different ways.
+
+![Glass card tested on gradient, photo and pattern backgrounds](/blog/assets/glassmorphism-design-guide/contrast-stress-test.webp)
+
+<div class="blog-fit-table">
+
+| Backdrop | Classic, 12% white, white text | Light recipe, 60% white, dark ink |
+|---|---|---|
+| Pastel gradient `#c4b5fd` to `#fbcfe8` | 1.33:1 | 14.02:1 |
+| Night photo, `#0b1220` with `#e8eef5` lights | 1.15:1 | 6.76:1 |
+| Checker `#111111` and `#ffffff` | 1.00:1 | 6.74:1 |
+
+</div>
+
+White text fails over the lightest part of a backdrop and dark text over the darkest, so the classic column is measured on highlights and the light recipe on shadows. The classic recipe fails all three. The light recipe passes all three with room to spare.
+
+## States on a glass component
+
+A state on glass has to change the structure of the component. Tint shifts get lost, because the backdrop already changes the tint under every pixel.
+
+![Glass button in default, hover, focus, active, disabled, error and loading states](/blog/assets/glassmorphism-design-guide/glass-states.webp)
+
+❶ **Default.** Resting glass, top highlight, soft violet shadow.
+
+❷ **Hover.** Brighter highlight, the shadow grows and the card lifts 2px.
+
+❸ **Focus.** A solid 2px ring in `#19181b` with a 2px white gap. A violet ring scores only 2.71:1 against the glass surface over the orb, under the 3:1 that WCAG asks for focus indicators.
+
+❹ **Active.** The highlight disappears and the shadow tightens, so the pane looks pressed into the page.
+
+❺ **Disabled.** No highlight and no shadow, with a dimmed label. The flat surface reads as unavailable before the label does.
+
+❻ **Error.** A solid `#c62828` border with an icon. White text on that red scores 5.62:1, while the lighter `#e03e3e` stops at 4.26:1.
+
+❼ **Loading.** A spinner replaces the label and the width stays fixed.
+
+The same seven states come up again in the [button UI design guide](/blog/button-ui-design), where the base component carries them without any glass.
+
+## Where glass belongs and where it breaks
+
+Glass belongs on chrome and breaks on content. A navigation bar, a toolbar or a modal sits above the page, and the blur says so. A table lives on the page, so frosting it only makes data harder to read.
+
+![Glass on navigation chrome and on dense content](/blog/assets/glassmorphism-design-guide/glass-chrome-vs-content.webp)
+
+My test is one question. Does this surface need to show that the page continues underneath? If yes, glass earns its place. If the surface is the page, glass is decoration with a cost.
+
+Three places where glass keeps winning.
+
+❶ **The sticky top bar.** Content scrolls under it and the blur keeps the title readable without a solid block that eats a strip of the screen.
+
+❷ **The modal and the sheet.** Glass separates the dialog from the dimmed page without a hard black scrim.
+
+❸ **The floating control.** A media player or a map panel, anything that stays on top of content it must not hide.
+
+Three places where I take it out on sight: dense data tables, long forms, and settings screens. Nothing sits behind them, so the material has no job. Neumorphism runs into the same wall in reverse, which is why both styles end up confined to chrome.
+
+## Component recipes
+
+Six components carry almost every glass interface. Each needs the shared variables plus a couple of local numbers.
+
+![Four glass component recipes on a neutral canvas](/blog/assets/glassmorphism-design-guide/glass-component-recipes.webp)
+
+| Component | Tint | Blur | Corner | Note |
+|---|---|---|---|---|
+| Card | 60% white | 24px | 24px | Add a colour wash behind it, or it vanishes on white |
+| Modal | 72% white | 32px | 24px | Denser than a card, because a scrim already sits behind it |
+| Navbar | 60% white | 16px | 0, bottom border only | Blur below 16px, text starts doubling itself as rows scroll by |
+| Toast | 72% white | 24px | full pill | Sits over anything, so it needs the densest tint |
+| Input | 60% white | 12px | 12px | Focus ring solid, never glass inside glass |
+| Dropdown | 72% white | 24px | 16px | Opaque enough to read rows over a busy page |
+
+The modal is the interesting one. Its scrim already darkens the page, so a light panel recovers contrast the scrim removed. A navbar has to stay light, because it sits over legible content and a dark bar would feel heavy.
+
+<div className="blog-float-clip">
+
+![A single glass toast component at three accent levels](/blog/assets/glassmorphism-design-guide/glass-toast-recipe.webp "float-right")
+
+Toasts deserve their own rule, because they arrive over whatever the user was reading. A quiet toast stays neutral glass. A success toast mixes `#1f9d6b` into the tint and keeps dark content, which holds 14.45:1 on a white page and 8.69:1 over the violet orb. A critical toast goes solid `#c62828` with white text.
+
+A toast also travels, so it crosses more backdrops than any other component in the whole system. Give it the densest tint you allow, then test it over the busiest screen in the product, not over a clean settings page.
+
+Exceptions belong to a component, not to the system. One component changes its tint for a semantic reason. The whole library keeps the same three numbers.
+
+</div>
+
+## Glassmorphism on mobile
+
+Mobile is where glass gets expensive, and the bill arrives in frame time. A 60 fps budget gives each frame 16.7 milliseconds, and `backdrop-filter` on several layers is one of the few CSS effects that can eat it.
+
+<div className="blog-float-clip">
+
+![Glass navigation on a phone next to a frame rate reading](/blog/assets/glassmorphism-design-guide/glass-mobile-performance.webp "float-right")
+
+Three rules keep a glass interface smooth on a mid-range Android phone.
+
+→ Blur one element per screen. A bottom bar or a sticky header, not both.
+
+→ Keep `backdrop-filter` off elements that animate. Blur is recomputed every frame, so a sliding glass sheet drops more frames than any other animation in a mobile UI.
+
+→ Give the fixed height element a stable size. A glass panel that grows as content arrives forces the compositor to re-blur on every resize.
+
+The accessibility setting is `prefers-reduced-transparency: reduce`, and it deserves an answer: point the tint variable at the fallback colour and drop the filter. On iOS the equivalent is Reduce Transparency in Accessibility settings.
+
+Touch targets keep a 44 by 44 pixel floor however small the pill looks. Glass surfaces shrink visually because the edge reads as padding that is not there.
+
+</div>
+
+## Design tokens for a glass system
+
+A glass system fits in four variables. Everything else is per-component, and the four keep the material from turning into six slightly different materials.
+
+<div className="blog-float-clip">
+
+![Token panel mapping Figma variables to CSS custom properties](/blog/assets/glassmorphism-design-guide/glass-design-tokens.webp "float-right")
+
+Name them in Figma the way you name them in CSS:
+
+→ `glass/blur` maps to `--glass-blur`, 24px
+
+→ `glass/tint` maps to `--glass-tint`, white at 60%
+
+→ `glass/border` maps to `--glass-border`, white at 70%
+
+→ `glass/highlight` maps to `--glass-highlight`, white at 90%
+
+Shadow and radius follow the global scales you already have. The four variables above are the ones that make glass glass.
+
+The failure mode is a team where each component picks its own blur. Two cards at 16px and 24px look like two materials. The [UI kit foundation guide](/blog/how-to-design-a-ui-kit-foundation) covers that discipline for the rest of the system, and the [React UI kit](/templates/react-ui-kit) ships the token layer already wired this way.
+
+</div>
+
+## Eight anti-patterns that make glass unreadable
+
+Each breaks one rule, and each shows up in shipped products.
+
+![Eight common glassmorphism mistakes in a grid](/blog/assets/glassmorphism-design-guide/glass-mistakes.webp)
+
+❶ **No tint.** `background: transparent` with only a blur. Text over a busy backdrop turns into noise. Add a tint.
+
+❷ **Stacked glass.** A glass button on a glass card on a glass navbar. Contrast compounds downward and the material turns muddy. One layer of glass per stack.
+
+❸ **Flat backdrop.** A white-tinted card on a white page. Nothing to blur, so the card is invisible. Put colour behind it.
+
+❹ **Milky tint.** A 40% white tint with white text, which is the recipe from most tutorials. It scores 2.46:1 over a vivid backdrop. Move to dark text and a denser tint.
+
+❺ **No edge.** No border and no shadow. The panel melts into whatever sits behind it. Add the hairline and the lifted shadow.
+
+❻ **Dense data on glass.** A frosted table with twenty rows. Every row fights the backdrop. Keep glass on chrome.
+
+❼ **Tint-only states.** Hover and selected differ by a slightly lighter tint. On a changing backdrop the difference disappears. Change the structure instead.
+
+❽ **No fallback.** The design exists only inside `@supports`. Ship the solid version as the base and upgrade from it.
+
+☛ Anti-pattern ❸ is the one I see most in 2026, usually on a landing page whose hero happens to be white. The design was made over a colourful illustration and shipped on a blank section.
+
+## Before you ship
+
+Ten checks, each worth failing a build over.
+
+<div className="blog-float-clip">
+
+![A glass checklist card with ticked items](/blog/assets/glassmorphism-design-guide/glass-ship-checklist.webp "float-right")
+
+❶ **Contrast checked** at the worst point of the backdrop, not on the swatch in your design file.
+
+❷ **Fallback ready** as the base layer, with the glass as the upgrade inside `@supports`.
+
+❸ **Focus visible** through a solid ring, because a tinted ring drops to 2.71:1 on glass.
+
+❹ **States differ** in structure, never in tint alone.
+
+❺ **One glass layer** per stack. A glass control on a glass card is the second most common failure.
+
+❻ **Blur measured** against the text size behind the panel, not against the mood board.
+
+❼ **Phone tested** on a mid-range Android device, since a simulator hides frame drops.
+
+❽ **Tokens named** after the CSS variables, so the handoff needs no translation table.
+
+❾ **Reduced transparency** answered with the solid colour, for the users who ask for it.
+
+❿ **Colour behind the glass** on every page where the component appears, including the empty one.
+
+</div>
+
+The last item breaks in production, because a component tested on one page ships to twelve. I keep shipped examples from the [AI inspiration gallery](https://app.setproduct.com) for this check, and the glass files I reuse live in the [Liquid Glass freebie](/freebies/liquid-glass).
+
+## Frequently asked questions
+
+### What are the types of glassmorphism?
+
+Five types differ by how much backdrop survives and what the surface adds. Clear glass keeps shapes behind it recognisable, frosted melts them into colour fields, tinted carries a hue, textured adds a visible grain, and gradient-backed supplies its own colour behind the panel.
+
+### Is glass morphism the same as glassmorphism?
+
+Yes. Glass morphism and glassmorphism name the same style, and the two-word spelling is common in early coverage and in search queries. Designers settled on one word around 2020, when the style got its name.
+
+### Is glassmorphism outdated in 2026?
+
+No, but its job narrowed. The Dribbble wave of 2020 is over, and glass survived where it does real work: navigation bars, modals, sheets and floating controls. Apple kept the material in iOS and visionOS, which makes it a platform default. Decorative glass cards on landing pages aged badly.
+
+### What can I use instead of glassmorphism?
+
+Frosted UI is the calmer cousin: the same blur under a dense neutral tint, with no colour play. For depth without transparency, neumorphism and claymorphism build it from shadows and opaque surfaces. For dense pages, a plain surface with a hairline border wins.
+
+### How do I keep text readable on glass?
+
+Move to a dense tint with dark text. White at 60% with ink `#19181b` holds 9.94:1 over a vivid backdrop and 6.21:1 over pure black, which covers anything. Then check the composite against the worst pixel behind the panel, blurring the backdrop before you measure.
+
+### Does glassmorphism hurt mobile performance?
+
+It can. Every blurred layer is recomputed when content behind it moves, and the 16.7 ms budget disappears fast on a mid-range phone. Blur one element per screen, keep `backdrop-filter` off anything that animates, and give the panel a stable height.
+
+### How do I build glassmorphism in Figma?
+
+Use a background blur on the fill, a white tint between 60 and 72 percent, an inner white stroke at 70 percent for the edge, and two drop shadows: one tight and dark at low opacity, one wide and tinted with the accent. Store the four values as variables.
