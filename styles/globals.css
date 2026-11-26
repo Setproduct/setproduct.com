@@ -817,6 +817,26 @@ body:has(.navbar.is-mobile-open) .blog-reading-progress {
 }
 
 /*
+ * Card UI design post: every float image is a 2048x2048 square, except the
+ * eight-zone anatomy diagram, which is 1664x2496 portrait. MDXImage hard-codes
+ * width/height 1600x900 when markdown supplies no dimensions, so before the
+ * bitmap arrives each float reserves a 16:9 box and the text reflows when it
+ * loads. Pinning the real ratios keeps the layout still and removes the
+ * paragraph jump this caused.
+ */
+@media (min-width: 768px) {
+  .rich-text-18[data-post="card-ui-design"] .blog-img-float img {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+
+  .rich-text-18[data-post="card-ui-design"]
+    .blog-img-float:has(img[src*="card-anatomy-stack-zones"]) img {
+    aspect-ratio: 1664 / 2496;
+  }
+}
+
+/*
  * Inside a float-clip subsection the image markup now comes BEFORE the
  * h3 heading, so the heading text wraps in right beside the top of the
  * floated image instead of sitting above it. Webflow's global rich-text
